@@ -35,9 +35,9 @@ after_build:
 
     md dist\engine\bin_%COR_PLAT%
 
-    copy intermediate\%PLATFORM%-%CONFIGURATION%\*.exe dist\engine\bin_%COR_PLAT%\
+    copy src\intermediate\%PLATFORM%-%CONFIGURATION%\*.exe dist\engine\bin_%COR_PLAT%\
 
-    copy intermediate\%PLATFORM%-%CONFIGURATION%\*.dll dist\engine\bin_%COR_PLAT%\
+    copy src\intermediate\%PLATFORM%-%CONFIGURATION%\*.dll dist\engine\bin_%COR_PLAT%\
 
     echo appveyor PushArtifact direx_%APPVEYOR_REPO_TAG_NAME%_%COR_PLAT%.7z release
 
