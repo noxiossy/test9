@@ -720,6 +720,11 @@
   <ItemGroup>
     <ResourceCompile Include="xrCore.rc" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="$(SolutionDir)3rd party\DXERR\DXERR.vcxproj">
+      <Project>{772FE450-F4F3-4687-A2A7-5624825089D7}</Project>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
