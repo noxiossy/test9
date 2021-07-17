@@ -9,5 +9,4 @@ intermediate/
 intermediate_plugs/
 lib/
 _build/
-libraries/
 /src/*.tss
