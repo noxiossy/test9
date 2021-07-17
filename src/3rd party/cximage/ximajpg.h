@@ -31,7 +31,7 @@
 #define XMD_H
 #define HAVE_BOOLEAN
 extern "C" {
- #include <jpeg/jpeglib.h>
+ #include "../../../sdk/include/jpeg/jpeglib.h"
  #include <jpeg/jerror.h>
 }
 #undef HAVE_BOOLEAN
