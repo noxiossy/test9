@@ -1,0 +1,57 @@
+version: 1.0-{build}
+image: Visual Studio 2013
+configuration: Release
+platform: Win32
+shallow_clone: true
+environment:
+  DXSDK: '%DXSDK_DIR%'
+before_build:
+- cmd: >-
+    echo %PLATFORM%
+
+    echo %CONFIGURATION%
+
+    echo direx_%APPVEYOR_REPO_TAG_NAME%_%PLATFORM%.7z
+build:
+  project: ./src/engine.sln
+  verbosity: minimal
+after_build:
+- cmd: >-
+    set COR_PLAT=%PLATFORM%
+
+    IF "%COR_PLAT%" == "Win32" set COR_PLAT=x86
+
+    set APPVEYOR_VERSION=%APPVEYOR_BUILD_VERSION%_%COR_PLAT%
+
+    echo %APPVEYOR_VERSION%
+    
+    md dist
+
+    echo ===================== engine files =====================
+
+    md dist\engine
+
+    copy opt\start_%COR_PLAT%.bat dist\engine
+
+    md dist\engine\bin_%COR_PLAT%
+
+    copy intermediate\%PLATFORM%-%CONFIGURATION%\*.exe dist\engine\bin_%COR_PLAT%\
+
+    copy intermediate\%PLATFORM%-%CONFIGURATION%\*.dll dist\engine\bin_%COR_PLAT%\
+
+    echo appveyor PushArtifact direx_%APPVEYOR_REPO_TAG_NAME%_%COR_PLAT%.7z release
+
+    cd dist\engine
+
+    7z a ..\..\direx_%APPVEYOR_REPO_TAG_NAME%_%COR_PLAT%.7z
+
+    cd ..\..
+
+    echo appveyor PushArtifact direx_%APPVEYOR_REPO_TAG_NAME%_%COR_PLAT%.7z release
+
+    copy direx_%APPVEYOR_REPO_TAG_NAME%_%COR_PLAT%.7z direx_%APPVEYOR_VERSION%.7z
+
+    appveyor PushArtifact direx_%APPVEYOR_VERSION%.7z
+artifacts:
+- path: .\direx_$(appveyor_repo_tag_name)_$(cor_plat).7z
+  name: release
