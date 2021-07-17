@@ -17,8 +17,10 @@
     <xrLuaDir>$(SolutionDir)3rd party\luajit-2\src\</xrLuaDir>
   </PropertyGroup>
   <PropertyGroup>
-    <IncludePath>E:\STALKER\X-Ray Source\x_ray_1602_VS13\xray-16\src\3rd party;$(IncludePath);$(xrSdkDir)include;</IncludePath>
-    <OutDir>$(xrGameDir)bin_rel\</OutDir>
+    <IncludePath>$(SolutionDir)SDK\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)SDK\libraries\x86;$(LibraryPath)</LibraryPath>
+    <OutDir>$(SolutionDir)intermediate\$(Platform)-$(Configuration)\</OutDir>
+    <IntDir>$(SolutionDir)intermediate\$(Platform)-$(Configuration)\$(ProjectName)\</IntDir>
   </PropertyGroup>
   <ItemDefinitionGroup>
     <ClCompile>
