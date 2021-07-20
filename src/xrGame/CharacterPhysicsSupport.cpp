@@ -22,7 +22,7 @@
 //#include "../xrphysics/ICollideValidator.h"
 #include "../xrphysics/IPHWorld.h"
 
-//#include "Physics.h"
+#include "../xrphysics/Physics.h"
 
 
 #include "IKLimbsController.h"
@@ -218,9 +218,9 @@ void CCharacterPhysicsSupport::in_NetSpawn( CSE_Abstract* e )
 			ka->PlayCycle( "death_init" );
 
 	}else if( !m_EntityAlife.animation_movement_controlled( ) )
-		ka->PlayCycle( "death_init" );///íåïîíÿòíî çà÷åì ýòî âîîáùå íàäî çàïóñêàòü
-									  ///ýòîò õàê íóæåí, ïîòîìó ÷òî íåêîòîðûì ìîíñòðàì 
-									  ///àíèìàöèÿ ïîñëå ñïîíà, ìîæåò áûòü âîîáùå íå íàçíà÷åíà
+		ka->PlayCycle( "death_init" );///Ã­Ã¥Ã¯Ã®Ã­Ã¿Ã²Ã­Ã® Ã§Ã Ã·Ã¥Ã¬ Ã½Ã²Ã® Ã¢Ã®Ã®Ã¡Ã¹Ã¥ Ã­Ã Ã¤Ã® Ã§Ã Ã¯Ã³Ã±ÃªÃ Ã²Ã¼
+									  ///Ã½Ã²Ã®Ã² ÃµÃ Ãª Ã­Ã³Ã¦Ã¥Ã­, Ã¯Ã®Ã²Ã®Ã¬Ã³ Ã·Ã²Ã® Ã­Ã¥ÃªÃ®Ã²Ã®Ã°Ã»Ã¬ Ã¬Ã®Ã­Ã±Ã²Ã°Ã Ã¬ 
+									  ///Ã Ã­Ã¨Ã¬Ã Ã¶Ã¨Ã¿ Ã¯Ã®Ã±Ã«Ã¥ Ã±Ã¯Ã®Ã­Ã , Ã¬Ã®Ã¦Ã¥Ã² Ã¡Ã»Ã²Ã¼ Ã¢Ã®Ã®Ã¡Ã¹Ã¥ Ã­Ã¥ Ã­Ã Ã§Ã­Ã Ã·Ã¥Ã­Ã 
 	pK->CalculateBones_Invalidate( );
 	pK->CalculateBones( TRUE );
 	
@@ -626,7 +626,7 @@ void CCharacterPhysicsSupport::in_UpdateCL( )
 	if( m_pPhysicsShell )
 	{
 		VERIFY( m_pPhysicsShell->isFullActive( ) );
-		m_pPhysicsShell->SetRagDoll( );//Òåïåðü øåëà îòíîñèòüñÿ ê êëàññó îáúåêòîâ cbClassRagDoll
+		m_pPhysicsShell->SetRagDoll( );//Ã’Ã¥Ã¯Ã¥Ã°Ã¼ Ã¸Ã¥Ã«Ã  Ã®Ã²Ã­Ã®Ã±Ã¨Ã²Ã¼Ã±Ã¿ Ãª ÃªÃ«Ã Ã±Ã±Ã³ Ã®Ã¡ÃºÃ¥ÃªÃ²Ã®Ã¢ cbClassRagDoll
 		
 		if( !is_imotion(m_interactive_motion ) )//!m_flags.test(fl_use_death_motion)
 			m_pPhysicsShell->InterpolateGlobalTransform( &mXFORM );
@@ -1168,12 +1168,8 @@ void	CCharacterPhysicsSupport::	CreateShell						( CObject* who, Fvector& dp, Fv
 	
 	if(IsGameTypeSingle())
 	{
-		m_pPhysicsShell->SetPrefereExactIntegration	();//use exact integration for ragdolls in single
-        //AVO: turn on collision with dead bodies (thanks malandrinus)
-#ifndef DEAD_BODY_COLLISION
-			m_pPhysicsShell->SetRemoveCharacterCollLADisable();
-#endif
-        //-AVO
+		//m_pPhysicsShell->SetPrefereExactIntegration	();//use exact integration for ragdolls in single
+		//m_pPhysicsShell->SetRemoveCharacterCollLADisable();
 	}
 	else
 		m_pPhysicsShell->SetIgnoreDynamic();
@@ -1194,7 +1190,7 @@ if( dbg_draw_ragdoll_spawn )
 #endif
 
 	CollisionCorrectObjPos( dp );
-	m_pPhysicsShell->SetGlTransformDynamic(mXFORM);
+	//m_pPhysicsShell->SetGlTransformDynamic(mXFORM);
 
 #ifdef	DEBUG
 if( dbg_draw_ragdoll_spawn )
@@ -1205,7 +1201,7 @@ if( dbg_draw_ragdoll_spawn )
 }
 #endif
 	//fly back after correction
-	FlyTo(Fvector().sub(inital_entity_position,m_EntityAlife.Position()));
+	//FlyTo(Fvector().sub(inital_entity_position,m_EntityAlife.Position()));
 
 #ifdef	DEBUG
 if( dbg_draw_ragdoll_spawn )
@@ -1225,10 +1221,10 @@ if( dbg_draw_ragdoll_spawn )
 		}
 #endif
 
-	m_pPhysicsShell->set_LinearVel( v );
+	//m_pPhysicsShell->set_LinearVel( v );
 	//actualize
-	m_pPhysicsShell->GetGlobalTransformDynamic(&mXFORM);
-	m_pPhysicsShell->mXFORM.set(mXFORM);
+	//m_pPhysicsShell->GetGlobalTransformDynamic(&mXFORM);
+	//m_pPhysicsShell->mXFORM.set(mXFORM);
 
 
 
@@ -1241,7 +1237,7 @@ if( dbg_draw_ragdoll_spawn )
 	//	m_pPhysicsShell->AnimToVelocityState( Device.fTimeDelta, 2 * default_l_limit, 10.f * default_w_limit );
 	//	mXFORM.set( sv_xform );
 	//}
-	IKinematics* K=smart_cast<IKinematics*>( m_EntityAlife.Visual( ) );
+	//IKinematics* K=smart_cast<IKinematics*>( m_EntityAlife.Visual( ) );
 	//u16 root =K->LL_GetBoneRoot();
 	//if( root!=0 )
 	//{
@@ -1250,8 +1246,8 @@ if( dbg_draw_ragdoll_spawn )
 	//	K->LL_SetBoneVisible( 0, FALSE, FALSE );
 	//}
 	
-	K->CalculateBones_Invalidate();
-	K->CalculateBones	(TRUE);
+	//K->CalculateBones_Invalidate();
+	//K->CalculateBones	(TRUE);
 }
 
 void CCharacterPhysicsSupport::in_ChangeVisual()
