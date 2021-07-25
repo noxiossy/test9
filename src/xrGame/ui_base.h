@@ -95,7 +95,6 @@ public:
 	IUIRender::ePointType		m_currentPointType;
 };
 
-extern pcstr UI_PATH;
 
 extern CUICursor&		GetUICursor				();
 extern ui_core&			UI						();
