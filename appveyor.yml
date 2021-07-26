@@ -39,6 +39,8 @@ after_build:
 
     copy src\intermediate\%PLATFORM%-%CONFIGURATION%\*.dll dist\engine\bin_%COR_PLAT%\
 
+    copy src\3rd party\luabind\x86\*.dll dist\engine\bin_%COR_PLAT%\
+
     echo appveyor PushArtifact direx_%APPVEYOR_REPO_TAG_NAME%_%COR_PLAT%.7z release
 
     cd dist\engine
