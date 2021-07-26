@@ -108,6 +108,7 @@ static class cl_sun_shafts_intensity : public R_constant_setup
 }	binder_sun_shafts_intensity;
 
 extern ENGINE_API BOOL r2_sun_static;
+extern ENGINE_API BOOL r2_simple_static;
 extern ENGINE_API BOOL r2_advanced_pp;	//	advanced post process and effects
 //////////////////////////////////////////////////////////////////////////
 // Just two static storage
@@ -214,7 +215,8 @@ void					CRender::create					()
 		o.fp16_blend	= FALSE;
 	}
 
-	VERIFY2				(o.mrt && (HW.Caps.raster.dwInstructions>=256),"Hardware doesn't meet minimum feature-level");
+	CHECK_OR_EXIT			(o.mrt && (HW.Caps.raster.dwInstructions>=256),"Hardware doesn't meet minimum feature-level");
+
 	if (o.mrtmixdepth)		o.albedo_wo		= FALSE	;
 	else if (o.fp16_blend)	o.albedo_wo		= FALSE	;
 	else					o.albedo_wo		= TRUE	;
@@ -224,25 +226,34 @@ void					CRender::create					()
 	// if hardware support early stencil (>= GF 8xxx) stencil reset trick only
 	// slows down.
 	o.nvstencil			= FALSE;
-	if ((HW.Caps.id_vendor==0x10DE)&&(HW.Caps.id_device>=0x40))	
+	if (!strstr(Core.Params, "-nonvs") && (HW.Caps.id_vendor == 0x10DE) && (HW.Caps.id_device >= 0x40))
 	{
 		//o.nvstencil = HW.support	((D3DFORMAT)MAKEFOURCC('R','A','W','Z'), D3DRTYPE_SURFACE, 0);
 		//o.nvstencil = TRUE;
 		o.nvstencil = ( S_OK==HW.pD3D->CheckDeviceFormat(D3DADAPTER_DEFAULT, D3DDEVTYPE_HAL, D3DFMT_X8R8G8B8 , 0, D3DRTYPE_TEXTURE, (D3DFORMAT MAKEFOURCC('R','A','W','Z'))) );
 	}
-
-	if (strstr(Core.Params,"-nonvs"))		o.nvstencil	= FALSE;
+	if (o.nvstencil)	Msg("* NVStencil supported and used");
 
 	// nv-dbt
 	o.nvdbt				= HW.support	((D3DFORMAT)MAKEFOURCC('N','V','D','B'), D3DRTYPE_SURFACE, 0);
 	if (o.nvdbt)		Msg	("* NV-DBT supported and used");
 
+    o.no_ram_textures = (strstr(Core.Params, "-noramtex")) ? TRUE : ps_r__common_flags.test(RFLAG_NO_RAM_TEXTURES);
+    if (o.no_ram_textures)
+        Msg("* Managed textures disabled");
+
 	// options (smap-pool-size)
-	if (strstr(Core.Params,"-smap1536"))	o.smapsize	= 1536;
-	if (strstr(Core.Params,"-smap2048"))	o.smapsize	= 2048;
-	if (strstr(Core.Params,"-smap2560"))	o.smapsize	= 2560;
-	if (strstr(Core.Params,"-smap3072"))	o.smapsize	= 3072;
-	if (strstr(Core.Params,"-smap4096"))	o.smapsize	= 4096;
+	if (r2_SmapSize >= 1024 && r2_SmapSize <= 4096)
+		o.smapsize = r2_SmapSize;
+	else if (r2_SmapSize > 4096) {
+		D3DCAPS9 caps;
+		CHK_DX(HW.pDevice->GetDeviceCaps(&caps));
+		auto video_mem = HW.pDevice->GetAvailableTextureMem();
+		if (caps.MaxTextureHeight >= r2_SmapSize && video_mem > 512)
+			o.smapsize = r2_SmapSize;
+	}
+
+	Msg("Shadow Map resolution: %ux%u", o.smapsize, o.smapsize);
 
 	// gloss
 	char*	g			= strstr(Core.Params,"-gloss ");
@@ -256,6 +267,7 @@ void					CRender::create					()
 	o.sunfilter			= (strstr(Core.Params,"-sunfilter"))?	TRUE	:FALSE	;
 	//.	o.sunstatic			= (strstr(Core.Params,"-sunstatic"))?	TRUE	:FALSE	;
 	o.sunstatic			= r2_sun_static;
+	o.simplestatic		= r2_simple_static;
 	o.advancedpp		= r2_advanced_pp;
 	o.sjitter			= (strstr(Core.Params,"-sjitter"))?		TRUE	:FALSE	;
 	o.depth16			= (strstr(Core.Params,"-depth16"))?		TRUE	:FALSE	;
@@ -584,7 +596,7 @@ void	CRender::Statistics	(CGameFont* _F)
 }
 
 /////////
-#pragma comment(lib,"d3dx9.lib")
+
 /*
 extern "C"
 {
@@ -811,6 +823,13 @@ HRESULT	CRender::shader_compile			(
 		def_it						++	;
 	}
 	sh_name[len]='0'+char(o.sunstatic); ++len;
+
+	if (o.simplestatic)		{
+		defines[def_it].Name		=	"USE_R2_SIMPLE_STATIC";
+		defines[def_it].Definition	=	"1";
+		def_it						++	;
+	}
+	sh_name[len]='0'+char(o.simplestatic); ++len;
 
 	if (o.forcegloss)		{
 		xr_sprintf						(c_gloss,"%f",o.forcegloss_v);

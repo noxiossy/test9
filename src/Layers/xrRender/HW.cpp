@@ -61,30 +61,23 @@ void CHW::Reset		(HWND hwnd)
 //	BOOL	bWindowed		= TRUE;
 //#endif
     BOOL	bWindowed		= TRUE;
-    if (!g_dedicated_server)
+	if (!strstr(Core.Params, "-editor"))
         bWindowed		= !psDeviceFlags.is	(rsFullscreen);
 
     selectResolution		(DevPP.BackBufferWidth, DevPP.BackBufferHeight, bWindowed);
     // Windoze
     DevPP.SwapEffect			= bWindowed?D3DSWAPEFFECT_COPY:D3DSWAPEFFECT_DISCARD;
     DevPP.Windowed				= bWindowed;
-
-    //AVO: fucntional vsync by avbaula
-#ifdef VSYNC_FIX
-
-    DevPP.PresentationInterval = selectPresentInterval(); // Vsync
-    if(!bWindowed) // Refresh rate
-        DevPP.FullScreen_RefreshRateInHz = selectRefresh(DevPP.BackBufferWidth,DevPP.BackBufferHeight,Caps.fTarget);
-    else
-        DevPP.FullScreen_RefreshRateInHz = D3DPRESENT_RATE_DEFAULT;
-
-#else //!VSYNC_FIX
-    DevPP.PresentationInterval	= D3DPRESENT_INTERVAL_IMMEDIATE;
-    if( !bWindowed )		DevPP.FullScreen_RefreshRateInHz	= selectRefresh	(DevPP.BackBufferWidth,DevPP.BackBufferHeight,Caps.fTarget);
-    else					DevPP.FullScreen_RefreshRateInHz	= D3DPRESENT_RATE_DEFAULT;
-#endif //-VSYNC_FIX
-    //-AVO
-
+	if( !bWindowed )
+	{
+		DevPP.PresentationInterval	= selectPresentInterval();
+		DevPP.FullScreen_RefreshRateInHz	= selectRefresh	(DevPP.BackBufferWidth,DevPP.BackBufferHeight,Caps.fTarget);
+	}
+	else
+	{
+		DevPP.PresentationInterval	= D3DPRESENT_INTERVAL_IMMEDIATE;
+		DevPP.FullScreen_RefreshRateInHz	= D3DPRESENT_RATE_DEFAULT;
+	}
 #endif //-_EDITOR
 
     while	(TRUE)	{
@@ -110,19 +103,7 @@ void CHW::Reset		(HWND hwnd)
 
 void CHW::CreateD3D	()
 {
-//#ifndef DEDICATED_SERVER
-//	LPCSTR		_name			= "d3d9.dll";
-//#else
-//	LPCSTR		_name			= "xrd3d9-null.dll";
-//#endif
-
-    LPCSTR		_name			= "xrd3d9-null.dll";
-
-#ifndef _EDITOR
-    if (!g_dedicated_server)
-#endif    
-        _name			= "d3d9.dll";
-
+	LPCSTR		_name			= "d3d9.dll";
 
     hD3D            			= LoadLibrary(_name);
     R_ASSERT2	           	 	(hD3D,"Can't find 'd3d9.dll'\nPlease install latest version of DirectX before running this program");
@@ -196,14 +177,7 @@ void	CHW::DestroyDevice	()
 void	CHW::selectResolution	(u32 &dwWidth, u32 &dwHeight, BOOL bWindowed)
 {
     fill_vid_mode_list			(this);
-#ifndef _EDITOR
-    if (g_dedicated_server)
-    {
-        dwWidth		= 640;
-        dwHeight	= 480;
-    }
-    else
-#endif
+
     {
         if(bWindowed)
         {
@@ -245,7 +219,7 @@ void		CHW::CreateDevice		(HWND m_hWnd, bool move_window)
     BOOL  bWindowed			= TRUE;
     
 #ifndef _EDITOR
-    if (!g_dedicated_server)
+	if (!strstr(Core.Params, "-editor"))
         bWindowed			= !psDeviceFlags.is(rsFullscreen);
 #else
     bWindowed				= 1;
@@ -365,19 +339,17 @@ void		CHW::CreateDevice		(HWND m_hWnd, bool move_window)
     P.AutoDepthStencilFormat= fDepth;
     P.Flags					= 0;	//. D3DPRESENTFLAG_DISCARD_DEPTHSTENCIL;
 
-    //AVO: functional vsync by avbaula
-#ifdef VSYNC_FIX
-    P.PresentationInterval = selectPresentInterval(); // Vsync
-    if(!bWindowed)		
-        P.FullScreen_RefreshRateInHz = selectRefresh(P.BackBufferWidth, P.BackBufferHeight,fTarget);
-#else //!VSYNC_FIX
-    // Refresh rate
-    P.PresentationInterval	= D3DPRESENT_INTERVAL_IMMEDIATE;
-    if( !bWindowed )		P.FullScreen_RefreshRateInHz	= selectRefresh	(P.BackBufferWidth, P.BackBufferHeight,fTarget);
-#endif //-VSYNC_FIX
-    //-AVO
-    else					P.FullScreen_RefreshRateInHz	= D3DPRESENT_RATE_DEFAULT;
-
+	// Refresh rate
+    if( !bWindowed )
+	{
+		P.PresentationInterval	= selectPresentInterval();
+		P.FullScreen_RefreshRateInHz	= selectRefresh	(P.BackBufferWidth, P.BackBufferHeight,fTarget);
+	}
+    else
+	{
+		P.PresentationInterval	= D3DPRESENT_INTERVAL_IMMEDIATE;
+		P.FullScreen_RefreshRateInHz	= D3DPRESENT_RATE_DEFAULT;
+	}
     // Create the device
     u32 GPU		= selectGPU();	
     HRESULT R	= HW.pD3D->CreateDevice(DevAdapter,
@@ -558,7 +530,7 @@ void	CHW::updateWindowProps	(HWND m_hWnd)
 
     BOOL	bWindowed				= TRUE;
 #ifndef _EDITOR
-    if (!g_dedicated_server)
+	if (!strstr(Core.Params, "-editor"))
         bWindowed			= !psDeviceFlags.is(rsFullscreen);
 #endif	
 
@@ -608,7 +580,6 @@ void	CHW::updateWindowProps	(HWND m_hWnd)
     }
 
 #ifndef _EDITOR
-    if (!g_dedicated_server)
     {
         ShowCursor	(FALSE);
         SetForegroundWindow( m_hWnd );

@@ -8,6 +8,8 @@
 
 #include "FBasicVisual.h"
 
+extern ENGINE_API float psHUD_FOV;
+
 using namespace		R_dsgraph;
 
 extern float		r_ssaDISCARD;
@@ -469,7 +471,7 @@ void R_dsgraph_structure::r_dsgraph_render_hud	()
 	Fmatrix FTold				= Device.mFullTransform;
 	Device.mProject.build_projection(
 		deg2rad(psHUD_FOV*Device.fFOV /* *Device.fASPECT*/ ), 
-		Device.fASPECT, VIEWPORT_NEAR, 
+		Device.fASPECT, HUD_VIEWPORT_NEAR, 
 		g_pGamePersistent->Environment().CurrentEnv->far_plane);
 
 	Device.mFullTransform.mul	(Device.mProject, Device.mView);
@@ -524,14 +526,12 @@ void R_dsgraph_structure::r_dsgraph_render_hud_ui()
 {
 	VERIFY(g_hud && g_hud->RenderActiveItemUIQuery());
 
-	extern ENGINE_API float		psHUD_FOV;
-
 	// Change projection
 	Fmatrix Pold				= Device.mProject;
 	Fmatrix FTold				= Device.mFullTransform;
 	Device.mProject.build_projection(
 		deg2rad(psHUD_FOV*Device.fFOV /* *Device.fASPECT*/ ), 
-		Device.fASPECT, VIEWPORT_NEAR, 
+		Device.fASPECT, HUD_VIEWPORT_NEAR, 
 		g_pGamePersistent->Environment().CurrentEnv->far_plane);
 
 	Device.mFullTransform.mul	(Device.mProject, Device.mView);
@@ -574,8 +574,30 @@ void R_dsgraph_structure::r_dsgraph_render_hud_ui()
 void	R_dsgraph_structure::r_dsgraph_render_sorted	()
 {
 	// Sorted (back to front)
-	mapSorted.traverseRL	(sorted_L1);
-	mapSorted.clear			();
+	mapSorted.traverseRL(sorted_L1);
+	mapSorted.clear();
+
+	// Change projection
+	Fmatrix Pold = Device.mProject;
+	Fmatrix FTold = Device.mFullTransform;
+	Device.mProject.build_projection(
+		deg2rad(psHUD_FOV*Device.fFOV),
+		Device.fASPECT, HUD_VIEWPORT_NEAR,
+		g_pGamePersistent->Environment().CurrentEnv->far_plane);
+
+	Device.mFullTransform.mul(Device.mProject, Device.mView);
+	RCache.set_xform_project(Device.mProject);
+
+	// Rendering
+	rmNear();
+	mapHUDSorted.traverseRL(sorted_L1);
+	mapHUDSorted.clear(); // Fix!
+	rmNormal();
+
+	// Restore projection
+	Device.mProject = Pold;
+	Device.mFullTransform = FTold;
+	RCache.set_xform_project(Device.mProject);
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -587,16 +609,12 @@ void	R_dsgraph_structure::r_dsgraph_render_emissive	()
 	mapEmissive.traverseLR	(sorted_L1);
 	mapEmissive.clear		();
 
-	//	HACK: Calculate this only once
-
-	extern ENGINE_API float		psHUD_FOV;
-
 	// Change projection
 	Fmatrix Pold				= Device.mProject;
 	Fmatrix FTold				= Device.mFullTransform;
 	Device.mProject.build_projection(
 		deg2rad(psHUD_FOV*Device.fFOV /* *Device.fASPECT*/ ), 
-		Device.fASPECT, VIEWPORT_NEAR, 
+		Device.fASPECT, HUD_VIEWPORT_NEAR, 
 		g_pGamePersistent->Environment().CurrentEnv->far_plane);
 
 	Device.mFullTransform.mul	(Device.mProject, Device.mView);

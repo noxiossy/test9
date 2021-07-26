@@ -94,17 +94,15 @@ struct	FTreeVisual_setup
 	Fvector4	wave;
 	Fvector4	wind;
 
-	FTreeVisual_setup() 
-	{
-		dwFrame	= 0;
-	}
+    FTreeVisual_setup(): dwFrame(0), scale(0) {}
+
 
 	void		calculate	()
 	{
 		dwFrame	    				= Device.dwFrame;
 
 		// Calc wind-vector3, scale
-		float	tm_rot			= PI_MUL_2*Device.fTimeGlobal/ps_r__Tree_w_rot;
+		const	float	tm_rot			= PI_MUL_2*Device.fTimeGlobal/ps_r__Tree_w_rot;
 
 #ifdef TREE_WIND_EFFECT
         CEnvDescriptor&	E = *g_pGamePersistent->Environment().CurrentEnv;

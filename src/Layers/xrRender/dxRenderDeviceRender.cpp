@@ -62,7 +62,15 @@ void  dxRenderDeviceRender::Reset( HWND hWnd, u32 &dwWidth, u32 &dwHeight, float
 
     Resources->reset_begin	();
     Memory.mem_compact		();
-    HW.Reset				(hWnd);
+	
+    const bool noTexturesInRAM = RImplementation.o.no_ram_textures;
+    if (noTexturesInRAM)
+        ResourcesDeferredUnload();
+
+	HW.Reset				(hWnd);
+
+    if (noTexturesInRAM)
+        ResourcesDeferredUpload();
 
 #if defined(USE_DX10) || defined(USE_DX11)
     dwWidth					= HW.m_ChainDesc.BufferDesc.Width;
@@ -244,6 +252,11 @@ void dxRenderDeviceRender::ResourcesDeferredUpload()
     Resources->DeferredUpload();
 }
 
+void dxRenderDeviceRender::ResourcesDeferredUnload()
+{
+    Resources->DeferredUnload();
+}
+
 void dxRenderDeviceRender::ResourcesGetMemoryUsage(u32& m_base, u32& c_base, u32& m_lmaps, u32& c_lmaps)
 {
     if (Resources)
@@ -340,13 +353,7 @@ void dxRenderDeviceRender::End()
     DoAsyncScreenshot();
 
 #if defined(USE_DX10) || defined(USE_DX11)
-    //AVO: functional vsync by avbaula
-#ifdef VSYNC_FIX
-    HW.m_pSwapChain->Present( psDeviceFlags.test(rsVSync) ? 1 : 0, 0 );
-#else //!VSYNC_FIX
-    HW.m_pSwapChain->Present( 0, 0 );
-#endif //-VSYNC_FIX
-    //-AVO
+	HW.m_pSwapChain->Present( 0, 0 );
 #else //!USE_DX10 || USE_DX11
     CHK_DX				(HW.pDevice->EndScene());
 

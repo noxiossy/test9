@@ -1,8 +1,9 @@
 #include "stdafx.h"
 #include "VertexCache.h"
 
-VertexCache::VertexCache() : VertexCache(16)
+VertexCache::VertexCache()
 {
+  this->VertexCache::VertexCache(16);
 }
 
 

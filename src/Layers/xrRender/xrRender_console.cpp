@@ -1,6 +1,4 @@
 #include	"stdafx.h"
-#pragma		hdrstop
-
 #include	"xrRender_console.h"
 #include	"dxRenderDeviceRender.h"
 
@@ -58,6 +56,20 @@ xr_token							qsun_quality_token							[ ]={
 	{ 0,							0												}
 };
 
+u32 r2_SmapSize = 2048;
+xr_token SmapSizeToken[] = {
+  { "1024x1024",   1024 },
+  { "1536x1536",   1536 },
+  { "2048x2048",   2048 },
+  { "2560x2560",   2560 },
+  { "3072x3072",   3072 },
+  { "4096x4096",   4096 },
+  { "6144x6144",   6144 },
+  { "8192x8192",   8192 },
+  { "16384x16384", 16384 },
+  { nullptr, 0 }
+};
+
 u32 ps_sunshafts_mode = 0;
 xr_token sunshafts_mode_token[] = {
 	{ "volumetric", 0 },
@@ -99,12 +111,15 @@ xr_token							qminmax_sm_token					[ ]={
 extern int			psSkeletonUpdate;
 extern float		r__dtex_range;
 
+Flags32 ps_r__common_flags = { RFLAG_NO_RAM_TEXTURES }; // All renders
+
 //int		ps_r__Supersample			= 1		;
 int			ps_r__LightSleepFrames		= 10	;
 
 float		ps_r__Detail_l_ambient		= 0.9f	;
 float		ps_r__Detail_l_aniso		= 0.25f	;
 float		ps_r__Detail_density		= 0.3f	;
+float 		ps_r__Detail_height 		= 1.f	;
 float		ps_r__Detail_rainbow_hemi	= 0.75f	;
 
 float		ps_r__Tree_w_rot			= 10.0f	;
@@ -255,7 +270,8 @@ u32			dm_current_cache_line = 49;	//dm_current_size+1+dm_current_size
 u32			dm_current_cache_size = 2401;	//dm_current_cache_line*dm_current_cache_line
 float		dm_current_fade = 47.5;	//float(2*dm_current_size)-.5f;
 #endif
-float		ps_current_detail_density = 0.6;
+float		ps_current_detail_density = 0.6f;
+float 		ps_current_detail_height = 1.f;
 xr_token							ext_quality_token[] = {
     {"qt_off", 0},
     {"qt_low", 1},
@@ -386,9 +402,6 @@ class CCC_Screenshot : public IConsole_Command
 public:
 	CCC_Screenshot(LPCSTR N) : IConsole_Command(N)  { };
 	virtual void Execute(LPCSTR args) {
-		if (g_dedicated_server)
-			return;
-
 		string_path	name;	name[0]=0;
 		sscanf		(args,"%s",	name);
 		LPCSTR		image	= xr_strlen(name)?name:0;
@@ -744,17 +757,18 @@ void		xrRender_initconsole	()
 	CMD4(CCC_Float,		"r__wallmark_shift_v",	&ps_r__WallmarkSHIFT_V,		0.0f,	1.f		);
 	CMD1(CCC_ModelPoolStat,"stat_models"		);
 #endif // DEBUG
-	CMD4(CCC_Float,		"r__wallmark_ttl",		&ps_r__WallmarkTTL,			1.0f,	5.f*60.f);
+	CMD4(CCC_Float,		"r__wallmark_ttl",		&ps_r__WallmarkTTL,			1.0f,	10.f*60.f);
 
 	CMD4(CCC_Integer,	"r__supersample",		&ps_r__Supersample,			1,		8		);
 
 	Fvector	tw_min,tw_max;
 	
-	CMD4(CCC_Float,		"r__geometry_lod",		&ps_r__LOD,					0.1f, 1.5f		);
+	CMD4(CCC_Float,		"r__geometry_lod",		&ps_r__LOD,					0.1f,	1.2f		);
 //.	CMD4(CCC_Float,		"r__geometry_lod_pow",	&ps_r__LOD_Power,			0,		2		);
 
 //.	CMD4(CCC_Float,		"r__detail_density",	&ps_r__Detail_density,		.05f,	0.99f	);
-    CMD4(CCC_Float, "r__detail_density", &ps_current_detail_density/*&ps_r__Detail_density*/, 0.04f/*.2f*/, 0.6f); //AVO: extended from 0.2 to 0.04 and replaced variable
+//    CMD4(CCC_Float, "r__detail_density", &ps_current_detail_density/*&ps_r__Detail_density*/, 0.04f/*.2f*/, 0.6f); //AVO: extended from 0.2 to 0.04 and replaced variable
+	CMD4(CCC_Float, "r__detail_density", &ps_current_detail_density/*&ps_r__Detail_density*/, 0.3f/*.2f*/, 0.9f);	// KD: extended from 0.2 to 0.04 and replaced variable
 
 #ifdef DEBUG
 	CMD4(CCC_Float,		"r__detail_l_ambient",	&ps_r__Detail_l_ambient,	.5f,	.95f	);
@@ -929,6 +943,8 @@ void		xrRender_initconsole	()
 
 	CMD3(CCC_Token,		"r2_sun_quality",				&ps_r_sun_quality,			qsun_quality_token);
 
+	CMD3(CCC_Token, 	"r__smap_size", 				&r2_SmapSize, 				SmapSizeToken);
+
 	//	Igor: need restart
 	CMD3(CCC_Mask,		"r2_soft_water",				&ps_r2_ls_flags,			R2FLAG_SOFT_WATER);
 	CMD3(CCC_Mask,		"r2_soft_particles",			&ps_r2_ls_flags,			R2FLAG_SOFT_PARTICLES);
@@ -966,16 +982,15 @@ void		xrRender_initconsole	()
 	
 
 //	CMD3(CCC_Mask,		"r2_sun_ignore_portals",		&ps_r2_ls_flags,			R2FLAG_SUN_IGNORE_PORTALS);
+	// KD
+    CMD4(CCC_Float, 		"r__detail_height", 		&ps_r__Detail_height, 1, 2);
+	//CMD4(CCC_Integer, 		"r__no_scale_on_fade", 		&ps_no_scale_on_fade, 0, 1); //Alundaio
 }
 
 void	xrRender_apply_tf		()
 {
 	Console->Execute	("r__tf_aniso"	);
-#if RENDER==R_R1
-	Console->Execute	("r1_tf_mipbias");
-#else
 	Console->Execute	("r2_tf_mipbias");
-#endif
 }
 
 #endif

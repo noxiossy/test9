@@ -38,14 +38,14 @@ void CPSLibrary::OnCreate()
  
 void CPSLibrary::OnDestroy()
 {
-	for (PS::PEDIt e_it = m_PEDs.begin(); e_it!=m_PEDs.end(); ++e_it)
+	for (PS::PEDIt e_it = m_PEDs.begin(); e_it!=m_PEDs.end(); e_it++)
     	(*e_it)->DestroyShader();
 
-	for (e_it = m_PEDs.begin(); e_it!=m_PEDs.end(); e_it++)
+	for (PS::PEDIt e_it = m_PEDs.begin(); e_it!=m_PEDs.end(); e_it++)
 		xr_delete	(*e_it);
 	m_PEDs.clear	();
 
-	for (PS::PGDIt g_it = m_PGDs.begin(); g_it!=m_PGDs.end(); ++g_it)
+	for (PS::PGDIt g_it = m_PGDs.begin(); g_it!=m_PGDs.end(); g_it++)
 		xr_delete	(*g_it);
 	m_PGDs.clear	();
 }

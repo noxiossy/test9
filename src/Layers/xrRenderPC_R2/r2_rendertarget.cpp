@@ -189,7 +189,7 @@ CRenderTarget::CRenderTarget		()
 	param_noise_fps		= 25.f;
 	param_noise_scale	= 1.f;
 
-	im_noise_time		= 1/100.0f; //Alundaio ? should be float
+	im_noise_time		= 1.0f/100.0f;
 	im_noise_shift_w	= 0;
 	im_noise_shift_h	= 0;
 
@@ -715,9 +715,9 @@ bool CRenderTarget::need_to_render_sunshafts()
 
 	{
 		CEnvDescriptor&	E = *g_pGamePersistent->Environment().CurrentEnv;
-		float fValue = E.m_fSunShaftsIntensity;
-		//	TODO: add multiplication by sun color here
-		if (fValue<0.0001) return false;
+		Fcolor sun_color= ((light*)RImplementation.Lights.sun_adapted._get())->color; //dsh:
+		float fValue = E.m_fSunShaftsIntensity * u_diffuse2s(sun_color.r,sun_color.g,sun_color.b);
+		if (fValue<EPS) return false;
 	}
 
 	return true;

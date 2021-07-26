@@ -38,7 +38,7 @@ const float		dm_slot_size		= DETAIL_SLOT_SIZE;
 //AVO: detail radius
 #include "../../build_config_defines.h"
 #ifdef DETAIL_RADIUS
-const u32		dm_max_cache_size = 62001; // assuming max dm_size = 124
+const u32		dm_max_cache_size = 62001 * 2; // assuming max dm_size = 124
 extern u32		dm_size;
 extern u32 		dm_cache1_line;
 extern u32		dm_cache_line;
@@ -50,6 +50,7 @@ extern u32		dm_current_cache_line;//		= dm_current_size+1+dm_current_size;
 extern u32		dm_current_cache_size;//		= dm_current_cache_line*dm_current_cache_line;
 extern float	dm_current_fade;//				= float(2*dm_current_size)-.5f;
 extern float	ps_current_detail_density;
+extern float 	ps_current_detail_height;
 #else
 const int		dm_size = 24;								//!
 const int 		dm_cache1_line = dm_size * 2 / dm_cache1_count;		//! dm_size*2 must be div dm_cache1_count
@@ -57,7 +58,6 @@ const int		dm_cache_line = dm_size + 1 + dm_size;
 const int		dm_cache_size = dm_cache_line * dm_cache_line;
 const float		dm_fade = float(2 * dm_size) - .5f;
 #endif
-
 
 
 class ECORE_API CDetailManager

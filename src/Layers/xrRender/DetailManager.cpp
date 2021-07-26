@@ -96,6 +96,7 @@ CDetailManager::CDetailManager	()
     dm_cache_size = dm_current_cache_size;
     dm_fade = dm_current_fade;
     ps_r__Detail_density = ps_current_detail_density;
+    ps_current_detail_height = ps_r__Detail_height;
     cache_level1 = (CacheSlot1**) Memory.mem_alloc(dm_cache1_line*sizeof(CacheSlot1*)
 #ifdef USE_MEMORY_MONITOR
         , "CDetailManager::cache_level1"
@@ -141,6 +142,11 @@ CDetailManager::CDetailManager	()
 CDetailManager::~CDetailManager	()
 {
 #ifdef DETAIL_RADIUS
+    if (dtFS)
+    {
+        FS.r_close(dtFS);
+		dtFS = NULL;
+    }
     for (u32 i = 0; i < dm_cache_size; ++i)
         cache_pool[i].~Slot();
     Memory.mem_free(cache_pool);
@@ -246,16 +252,24 @@ void CDetailManager::Unload		()
 	m_visibles[1].clear	();
 	m_visibles[2].clear	();
 	FS.r_close			(dtFS);
+	dtFS = NULL;
 }
 
 extern ECORE_API float r_ssaDISCARD;
 
 void CDetailManager::UpdateVisibleM()
 {
+	// Clean up
+	for (auto& vec : m_visibles)
+		for (auto& vis : vec)
+			vis.clear_not_free();
+
 	Fvector		EYE				= RDEVICE.vCameraPosition_saved;
 
 	CFrustum	View;
-	View.CreateFromMatrix		(RDEVICE.mFullTransform_saved, FRUSTUM_P_LRTB + FRUSTUM_P_FAR);
+	//	View.CreateFromMatrix		(Device.mFullTransform, FRUSTUM_P_LRTB + FRUSTUM_P_FAR);
+	/* KD: there is some bug: frustrum created from full transform matrix seems to be broken in some frames, so we should use saved frustrum from render interface*/
+	View = RImplementation.ViewBase;
 	
  	CFrustum	View_old;
  	Fmatrix		Viewm_old = RDEVICE.mFullTransform;
@@ -378,8 +392,10 @@ void CDetailManager::UpdateVisibleM()
 void CDetailManager::Render	()
 {
 #ifndef _EDITOR
-	if (0==dtFS)						return;
-	if (!psDeviceFlags.is(rsDetails))	return;
+	if (!RImplementation.Details) return;	// possibly deleted
+	if (!dtFS) return;
+	if (!psDeviceFlags.is(rsDetails)) return;
+	if (g_pGamePersistent && g_pGamePersistent->m_pMainMenu && g_pGamePersistent->m_pMainMenu->IsActive()) return;
 #endif
 
 	// MT
@@ -403,12 +419,15 @@ void CDetailManager::Render	()
 	m_frame_rendered		= RDEVICE.dwFrame;
 }
 
+u32 reset_frame = 0;
 void __stdcall	CDetailManager::MT_CALC		()
 {
 #ifndef _EDITOR
-	if (0==RImplementation.Details)		return;	// possibly deleted
-	if (0==dtFS)						return;
-	if (!psDeviceFlags.is(rsDetails))	return;
+	if (reset_frame == Device.dwFrame) return;
+	if (!RImplementation.Details) return;	// possibly deleted
+	if (!dtFS) return;
+	if (!psDeviceFlags.is(rsDetails)) return;
+	if (g_pGamePersistent && g_pGamePersistent->m_pMainMenu && g_pGamePersistent->m_pMainMenu->IsActive()) return;
 #endif    
 
 	MT.Enter					();
