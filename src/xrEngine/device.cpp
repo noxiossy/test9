@@ -541,6 +541,7 @@ void CRenderDevice::OnWM_Activate(WPARAM wParam, LPARAM lParam)
                     ClipCursor(&winRect);
                 }
 #endif // #ifndef DEDICATED_SERVER
+        }
         else
         {
             app_inactive_time_start = TimerMM.GetElapsed_ms();
