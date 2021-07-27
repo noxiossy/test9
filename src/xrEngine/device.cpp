@@ -29,12 +29,14 @@
 #include "xrSash.h"
 
 #include "../build_config_defines.h"
+#pragma comment( lib, "d3dx9.lib" )
+
 ENGINE_API CRenderDevice Device;
 ENGINE_API CLoadScreenRenderer load_screen_renderer;
 
 
 ENGINE_API BOOL g_bRendering = FALSE;
-u32 g_dwFPSlimit = 60;
+int g_dwFPSlimit = 60;
 
 BOOL g_bLoaded = FALSE;
 ref_light precache_light = 0;
@@ -215,13 +217,13 @@ void CRenderDevice::on_idle()
     }
 
 	// FPS Lock
-	constexpr u32 menuFPSlimit = 60, pauseFPSlimit = 60;
-	u32 curFPSLimit = IsMainMenuActive() ? menuFPSlimit : Device.Paused() ? pauseFPSlimit : g_dwFPSlimit;
-	if (curFPSLimit > 0)
+	//constexpr u32 menuFPSlimit = 60, pauseFPSlimit = 60;
+	//u32 curFPSLimit = IsMainMenuActive() ? menuFPSlimit : Device.Paused() ? pauseFPSlimit : g_dwFPSlimit;
+	if (g_dwFPSlimit > 0)
 	{
 		static DWORD dwLastFrameTime = 0;
-		DWORD dwCurrentTime = timeGetTime();
-		if (dwCurrentTime - dwLastFrameTime < 1000 / (curFPSLimit + 1))
+		int dwCurrentTime = timeGetTime();
+		if (dwCurrentTime - dwLastFrameTime < 1000 / (g_dwFPSlimit + 1))
 			return;
 		dwLastFrameTime = dwCurrentTime;
 	}
