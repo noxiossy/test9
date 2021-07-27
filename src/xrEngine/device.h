@@ -16,7 +16,9 @@
 //#include "shader.h"
 //#include "R_Backend.h"
 
+extern u32 g_dwFPSlimit;
 #define VIEWPORT_NEAR 0.2f
+#define HUD_VIEWPORT_NEAR 0.05f
 
 #define DEVICE_RESET_PRECACHE_FRAME_COUNT 10
 
@@ -255,12 +257,8 @@ public:
     void ShutDown(void);
 
 public:
-    void time_factor(const float& time_factor)
-    {
-        Timer.time_factor(time_factor);
-        TimerGlobal.time_factor(time_factor);
-    }
-
+    void time_factor(const float& time_factor); //--#SM+#--
+	
     IC const float& time_factor() const
     {
         VERIFY(Timer.time_factor() == TimerGlobal.time_factor());

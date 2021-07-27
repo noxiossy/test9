@@ -6,8 +6,6 @@
 #include "EngineAPI.h"
 #include "../xrcdb/xrXRC.h"
 
-//#include "securom_api.h"
-
 extern xr_token* vid_quality_token;
 
 //////////////////////////////////////////////////////////////////////
@@ -106,7 +104,7 @@ void CEngineAPI::Initialize(void)
 {
     //////////////////////////////////////////////////////////////////////////
     // render
-    LPCSTR r1_name = "xrRender_R1.dll";
+	LPCSTR			r1_name	= "xrRender_R2.dll";
 
 #ifndef DEDICATED_SERVER
     InitializeNotDedicated();
@@ -117,7 +115,7 @@ void CEngineAPI::Initialize(void)
         // try to load R1
         psDeviceFlags.set(rsR4, FALSE);
         psDeviceFlags.set(rsR3, FALSE);
-        psDeviceFlags.set(rsR2, FALSE);
+	//	psDeviceFlags.set	(rsR2,FALSE);
         renderer_value = 0; //con cmd
 
         Log("Loading DLL:", r1_name);
@@ -178,17 +176,6 @@ extern "C" {
 
 void CEngineAPI::CreateRendererList()
 {
-#ifdef DEDICATED_SERVER
-
-    vid_quality_token = xr_alloc<xr_token>(2);
-
-    vid_quality_token[0].id = 0;
-    vid_quality_token[0].name = xr_strdup("renderer_r1");
-
-    vid_quality_token[1].id = -1;
-    vid_quality_token[1].name = NULL;
-
-#else
     // TODO: ask renderers if they are supported!
     if (vid_quality_token != NULL) return;
     bool bSupports_r2 = false;
@@ -197,8 +184,6 @@ void CEngineAPI::CreateRendererList()
     //bool bSupports_r4 = false;
 
     LPCSTR r2_name = "xrRender_R2.dll";
-    LPCSTR r3_name = "xrRender_R3.dll";
-    LPCSTR r4_name = "xrRender_R4.dll";
 
     if (strstr(Core.Params, "-perfhud_hack"))
     {
@@ -286,5 +271,5 @@ void CEngineAPI::CreateRendererList()
         Msg("[%s]", _tmp[i]);
 #endif // DEBUG
     }
-#endif //#ifndef DEDICATED_SERVER
+
 }

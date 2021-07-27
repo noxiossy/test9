@@ -17,8 +17,16 @@
 
 xr_token* vid_quality_token = NULL;
 
-xr_token vid_bpp_token[] =
-{
+xr_token FpsLockToken[] = {
+	{ "nofpslock",  0 },
+	{ "fpslock60",  60 },
+	{ "fpslock120", 120 },
+	{ "fpslock144", 144 },
+	{ "fpslock240", 240 },
+	{ nullptr, 0 }
+};
+
+xr_token							vid_bpp_token							[ ]={
     {"16", 16},
     {"32", 32},
     {0, 0}
@@ -545,6 +553,7 @@ virtual void Save (IWriter *F) {};
 */
 
 ENGINE_API BOOL r2_sun_static = TRUE;
+ENGINE_API BOOL r2_simple_static = TRUE;
 ENGINE_API BOOL r2_advanced_pp = FALSE; // advanced post process and effects
 
 u32 renderer_value = 3;
@@ -567,14 +576,15 @@ public:
         tokens = vid_quality_token;
 
         inherited::Execute(args);
-        // 0 - r1
-        // 1..3 - r2
-        // 4 - r3
-        psDeviceFlags.set(rsR2, ((renderer_value > 0) && renderer_value < 4));
-        psDeviceFlags.set(rsR3, (renderer_value == 4));
-        psDeviceFlags.set(rsR4, (renderer_value >= 5));
+		//	0 - r1_plus
+		//	1..3 - r2
+		//	4 - r3
+		psDeviceFlags.set		(rsR2, (renderer_value<4) );
+		//psDeviceFlags.set		(rsR3, (renderer_value==4) );
+		//psDeviceFlags.set		(rsR4, (renderer_value>=5) );
 
-        r2_sun_static = (renderer_value < 2);
+		r2_simple_static= (renderer_value<1);
+		r2_sun_static	= (renderer_value<2);
 
         r2_advanced_pp = (renderer_value >= 3);
     }
@@ -692,7 +702,8 @@ public:
 };
 
 
-ENGINE_API float psHUD_FOV = 0.45f;
+ENGINE_API float	psHUD_FOV_def=0.45f;
+ENGINE_API float	psHUD_FOV=psHUD_FOV_def;
 
 //extern int psSkeletonUpdate;
 extern int rsDVB_Size;
@@ -758,13 +769,14 @@ void CCC_Register()
     // Render device states
     CMD4(CCC_Integer, "r__supersample", &ps_r__Supersample, 1, 4);
 
+	CMD3(CCC_Token, 	"r_fps_lock", 			&g_dwFPSlimit, FpsLockToken);
 
     CMD3(CCC_Mask, "rs_v_sync", &psDeviceFlags, rsVSync);
     // CMD3(CCC_Mask, "rs_disable_objects_as_crows",&psDeviceFlags, rsDisableObjectsAsCrows );
     CMD3(CCC_Mask, "rs_fullscreen", &psDeviceFlags, rsFullscreen);
     CMD3(CCC_Mask, "rs_refresh_60hz", &psDeviceFlags, rsRefresh60hz);
     CMD3(CCC_Mask, "rs_stats", &psDeviceFlags, rsStatistic);
-    CMD4(CCC_Float, "rs_vis_distance", &psVisDistance, 0.4f, 1.5f);
+	CMD4(CCC_Float,		"rs_vis_distance",		&psVisDistance,		0.4f,	1.0f			);
 
     CMD3(CCC_Mask, "rs_cam_pos", &psDeviceFlags, rsCameraPos);
 #ifdef DEBUG

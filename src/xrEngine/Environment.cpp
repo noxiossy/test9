@@ -354,10 +354,9 @@ bool CEnvironment::SetWeatherFX(shared_str name)
         C1->exec_time = NormalizeTime(start_tm);
         for (EnvIt t_it = CurrentWeather->begin() + 2; t_it != CurrentWeather->end() - 1; t_it++)
             (*t_it)->exec_time = NormalizeTime(start_tm + (*t_it)->exec_time_loaded);
-        SelectEnv(PrevWeather, WFX_end_desc[0], CE->exec_time);
-        SelectEnv(PrevWeather, WFX_end_desc[1], WFX_end_desc[0]->exec_time + 0.5f);
-        CT->copy(*WFX_end_desc[0]);
-        CT->exec_time = NormalizeTime(CE->exec_time + rewind_tm);
+        SelectEnv(PrevWeather, WFX_end_desc[0], WFX_end_desc[ 1 ], CE->exec_time);
+		CT->copy			(*WFX_end_desc[0]);CT->exec_time = NormalizeTime(CE->exec_time+rewind_tm);
+		CT->copy			(*WFX_end_desc[0]);CT->exec_time = NormalizeTime(CE->exec_time+rewind_tm);
         wfx_time = TimeDiff(fGameTime, CT->exec_time);
         bWFX = true;
 

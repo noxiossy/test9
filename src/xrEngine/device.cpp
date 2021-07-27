@@ -15,6 +15,7 @@
 
 #include "x_ray.h"
 #include "render.h"
+#include "IGame_Persistent.h"
 
 // must be defined before include of FS_impl.h
 #define INCLUDE_FROM_ENGINE
@@ -26,21 +27,17 @@
 #endif // #ifdef INGAME_EDITOR
 
 #include "xrSash.h"
-#include "igame_persistent.h"
 
 #include "../build_config_defines.h"
-
-#pragma comment( lib, "d3dx9.lib" )
-
 ENGINE_API CRenderDevice Device;
 ENGINE_API CLoadScreenRenderer load_screen_renderer;
 
 
 ENGINE_API BOOL g_bRendering = FALSE;
+u32 g_dwFPSlimit = 60;
 
 BOOL g_bLoaded = FALSE;
 ref_light precache_light = 0;
-int g_dwFPSlimit = 120;
 
 BOOL CRenderDevice::Begin()
 {
@@ -217,21 +214,18 @@ void CRenderDevice::on_idle()
         return;
     }
 
-#ifdef DEDICATED_SERVER
-    u32 FrameStartTime = TimerGlobal.GetElapsed_ms();
-#else
 	// FPS Lock
-	if (g_dwFPSlimit > 0)
+	constexpr u32 menuFPSlimit = 60, pauseFPSlimit = 60;
+	u32 curFPSLimit = IsMainMenuActive() ? menuFPSlimit : Device.Paused() ? pauseFPSlimit : g_dwFPSlimit;
+	if (curFPSLimit > 0)
 	{
 		static DWORD dwLastFrameTime = 0;
-		int dwCurrentTime = timeGetTime();
-
-		if ((dwCurrentTime - dwLastFrameTime) < (1000 / g_dwFPSlimit))
+		DWORD dwCurrentTime = timeGetTime();
+		if (dwCurrentTime - dwLastFrameTime < 1000 / (curFPSLimit + 1))
 			return;
-
 		dwLastFrameTime = dwCurrentTime;
 	}
-#endif
+
     if (psDeviceFlags.test(rsStatistic)) 
 		g_bEnableStatGather = TRUE;
     else g_bEnableStatGather = FALSE;
@@ -446,7 +440,6 @@ void CRenderDevice::FrameMove()
 	Statistic->EngineTOTAL.End();
 }
 ENGINE_API BOOL bShowPauseString = TRUE;
-#include "IGame_Persistent.h"
 
 void CRenderDevice::Pause(BOOL bOn, BOOL bTimer, BOOL bSound, LPCSTR reason)
 {
@@ -521,9 +514,9 @@ BOOL CRenderDevice::Paused()
 
 void CRenderDevice::OnWM_Activate(WPARAM wParam, LPARAM lParam)
 {
-    u16 fActive = LOWORD(wParam);
-    BOOL fMinimized = (BOOL)HIWORD(wParam);
-    BOOL bActive = ((fActive != WA_INACTIVE) && (!fMinimized)) ? TRUE : FALSE;
+	const	u16 fActive						= LOWORD(wParam);
+	const	BOOL fMinimized					= (BOOL) HIWORD(wParam);
+	const	BOOL bActive					= ((fActive!=WA_INACTIVE) && (!fMinimized))?TRUE:FALSE;
 
     if (bActive != Device.b_is_Active)
     {
@@ -539,13 +532,19 @@ void CRenderDevice::OnWM_Activate(WPARAM wParam, LPARAM lParam)
             if (!editor())
 # endif // #ifdef INGAME_EDITOR
                 ShowCursor(FALSE);
+                if (m_hWnd)
+                {
+                    RECT winRect;
+                    GetWindowRect(m_hWnd, &winRect);
+                    ClipCursor(&winRect);
+                }
 #endif // #ifndef DEDICATED_SERVER
-        }
         else
         {
             app_inactive_time_start = TimerMM.GetElapsed_ms();
             Device.seqAppDeactivate.Process(rp_AppDeactivate);
             ShowCursor(TRUE);
+            ClipCursor(NULL);
         }
     }
 }
@@ -588,4 +587,11 @@ void CLoadScreenRenderer::stop()
 void CLoadScreenRenderer::OnRender()
 {
     pApp->load_draw_internal();
+}
+
+void CRenderDevice::time_factor(const float& time_factor)
+{
+    Timer.time_factor(time_factor);
+    TimerGlobal.time_factor(time_factor);
+    psSoundTimeFactor = time_factor; //--#SM+#--
 }

@@ -62,10 +62,6 @@
 
 extern ENGINE_API CInifile* pGameIni;
 
-#pragma comment( lib, "xrCore.lib" )
-#pragma comment( lib, "xrCDB.lib" )
-#pragma comment( lib, "xrSound.lib" )
-
 //AVO: lua re-org
 #ifdef USE_LUAJIT_ONE //defined in project props
 #pragma comment(lib, "LuaJIT-1.1.8.lib")

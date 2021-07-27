@@ -1,5 +1,4 @@
 #include "stdafx.h"
-#pragma hdrstop
 
 #include "Environment.h"
 #include "xr_efflensflare.h"
@@ -9,8 +8,6 @@
 #include "IGame_Level.h"
 #include "../xrServerEntities/object_broker.h"
 #include "../xrServerEntities/LevelGameDef.h"
-
-//#include "securom_api.h"
 
 void CEnvModifier::load(IReader* fs, u32 version)
 {

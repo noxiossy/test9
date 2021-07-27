@@ -132,5 +132,6 @@ public:
 
 extern ENGINE_API bool g_dedicated_server;
 extern ENGINE_API IGame_Persistent* g_pGamePersistent;
+extern bool 		IsMainMenuActive();
 #endif //IGame_PersistentH
 
