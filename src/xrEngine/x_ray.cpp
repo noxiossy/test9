@@ -19,7 +19,6 @@
 #include "resource.h"
 #include "LightAnimLibrary.h"
 #include "../xrcdb/ispatial.h"
-#include "CopyProtection.h"
 #include "Text_Console.h"
 #include <process.h>
 #include <locale.h>
@@ -582,7 +581,7 @@ struct damn_keys_filter
 #undef dwFilterKeysStructSize
 #undef dwToggleKeysStructSize
 
-// Ôóíöèÿ äëÿ òóïûõ òðåáîâàíèé THQ è òóïûõ àìåðèêàíñêèõ ïîëüçîâàòåëåé
+// Ã”Ã³Ã­Ã¶Ã¨Ã¿ Ã¤Ã«Ã¿ Ã²Ã³Ã¯Ã»Ãµ Ã²Ã°Ã¥Ã¡Ã®Ã¢Ã Ã­Ã¨Ã© THQ Ã¨ Ã²Ã³Ã¯Ã»Ãµ Ã Ã¬Ã¥Ã°Ã¨ÃªÃ Ã­Ã±ÃªÃ¨Ãµ Ã¯Ã®Ã«Ã¼Ã§Ã®Ã¢Ã Ã²Ã¥Ã«Ã¥Ã©
 BOOL IsOutOfVirtualMemory()
 {
 #define VIRT_ERROR_SIZE 256
@@ -604,7 +603,7 @@ BOOL IsOutOfVirtualMemory()
     dwPageFileInMB = (DWORD)(statex.ullTotalPageFile / (1024 * 1024));
     dwPhysMemInMB = (DWORD)(statex.ullTotalPhys / (1024 * 1024));
 
-    // Äîâîëüíî îòôîíàðíîå óñëîâèå
+    // Ã„Ã®Ã¢Ã®Ã«Ã¼Ã­Ã® Ã®Ã²Ã´Ã®Ã­Ã Ã°Ã­Ã®Ã¥ Ã³Ã±Ã«Ã®Ã¢Ã¨Ã¥
     if ((dwPhysMemInMB > 500) && ((dwPageFileInMB + dwPhysMemInMB) > 2500))
         return 0;
 
