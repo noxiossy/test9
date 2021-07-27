@@ -36,7 +36,7 @@ ENGINE_API CLoadScreenRenderer load_screen_renderer;
 
 
 ENGINE_API BOOL g_bRendering = FALSE;
-int g_dwFPSlimit = 60;
+u32 g_dwFPSlimit = 60;
 
 BOOL g_bLoaded = FALSE;
 ref_light precache_light = 0;
@@ -222,7 +222,7 @@ void CRenderDevice::on_idle()
 	if (g_dwFPSlimit > 0)
 	{
 		static DWORD dwLastFrameTime = 0;
-		int dwCurrentTime = timeGetTime();
+		DWORD dwCurrentTime = timeGetTime();
 		if (dwCurrentTime - dwLastFrameTime < 1000 / (g_dwFPSlimit + 1))
 			return;
 		dwLastFrameTime = dwCurrentTime;
@@ -372,11 +372,6 @@ void CRenderDevice::Run()
     mt_csEnter.Enter();
     mt_bMustExit = FALSE;
     thread_spawn(mt_Thread, "X-RAY Secondary thread", 0, this);
-	// Load FPS Lock
-	if (strstr(Core.Params, "-nofpslock"))
-		g_dwFPSlimit = -1;
-	else if (strstr(Core.Params, "-fpslock60"))
-		g_dwFPSlimit = 60;
     // Message cycle
     seqAppStart.Process(rp_AppStart);
 
