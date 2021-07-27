@@ -1,5 +1,4 @@
 #include "stdafx.h"
-#pragma hdrstop
 
 #include "xrdebug.h"
 #include "os_clipboard.h"
@@ -37,21 +36,13 @@ static BOOL bException = FALSE;
 # include <exception>
 #endif
 
-#ifndef _M_AMD64
-# ifndef __BORLANDC__
-# pragma comment(lib,"dxerr.lib")
-# endif
-#endif
-
 #include <dbghelp.h> // MiniDump flags
 
 #ifdef USE_BUG_TRAP
 # include <BugTrap/source/BugTrap.h> // for BugTrap functionality
-#ifndef __BORLANDC__
-# pragma comment(lib,"BugTrap.lib") // Link to ANSI DLL
-#else
-# pragma comment(lib,"BugTrapB.lib") // Link to ANSI DLL
-#endif
+    #ifdef __BORLANDC__
+        #	pragma comment(lib,"BugTrapB.lib")		// Link to ANSI DLL
+    #endif
 #endif // USE_BUG_TRAP
 
 #include <new.h> // for _set_new_mode
@@ -547,9 +538,6 @@ void SetupExceptionHandler(const bool& dedicated)
 #endif // #ifndef MASTER_GOLD
 
     BT_SetDumpType(minidump_flags);
-    BT_SetSupportEMail("cop-crash-report@stalker-game.com");
-    // BT_SetSupportServer ("localhost", 9999);
-    // BT_SetSupportURL ("www.gsc-game.com");
 }
 #endif //-USE_BUG_TRAP
 
@@ -702,7 +690,6 @@ void format_message(LPSTR buffer, const u32& buffer_size)
 
 #ifndef _EDITOR
 #include <errorrep.h>
-#pragma comment( lib, "faultrep.lib" )
 #endif //-!_EDITOR
 
 #ifdef NO_BUG_TRAP
