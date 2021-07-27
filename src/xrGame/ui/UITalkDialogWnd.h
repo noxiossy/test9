@@ -44,13 +44,9 @@ public:
 
 	//список вопросов, которые мы можем задавать персонажу
 
-	//элементы интерфейса диалога
-	CUIStatic			UIDialogFrameTop;
-	CUIStatic			UIDialogFrameBottom;
-
-	Fvector2			m_btn_pos[3];
-	CUI3tButton		UIToTradeButton;
-	CUI3tButton		UIToExitButton;
+//	Fvector2			m_btn_pos[3];
+	CUI3tButton			UIToTradeButton;
+//	CUI3tButton			UIToExitButton;
 
 	//информаци€ о персонажах 
 	CUIStatic			UIOurIcon;
@@ -58,7 +54,7 @@ public:
 	CUICharacterInfo	UICharacterInfoLeft;
 	CUICharacterInfo	UICharacterInfoRight;
 
-	void				AddQuestion         (LPCSTR str, LPCSTR value, int number, bool b_finalizer);
+	void				AddQuestion			(LPCSTR str, LPCSTR value, int number, bool b_finalizer);
 	void				AddAnswer			(LPCSTR SpeakerName, const char* str, bool bActor);
 	void				AddIconedAnswer		(LPCSTR caption, LPCSTR text, LPCSTR texture_name, LPCSTR templ_name);
 	void				ClearAll			();
@@ -71,6 +67,10 @@ public:
 private:
 	CUIScrollView*			UIQuestionsList;
 	CUIScrollView*			UIAnswersList;
+
+	//элементы интерфейса диалога
+	CUIStatic*			UIDialogFrameTop;
+	CUIStatic*			UIDialogFrameBottom;
 
 	// Ўрифт и цвет текста с именем персонажа
 	CGameFont			*m_pNameTextFont;

@@ -160,12 +160,10 @@ void CUITalkWnd::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 	if(pWnd == UITalkDialogWnd && msg == TALK_DIALOG_TRADE_BUTTON_CLICKED)
 	{
 		SwitchToTrade();
-		UITalkDialogWnd->Hide();
 	}
 	else if(pWnd == UITalkDialogWnd && msg == TALK_DIALOG_UPGRADE_BUTTON_CLICKED)
 	{
 		SwitchToUpgrade();
-		UITalkDialogWnd->Hide();
 	}
 	else if(pWnd == UITalkDialogWnd && msg == TALK_DIALOG_QUESTION_CLICKED)
 	{
@@ -285,7 +283,7 @@ void CUITalkWnd::AskQuestion()
 		{
 
 			string128	s;
-			xr_sprintf		(s,"ID = [%s] of selected question is out of range of available dialogs ",UITalkDialogWnd->m_ClickedQuestionID);
+			xr_sprintf		(s,"ID = [%s] of selected question is out of range of available dialogs ",UITalkDialogWnd->m_ClickedQuestionID.c_str());
 			VERIFY2(FALSE, s);
 		}
 

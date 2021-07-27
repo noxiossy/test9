@@ -14,6 +14,7 @@
 #include "../actor.h"
 #include "../alife_registry_wrappers.h"
 #include "dinput.h"
+#include "UIHelper.h"
 
 #define				TALK_XML				"talk.xml"
 
@@ -50,42 +51,40 @@ void CUITalkDialogWnd::InitTalkDialogWnd()
 	AttachChild(&UIOthersIcon);
 
 	// Фрейм с нащими фразами
-	AttachChild(&UIDialogFrameBottom);
-	CUIXmlInit::InitStatic(*m_uiXml, "frame_bottom", 0, &UIDialogFrameBottom);
+	UIDialogFrameBottom			= UIHelper::CreateStatic	( *m_uiXml, "frame_bottom", this );
 
 	//основной фрейм диалога
-	AttachChild(&UIDialogFrameTop);
-	CUIXmlInit::InitStatic(*m_uiXml, "frame_top", 0, &UIDialogFrameTop);
+	UIDialogFrameTop			= UIHelper::CreateStatic	( *m_uiXml, "frame_top", this );
 
 
 	//Ответы
 	UIAnswersList = xr_new<CUIScrollView>();
 	UIAnswersList->SetAutoDelete(true);
-	UIDialogFrameTop.AttachChild(UIAnswersList);
-	CUIXmlInit::InitScrollView(*m_uiXml, "answers_list", 0, UIAnswersList);
+//	UIDialogFrameTop.AttachChild(UIAnswersList);
+	AttachChild(UIAnswersList);
+	CUIXmlInit::InitScrollView	(*m_uiXml, "answers_list", 0, UIAnswersList);
 	UIAnswersList->SetWindowName("---UIAnswersList");
 
 	//Вопросы
 	UIQuestionsList = xr_new<CUIScrollView>();
 	UIQuestionsList->SetAutoDelete(true);
-	UIDialogFrameBottom.AttachChild(UIQuestionsList);
-	CUIXmlInit::InitScrollView(*m_uiXml, "questions_list", 0, UIQuestionsList);
+//	UIDialogFrameBottom.AttachChild(UIQuestionsList);
+	AttachChild(UIQuestionsList);
+	CUIXmlInit::InitScrollView	(*m_uiXml, "questions_list", 0, UIQuestionsList);
 	UIQuestionsList->SetWindowName("---UIQuestionsList");
 
 
 	//кнопка перехода в режим торговли
 	AttachChild(&UIToTradeButton);
 	CUIXmlInit::Init3tButton(*m_uiXml, "button", 0, &UIToTradeButton);
-	UIToTradeButton.SetWindowName("trade_btn");
 
-	AttachChild(&UIToExitButton);
-	CUIXmlInit::Init3tButton(*m_uiXml, "button_exit", 0, &UIToExitButton);
-	UIToExitButton.SetWindowName("exit_btn");
+	//AttachChild					(&UIToExitButton);
+	//CUIXmlInit::Init3tButton	(*m_uiXml, "button_exit", 0, &UIToExitButton);
 
-	m_btn_pos[0] = UIToTradeButton.GetWndPos();
-	m_btn_pos[1] = UIToExitButton.GetWndPos();
-	m_btn_pos[2].x = (m_btn_pos[0].x + m_btn_pos[1].x) / 2.0f;
-	m_btn_pos[2].y = m_btn_pos[0].y;
+	//m_btn_pos[0]				= UIToTradeButton.GetWndPos();
+	//m_btn_pos[1]				= UIToExitButton.GetWndPos();
+	//m_btn_pos[2].x				= (m_btn_pos[0].x+m_btn_pos[1].x)/2.0f;
+	//m_btn_pos[2].y				= m_btn_pos[0].y;
 	// шрифт для индикации имени персонажа в окне разговора
 	CUIXmlInit::InitFont(*m_uiXml, "font", 0, m_iNameTextColor, m_pNameTextFont);
 
@@ -97,9 +96,8 @@ void CUITalkDialogWnd::InitTalkDialogWnd()
 
 	Register(&UIToTradeButton);
 	AddCallbackStr("question_item", LIST_ITEM_CLICKED, CUIWndCallback::void_function(this, &CUITalkDialogWnd::OnQuestionClicked));
-	AddCallbackStr("trade_btn", BUTTON_CLICKED, CUIWndCallback::void_function(this, &CUITalkDialogWnd::OnTradeClicked));
-	AddCallbackStr("upgrade_btn", BUTTON_CLICKED, CUIWndCallback::void_function(this, &CUITalkDialogWnd::OnUpgradeClicked));
-	AddCallbackStr("exit_btn", BUTTON_CLICKED, CUIWndCallback::void_function(this, &CUITalkDialogWnd::OnExitClicked));
+	AddCallback					(&UIToTradeButton,BUTTON_CLICKED,CUIWndCallback::void_function(this, &CUITalkDialogWnd::OnTradeClicked));
+//	AddCallback					(&UIToExitButton,BUTTON_CLICKED,CUIWndCallback::void_function(this, &CUITalkDialogWnd::OnExitClicked));
 }
 	
 void CUITalkDialogWnd::Show()
@@ -244,7 +242,7 @@ void CUITalkDialogWnd::SetOsoznanieMode(bool b)
 	UIOthersIcon.Show(!b);
 
 	UIAnswersList->Show(!b);
-	UIDialogFrameTop.Show(!b);
+	UIDialogFrameTop->Show (!b);
 
 	UIToTradeButton.Show(!b);
 	if (mechanic_mode)

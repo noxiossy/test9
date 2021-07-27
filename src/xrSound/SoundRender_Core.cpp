@@ -19,6 +19,8 @@ u32		psSoundModel			= 0;
 float	psSoundVEffects			= 1.0f;
 float	psSoundVFactor			= 1.0f;
 
+float 	psSoundTimeFactor 		= 1.0f; //--#SM+#--
+float 	psSoundLinearFadeFactor = 0.4f; //--#SM+#--
 float	psSoundVMusic			= 1.f;
 int		psSoundCacheSizeMB		= 32;
 
