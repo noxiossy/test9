@@ -26,7 +26,8 @@ xr_token FpsLockToken[] = {
 	{ nullptr, 0 }
 };
 
-xr_token							vid_bpp_token							[ ]={
+xr_token vid_bpp_token[] =
+{							vid_bpp_token							[ ]={
     {"16", 16},
     {"32", 32},
     {0, 0}
