@@ -36,13 +36,21 @@ static BOOL bException = FALSE;
 # include <exception>
 #endif
 
+#ifndef _M_AMD64
+# ifndef __BORLANDC__
+# pragma comment(lib,"dxerr.lib")
+# endif
+#endif
+
 #include <dbghelp.h> // MiniDump flags
 
 #ifdef USE_BUG_TRAP
 # include <BugTrap/source/BugTrap.h> // for BugTrap functionality
-    #ifdef __BORLANDC__
-        #	pragma comment(lib,"BugTrapB.lib")		// Link to ANSI DLL
-    #endif
+#ifndef __BORLANDC__
+# pragma comment(lib,"BugTrap.lib") // Link to ANSI DLL
+#else
+# pragma comment(lib,"BugTrapB.lib") // Link to ANSI DLL
+#endif
 #endif // USE_BUG_TRAP
 
 #include <new.h> // for _set_new_mode
@@ -689,6 +697,7 @@ void format_message(LPSTR buffer, const u32& buffer_size)
 }
 
 #ifndef _EDITOR
+#pragma comment( lib, "faultrep.lib" )
 #include <errorrep.h>
 #endif //-!_EDITOR
 
