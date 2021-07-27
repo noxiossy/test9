@@ -5,6 +5,7 @@
 #include <d3dx9.h>
 #ifndef _EDITOR
 #include "../../xrEngine/render.h"
+	#pragma comment( lib, "d3dx9.lib"		)
 #endif
 #pragma warning(default:4995)
 
