@@ -4,6 +4,7 @@
 
 #ifdef SDL_OUTPUT
 #include <SDL.h>
+#pragma comment (lib,"SDL.lib")
 #endif
 
 // refs
