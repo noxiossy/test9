@@ -36,7 +36,6 @@ CUIArtefactParams::~CUIArtefactParams()
 
 LPCSTR af_immunity_section_names[] = // ALife::EInfluenceType
 {
-	/*
 	"radiation_immunity",		// infl_rad=0
 	"burn_immunity",			// infl_fire=1
 	"chemical_burn_immunity",	// infl_acid=2
@@ -47,23 +46,19 @@ LPCSTR af_immunity_section_names[] = // ALife::EInfluenceType
 	"fire_wound_immunity",
 	"explosion_immunity",
 	"strike_immunity",
-	*/
 };
 
 LPCSTR af_restore_section_names[] = // ALife::EConditionRestoreType
 {
-	/*
 	"health_restore_speed",			// eHealthRestoreSpeed=0
 	"satiety_restore_speed",		// eSatietyRestoreSpeed=1
 	"power_restore_speed",			// ePowerRestoreSpeed=2
 	"bleeding_restore_speed",		// eBleedingRestoreSpeed=3
 	"radiation_restore_speed",		// eRadiationRestoreSpeed=4
-	*/
 };
 
 LPCSTR af_immunity_caption[] =  // ALife::EInfluenceType
 {
-	/*
 	"ui_inv_outfit_radiation_protection",		// "(radiation_imm)",
 	"ui_inv_outfit_burn_protection",			// "(burn_imm)",
 	"ui_inv_outfit_chemical_burn_protection",	// "(chemical_burn_imm)",
@@ -75,18 +70,15 @@ LPCSTR af_immunity_caption[] =  // ALife::EInfluenceType
 	"ui_inv_outfit_explosion_protection",		// "(explosion_imm)",
 	"ui_inv_outfit_fire_wound_protection",		// "(fire_wound_imm)",
 	"ui_inv_outfit_strike_protection",			// "(strike_imm)",
-	*/
 };
 
 LPCSTR af_restore_caption[] =  // ALife::EConditionRestoreType
 {
-	/*
 	"ui_inv_health",
 	"ui_inv_satiety",
 	"ui_inv_power",
 	"ui_inv_bleeding",
 	"ui_inv_radiation",
-	*/
 };
 
 /*
