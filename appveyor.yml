@@ -33,27 +33,27 @@ after_build:
 
     copy opt\start_%COR_PLAT%.bat dist\engine
 
-    md dist\engine\bin_%COR_PLAT%
+    md dist\engine\bin
 
-    copy src\intermediate\%PLATFORM%-%CONFIGURATION%\*.exe dist\engine\bin_%COR_PLAT%\
+    copy src\intermediate\%PLATFORM%-%CONFIGURATION%\*.exe dist\engine\bin\
 
-    copy src\intermediate\%PLATFORM%-%CONFIGURATION%\*.dll dist\engine\bin_%COR_PLAT%\
+    copy src\intermediate\%PLATFORM%-%CONFIGURATION%\*.dll dist\engine\bin\
 
-    copy src\3rd party\luabind\bin\x86\*.dll dist\engine\bin_%COR_PLAT%\
+    copy src\3rd party\luabind\bin\x86\*.dll dist\engine\bin\
 
-    echo appveyor PushArtifact direx_%APPVEYOR_REPO_TAG_NAME%_%COR_PLAT%.7z release
+    echo appveyor PushArtifact direx_%APPVEYOR_REPO_TAG_NAME%.7z release
 
     cd dist\engine
 
-    7z a ..\..\direx_%APPVEYOR_REPO_TAG_NAME%_%COR_PLAT%.7z
+    7z a ..\..\direx_%APPVEYOR_REPO_TAG_NAME%.7z
 
     cd ..\..
 
-    echo appveyor PushArtifact direx_%APPVEYOR_REPO_TAG_NAME%_%COR_PLAT%.7z release
+    echo appveyor PushArtifact direx_%APPVEYOR_REPO_TAG_NAME%.7z release
 
-    copy direx_%APPVEYOR_REPO_TAG_NAME%_%COR_PLAT%.7z direx_%APPVEYOR_VERSION%.7z
+    copy direx_%APPVEYOR_REPO_TAG_NAME%.7z direx_%APPVEYOR_VERSION%.7z
 
     appveyor PushArtifact direx_%APPVEYOR_VERSION%.7z
 artifacts:
-- path: .\direx_$(appveyor_repo_tag_name)_$(cor_plat).7z
+- path: .\direx_$(appveyor_repo_tag_name).7z
   name: release
