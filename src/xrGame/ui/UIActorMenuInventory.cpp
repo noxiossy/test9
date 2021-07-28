@@ -1540,10 +1540,7 @@ void CUIActorMenu::UpdateOutfit()
 	}
 
 	u32 af_count = m_pActorInvOwner->inventory().BeltWidth();
-	// Lex Addon (correct by Suhar_) 2.06.2016		(begin)
-	// Проверяем интервал значений количества слотов под артефакты
-	VERIFY(0 <= af_count && af_count <= 10);
-	// Lex Addon (correct by Suhar_) 2.06.2016		(end)
+	VERIFY( 0 <= af_count && af_count <= 5 );
 
 	VERIFY( m_pInventoryBeltList );
 	CCustomOutfit* outfit    = m_pActorInvOwner->GetOutfit();
@@ -1559,11 +1556,8 @@ void CUIActorMenu::UpdateOutfit()
 	}
 
 	Ivector2 afc;
-	// Lex Addon (correct by Suhar_) 2.06.2016		(begin)
-	// Устанавливаем размер пояса
-	afc.x = 5;
-	afc.y = 2;
-	// Lex Addon (correct by Suhar_) 2.06.2016		(end)
+	afc.x = af_count;//1;
+	afc.y = 1;//af_count;
 
 	m_pInventoryBeltList->SetCellsCapacity( afc );
 

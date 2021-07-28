@@ -88,6 +88,10 @@ void CUIActorMenu::SetMenuMode(EMenuMode mode)
 {
 	SetCurrentItem( NULL );
 	m_hint_wnd->set_text( NULL );
+
+	CActor* actor = smart_cast<CActor*>( m_pActorInvOwner );
+	if ( actor )	{	actor->PickupModeOff();	}
+
 	
 	if ( mode != m_currMenuMode )
 	{

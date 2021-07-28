@@ -74,6 +74,7 @@ void CDialogHolder::StartMenu(CUIDialogWnd* pDialog, bool bDoHideIndicators)
 		if ( A && pDialog->StopAnyMove() )
 		{
 			A->StopAnyMove				();
+            A->PickupModeOff			();
 		};
 		if(A)
 		{	

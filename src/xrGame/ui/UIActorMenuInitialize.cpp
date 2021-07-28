@@ -121,21 +121,9 @@ void CUIActorMenu::Construct()
 	}
 	pos								= m_ArtefactSlotsHighlight[0]->GetWndPos();
 	dx								= uiXml.ReadAttribFlt("artefact_slot_highlight", 0, "dx", 24.0f);
-	// Lex Addon (correct by Suhar_) 2.06.2016		(begin)
-	// Увеличиваем пояс для артефактов - добавляем дополнительный уровень
-	// Объявляем дополнительную переменную приращения по оси y и считываем её значение из .xml
-	float dy = uiXml.ReadAttribFlt("artefact_slot_highlight", 0, "dy", 24.0f);
-	for (u8 i = 1; i<e_af_count; i++)
+	for(u8 i=1;i<e_af_count;i++)
 	{
-		// Вычисляем позицию отображения слота
-		// При переходе на следующий уровен (с 5 на 6 слот) сбрасываем x в начало и добавляем к y значение приращения
-		pos.x += dx;
-		if (i == 5)
-		{
-			pos.x -= 5 * dx;
-			pos.y += dy;
-		}
-		// Lex Addon (correct by Suhar_) 2.06.2016		(end)
+		pos.x						+= dx;
 		m_ArtefactSlotsHighlight[i]	= UIHelper::CreateStatic(uiXml, "artefact_slot_highlight", this);
 		m_ArtefactSlotsHighlight[i]	->SetWndPos(pos);
 		m_ArtefactSlotsHighlight[i]	->Show(false);
@@ -163,18 +151,9 @@ void CUIActorMenu::Construct()
 	m_belt_list_over[0]			= UIHelper::CreateStatic(uiXml, "belt_list_over", this);
 	pos							= m_belt_list_over[0]->GetWndPos();
 	dx							= uiXml.ReadAttribFlt("belt_list_over", 0, "dx", 10.0f);
-	// Lex Addon (correct by Suhar_) 2.06.2016		(begin)
-	// Продолжаем расширение пояса
-	dy = uiXml.ReadAttribFlt("belt_list_over", 0, "dy", 10.0f);
-	for (u8 i = 1; i < e_af_count; ++i)
+	for ( u8 i = 1; i < e_af_count; ++i )
 	{
-		pos.x += dx;
-		if (i == 5)
-		{
-			pos.x -= 5 * dx;
-			pos.y += dy;
-			// Lex Addon (correct by Suhar_) 2.06.2016		(end)
-		}
+		pos.x					+= dx;
 		m_belt_list_over[i]		= UIHelper::CreateStatic(uiXml, "belt_list_over", this);
 		m_belt_list_over[i]->SetWndPos( pos );
 	}

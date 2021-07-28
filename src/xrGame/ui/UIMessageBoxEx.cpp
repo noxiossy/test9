@@ -98,7 +98,7 @@ bool CUIMessageBoxEx::OnKeyboardAction(int dik, EUIMessages keyboard_action)
 		{
 			m_pMessageBox->OnYesOk();
 			return true;
-/*
+
 		}else
 			if ( dik == DIK_ESCAPE )
 		{
@@ -106,7 +106,7 @@ bool CUIMessageBoxEx::OnKeyboardAction(int dik, EUIMessages keyboard_action)
 			if(style != CUIMessageBox::MESSAGEBOX_INFO)
 				HideDialog();
 			return true;
-*/
+
 		}else
 			return CUIDialogWnd::OnKeyboardAction(dik, keyboard_action);
 	}

@@ -107,10 +107,7 @@ protected:
 	CUIDragDropListEx*			m_pDeadBodyBagList;
 	CUIDragDropListEx*			m_pTrashList;
 
-	// Lex Addon (correct by Suhar_) 2.06.2016		(begin)
-	// Увеличиваем максимальное значение переменной кол-ва слотов под арты с 5 до 10
-	enum						{ e_af_count = 10 };
-	// Lex Addon (correct by Suhar_) 2.06.2016		(end)
+	enum						{e_af_count = 5};
 	CUIStatic*					m_belt_list_over[e_af_count];
 	CUIStatic*					m_HelmetOver;
 

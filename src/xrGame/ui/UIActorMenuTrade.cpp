@@ -62,6 +62,10 @@ void CUIActorMenu::InitTradeMode()
 	m_partner_trade->StartTradeEx	( m_pActorInvOwner );
 
 	UpdatePrices();
+
+	CUIGameSP* pGameSP = smart_cast<CUIGameSP*>(CurrentGameUI());
+
+	pGameSP->TalkMenu->Show(false);
 }
 bool is_item_in_list(CUIDragDropListEx* pList, PIItem item)
 {
@@ -156,6 +160,8 @@ void CUIActorMenu::DeInitTradeMode()
 	{
 		pGameSP->TalkMenu->NeedUpdateQuestions();
 	}
+
+	pGameSP->TalkMenu->Show(true);
 }
 
 bool CUIActorMenu::ToActorTrade(CUICellItem* itm, bool b_use_cursor_pos)
