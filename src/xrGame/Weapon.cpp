@@ -250,9 +250,9 @@ void CWeapon::Load(LPCSTR section)
     iMagazineSize = pSettings->r_s32(section, "ammo_mag_size");
 
     ////////////////////////////////////////////////////
-    // дисперсия стрельбы
+    // Г¤ГЁГ±ГЇГҐГ°Г±ГЁГї Г±ГІГ°ГҐГ«ГјГЎГ»
 
-    //подбрасывание камеры во время отдачи
+    //ГЇГ®Г¤ГЎГ°Г Г±Г»ГўГ Г­ГЁГҐ ГЄГ Г¬ГҐГ°Г» ГўГ® ГўГ°ГҐГ¬Гї Г®ГІГ¤Г Г·ГЁ
     u8 rm = READ_IF_EXISTS(pSettings, r_u8, section, "cam_return", 1);
     cam_recoil.ReturnMode = (rm == 1);
 
@@ -302,8 +302,8 @@ void CWeapon::Load(LPCSTR section)
 
     cam_recoil.DispersionFrac = _abs(READ_IF_EXISTS(pSettings, r_float, section, "cam_dispersion_frac", 0.7f));
 
-    //подбрасывание камеры во время отдачи в режиме zoom ==> ironsight or scope
-    //zoom_cam_recoil.Clone( cam_recoil ); ==== нельзя !!!!!!!!!!
+    //ГЇГ®Г¤ГЎГ°Г Г±Г»ГўГ Г­ГЁГҐ ГЄГ Г¬ГҐГ°Г» ГўГ® ГўГ°ГҐГ¬Гї Г®ГІГ¤Г Г·ГЁ Гў Г°ГҐГ¦ГЁГ¬ГҐ zoom ==> ironsight or scope
+    //zoom_cam_recoil.Clone( cam_recoil ); ==== Г­ГҐГ«ГјГ§Гї !!!!!!!!!!
     zoom_cam_recoil.RelaxSpeed = cam_recoil.RelaxSpeed;
     zoom_cam_recoil.RelaxSpeed_AI = cam_recoil.RelaxSpeed_AI;
     zoom_cam_recoil.DispersionFrac = cam_recoil.DispersionFrac;
@@ -394,7 +394,7 @@ void CWeapon::Load(LPCSTR section)
     m_fMinRadius = pSettings->r_float(section, "min_radius");
     m_fMaxRadius = pSettings->r_float(section, "max_radius");
 
-    // информация о возможных апгрейдах и их визуализации в инвентаре
+    // ГЁГ­ГґГ®Г°Г¬Г Г¶ГЁГї Г® ГўГ®Г§Г¬Г®Г¦Г­Г»Гµ Г ГЇГЈГ°ГҐГ©Г¤Г Гµ ГЁ ГЁГµ ГўГЁГ§ГіГ Г«ГЁГ§Г Г¶ГЁГЁ Гў ГЁГ­ГўГҐГ­ГІГ Г°ГҐ
     m_eScopeStatus = (ALife::EWeaponAddonStatus)pSettings->r_s32(section, "scope_status");
     m_eSilencerStatus = (ALife::EWeaponAddonStatus)pSettings->r_s32(section, "silencer_status");
     m_eGrenadeLauncherStatus = (ALife::EWeaponAddonStatus)pSettings->r_s32(section, "grenade_launcher_status");
@@ -489,13 +489,6 @@ void CWeapon::Load(LPCSTR section)
     m_zoom_params.m_bUseDynamicZoom = READ_IF_EXISTS(pSettings, r_bool, section, "scope_dynamic_zoom", FALSE);
     m_zoom_params.m_sUseZoomPostprocess = 0;
     m_zoom_params.m_sUseBinocularVision = 0;
-
-	// mmccxvii: FWR code
-	//*
-	sndExplosion.create(READ_IF_EXISTS(pSettings, r_string, section, "snd_explosion", "weapon\\weapon_explosion"), st_Effect, sg_SourceType);
-	ppeExplosion = READ_IF_EXISTS(pSettings, r_string, section, "ppe_explosion", "ppe\\weapon_explosion.ppe");
-	//*
-	
 	
     m_hud_fov_add_mod = READ_IF_EXISTS(pSettings, r_float, section, "hud_fov_addition_modifier", 0.f);
 
@@ -570,7 +563,7 @@ void CWeapon::net_Destroy()
 {
     inherited::net_Destroy();
 
-    //удалить объекты партиклов
+    //ГіГ¤Г Г«ГЁГІГј Г®ГЎГєГҐГЄГІГ» ГЇГ Г°ГІГЁГЄГ«Г®Гў
     StopFlameParticles();
     StopFlameParticles2();
     StopLight();
@@ -786,7 +779,7 @@ void CWeapon::OnActiveItem()
     //-
 
     inherited::OnActiveItem();
-    //если мы занружаемся и оружие было в руках
+    //ГҐГ±Г«ГЁ Г¬Г» Г§Г Г­Г°ГіГ¦Г ГҐГ¬Г±Гї ГЁ Г®Г°ГіГ¦ГЁГҐ ГЎГ»Г«Г® Гў Г°ГіГЄГ Гµ
     //.	SetState					(eIdle);
     //.	SetNextState				(eIdle);
 }
@@ -844,10 +837,10 @@ void CWeapon::UpdateCL()
 {
     inherited::UpdateCL();
     UpdateHUDAddonsVisibility();
-    //подсветка от выстрела
+    //ГЇГ®Г¤Г±ГўГҐГІГЄГ  Г®ГІ ГўГ»Г±ГІГ°ГҐГ«Г 
     UpdateLight();
 
-    //нарисовать партиклы
+    //Г­Г Г°ГЁГ±Г®ГўГ ГІГј ГЇГ Г°ГІГЁГЄГ«Г»
     UpdateFlameParticles();
     UpdateFlameParticles2();
 
@@ -923,11 +916,11 @@ void CWeapon::renderable_Render()
 {
     UpdateXForm();
 
-    //нарисовать подсветку
+    //Г­Г Г°ГЁГ±Г®ГўГ ГІГј ГЇГ®Г¤Г±ГўГҐГІГЄГі
 
     RenderLight();
 
-    //если мы в режиме снайперки, то сам HUD рисовать не надо
+    //ГҐГ±Г«ГЁ Г¬Г» Гў Г°ГҐГ¦ГЁГ¬ГҐ Г±Г­Г Г©ГЇГҐГ°ГЄГЁ, ГІГ® Г±Г Г¬ HUD Г°ГЁГ±Г®ГўГ ГІГј Г­ГҐ Г­Г Г¤Г®
     if (IsZoomed() && !IsRotatingToZoom() && ZoomTexture())
         RenderHud(FALSE);
     else
@@ -968,7 +961,7 @@ bool CWeapon::Action(u16 cmd, u32 flags)
     {
     case kWPN_FIRE:
     {
-        //если оружие чем-то занято, то ничего не делать
+        //ГҐГ±Г«ГЁ Г®Г°ГіГ¦ГЁГҐ Г·ГҐГ¬-ГІГ® Г§Г Г­ГїГІГ®, ГІГ® Г­ГЁГ·ГҐГЈГ® Г­ГҐ Г¤ГҐГ«Г ГІГј
         {
             if (IsPending())
                 return				false;
@@ -1137,7 +1130,7 @@ int CWeapon::GetSuitableAmmoTotal(bool use_item_to_spawn) const
         return ae_count;
     }
 
-    //чтоб не делать лишних пересчетов
+    //Г·ГІГ®ГЎ Г­ГҐ Г¤ГҐГ«Г ГІГј Г«ГЁГёГ­ГЁГµ ГЇГҐГ°ГҐГ±Г·ГҐГІГ®Гў
     if (m_pInventory->ModifyFrame() <= m_BriefInfo_CalcFrame)
     {
         return ae_count + m_iAmmoCurrentTotal;
@@ -1231,14 +1224,6 @@ BOOL CWeapon::CheckForMisfire()
 
         bMisfire = true;
         SwitchState(eMisfire);
-
-		// mmccxvii: FWR code
-		//*
-		if (GetCondition() < 0.2f && ::Random.randF(0.0f, 1.0f) > 0.5f)
-		{
-			Explosion();
-		}
-		//*
 		
         return TRUE;
     }
@@ -1794,25 +1779,25 @@ void CWeapon::UpdateHudAdditonal(Fmatrix& trans)
 
 	clamp(idx, 0ui8, 1ui8);
 
-	float fStrafeMaxTime = hi->m_measures.m_strafe_offset[2][idx].y; // Макс. время в секундах, за которое мы наклонимся из центрального положения
+	float fStrafeMaxTime = hi->m_measures.m_strafe_offset[2][idx].y; // ГЊГ ГЄГ±. ГўГ°ГҐГ¬Гї Гў Г±ГҐГЄГіГ­Г¤Г Гµ, Г§Г  ГЄГ®ГІГ®Г°Г®ГҐ Г¬Г» Г­Г ГЄГ«Г®Г­ГЁГ¬Г±Гї ГЁГ§ Г¶ГҐГ­ГІГ°Г Г«ГјГ­Г®ГЈГ® ГЇГ®Г«Г®Г¦ГҐГ­ГЁГї
 	if (fStrafeMaxTime <= EPS)
 		fStrafeMaxTime = 0.01f;
 
-	float fStepPerUpd = Device.fTimeDelta / fStrafeMaxTime; // Величина изменение фактора поворота
+	float fStepPerUpd = Device.fTimeDelta / fStrafeMaxTime; // Г‚ГҐГ«ГЁГ·ГЁГ­Г  ГЁГ§Г¬ГҐГ­ГҐГ­ГЁГҐ ГґГ ГЄГІГ®Г°Г  ГЇГ®ГўГ®Г°Г®ГІГ 
 
 	u32 iMovingState = pActor->MovingState();
 	if ((iMovingState & mcLStrafe) != 0)
-	{ // Движемся влево
+	{ // Г„ГўГЁГ¦ГҐГ¬Г±Гї ГўГ«ГҐГўГ®
 		float fVal = (m_fLR_MovingFactor > 0.f ? fStepPerUpd * 3 : fStepPerUpd);
 		m_fLR_MovingFactor -= fVal;
 	}
 	else if ((iMovingState & mcRStrafe) != 0)
-	{ // Движемся вправо
+	{ // Г„ГўГЁГ¦ГҐГ¬Г±Гї ГўГЇГ°Г ГўГ®
 		float fVal = (m_fLR_MovingFactor < 0.f ? fStepPerUpd * 3 : fStepPerUpd);
 		m_fLR_MovingFactor += fVal;
 	}
 	else
-	{ // Двигаемся в любом другом направлении
+	{ // Г„ГўГЁГЈГ ГҐГ¬Г±Гї Гў Г«ГѕГЎГ®Г¬ Г¤Г°ГіГЈГ®Г¬ Г­Г ГЇГ°Г ГўГ«ГҐГ­ГЁГЁ
 		if (m_fLR_MovingFactor < 0.0f)
 		{
 			m_fLR_MovingFactor += fStepPerUpd;
@@ -1825,9 +1810,9 @@ void CWeapon::UpdateHudAdditonal(Fmatrix& trans)
 		}
 	}
 
-	clamp(m_fLR_MovingFactor, -1.0f, 1.0f); // Фактор боковой ходьбы не должен превышать эти лимиты
+	clamp(m_fLR_MovingFactor, -1.0f, 1.0f); // Г”Г ГЄГІГ®Г° ГЎГ®ГЄГ®ГўГ®Г© ГµГ®Г¤ГјГЎГ» Г­ГҐ Г¤Г®Г«Г¦ГҐГ­ ГЇГ°ГҐГўГ»ГёГ ГІГј ГЅГІГЁ Г«ГЁГ¬ГЁГІГ»
 
-	// Производим наклон ствола для нормального режима и аима
+	// ГЏГ°Г®ГЁГ§ГўГ®Г¤ГЁГ¬ Г­Г ГЄГ«Г®Г­ Г±ГІГўГ®Г«Г  Г¤Г«Гї Г­Г®Г°Г¬Г Г«ГјГ­Г®ГЈГ® Г°ГҐГ¦ГЁГ¬Г  ГЁ Г ГЁГ¬Г 
 	for (int _idx = 0; _idx <= 1; _idx++)
 	{
         bool bEnabled = (hi->m_measures.m_strafe_offset[2][_idx].x != 0.0f);
@@ -1836,22 +1821,22 @@ void CWeapon::UpdateHudAdditonal(Fmatrix& trans)
 
 		Fvector curr_offs, curr_rot;
 
-		// Смещение позиции худа в стрейфе
+		// Г‘Г¬ГҐГ№ГҐГ­ГЁГҐ ГЇГ®Г§ГЁГ¶ГЁГЁ ГµГіГ¤Г  Гў Г±ГІГ°ГҐГ©ГґГҐ
         curr_offs = hi->m_measures.m_strafe_offset[0][_idx]; // pos
-		curr_offs.mul(m_fLR_MovingFactor);                   // Умножаем на фактор стрейфа
+		curr_offs.mul(m_fLR_MovingFactor);                   // Г“Г¬Г­Г®Г¦Г ГҐГ¬ Г­Г  ГґГ ГЄГІГ®Г° Г±ГІГ°ГҐГ©ГґГ 
 
-		// Поворот худа в стрейфе
+		// ГЏГ®ГўГ®Г°Г®ГІ ГµГіГ¤Г  Гў Г±ГІГ°ГҐГ©ГґГҐ
         curr_rot = hi->m_measures.m_strafe_offset[1][_idx]; // rot
-		curr_rot.mul(-PI / 180.f);                          // Преобразуем углы в радианы
-		curr_rot.mul(m_fLR_MovingFactor);                   // Умножаем на фактор стрейфа
+		curr_rot.mul(-PI / 180.f);                          // ГЏГ°ГҐГ®ГЎГ°Г Г§ГіГҐГ¬ ГіГЈГ«Г» Гў Г°Г Г¤ГЁГ Г­Г»
+		curr_rot.mul(m_fLR_MovingFactor);                   // Г“Г¬Г­Г®Г¦Г ГҐГ¬ Г­Г  ГґГ ГЄГІГ®Г° Г±ГІГ°ГҐГ©ГґГ 
 
 		if (_idx == 0)
-		{ // От бедра
+		{ // ГЋГІ ГЎГҐГ¤Г°Г 
             curr_offs.mul(1.f - m_zoom_params.m_fZoomRotationFactor);
             curr_rot.mul(1.f - m_zoom_params.m_fZoomRotationFactor);
         }
         else
-        { // Во время аима
+        { // Г‚Г® ГўГ°ГҐГ¬Гї Г ГЁГ¬Г 
             curr_offs.mul(m_zoom_params.m_fZoomRotationFactor);
             curr_rot.mul(m_zoom_params.m_fZoomRotationFactor);
 		}
