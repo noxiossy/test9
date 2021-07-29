@@ -185,8 +185,3 @@ void CActor::on_requested_spawn(CObject *object)
 	r_torso.yaw = xyz.y;
 
 }
-
-CCar* CActor::GetAttachedCar()
-{
-	return m_holder ? smart_cast<CCar*>(m_holder) : NULL;
-}
