@@ -240,7 +240,7 @@ void CWeaponMagazinedWGrenade::state_Fire(float dt)
 {
     VERIFY(fOneShotTime > 0.f);
 
-    //режим стрельбы подствольника
+    //Г°ГҐГ¦ГЁГ¬ Г±ГІГ°ГҐГ«ГјГЎГ» ГЇГ®Г¤Г±ГІГўГ®Г«ГјГ­ГЁГЄГ 
     if (m_bGrenadeMode)
     {
         /*
@@ -265,7 +265,7 @@ void CWeaponMagazinedWGrenade::state_Fire(float dt)
         FireEnd();
         */
     }
-    //режим стрельбы очередями
+    //Г°ГҐГ¦ГЁГ¬ Г±ГІГ°ГҐГ«ГјГЎГ» Г®Г·ГҐГ°ГҐГ¤ГїГ¬ГЁ
     else
         inherited::state_Fire(dt);
 }
@@ -417,7 +417,7 @@ void CWeaponMagazinedWGrenade::ReloadMagazine()
 {
     inherited::ReloadMagazine();
 
-    //перезарядка подствольного гранатомета
+    //ГЇГҐГ°ГҐГ§Г Г°ГїГ¤ГЄГ  ГЇГ®Г¤Г±ГІГўГ®Г«ГјГ­Г®ГЈГ® ГЈГ°Г Г­Г ГІГ®Г¬ГҐГІГ 
     if (iAmmoElapsed && !getRocketCount() && m_bGrenadeMode)
     {
         shared_str fake_grenade_name = pSettings->r_string(m_ammoTypes[m_ammoType].c_str(), "fake_grenade_name");
@@ -509,7 +509,7 @@ bool CWeaponMagazinedWGrenade::Attach(PIItem pIItem, bool b_send_event)
 
         CRocketLauncher::m_fLaunchSpeed = pGrenadeLauncher->GetGrenadeVel();
 
-        //уничтожить подствольник из инвентаря
+        //ГіГ­ГЁГ·ГІГ®Г¦ГЁГІГј ГЇГ®Г¤Г±ГІГўГ®Г«ГјГ­ГЁГЄ ГЁГ§ ГЁГ­ГўГҐГ­ГІГ Г°Гї
         if (b_send_event)
         {
             if (OnServer())
@@ -577,7 +577,7 @@ float	CWeaponMagazinedWGrenade::CurrentZoomFactor()
     return inherited::CurrentZoomFactor();
 }
 
-//виртуальные функции для проигрывания анимации HUD
+//ГўГЁГ°ГІГіГ Г«ГјГ­Г»ГҐ ГґГіГ­ГЄГ¶ГЁГЁ Г¤Г«Гї ГЇГ°Г®ГЁГЈГ°Г»ГўГ Г­ГЁГї Г Г­ГЁГ¬Г Г¶ГЁГЁ HUD
 void CWeaponMagazinedWGrenade::PlayAnimShow()
 {
     VERIFY(GetState() == eShowing);
@@ -606,124 +606,118 @@ void CWeaponMagazinedWGrenade::PlayAnimHide()
         PlayHUDMotion("anm_hide", TRUE, this, GetState());
 }
 
-void CWeaponMagazinedWGrenade::PlayAnimReload()
+CWeaponMagazinedWGrenade::PlayAnimReload()
 {
 	if (GetState() != eReload)
 		return;
 
-#ifdef NEW_ANIMS //AVO: use new animations
-    if (IsGrenadeLauncherAttached())
-    {
-        if (bMisfire)
-        {
-            if (HudAnimationExist("anm_reload_misfire_w_gl"))
-                PlayHUDMotion("anm_reload_misfire_w_gl", TRUE, this, GetState());
-            else
-                PlayHUDMotion("anm_reload_w_gl", TRUE, this, GetState());
-        }
-        else
-        {
-            if (iAmmoElapsed == 0)
-            {
-                if (HudAnimationExist("anm_reload_empty_w_gl"))
-                    PlayHUDMotion("anm_reload_empty_w_gl", TRUE, this, GetState());
-                else
-                    PlayHUDMotion("anm_reload_w_gl", TRUE, this, GetState());
-            }
-            else
-            {
-                PlayHUDMotion("anm_reload_w_gl", TRUE, this, GetState());
-            }
-        }
-    }
-    else
-        inherited::PlayAnimReload();
-#else
-    if (IsGrenadeLauncherAttached())
-        PlayHUDMotion("anm_reload_w_gl", TRUE, this, GetState());
-    else
-        inherited::PlayAnimReload();
-#endif //-NEW_ANIMS
+	if (IsGrenadeLauncherAttached())
+	{
+		if (iAmmoElapsed == 0 && IsHUDAnimationExist("anm_reload_empty_w_gl"))
+		{
+			PlayHUDMotion("anm_reload_empty_w_gl", TRUE, this, GetState());
+		}
+		else
+		{
+			PlayHUDMotion("anm_reload_w_gl", TRUE, this, GetState());
+		}
+	}
+	else
+	{
+		inherited::PlayAnimReload();
+	}
 }
 
 void CWeaponMagazinedWGrenade::PlayAnimIdle()
 {
-    if (IsGrenadeLauncherAttached())
-    {
-        if (IsZoomed())
-        {
-            if (m_bGrenadeMode)
-                PlayHUDMotion("anm_idle_g_aim", /*FALSE*/TRUE, NULL, GetState()); //AVO: fix fast anim switch
-            else
-                PlayHUDMotion("anm_idle_w_gl_aim", TRUE, NULL, GetState());
-        }
-        else
-        {
-            int act_state = 0;
-            CActor* pActor = smart_cast<CActor*>(H_Parent());
-            if (pActor)
-            {
-                CEntity::SEntityState st;
-                pActor->g_State(st);
-                if (st.bSprint)
-                {
-                    act_state = 1;
-                }
-                else
-                    if (pActor->AnyMove() && (!st.bCrouch))
-                    {
-                        act_state = 2;
-                    }
-                    else
-                        if (pActor->AnyMove() && (st.bCrouch))
-                        {
-                            act_state = 3;
-                        }
-            }
+	if (IsGrenadeLauncherAttached())
+	{
+		if (IsZoomed())
+		{
+			if (m_bGrenadeMode)
+				PlayHUDMotion("anm_idle_g_aim", FALSE, NULL, GetState());
+			else
+				PlayHUDMotion("anm_idle_w_gl_aim", TRUE, NULL, GetState());
+		}
+		else
+		{
+			int act_state = 0;
+			CActor* pActor = smart_cast<CActor*>(H_Parent());
+			if (pActor)
+			{
+				CEntity::SEntityState st;
+				pActor->g_State(st);
+				if (st.bSprint)
+				{
+					act_state = 1;
+				}
+				else
+					if (pActor->AnyMove())
+					{
+						if (!st.bCrouch)
+						{
+							act_state = 2;
+						}
+						else
+						{
+							act_state = 3;
+						}
+					}
+			}
 
-            if (m_bGrenadeMode)
-            {
-                if (act_state == 0)
-                    PlayHUDMotion("anm_idle_g", /*FALSE*/TRUE, NULL, GetState()); //AVO: fix fast anim switch
-                else
-                    if (act_state == 1)
-                        PlayHUDMotion("anm_idle_sprint_g", TRUE, NULL, GetState());
-                    else
-                        if (act_state == 2)
-                            PlayHUDMotion("anm_idle_moving_g", TRUE, NULL, GetState());
-                        else
-                            if (act_state == 3)
-                            {
-#ifdef NEW_ANIMS //AVO: custom move animation
-                                if (HudAnimationExist("anm_idle_moving_crouch_g")) 
-                                    PlayHUDMotion("anm_idle_moving_crouch_g", TRUE, NULL, GetState());
-#endif //-NEW_ANIMS
-                            }
-            }
-            else
-            {
-                if (act_state == 0)
-                    PlayHUDMotion("anm_idle_w_gl", /*FALSE*/TRUE, NULL, GetState()); //AVO: fix fast anim switch
-                else
-                    if (act_state == 1)
-                        PlayHUDMotion("anm_idle_sprint_w_gl", TRUE, NULL, GetState());
-                    else
-                        if (act_state == 2)
-                            PlayHUDMotion("anm_idle_moving_w_gl", TRUE, NULL, GetState());
-                        else
-                            if (act_state == 3)
-                            {
-#ifdef NEW_ANIMS //AVO: custom move animation
-                                if (HudAnimationExist("anm_idle_moving_crouch_w_gl"))
-                                    PlayHUDMotion("anm_idle_moving_crouch_w_gl", TRUE, NULL, GetState());
-#endif //-NEW_ANIMS
-                            }
-            }
-        }
-    }
-    else
-        inherited::PlayAnimIdle();
+			if (m_bGrenadeMode)
+			{
+				if (act_state == 0)
+				{
+					PlayHUDMotion("anm_idle_g", FALSE, NULL, GetState());
+				}
+				else if (act_state == 1)
+				{
+					PlayHUDMotion("anm_idle_sprint_g", TRUE, NULL, GetState());
+				}
+				else if (act_state == 2 || act_state == 3)
+				{
+					if (act_state == 3 && IsHUDAnimationExist("anm_idle_moving_crouch_g"))
+					{
+						PlayHUDMotion("anm_idle_moving_crouch_g", true, nullptr, GetState());
+					}
+					else
+					{
+						PlayHUDMotion("anm_idle_moving_g", TRUE, NULL, GetState());
+					}
+				}
+			}
+			else
+			{
+				if (act_state == 0)
+				{
+					PlayHUDMotion("anm_idle_w_gl", FALSE, NULL, GetState());
+				}
+				else if (act_state == 1)
+				{
+					PlayHUDMotion("anm_idle_sprint_w_gl", TRUE, NULL, GetState());
+				}
+				else if (act_state == 2 || act_state == 3)
+				{
+					if (act_state == 3 && IsHUDAnimationExist("anm_idle_moving_crouch_w_gl"))
+					{
+						PlayHUDMotion("anm_idle_moving_crouch_w_gl", TRUE, nullptr, GetState());
+					}
+					else
+					{
+						PlayHUDMotion("anm_idle_moving_w_gl", TRUE, nullptr, GetState());
+					}
+				}
+			}
+
+		}
+	}
+	else
+	{
+		inherited::PlayAnimIdle();
+	}
 }
+
 
 void CWeaponMagazinedWGrenade::PlayAnimShoot()
 {
