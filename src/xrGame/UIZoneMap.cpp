@@ -16,6 +16,9 @@
 #include "ui/UIXmlInit.h"
 #include "ui/UIHelper.h"
 #include "ui/UIInventoryUtilities.h"
+#include "UIGameCustom.h"
+#include "ui/UIWindow.h"
+#include "ui/UIActorMenu.h"
 //////////////////////////////////////////////////////////////////////////
 
 CUIZoneMap::CUIZoneMap()
