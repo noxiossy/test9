@@ -72,7 +72,7 @@ extern	u64		g_qwStartGameTime;
 extern	u64		g_qwEStartGameTime;
 
 ENGINE_API
-extern	float	psHUD_FOV;
+extern	float	psHUD_FOV_def;
 extern	float	psSqueezeVelocity;
 extern	int		psLUA_GCSTEP;
 
@@ -415,17 +415,14 @@ class CCC_DemoRecord : public IConsole_Command
 public:
 
 	CCC_DemoRecord(LPCSTR N) : IConsole_Command(N) {};
-	virtual void Execute(LPCSTR args)
-	{
-#ifndef	DEBUG
-		//if (GameID() != eGameIDSingle)
-		//{
-		//	Msg("For this game type Demo Record is disabled.");
-		//	return;
-		//};
-#endif
-		Console->Hide();
-
+	virtual void Execute(LPCSTR args) {
+		if (!g_pGameLevel) // level not loaded
+		{
+			Msg("Demo Record is disabled when level is not loaded.");
+			return;
+		}
+		Console->Hide	();
+		if (MainMenu()->IsActive()) MainMenu()->Activate(false); // close main menu if it is open
 		LPSTR			fn_;
 		STRCONCAT(fn_, args, ".xrdemo");
 		string_path		fn;
@@ -1892,6 +1889,8 @@ void CCC_RegisterCommands()
 
 	CMD3(CCC_Mask, "g_backrun", &psActorFlags, AF_RUN_BACKWARD);
 
+	CMD3(CCC_Mask, 				"g_multi_item_pickup", 	&psActorFlags, 	AF_MULTI_ITEM_PICKUP);
+
 	// alife
 #ifdef DEBUG
 	CMD1(CCC_ALifePath, "al_path");		// build path
@@ -1928,8 +1927,8 @@ void CCC_RegisterCommands()
 	CMD3(CCC_Mask, "hud_crosshair_dist", &psHUD_Flags, HUD_CROSSHAIR_DIST);
 
 	//#ifdef DEBUG
-	CMD4(CCC_Float, "hud_fov", &psHUD_FOV, 0.1f, 1.0f);
-	CMD4(CCC_Float, "fov", &g_fov, 5.0f, 180.0f);
+	CMD4(CCC_Float,				"hud_fov",				&psHUD_FOV_def,		0.2f,	0.55f);
+	CMD4(CCC_Float,				"fov",					&g_fov,			40.0f,	75.0f);
 	//#endif // DEBUG
 
 	// Demo

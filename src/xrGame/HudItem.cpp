@@ -379,57 +379,25 @@ bool CHudItem::TryPlayAnimIdle()
                 return true;
             }
             else
-                if (!st.bCrouch && pActor->AnyMove())
-                {
-                    PlayAnimIdleMoving();
-                    return true;
-                }
-            
-#ifdef NEW_ANIMS //AVO: new crouch idle animation
-                else if (st.bCrouch && pActor->AnyMove()) 
-                {
-                    PlayAnimCrouchIdleMoving();
-                    return true;
-                }
-#endif //-NEW_ANIMS
-        }
-    }
-    return false;
-}
+			{
+				if (pActor->AnyMove())
+				{
+					if (st.bCrouch && IsHUDAnimationExist("anm_idle_moving_crouch"))
+					{
+						PlayHUDMotion("anm_idle_moving_crouch", true, nullptr, GetState());
+					}
+					else
+					{
+						PlayAnimIdleMoving();
+					}
 
-//AVO: check if animation exists
-bool CHudItem::HudAnimationExist(LPCSTR anim_name)
-{
-    if (HudItemData()) // First person
-    {
-        string256 anim_name_r;
-        bool is_16x9 = UI().is_widescreen();
-        u16 attach_place_idx = pSettings->r_u16(HudItemData()->m_sect_name, "attach_place_idx");
-        xr_sprintf(anim_name_r, "%s%s", anim_name, ((attach_place_idx == 1) && is_16x9) ? "_16x9" : "");
-        player_hud_motion* anm = HudItemData()->m_hand_motions.find_motion(anim_name_r);
-        if (anm)
-            return true;
-    }
-    else // Third person
-    {
-        if (g_player_hud->motion_length(anim_name, HudSection(), m_current_motion_def) > 100)
-            return true;
-
-    }
-#ifdef DEBUG
-    Msg("~ [WARNING] ------ Animation [%s] does not exist in [%s]", anim_name, HudSection().c_str());
-#endif
-    return false;
+					return true;
+				}
+			}
+		}
+	}
+	return false;
 }
-//-AVO
-
-//AVO: new crouch idle animation
-void CHudItem::PlayAnimCrouchIdleMoving()
-{
-    if (HudAnimationExist("anm_idle_moving_crouch"))
-        PlayHUDMotion("anm_idle_moving_crouch", TRUE, NULL, GetState());
-}
-//-AVO
 
 void CHudItem::PlayAnimIdleMoving()
 {
@@ -469,3 +437,21 @@ attachable_hud_item* CHudItem::HudItemData()
 
     return NULL;
 }
+
+// mmccxvii: FWR code (на основе функции за авторством AVO)
+//*
+bool CHudItem::IsHUDAnimationExist(LPCSTR AnimationName)
+{
+	// Пробуем получить худовой предмет
+	attachable_hud_item* HI = HudItemData();
+	if (!HI)
+		return false;
+
+	string256 AnimName;
+
+	u16 AttachPlace = *HI->m_sect_name ? READ_IF_EXISTS(pSettings, r_u16, HI->m_sect_name, "attach_place_idx", 0) : 0;
+	xr_sprintf(AnimName, "%s%s", AnimationName, ((AttachPlace == 1) && UI().is_widescreen()) ? "_16x9" : "");
+	player_hud_motion* Anm = HI->m_hand_motions.find_motion(AnimName);
+	return !!Anm;
+}
+//*

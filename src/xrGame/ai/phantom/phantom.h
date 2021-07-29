@@ -2,6 +2,8 @@
 
 #include "../../entity.h"
 #include "../../../Include/xrRender/KinematicsAnimated.h"
+#include "../../../Include/xrRender/animation_motion.h"
+#include "../../actor.h"
 
 class CParticlesObject;
 
@@ -45,6 +47,7 @@ private:
 
 	float				fSpeed;	
 	float				fASpeed;
+	float				fPsyHit;
 	Fvector2			vHP;
 
 	float				fContactHit;

@@ -69,6 +69,10 @@ void CStateManagerController::execute()
 	const CEntityAlive* enemy	= object->EnemyMan.get_enemy();
 
 	if (enemy) {
+		//switch (object->EnemyMan.get_danger_type()) {
+		//	case eStrong:	state_id = eStatePanic; break;
+		//	case eWeak:		state_id = eStateAttack; break;
+		//}
 		state_id = eStateAttack;
 	} else if (object->HitMemory.is_hit()) {
 		state_id = eStateHitted;
@@ -80,6 +84,9 @@ void CStateManagerController::execute()
 		if (can_eat())	state_id = eStateEat;
 		else			state_id = eStateRest;
 	}
+
+	if (enemy) object->set_controlled_task(eTaskAttack);
+	else object->set_controlled_task(eTaskFollow);
 
 	select_state(state_id); 
 

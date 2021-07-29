@@ -123,19 +123,14 @@ TEMPLATE_SPECIALIZATION
 const typename ITEM_DATA* CSINI_IdToIndex::GetById (const T_ID& str_id, bool no_assert)
 {
 	for(T_VECTOR::iterator it = m_pItemDataVector->begin();
-		m_pItemDataVector->end() != it; ++it)
+		m_pItemDataVector->end() != it; it++)
 	{
 		if(!xr_strcmp((*it).id, str_id))
-			break;
+			return &(*it);
 	}
 
-	if(m_pItemDataVector->end() == it)
-	{
-		R_ASSERT3(no_assert, "item not found, id", *str_id);
-		return NULL;
-	}
-
-	return &(*it);
+	VERIFY3(no_assert, "item not found, id", *str_id);
+	return NULL;
 }
 
 TEMPLATE_SPECIALIZATION

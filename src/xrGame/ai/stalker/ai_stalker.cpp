@@ -472,7 +472,7 @@ void CAI_Stalker::Die				(CObject* who)
 
 	if(m_death_sound_enabled)
 	{
-		sound().set_sound_mask		((u32)eStalkerSoundMaskDie);
+		//sound().set_sound_mask		((u32)eStalkerSoundMaskDie);
 		if (is_special_killer(who))
 			sound().play			(eStalkerSoundDieInAnomaly);
 		else
@@ -991,7 +991,7 @@ void CAI_Stalker::shedule_Update		( u32 DT )
 	}
 
 	START_PROFILE("stalker/schedule_update/inherited")
-	CEntityAlive::shedule_Update(DT);
+	inherited::inherited::shedule_Update(DT);
 	STOP_PROFILE
 	
 	if (Remote())		{

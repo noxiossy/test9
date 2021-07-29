@@ -151,7 +151,7 @@ float CCustomOutfit::GetBoneArmor(s16 element)
 {
 	return m_boneProtection->getBoneArmor(element);
 }
-#pragma optimize( "", off )
+
 float CCustomOutfit::HitThroughArmor(float hit_power, s16 element, float ap, bool& add_wound, ALife::EHitType hit_type)
 {
 	float NewHitPower = hit_power;
@@ -205,7 +205,7 @@ float CCustomOutfit::HitThroughArmor(float hit_power, s16 element, float ap, boo
 
 	return NewHitPower;
 }
-#pragma optimize( "", on )
+
 BOOL	CCustomOutfit::BonePassBullet					(int boneID)
 {
 	return m_boneProtection->getBonePassBullet(s16(boneID));
@@ -231,6 +231,19 @@ void	CCustomOutfit::OnMoveToSlot		(const SInvItemPlace& prev)
 				pActor->inventory().Ruck(pHelmet, false);
 		}
 	}
+}
+
+void CCustomOutfit::OnH_B_Independent(bool just_before_destroy) 
+{
+	inherited::OnH_B_Independent(just_before_destroy);
+	
+	CActor* pActor = smart_cast<CActor*> (H_Parent());
+		if (pActor)
+		{
+			CTorch* pTorch = smart_cast<CTorch*>(pActor->inventory().ItemFromSlot(TORCH_SLOT));
+			if(pTorch)
+				pTorch->SwitchNightVision(false);
+		}
 }
 
 void CCustomOutfit::ApplySkinModel(CActor* pActor, bool bDress, bool bHUDOnly)

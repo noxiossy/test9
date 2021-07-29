@@ -19,6 +19,8 @@
 #include "CustomOutfit.h"
 #include "ActorHelmet.h"
 
+#include "WeaponMagazined.h"
+
 static const float		TORCH_INERTION_CLAMP		= PI_DIV_6;
 static const float		TORCH_INERTION_SPEED_MAX	= 7.5f;
 static const float		TORCH_INERTION_SPEED_MIN	= 0.5f;
@@ -176,7 +178,28 @@ void CTorch::Switch()
 
 void CTorch::Switch(bool light_on)
 {
+	CActor* pActor = smart_cast<CActor*>(H_Parent());
 
+	if (pActor)
+	{
+		CWeaponMagazined* CurrentWeapon = smart_cast<CWeaponMagazined*>(pActor->inventory().ActiveItem());
+
+		if (CurrentWeapon && !CurrentWeapon->IsPending())
+		{
+			CurrentWeapon->SwitchState(CWeaponMagazined::eTorch);
+
+			return;
+		}
+
+		pActor->PlayAnm("torch_switch_fast");
+	}
+	RealSwitch(light_on);
+}
+
+// mmccxvii: FWR code
+//*
+void CTorch::RealSwitch(bool light_on)
+{
 	CActor* pActor = smart_cast<CActor*>(H_Parent());
 	if (pActor)
 		{
@@ -205,11 +228,18 @@ void CTorch::Switch(bool light_on)
 
 	if (*light_trace_bone) 
 	{
-		IKinematics* pVisual				= smart_cast<IKinematics*>(Visual()); VERIFY(pVisual);
-		u16 bi								= pVisual->LL_BoneID(light_trace_bone);
+		IKinematics* pVisual = smart_cast<IKinematics*>(Visual());
 
-		pVisual->LL_SetBoneVisible			(bi,	light_on,	TRUE);
-		pVisual->CalculateBones				(TRUE);
+		if (!pVisual)
+			return;
+
+		u16 bi = pVisual->LL_BoneID(light_trace_bone);
+
+		if (bi == BI_NONE)
+			return;
+
+		pVisual->LL_SetBoneVisible(bi, light_on, TRUE);
+		pVisual->CalculateBones(TRUE);
 	}
 }
 bool CTorch::torch_active					() const

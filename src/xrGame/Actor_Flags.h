@@ -11,7 +11,8 @@ enum{
 		AF_GODMODE_RT		=(1<<8),
 		AF_IMPORTANT_SAVE	=(1<<9),
 		AF_CROUCH_TOGGLE	=(1<<10),
-		AF_USE_TRACERS		=(1<<11)
+		AF_USE_TRACERS		=(1<<11),
+		AF_MULTI_ITEM_PICKUP=(1<<12)		
 };
 
 extern Flags32	psActorFlags;

@@ -66,6 +66,18 @@ bool CActor::feel_touch_on_contact	(CObject *O)
 	return		(false);
 }
 
+
+void CActor::PickupModeOn()
+{
+	m_bPickupMode = true;
+}
+
+void CActor::PickupModeOff()
+{
+	m_bPickupMode = false;
+}
+
+
 ICF static BOOL info_trace_callback(collide::rq_result& result, LPVOID params)
 {
 	BOOL& bOverlaped	= *(BOOL*)params;
@@ -125,7 +137,7 @@ void CActor::PickupModeUpdate()
 		m_pObjectWeLookingAt->cast_inventory_item()				&& 
 		m_pObjectWeLookingAt->cast_inventory_item()->Useful()	&&
 		m_pUsableObject											&& 
-		!m_pUsableObject->nonscript_usable()					&&
+		m_pUsableObject->nonscript_usable()						&&
 		!Level().m_feel_deny.is_object_denied(m_pObjectWeLookingAt) )
 	{
 		m_pUsableObject->use(this);
@@ -148,11 +160,11 @@ void CActor::PickupModeUpdate()
 BOOL	g_b_COD_PickUpMode = TRUE;
 void	CActor::PickupModeUpdate_COD	()
 {
-	if (Level().CurrentViewEntity() != this || !g_b_COD_PickUpMode) return;
+	if (Level().CurrentViewEntity() != this) return;
 		
-	if (!g_Alive() || eacFirstEye != cam_active) 
+	if (!g_Alive() || eacFirstEye != cam_active || !g_b_COD_PickUpMode) 
 	{
-		CurrentGameUI()->UIMainIngameWnd->SetPickUpItem(NULL);
+		CurrentGameUI()->UIMainIngameWnd->SetPickUpItem(nullptr);
 		return;
 	};
 	
@@ -217,7 +229,7 @@ void	CActor::PickupModeUpdate_COD	()
 
 	CurrentGameUI()->UIMainIngameWnd->SetPickUpItem(pNearestItem);
 
-	if (pNearestItem && m_bPickupMode)
+	if (pNearestItem && m_bPickupMode && !m_pPersonWeLookingAt)
 	{
 		CUsableScriptObject*	pUsableObject = smart_cast<CUsableScriptObject*>(pNearestItem);
 		if(pUsableObject && (!m_pUsableObject))
@@ -225,6 +237,9 @@ void	CActor::PickupModeUpdate_COD	()
 
 		//подбирание объекта
 		Game().SendPickUpEvent(ID(), pNearestItem->object().ID());
+
+        if (!psActorFlags.test(AF_MULTI_ITEM_PICKUP))
+            m_bPickupMode = false;
 	}
 };
 

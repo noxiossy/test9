@@ -46,6 +46,13 @@ public:
 
 			void	Switch					();
 			void	Switch					(bool light_on);
+			
+
+			// mmccxvii: FWR code
+			//*
+			void	RealSwitch				(bool light_on);
+			//*
+
 			bool	torch_active			() const;
 
 	virtual bool	can_be_attached			() const;

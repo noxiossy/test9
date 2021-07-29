@@ -57,6 +57,9 @@ bool CAI_Stalker::useful		(const CItemManager *manager, const CGameObject *objec
 	if (!inventory_item || !inventory_item->useful_for_NPC())
 		return			(false);
 
+	if (!const_cast<CAI_Stalker*>(this)->can_take(inventory_item))
+		return			(false);
+
 	const CBolt			*bolt = smart_cast<const CBolt*>(object);
 	if (bolt)
 		return			(false);
@@ -168,6 +171,7 @@ void CAI_Stalker::process_enemies		()
 	typedef MemorySpace::squad_mask_type	squad_mask_type;
 	typedef CVisualMemoryManager::VISIBLES	VISIBLES;
 
+	bool						found = false;
 	squad_mask_type				mask = memory().visual().mask();
 	VISIBLES::const_iterator	I = memory().visual().objects().begin();
 	VISIBLES::const_iterator	E = memory().visual().objects().end();
@@ -197,6 +201,7 @@ void CAI_Stalker::process_enemies		()
 		//Alundaio: END
 
 		memory().make_object_visible_somewhen	(member->memory().enemy().selected());
+		found					= true;
 		break;
 	}
 }

@@ -10,6 +10,8 @@
 
 #include "space_restriction_base.h"
 #include "../xrEngine/xr_collide_form.h"
+#include "restriction_space.h"
+#include "space_restrictor.h"
 
 class CSpaceRestrictor;
 

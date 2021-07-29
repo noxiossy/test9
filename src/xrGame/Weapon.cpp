@@ -29,6 +29,9 @@
 #include "ui/UIWindow.h"
 #include "ui/UIXmlInit.h"
 #include "Torch.h"
+#include "PostprocessAnimator.h"
+#include "CharacterPhysicsSupport.h"
+#include "HUDManager.h"
 
 #define WEAPON_REMOVE_TIME		60000
 #define ROTATION_TIME			0.25f
@@ -66,6 +69,7 @@ CWeapon::CWeapon()
     m_pFlameParticles2 = NULL;
     m_sFlameParticles2 = NULL;
 
+    m_fLR_MovingFactor 		= 0.f;
     m_fCurrentCartirdgeDisp = 1.f;
 
     m_strap_bone0 = 0;
@@ -81,6 +85,8 @@ CWeapon::CWeapon()
     m_activation_speed_is_overriden = false;
     m_cur_scope = NULL;
     m_bRememberActorNVisnStatus = false;
+
+    m_nearwall_last_hud_fov = psHUD_FOV_def;
 }
 
 CWeapon::~CWeapon()
@@ -136,7 +142,8 @@ void CWeapon::UpdateXForm()
     if ((HandDependence() == hd1Hand) || (GetState() == eReload) || (!E->g_Alive()))
         boneL = boneR2;
 
-    V->CalculateBones();
+	V->CalculateBones_Invalidate		();
+	V->CalculateBones			(true);
     Fmatrix& mL = V->LL_GetTransform(u16(boneL));
     Fmatrix& mR = V->LL_GetTransform(u16(boneR));
     // Calculate
@@ -483,6 +490,20 @@ void CWeapon::Load(LPCSTR section)
     m_zoom_params.m_sUseZoomPostprocess = 0;
     m_zoom_params.m_sUseBinocularVision = 0;
 
+	// mmccxvii: FWR code
+	//*
+	sndExplosion.create(READ_IF_EXISTS(pSettings, r_string, section, "snd_explosion", "weapon\\weapon_explosion"), st_Effect, sg_SourceType);
+	ppeExplosion = READ_IF_EXISTS(pSettings, r_string, section, "ppe_explosion", "ppe\\weapon_explosion.ppe");
+	//*
+	
+	
+    m_hud_fov_add_mod = READ_IF_EXISTS(pSettings, r_float, section, "hud_fov_addition_modifier", 0.f);
+
+    m_nearwall_dist_min       = READ_IF_EXISTS(pSettings, r_float, section, "nearwall_dist_min", 0.5f);
+    m_nearwall_dist_max       = READ_IF_EXISTS(pSettings, r_float, section, "nearwall_dist_max", 1.f);
+    m_nearwall_target_hud_fov = READ_IF_EXISTS(pSettings, r_float, section, "nearwall_target_hud_fov", 0.35f);
+    m_nearwall_speed_mod      = READ_IF_EXISTS(pSettings, r_float, section, "nearwall_speed_mod", 10.f);
+
 	// Added by Axel, to enable optional condition use on any item
 	m_flags.set( FUsingCondition, READ_IF_EXISTS( pSettings, r_bool, section, "use_condition", TRUE ));
 }
@@ -613,6 +634,12 @@ void CWeapon::net_Import(NET_Packet& P)
     };
     switch (wstate)
     {
+	// mmccxvii: FWR code
+	//*
+	case eTorch:
+	case eFireMode:
+	//*
+
     case eFire:
     case eFire2:
     case eSwitch:
@@ -722,6 +749,8 @@ void CWeapon::OnH_B_Independent(bool just_before_destroy)
     m_strapped_mode = false;
     m_zoom_params.m_bIsZoomModeNow = false;
     UpdateXForm();
+
+	m_nearwall_last_hud_fov = psHUD_FOV_def;
 }
 
 void CWeapon::OnH_A_Independent()
@@ -740,6 +769,14 @@ void CWeapon::OnH_A_Chield()
 
 void CWeapon::OnActiveItem()
 {
+	// mmccxvii: FWR code
+	//*
+	if (CActor* pActor = smart_cast<CActor*>(H_Parent()))
+	{
+		pActor->PlayAnm("weapon_show");
+	}
+	//*
+
     //. from Activate
     UpdateAddonsVisibility();
     m_BriefInfo_CalcFrame = 0;
@@ -793,6 +830,8 @@ void CWeapon::OnH_B_Chield()
 
     OnZoomOut();
     m_set_next_ammoType_on_reload = undefined_ammo_type;
+	
+	m_nearwall_last_hud_fov = psHUD_FOV_def;
 }
 
 extern u32 hud_adj_mode;
@@ -1008,6 +1047,14 @@ bool CWeapon::SwitchAmmoType(u32 flags)
     if (!(flags & CMD_START))
         return false;
 
+	// mmccxvii: FWR code
+	//*
+	if (CActor* pActor = smart_cast<CActor*>(H_Parent()))
+	{
+		pActor->PlayAnm("weapon_switch");
+	}
+	//*
+
     u8 l_newType = m_ammoType;
     bool b1, b2;
     do
@@ -1185,6 +1232,14 @@ BOOL CWeapon::CheckForMisfire()
         bMisfire = true;
         SwitchState(eMisfire);
 
+		// mmccxvii: FWR code
+		//*
+		if (GetCondition() < 0.2f && ::Random.randF(0.0f, 1.0f) > 0.5f)
+		{
+			Explosion();
+		}
+		//*
+		
         return TRUE;
     }
     else
@@ -1366,6 +1421,42 @@ float CWeapon::CurrentZoomFactor()
 {
     return IsScopeAttached() ? m_zoom_params.m_fScopeZoomFactor : m_zoom_params.m_fIronSightZoomFactor;
 };
+
+float CWeapon::GetHudFov()
+{
+    if (ParentIsActor() && Level().CurrentViewEntity() == H_Parent())
+    {
+        collide::rq_result& RQ   = HUD().GetCurrentRayQuery();
+        float               dist = RQ.range;
+
+        clamp(dist, m_nearwall_dist_min, m_nearwall_dist_max);
+        float fDistanceMod = ((dist - m_nearwall_dist_min) / (m_nearwall_dist_max - m_nearwall_dist_min)); // 0.f ... 1.f
+
+        float fBaseFov = psHUD_FOV_def + m_hud_fov_add_mod;
+        clamp(fBaseFov, 0.0f, FLT_MAX);
+
+        float src = m_nearwall_speed_mod * Device.fTimeDelta;
+        clamp(src, 0.f, 1.f);
+
+        float fTrgFov           = m_nearwall_target_hud_fov + fDistanceMod * (fBaseFov - m_nearwall_target_hud_fov);
+        m_nearwall_last_hud_fov = m_nearwall_last_hud_fov * (1 - src) + fTrgFov * src;
+    }
+
+    if (m_zoom_params.m_fZoomRotationFactor > 0.0f)
+    {
+        //float fDiff = m_nearwall_last_hud_fov /*- m_zoom_params.m_fZoomHudFov*/;
+        //return /*m_zoom_params.m_fZoomHudFov + */(fDiff * (1 - m_zoom_params.m_fZoomRotationFactor));
+		if (Actor()->HasInfo("block_collision")) return psHUD_FOV_def;
+		return m_nearwall_last_hud_fov;
+    }
+    else
+    {
+	if (Actor()->HasInfo("block_collision")) return psHUD_FOV_def;
+        return m_nearwall_last_hud_fov;
+    }
+}
+
+
 void GetZoomData(const float scope_factor, float& delta, float& min_zoom_factor);
 void CWeapon::OnZoomIn()
 {
@@ -1375,8 +1466,9 @@ void CWeapon::OnZoomIn()
     else
         m_zoom_params.m_fCurrentZoomFactor = CurrentZoomFactor();
 
-    EnableHudInertion(FALSE);
+	//EnableHudInertion					(1);
 
+	
     if (m_zoom_params.m_bZoomDofEnabled && !IsScopeAttached())
         GamePersistent().SetEffectorDOF(m_zoom_params.m_ZoomDof);
 
@@ -1404,7 +1496,7 @@ void CWeapon::OnZoomOut()
     m_zoom_params.m_bIsZoomModeNow = false;
     m_fRTZoomFactor = GetZoomFactor();//store current
     m_zoom_params.m_fCurrentZoomFactor = g_fov;
-    EnableHudInertion(TRUE);
+	//EnableHudInertion					(TRUE);
 
     GamePersistent().RestoreEffectorDOF();
 
@@ -1657,14 +1749,18 @@ void CWeapon::UpdateHudAdditonal(Fmatrix& trans)
     CActor* pActor = smart_cast<CActor*>(H_Parent());
     if (!pActor)		return;
 
+	attachable_hud_item*		hi = HudItemData();
+	R_ASSERT					(hi);
+		
+	u8 idx = GetCurrentHudOffsetIdx();
+
     if ((IsZoomed() && m_zoom_params.m_fZoomRotationFactor <= 1.f) ||
         (!IsZoomed() && m_zoom_params.m_fZoomRotationFactor > 0.f))
     {
-        u8 idx = GetCurrentHudOffsetIdx();
+
         //		if(idx==0)					return;
 
-        attachable_hud_item*		hi = HudItemData();
-        R_ASSERT(hi);
+
         Fvector						curr_offs, curr_rot;
         curr_offs = hi->m_measures.m_hands_offset[0][idx];//pos,aim
         curr_rot = hi->m_measures.m_hands_offset[1][idx];//rot,aim
@@ -1693,7 +1789,90 @@ void CWeapon::UpdateHudAdditonal(Fmatrix& trans)
             m_zoom_params.m_fZoomRotationFactor -= Device.fTimeDelta / m_zoom_params.m_fZoomRotateTime;
 
         clamp(m_zoom_params.m_fZoomRotationFactor, 0.f, 1.f);
-    }
+	}
+	
+
+	clamp(idx, 0ui8, 1ui8);
+
+	float fStrafeMaxTime = hi->m_measures.m_strafe_offset[2][idx].y; // Макс. время в секундах, за которое мы наклонимся из центрального положения
+	if (fStrafeMaxTime <= EPS)
+		fStrafeMaxTime = 0.01f;
+
+	float fStepPerUpd = Device.fTimeDelta / fStrafeMaxTime; // Величина изменение фактора поворота
+
+	u32 iMovingState = pActor->MovingState();
+	if ((iMovingState & mcLStrafe) != 0)
+	{ // Движемся влево
+		float fVal = (m_fLR_MovingFactor > 0.f ? fStepPerUpd * 3 : fStepPerUpd);
+		m_fLR_MovingFactor -= fVal;
+	}
+	else if ((iMovingState & mcRStrafe) != 0)
+	{ // Движемся вправо
+		float fVal = (m_fLR_MovingFactor < 0.f ? fStepPerUpd * 3 : fStepPerUpd);
+		m_fLR_MovingFactor += fVal;
+	}
+	else
+	{ // Двигаемся в любом другом направлении
+		if (m_fLR_MovingFactor < 0.0f)
+		{
+			m_fLR_MovingFactor += fStepPerUpd;
+			clamp(m_fLR_MovingFactor, -1.0f, 0.0f);
+		}
+		else
+		{
+			m_fLR_MovingFactor -= fStepPerUpd;
+			clamp(m_fLR_MovingFactor, 0.0f, 1.0f);
+		}
+	}
+
+	clamp(m_fLR_MovingFactor, -1.0f, 1.0f); // Фактор боковой ходьбы не должен превышать эти лимиты
+
+	// Производим наклон ствола для нормального режима и аима
+	for (int _idx = 0; _idx <= 1; _idx++)
+	{
+        bool bEnabled = (hi->m_measures.m_strafe_offset[2][_idx].x != 0.0f);
+		if (!bEnabled)
+			continue;
+
+		Fvector curr_offs, curr_rot;
+
+		// Смещение позиции худа в стрейфе
+        curr_offs = hi->m_measures.m_strafe_offset[0][_idx]; // pos
+		curr_offs.mul(m_fLR_MovingFactor);                   // Умножаем на фактор стрейфа
+
+		// Поворот худа в стрейфе
+        curr_rot = hi->m_measures.m_strafe_offset[1][_idx]; // rot
+		curr_rot.mul(-PI / 180.f);                          // Преобразуем углы в радианы
+		curr_rot.mul(m_fLR_MovingFactor);                   // Умножаем на фактор стрейфа
+
+		if (_idx == 0)
+		{ // От бедра
+            curr_offs.mul(1.f - m_zoom_params.m_fZoomRotationFactor);
+            curr_rot.mul(1.f - m_zoom_params.m_fZoomRotationFactor);
+        }
+        else
+        { // Во время аима
+            curr_offs.mul(m_zoom_params.m_fZoomRotationFactor);
+            curr_rot.mul(m_zoom_params.m_fZoomRotationFactor);
+		}
+
+		Fmatrix hud_rotation;
+		Fmatrix hud_rotation_y;
+
+		hud_rotation.identity();
+		hud_rotation.rotateX(curr_rot.x);
+
+		hud_rotation_y.identity();
+		hud_rotation_y.rotateY(curr_rot.y);
+		hud_rotation.mulA_43(hud_rotation_y);
+
+		hud_rotation_y.identity();
+		hud_rotation_y.rotateZ(curr_rot.z);
+		hud_rotation.mulA_43(hud_rotation_y);
+
+		hud_rotation.translate_over(curr_offs);
+		trans.mulB_43(hud_rotation);
+	}
 }
 
 void CWeapon::SetAmmoElapsed(int ammo_count)

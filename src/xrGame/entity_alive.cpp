@@ -283,10 +283,19 @@ void	CEntityAlive::Hit(SHit* pHDS)
 			StartBloodDrops(pWound);
 	}
 
-	if (HDS.hit_type != ALife::eHitTypeTelepatic){
-		//добавить кровь на стены
+	switch (HDS.hit_type)
+	{
+	case ALife::eHitTypeWound:
+	case ALife::eHitTypeExplosion:
+	case ALife::eHitTypeFireWound:
+	case ALife::eHitTypeStrike:
+	{
 		if (!use_simplified_visual())
 			BloodyWallmarks (HDS.damage(), HDS.dir, HDS.bone(), HDS.p_in_bone_space);
+		break;
+	}
+
+	default: break;
 	}
 
 	//-------------------------------------------
@@ -317,7 +326,7 @@ void CEntityAlive::Die	(CObject* who)
 	if (!getDestroy() && (GameID() == eGameIDSingle)) {
 		NET_Packet		P;
 		u_EventGen		(P,GE_ASSIGN_KILLER,ID());
-		P.w_u16			(u16(who->ID()));
+		P.w_u16			(who ? who->ID() : u16(-1));
 		u_EventSend		(P);
 	}
 

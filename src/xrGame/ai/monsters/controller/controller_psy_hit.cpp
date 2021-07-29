@@ -134,7 +134,9 @@ void CControllerPsyHit::play_anim()
 
 	ctrl_anim->global.set_motion ( m_stage[m_current_index] );
 	ctrl_anim->global.actual	= false;
-}
+    CController *monster = smart_cast<CController *>(m_object);
+    m_object->Hit_Psy		(Actor(), monster->m_tube_damage);
+}        
 
 namespace detail
 {
@@ -271,6 +273,8 @@ void CControllerPsyHit::death_glide_start()
 	
 	m_blocked			= true;
 
+    CController *monster = smart_cast<CController *>(m_object);
+	m_object->Hit_Psy		(Actor(), monster->m_tube_damage);
 	//////////////////////////////////////////////////////////////////////////
 	// set direction
 	SControlDirectionData			*ctrl_dir = (SControlDirectionData*)m_man->data(this, ControlCom::eControlDir); 

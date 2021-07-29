@@ -42,7 +42,7 @@
 LPCSTR script_section = "script";
 LPCSTR current_version = "current_server_entity_version";
 
-IC	u16	script_server_object_version	()
+u16	script_server_object_version	()
 {
 	static bool initialized		= false;
 	static u16  script_version	= 0;
@@ -252,7 +252,7 @@ void CSE_Abstract::Spawn_Write				(NET_Packet	&tNetPacket, BOOL bLocal)
 	tNetPacket.w_seek			(position,&size,sizeof(u16));
 }
 
-static enum EGameTypes {
+enum EGameTypes {
 	GAME_ANY							= 0,
 	GAME_SINGLE							= 1,
 	GAME_DEATHMATCH						= 2,

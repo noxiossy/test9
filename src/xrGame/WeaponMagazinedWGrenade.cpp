@@ -608,7 +608,8 @@ void CWeaponMagazinedWGrenade::PlayAnimHide()
 
 void CWeaponMagazinedWGrenade::PlayAnimReload()
 {
-    VERIFY(GetState() == eReload);
+	if (GetState() != eReload)
+		return;
 
 #ifdef NEW_ANIMS //AVO: use new animations
     if (IsGrenadeLauncherAttached())

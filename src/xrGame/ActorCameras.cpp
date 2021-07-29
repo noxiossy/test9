@@ -20,6 +20,9 @@
 #include "CharacterPhysicsSupport.h"
 #include "EffectorShot.h"
 
+ENGINE_API extern float psHUD_FOV; //--#SM+#--
+ENGINE_API extern float psHUD_FOV_def; //--#SM+#--
+
 #include "PHMovementControl.h"
 #include "../xrphysics/ielevatorstate.h"
 #include "../xrphysics/actorcameracollision.h"
@@ -254,7 +257,8 @@ void	CActor::cam_Lookout	( const Fmatrix &xform, float camera_height )
 					da			= PI/1000.f;
 					if (!fis_zero(r_torso.roll))
 						da		*= r_torso.roll/_abs(r_torso.roll);
-					for (float angle=0.f; _abs(angle)<_abs(alpha); angle+=da)
+					float angle = 0.f;
+					for (; _abs(angle)<_abs(alpha); angle+=da)
 					{
 						Fvector				pt;
 						calc_gl_point( pt, xform, radius, angle );
@@ -286,6 +290,17 @@ static const float	ik_cam_shift_speed = 0.01f;
 void CActor::cam_Update(float dt, float fFOV)
 {
 	if(m_holder)		return;
+
+	// HUD FOV Update --#SM+#--
+	if (this == Level().CurrentControlEntity())
+	{
+		CWeapon* pWeapon = smart_cast<CWeapon*>(this->inventory().ActiveItem());
+		if (eacFirstEye == cam_active && pWeapon)
+			psHUD_FOV = pWeapon->GetHudFov();
+		else
+			psHUD_FOV = psHUD_FOV_def;
+	}
+	//--#SM+#--
 
 	if( (mstate_real & mcClimb) && (cam_active!=eacFreeLook) )
 		camUpdateLadder(dt);

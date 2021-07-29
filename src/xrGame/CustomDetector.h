@@ -7,6 +7,8 @@
 #include "ai_sounds.h"
 //#include "ui/ArtefactDetectorUI.h"
 
+#include "../xrEngine/render.h" //E
+
 class CCustomZone;
 class CInventoryOwner;
 
@@ -165,6 +167,29 @@ protected:
 	float			m_fDecayRate; //Alundaio
 
 	CAfList			m_artefacts;
+	
+public:
+	
+	Fcolor					light_base_color;
+	float					light_base_range;
+	Fcolor					light_build_color;
+	float					light_build_range;
+	ref_light				light_render;
+	float					light_var_color;
+	float					light_var_range;
+	float					light_lifetime;
+	u32						light_frame;
+	bool					m_bLightShotEnabled;
+	bool					m_LightShadowsEnabled;
+	bool					m_LightPos;
+public:
+	void					Light_Create		();
+	void					Light_Destroy		();
+
+	void					Light_Start			();
+	void					Light_Render		(const Fvector& P);
+
+	virtual	void			LoadLights			(LPCSTR section, LPCSTR prefix);
 };
 
 class CZoneList : public CDetectList<CCustomZone>

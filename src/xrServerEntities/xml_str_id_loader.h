@@ -97,23 +97,18 @@ const typename ITEM_DATA* CSXML_IdToIndex::GetById (const shared_str& str_id, bo
 	T_INIT::InitXmlIdToIndex();
 		
 	for(T_VECTOR::iterator it = m_pItemDataVector->begin();
-		m_pItemDataVector->end() != it; ++it)
+		m_pItemDataVector->end() != it; it++)
 	{
 		if( (*it).id == str_id)
-			break;
+			return &(*it);
 	}
 
-	if(m_pItemDataVector->end() == it)
-	{
-		int i=0;
-		for(T_VECTOR::iterator it = m_pItemDataVector->begin();	m_pItemDataVector->end() != it; ++it,i++)
-			Msg("[%d]=[%s]",i,*(*it).id );
+	int i=0;
+	for(T_VECTOR::iterator it = m_pItemDataVector->begin();	m_pItemDataVector->end() != it; it++,i++)
+		Msg("[%d]=[%s]",i,*(*it).id );
 
-		R_ASSERT3(no_assert, "item not found, id", *str_id);
-		return NULL;
-	}
-		
-	return &(*it);
+	R_ASSERT3(no_assert, "item not found, id", *str_id);
+	return NULL;
 }
 
 TEMPLATE_SPECIALIZATION
@@ -174,7 +169,7 @@ typename void	CSXML_IdToIndex::InitInternal ()
 
 			//проверетить ID на уникальность
 			T_VECTOR::iterator t_it = m_pItemDataVector->begin();
-			for(;m_pItemDataVector->end() != t_it; ++t_it)
+			for(;m_pItemDataVector->end() != t_it; t_it++)
 			{
 				if(shared_str((*t_it).id) == shared_str(item_name))
 					break;

@@ -22,7 +22,7 @@
 #include "script_callback_ex.h"
 #include "script_game_object.h"
 #include "HudSound.h"
-
+#include "Torch.h"
 #include "../build_config_defines.h"
 
 ENGINE_API	bool	g_dedicated_server;
@@ -58,6 +58,11 @@ CWeaponMagazined::CWeaponMagazined(ESoundTypes eSoundType) : CWeapon()
     m_fOldBulletSpeed = 0;
     m_iQueueSize = WEAPON_ININITE_QUEUE;
     m_bLockType = false;
+
+	// mmccxvii: FWR code
+	//*
+	m_bNextFireMode = false;
+	//*
 }
 
 CWeaponMagazined::~CWeaponMagazined()
@@ -110,13 +115,23 @@ void CWeaponMagazined::Load(LPCSTR section)
     m_sounds.LoadSound(section, "snd_empty", "sndEmptyClick", true, m_eSoundEmptyClick);
     m_sounds.LoadSound(section, "snd_reload", "sndReload", true, m_eSoundReload);
 
-#ifdef NEW_SOUNDS //AVO: custom sounds go here
-    if (WeaponSoundExist(section, "snd_reload_empty"))
-        m_sounds.LoadSound(section, "snd_reload_empty", "sndReloadEmpty", true, m_eSoundReloadEmpty);
-    if (WeaponSoundExist(section, "snd_reload_misfire"))
-        m_sounds.LoadSound(section, "snd_reload_misfire", "sndReloadMisfire", true, m_eSoundReloadMisfire);
-#endif //-NEW_SOUNDS
+	// mmccxvii: FWR code
+	//*
+	if (WeaponSoundExist(section, "snd_fire_modes"))
+	{
+		m_sounds.LoadSound(section, "snd_fire_modes", "sndFireModes", false, m_eSoundEmptyClick);
+	}
 
+	if (WeaponSoundExist(section, "snd_reload_empty"))
+	{
+		m_sounds.LoadSound(section, "snd_reload_empty", "sndReloadEmpty", true, m_eSoundReloadEmpty);
+	}
+
+	if (WeaponSoundExist(section, "snd_reload_misfire"))
+	{
+		m_sounds.LoadSound(section, "snd_reload_misfire", "sndReloadMisfire", true, m_eSoundReloadMisfire);
+	}
+	//*
     m_sSndShotCurrent = IsSilencerAttached() ? "sndSilencerShot" : "sndShot";
 
     //звуки и партиклы глушителя, еслит такой есть
@@ -180,6 +195,12 @@ void CWeaponMagazined::FireStart()
                 if (GetState() == eShowing) return;
                 if (GetState() == eHiding) return;
                 if (GetState() == eMisfire) return;
+
+				// mmccxvii: FWR code
+				//*
+				if (GetState() == eTorch || GetState() == eFireMode)
+					return;
+				//*
 
                 inherited::FireStart();
 
@@ -463,6 +484,20 @@ void CWeaponMagazined::OnStateSwitch(u32 S)
     case eFire:
         switch2_Fire();
         break;
+
+	// mmccxvii: FWR code
+	//*
+	case eTorch:
+	{
+		switch2_Torch();
+	} break;
+
+	case eFireMode:
+	{
+		switch2_FireMode();
+	} break;
+	//*
+
     case eMisfire:
         if (smart_cast<CActor*>(this->H_Parent()) && (Level().CurrentViewEntity() == H_Parent()))
             CurrentGameUI()->AddCustomStatic("gun_jammed", true);
@@ -502,6 +537,12 @@ void CWeaponMagazined::UpdateCL()
     {
         switch (GetState())
         {
+		// mmccxvii: FWR code
+		//*
+		case eTorch:
+		case eFireMode:
+		//*
+
         case eShowing:
         case eHiding:
         case eReload:
@@ -535,13 +576,25 @@ void CWeaponMagazined::UpdateSounds()
     m_sounds.SetPosition("sndHide", P);
     //. nah	m_sounds.SetPosition("sndShot", P);
     m_sounds.SetPosition("sndReload", P);
+//. nah	m_sounds.SetPosition("sndEmptyClick", P);
 
-#ifdef NEW_SOUNDS //AVO: custom sounds go here
-    if (m_sounds.FindSoundItem("sndReloadEmpty", false))
-        m_sounds.SetPosition("sndReloadEmpty", P);
-#endif //-NEW_SOUNDS
+	// mmccxvii: FWR code
+	//*
+	if (m_sounds.FindSoundItem("sndFireModes", false))
+	{
+		m_sounds.SetPosition("sndFireModes", P);
+	}
 
-    //. nah	m_sounds.SetPosition("sndEmptyClick", P);
+	if (m_sounds.FindSoundItem("sndReloadEmpty", false))
+	{
+		m_sounds.SetPosition("sndReloadEmpty", P);
+	}
+
+	if (m_sounds.FindSoundItem("sndReloadMisfire", false))
+	{
+		m_sounds.SetPosition("sndReloadMisfire", P);
+	}
+	//*
 }
 
 void CWeaponMagazined::state_Fire(float dt)
@@ -731,6 +784,21 @@ void CWeaponMagazined::OnAnimationEnd(u32 state)
 {
     switch (state)
     {
+		// mmccxvii: FWR code
+		//*
+		case eTorch:
+		{
+			OnSwitchTorch();
+			SwitchState(eIdle);
+		} break;
+
+		case eFireMode:
+		{
+			OnSwitchFireMode();
+			SwitchState(eIdle);
+		} break;
+		//*
+
     case eReload:	ReloadMagazine();	SwitchState(eIdle);	break;	// End of reload animation
     case eHiding:	SwitchState(eHidden);   break;	// End of Hide
     case eShowing:	SwitchState(eIdle);		break;	// End of Show
@@ -801,33 +869,21 @@ void CWeaponMagazined::switch2_Empty()
 }
 void CWeaponMagazined::PlayReloadSound()
 {
-    if (m_sounds_enabled)
-    {
-#ifdef NEW_SOUNDS //AVO: use custom sounds
-        if (bMisfire)
-        {
-            //TODO: make sure correct sound is loaded in CWeaponMagazined::Load(LPCSTR section)
-            if (m_sounds.FindSoundItem("sndReloadMisfire", false))
-                PlaySound("sndReloadMisfire", get_LastFP());
-            else
-                PlaySound("sndReload", get_LastFP());
-        }
-        else
-        {
-            if (iAmmoElapsed == 0)
-            {
-                if (m_sounds.FindSoundItem("sndReloadEmpty", false))
-                    PlaySound("sndReloadEmpty", get_LastFP());
-                else
-                    PlaySound("sndReload", get_LastFP());
-            }
-            else
-                PlaySound("sndReload", get_LastFP());
-        }
-#else
-        PlaySound("sndReload", get_LastFP());
-#endif //-AVO
-    }
+	if (m_sounds_enabled)
+	{
+		LPCSTR CurrentSound = "sndReload";
+
+		if (bMisfire && m_sounds.FindSoundItem("sndReloadMisfire", false))
+		{
+			CurrentSound = "sndReloadMisfire";
+		}
+		else if (iAmmoElapsed == 0 && m_sounds.FindSoundItem("sndReloadEmpty", false))
+		{
+			CurrentSound = "sndReloadEmpty";
+		}
+
+		PlaySound(CurrentSound, get_LastFP());
+	}
 }
 
 void CWeaponMagazined::switch2_Reload()
@@ -843,6 +899,14 @@ void CWeaponMagazined::switch2_Hiding()
     OnZoomOut();
     CWeapon::FireEnd();
 
+	// mmccxvii: FWR code
+	//*
+	if (CActor* pActor = smart_cast<CActor*>(H_Parent()))
+	{
+		pActor->PlayAnm("weapon_hide");
+	}
+	//*
+	
     if (m_sounds_enabled)
         PlaySound("sndHide", get_LastFP());
 
@@ -858,15 +922,76 @@ void CWeaponMagazined::switch2_Hidden()
 
     signal_HideComplete();
     RemoveShotEffector();
+	
+	m_nearwall_last_hud_fov = psHUD_FOV_def;
 }
 void CWeaponMagazined::switch2_Showing()
 {
+	// mmccxvii: FWR code
+	//*
+	if (CActor* pActor = smart_cast<CActor*>(H_Parent()))
+	{
+		pActor->PlayAnm("weapon_show");
+	}
+	//*
+
     if (m_sounds_enabled)
         PlaySound("sndShow", get_LastFP());
 
     SetPending(TRUE);
     PlayAnimShow();
 }
+
+// mmccxvii: FWR code
+//*
+void CWeaponMagazined::switch2_Torch()
+{
+	inherited::FireEnd();
+
+	PlayAnimSwitchTorch();
+	SetPending(TRUE);
+}
+
+void CWeaponMagazined::OnSwitchTorch()
+{
+	// Если обладатель - актор
+	CActor* pActor = smart_cast<CActor*>(H_Parent());
+	if (!pActor)
+		return;
+
+	// Если у актора есть фонарь
+	CTorch* pTorch = smart_cast<CTorch*>(pActor->inventory().ItemFromSlot(TORCH_SLOT));
+	if (!pTorch)
+		return;
+
+	// Переключаем режим работы фонаря
+	pTorch->RealSwitch(!pTorch->torch_active());
+}
+
+void CWeaponMagazined::switch2_FireMode()
+{
+	inherited::FireEnd();
+
+	PlayAnimSwitchFireMode();
+	SetPending(TRUE);
+}
+
+void CWeaponMagazined::OnSwitchFireMode()
+{
+	if (!m_bHasDifferentFireModes || GetState() != eFireMode)
+		return;
+
+	if (m_sounds.FindSoundItem("sndFireModes", false))
+	{
+		PlaySound("sndFireModes", get_LastFP());
+	}
+
+	int CurrentMode = m_bNextFireMode ? 1 : -1;
+
+	m_iCurFireMode = (m_iCurFireMode + CurrentMode + m_aFireModes.size()) % m_aFireModes.size();
+	SetQueueSize(GetCurrentFireMode());
+}
+//*
 
 bool CWeaponMagazined::Action(u16 cmd, u32 flags)
 {
@@ -879,6 +1004,15 @@ bool CWeaponMagazined::Action(u16 cmd, u32 flags)
     {
     case kWPN_RELOAD:
     {
+			// mmccxvii: FWR code
+			//*
+			CActor* pActor = smart_cast<CActor*>(H_Parent());
+			if (pActor && pActor->MovingState() & mcSprint)
+			{
+				return true;
+			}
+			//*
+
         if (flags&CMD_START)
             if (iAmmoElapsed < iMagazineSize || IsMisfire())
                 Reload();
@@ -888,17 +1022,27 @@ bool CWeaponMagazined::Action(u16 cmd, u32 flags)
     {
         if (flags&CMD_START)
         {
-            OnPrevFireMode();
-            return true;
-        };
+				// mmccxvii: FWR code
+				//*
+				m_bNextFireMode = false;
+				SetPending(TRUE);
+				SwitchState(eFireMode);
+				//*
+				return true;
+			}
     }break;
     case kWPN_FIREMODE_NEXT:
     {
         if (flags&CMD_START)
-        {
-            OnNextFireMode();
-            return true;
-        };
+			{
+				// mmccxvii: FWR code
+				//*
+				m_bNextFireMode = true;
+				SetPending(TRUE);
+				SwitchState(eFireMode);
+				//*
+				return true;
+			}
     }break;
     }
     return false;
@@ -1203,39 +1347,84 @@ void CWeaponMagazined::PlayAnimHide()
 
 void CWeaponMagazined::PlayAnimReload()
 {
-    VERIFY(GetState() == eReload);
-#ifdef NEW_ANIMS //AVO: use new animations
-    if (bMisfire)
-    {
-        //Msg("AVO: ------ MISFIRE");
-        if (HudAnimationExist("anm_reload_misfire"))
-            PlayHUDMotion("anm_reload_misfire", TRUE, this, GetState());
-        else
-            PlayHUDMotion("anm_reload", TRUE, this, GetState());
-    }
-    else
-    {
-        if (iAmmoElapsed == 0)
-        {
-            if (HudAnimationExist("anm_reload_empty"))
-                PlayHUDMotion("anm_reload_empty", TRUE, this, GetState());
-            else
-                PlayHUDMotion("anm_reload", TRUE, this, GetState());
-        }
-        else
-        {
-            PlayHUDMotion("anm_reload", TRUE, this, GetState());
-        }
-    }
-#else
-    PlayHUDMotion("anm_reload", TRUE, this, GetState());
-#endif //-NEW_ANIM
+	if (GetState() != eReload)
+		return;
+
+	LPCSTR CurrentAnimation = "anm_reload";
+
+	if (bMisfire && m_sounds.FindSoundItem("sndReloadMisfire", false))
+	{
+		CurrentAnimation = "anm_reload_misfire";
+	}
+	else if (iAmmoElapsed == 0 && m_sounds.FindSoundItem("sndReloadEmpty", false))
+	{
+		CurrentAnimation = "anm_reload_empty";
+	}
+
+	PlayHUDMotion(CurrentAnimation, TRUE, this, GetState());
 }
 
 void CWeaponMagazined::PlayAnimAim()
 {
-    PlayHUDMotion("anm_idle_aim", TRUE, NULL, GetState());
+	PlayHUDMotion("anm_idle_aim", TRUE, NULL, GetState());
 }
+
+// mmccxvii: FWR code
+//*
+void CWeaponMagazined::PlayAnimSwitchTorch()
+{
+	// Сверяем текущий стейт
+	if (GetState() != eTorch)
+		return;
+
+	// Проверяем, что обладатель оружия - актор
+	CActor* pActor = smart_cast<CActor*>(H_Parent());
+
+	// А также, что анимация существует
+	if (pActor && IsHUDAnimationExist("anm_torch_switch") && !Actor()->HasInfo("block_torch") && !Actor()->HasInfo("block_torch_switch"))
+	{
+		// Проигрываем .anm-эффектор
+		pActor->PlayAnm("torch_switch_slow");
+		
+		// Проигрываем худовую анимацию
+		PlayHUDMotion("anm_torch_switch", true, this, GetState());
+		
+		luabind::functor<void> functor;
+		ai().script_engine().functor("rietmon_callbacks.torch_switch",functor);
+		functor(1);
+	}
+	else
+	{
+		OnSwitchTorch();
+		SwitchState(eIdle);
+	}
+}
+
+void CWeaponMagazined::PlayAnimSwitchFireMode()
+{
+	// Сверяем текущий стейт
+	if (GetState() != eFireMode)
+		return;
+
+	// Проверяем, что обладатель оружия - актор
+	CActor* pActor = smart_cast<CActor*>(H_Parent());
+
+	// А также, что анимация существует
+	if (pActor && IsHUDAnimationExist("anm_weapon_firemode"))
+	{
+		// Проигрываем .anm-эффектор
+		pActor->PlayAnm("weapon_switch");
+
+		// Проигрываем худовую анимацию
+		PlayHUDMotion("anm_switch_firemode", true, this, GetState());
+	}
+	else
+	{
+		OnSwitchFireMode();
+		SwitchState(eIdle);
+	}
+}
+//*
 
 void CWeaponMagazined::PlayAnimIdle()
 {
@@ -1320,22 +1509,6 @@ bool CWeaponMagazined::SwitchMode()
 
     return true;
 }
-
-void	CWeaponMagazined::OnNextFireMode()
-{
-    if (!m_bHasDifferentFireModes) return;
-    if (GetState() != eIdle) return;
-    m_iCurFireMode = (m_iCurFireMode + 1 + m_aFireModes.size()) % m_aFireModes.size();
-    SetQueueSize(GetCurrentFireMode());
-};
-
-void	CWeaponMagazined::OnPrevFireMode()
-{
-    if (!m_bHasDifferentFireModes) return;
-    if (GetState() != eIdle) return;
-    m_iCurFireMode = (m_iCurFireMode - 1 + m_aFireModes.size()) % m_aFireModes.size();
-    SetQueueSize(GetCurrentFireMode());
-};
 
 void	CWeaponMagazined::OnH_A_Chield()
 {

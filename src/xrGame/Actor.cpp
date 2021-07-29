@@ -100,7 +100,7 @@ static Fbox		bbCrouchBox;
 static Fvector	vFootCenter;
 static Fvector	vFootExt;
 
-Flags32			psActorFlags = {AF_GODMODE_RT | AF_AUTOPICKUP | AF_RUN_BACKWARD | AF_IMPORTANT_SAVE | AF_USE_TRACERS};
+Flags32			psActorFlags = {AF_GODMODE_RT | AF_AUTOPICKUP | AF_RUN_BACKWARD | AF_IMPORTANT_SAVE | AF_USE_TRACERS |AF_MULTI_ITEM_PICKUP};
 int				psActorSleepTime = 1;
 
 
@@ -214,7 +214,7 @@ CActor::CActor() : CEntityAlive(), current_ik_cam_shift(0)
     m_iLastHittingWeaponID = u16(-1);
     m_statistic_manager = NULL;
     //-----------------------------------------------------------------------------------
-    m_memory = g_dedicated_server ? 0 : xr_new<CActorMemory>(this);
+	m_memory				= xr_new<CActorMemory>(this);
     m_bOutBorder = false;
     m_hit_probability = 1.f;
     m_feel_touch_characters = 0;
@@ -270,8 +270,7 @@ void CActor::reinit()
     material().reinit();
 
     m_pUsableObject = NULL;
-    if (!g_dedicated_server)
-        memory().reinit();
+	memory().reinit							();
 
     set_input_external_handler(0);
     m_time_lock_accel = 0;
@@ -283,8 +282,7 @@ void CActor::reload(LPCSTR section)
     CInventoryOwner::reload(section);
     material().reload(section);
     CStepManager::reload(section);
-    if (!g_dedicated_server)
-        memory().reload(section);
+	memory().reload			(section);
     m_location_manager->reload(section);
 }
 void set_box(LPCSTR section, CPHMovementControl &mc, u32 box_num)
@@ -404,7 +402,7 @@ void CActor::Load(LPCSTR section)
     character_physics_support()->in_Load(section);
 
 
-    if (!g_dedicated_server)
+
     {
         LPCSTR hit_snd_sect = pSettings->r_string(section, "hit_sounds");
         for (int hit_type = 0; hit_type < (int) ALife::eHitTypeMax; ++hit_type)
@@ -517,7 +515,7 @@ void	CActor::Hit(SHit* pHDS)
     bool bPlaySound = true;
     if (!g_Alive()) bPlaySound = false;
 
-    if (!IsGameTypeSingle() && !g_dedicated_server)
+	if (!IsGameTypeSingle() )
     {
         game_PlayerState* ps = Game().GetPlayerByGameID(ID());
         if (ps && ps->testFlag(GAME_PLAYER_FLAG_INVINCIBLE))
@@ -548,8 +546,7 @@ void	CActor::Hit(SHit* pHDS)
         last_hit_frame = Device.dwFrame;
     };
 
-    if (!g_dedicated_server				&&
-        !sndHit[HDS.hit_type].empty() &&
+	if(	!sndHit[HDS.hit_type].empty()	&&
         conditions().PlayHitSound(pHDS))
     {
         ref_sound& S = sndHit[HDS.hit_type][Random.randI(sndHit[HDS.hit_type].size())];
@@ -582,9 +579,7 @@ void	CActor::Hit(SHit* pHDS)
     m_hit_slowmo = conditions().HitSlowmo(pHDS);
 
     //---------------------------------------------------------------
-    if ((Level().CurrentViewEntity() == this) &&
-        !g_dedicated_server &&
-        (HDS.hit_type == ALife::eHitTypeFireWound))
+	if(Level().CurrentViewEntity() == this && (HDS.hit_type == ALife::eHitTypeFireWound) )
     {
         CObject* pLastHitter = Level().Objects.net_Find(m_iLastHitterID);
         CObject* pLastHittingWeapon = Level().Objects.net_Find(m_iLastHittingWeaponID);
@@ -600,7 +595,7 @@ void	CActor::Hit(SHit* pHDS)
             mstate_wishful &= ~mcSprint;
         }
     }
-    if (!g_dedicated_server && !m_disabled_hitmarks)
+	if(!m_disabled_hitmarks)
     {
         bool b_fireWound = (pHDS->hit_type == ALife::eHitTypeFireWound || pHDS->hit_type == ALife::eHitTypeWound_2);
         b_initiated = b_initiated && (pHDS->hit_type == ALife::eHitTypeStrike);
@@ -1027,7 +1022,7 @@ void CActor::g_Physics(Fvector& _accel, float jump, float dt)
         }
     }
 }
-float g_fov = 55.0f;
+float g_fov = 70.0f;
 
 float CActor::currentFOV()
 {
@@ -1053,15 +1048,21 @@ void CActor::UpdateCL()
 {
     if (g_Alive() && Level().CurrentViewEntity() == this)
     {
-        if (CurrentGameUI() && NULL == CurrentGameUI()->TopInputReceiver())
+		if(CurrentGameUI() && !CurrentGameUI()->TopInputReceiver() && !m_holder)
         {
-            int dik = get_action_dik(kUSE, 0);
-            if (dik && pInput->iGetAsyncKeyState(dik))
-                m_bPickupMode = true;
+			const bool allowed = psActorFlags.test(AF_MULTI_ITEM_PICKUP);
 
-            dik = get_action_dik(kUSE, 1);
-            if (dik && pInput->iGetAsyncKeyState(dik))
-                m_bPickupMode = true;
+            auto dik = get_action_dik(kUSE, 0);
+            if (dik && pInput->iGetAsyncKeyState(dik) && allowed)
+				m_bPickupMode=true;
+			
+			dik = get_action_dik(kUSE, 1);
+			if(dik && pInput->iGetAsyncKeyState(dik) && allowed)
+				m_bPickupMode=true;
+		}
+        else
+        {
+            m_bPickupMode = false;
         }
     }
 
@@ -1181,7 +1182,8 @@ void CActor::UpdateCL()
     if (IsFocused())
         g_player_hud->update(trans);
 
-    m_bPickupMode = false;
+    if (psActorFlags.test(AF_MULTI_ITEM_PICKUP))
+        m_bPickupMode = false;
 }
 
 float	NET_Jump = 0;
@@ -1306,7 +1308,7 @@ void CActor::shedule_Update(u32 DT)
             mstate_wishful &= ~mcRLookout;
             mstate_wishful &= ~mcFwd;
             mstate_wishful &= ~mcBack;
-            if (!psActorFlags.test(AF_CROUCH_TOGGLE))
+			if( !psActorFlags.test(AF_CROUCH_TOGGLE) && !(mstate_real&(mcJump | mcFall)) )
                 mstate_wishful &= ~mcCrouch;
         }
     }
@@ -1732,7 +1734,7 @@ void CActor::ForceTransform(const Fmatrix& m)
         character_physics_support()->movement()->BlockDamageSet(u64(block_damage_time_seconds / fixed_step));
 }
 
-ENGINE_API extern float		psHUD_FOV;
+//ENGINE_API extern float		psHUD_FOV;
 float CActor::Radius()const
 {
     float R = inherited::Radius();
@@ -2214,3 +2216,27 @@ bool CActor::unlimited_ammo()
 {
     return !!psActorFlags.test(AF_UNLIMITEDAMMO);
 }
+
+
+// mmccxvii: FWR code
+//*
+void CActor::PlayAnm(LPCSTR Section)
+{
+	if (!is_alive())
+		return;
+
+	string_path StringPath, AnmName;
+
+	strconcat(sizeof(AnmName), AnmName, "camera_effects\\", Section, ".anm");
+
+	if (FS.exist(StringPath, "$game_anims$", AnmName))
+	{
+		CAnimatorCamEffector* Effector = xr_new<CAnimatorCamEffector>();
+		Effector->SetType(eCEWeaponAction);
+		Effector->SetHudAffect(false);
+		Effector->SetCyclic(false);
+		Effector->Start(AnmName);
+		Cameras().AddCamEffector(Effector);
+	}
+}
+//* 

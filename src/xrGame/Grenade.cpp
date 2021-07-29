@@ -43,7 +43,7 @@ void CGrenade::Load(LPCSTR section)
 
 void CGrenade::Hit					(SHit* pHDS)
 {
-	if( ALife::eHitTypeExplosion==pHDS->hit_type && m_grenade_detonation_threshold_hit<pHDS->damage()&&CExplosive::Initiator()==u16(-1)) 
+	if( ALife::eHitTypeFireWound==pHDS->hit_type || ALife::eHitTypeExplosion==pHDS->hit_type || ALife::eHitTypeBurn==pHDS->hit_type )//&& m_grenade_detonation_threshold_hit<pHDS->damage()&&CExplosive::Initiator()==u16(-1)) 
 	{
 		CExplosive::SetCurrentParentID(pHDS->who->ID());
 		Destroy();

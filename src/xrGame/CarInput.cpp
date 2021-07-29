@@ -16,6 +16,15 @@
 #include "../Include/xrRender/Kinematics.h"
 #include "level.h"
 #include "CarWeapon.h"
+#include "../xrphysics/PhysicsShell.h"
+#include "PhysicsShellHolder.h"
+#include "object_broker.h"
+#include "ai_sounds.h"
+#include "weaponAmmo.h"
+#include "game_object_space.h"
+#include "inventory.h"
+#include "../xrEngine/CustomHud.h"
+#include "UIDialogHolder.h"
 
 void	CCar::OnMouseMove(int dx, int dy)
 {
@@ -136,6 +145,7 @@ void CCar::OnKeyboardPress(int cmd)
 	case kDETECTOR:	SwitchEngine();				break;
 	case kTORCH:	m_lights.SwitchHeadLights();break;
 	case kUSE:									break;
+    case kWPN_FIRE: if (HasWeapon()) m_car_weapon->Action(CCarWeapon::eWpnFire, 1); break;	//LA
 	};
 
 }
@@ -151,6 +161,7 @@ void	CCar::OnKeyboardRelease(int cmd)
 	case kL_STRAFE:	ReleaseLeft();				if (OwnerActor()) OwnerActor()->steer_Vehicle(0);	break;
 	case kR_STRAFE:	ReleaseRight();				if (OwnerActor()) OwnerActor()->steer_Vehicle(0);	break;
 	case kJUMP:		ReleaseBreaks();			break;
+	case kWPN_FIRE: 							if (HasWeapon()) m_car_weapon->Action(CCarWeapon::eWpnFire, 0); break;	//LA
 	};
 }
 

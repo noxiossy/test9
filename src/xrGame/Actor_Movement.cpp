@@ -218,6 +218,8 @@ void CActor::g_cl_CheckControls(u32 mstate_wf, Fvector &vControlAccel, float &Ju
 			}
 		}
 
+		CWeapon* W = smart_cast<CWeapon*>(inventory().ActiveItem());
+		
 		if ((mstate_wf&mcSprint) && !CanSprint())
 			mstate_wf				&= ~mcSprint;
 
@@ -228,12 +230,19 @@ void CActor::g_cl_CheckControls(u32 mstate_wf, Fvector &vControlAccel, float &Ju
 			mstate_real|=mcSprint;
 		else
 			mstate_real&=~mcSprint;
-		if(!(mstate_real&(mcFwd|mcLStrafe|mcRStrafe))||mstate_real&(mcCrouch|mcClimb)|| !isActorAccelerated(mstate_wf, IsZoomAimingMode()))
+		if(!(mstate_real&(mcFwd|mcLStrafe|mcRStrafe))||mstate_real&(mcCrouch|mcClimb)|| !isActorAccelerated(mstate_wf, IsZoomAimingMode()) || W && W->GetState() == W->eFire)
 		{
 			mstate_real&=~mcSprint;
 			mstate_wishful&=~mcSprint;
 		}
 				
+		if (mstate_real & mcJump)
+		{
+			mstate_real &= ~mcSprint;
+			mstate_real &= ~mcFwd;
+			mstate_wishful &= ~mcFwd;
+		}
+		
 		// check player move state
 		if(mstate_real&mcAnyMove)
 		{
@@ -284,12 +293,12 @@ void CActor::g_cl_CheckControls(u32 mstate_wf, Fvector &vControlAccel, float &Ju
 	if(mstate_real&mcSprint && !(mstate_old&mcSprint) )
 		state_anm					= "sprint";
 	else
-	if(mstate_real&mcLStrafe && !(mstate_old&mcLStrafe) )
+/*	if(mstate_real&mcLStrafe && !(mstate_old&mcLStrafe) )
 		state_anm					= "strafe_left";
 	else
 	if(mstate_real&mcRStrafe && !(mstate_old&mcRStrafe) )
 		state_anm					= "strafe_right";
-	else
+	else*/
 	if(mstate_real&mcFwd && !(mstate_old&mcFwd) )
 		state_anm					= "move_fwd";
 	else
@@ -555,7 +564,7 @@ bool CActor::CanSprint()
 bool CActor::CanJump()
 {
 	bool can_Jump = 
-		!character_physics_support()->movement()->PHCapture() &&((mstate_real&mcJump)==0) && (m_fJumpTime<=0.f) 
+		!conditions().IsCantSprint() && !character_physics_support()->movement()->PHCapture() &&((mstate_real&mcJump)==0) && (m_fJumpTime<=0.f) 
 		&& !m_bJumpKeyPressed &&!IsZoomAimingMode();
 
 	return can_Jump;

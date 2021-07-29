@@ -20,6 +20,9 @@
 #include "Explosive.h"
 #include "PHDestroyable.h"
 #include "DelayedActionFuse.h"
+#include "InventoryOwner.h"
+#include "../xrServerEntities/inventory_space.h"
+
 // refs
 class ENGINE_API			CBoneInstance;
 class						CActor;
@@ -556,6 +559,9 @@ public:
 	bool					Enter						(const Fvector& pos,const Fvector& dir,const Fvector& foot_pos);
 	bool					Exit						(const Fvector& pos,const Fvector& dir);
 	bool					Use							(const Fvector& pos,const Fvector& dir,const Fvector& foot_pos);
+
+	void					DoExit();//+
+	void					DoEnter();//+
 	u16						DriverAnimationType 		();
 	// Core events
 	virtual DLL_Pure		*_construct					();

@@ -7,6 +7,9 @@
 #include "static_cast_checked.hpp"
 #include "actoreffector.h"
 #include "../xrEngine/IGame_Persistent.h"
+#include "Weapon.h"
+#include "InventoryOwner.h"
+#include "inventory.h"
 
 player_hud* g_player_hud = NULL;
 Fvector _ancor_pos;
@@ -79,6 +82,11 @@ void player_hud_motion_container::load(IKinematicsAnimated* model, const shared_
 					xr_sprintf				(buff,"%s%d",pm->m_base_name.c_str(),i);		
 
 				motion_ID				= model->ID_Cycle_Safe(buff);
+				
+                if (!motion_ID.valid() && i == 0)
+                {
+                    motion_ID = model->ID_Cycle_Safe("hand_idle_doun");
+                }
 				if(motion_ID.valid())
 				{
 					pm->m_animations.resize			(pm->m_animations.size()+1);
@@ -89,7 +97,7 @@ void player_hud_motion_container::load(IKinematicsAnimated* model, const shared_
 #endif // #ifdef DEBUG
 				}
 			}
-			R_ASSERT2(pm->m_animations.size(),make_string("motion not found [%s]", pm->m_base_name.c_str()).c_str());
+			VERIFY2(pm->m_animations.size(),make_string("motion not found [%s]", pm->m_base_name.c_str()).c_str());
 		}
 	}
 }
@@ -291,6 +299,22 @@ void hud_item_measures::load(const shared_str& sect_name, IKinematics* K)
 	R_ASSERT2(pSettings->line_exist(sect_name,"shell_point")==pSettings->line_exist(sect_name,"shell_bone"),	sect_name.c_str());
 
 	m_prop_flags.set(e_16x9_mode_now,is_16x9);
+
+	m_strafe_offset[0][0] = Fvector().set(0.015f, 0.0f, 0.0f);
+	m_strafe_offset[1][0] = Fvector().set(0.0f, 0.0f, 5.5f);
+
+	m_strafe_offset[0][1] = Fvector().set(0.02f, 0.0f, 0.0f);
+	m_strafe_offset[1][1] = Fvector().set(0.0f, 0.0f, 1.5f);
+
+	bool  bStrafeEnabled        = true;
+	bool  bStrafeEnabled_aim    = false;
+	float fFullStrafeTime       = 0.25f;
+	float fFullStrafeTime_aim   = 0.15f;
+
+	//--> (Data 1)
+	m_strafe_offset[2][0].set(bStrafeEnabled, fFullStrafeTime, 0.0f);         // normal
+	m_strafe_offset[2][1].set(bStrafeEnabled_aim, fFullStrafeTime_aim, 0.0f); // aim-GL
+
 }
 
 attachable_hud_item::~attachable_hud_item()
@@ -323,7 +347,7 @@ u32 attachable_hud_item::anim_play(const shared_str& anm_name_b, BOOL bMixIn, co
 
 	player_hud_motion* anm	= m_hand_motions.find_motion(anim_name_r);
 	R_ASSERT2				(anm, make_string("model [%s] has no motion alias defined [%s]", m_sect_name.c_str(), anim_name_r).c_str());
-	R_ASSERT2				(anm->m_animations.size(), make_string("model [%s] has no motion defined in motion_alias [%s]", pSettings->r_string(m_sect_name, "item_visual"), anim_name_r).c_str());
+	VERIFY2					(anm->m_animations.size(), make_string("model [%s] has no motion defined in motion_alias [%s]", pSettings->r_string(m_sect_name, "item_visual"), anim_name_r).c_str());
 	
 	rnd_idx					= (u8)Random.randI(anm->m_animations.size()) ;
 	const motion_descr& M	= anm->m_animations[ rnd_idx ];
@@ -512,7 +536,7 @@ u32 player_hud::motion_length(const shared_str& anim_name, const shared_str& hud
 	float speed						= CalcMotionSpeed(anim_name);
 	attachable_hud_item* pi			= create_hud_item(hud_name);
 	player_hud_motion*	pm			= pi->m_hand_motions.find_motion(anim_name);
-	if(!pm)
+	if(!pm || !pm->m_animations.size())
 		return						100; // ms TEMPORARY
 	R_ASSERT2						(pm, 
 		make_string	("hudItem model [%s] has no motion with alias [%s]", hud_name.c_str(), anim_name.c_str() ).c_str() 
@@ -531,6 +555,9 @@ u32 player_hud::motion_length(const MotionID& M, const CMotionDef*& md, float sp
 	}
 	return					0;
 }
+
+#pragma warning(push)
+#pragma warning(disable: 4172)
 const Fvector& player_hud::attach_rot() const
 {
 	if(m_attached_items[0])
@@ -552,6 +579,7 @@ const Fvector& player_hud::attach_pos() const
 	else
 		return Fvector().set(0,0,0);
 }
+#pragma warning(pop)
 
 void player_hud::update(const Fmatrix& cam_trans)
 {
@@ -609,8 +637,8 @@ void player_hud::update_additional	(Fmatrix& trans)
 }
 
 
-static const float PITCH_OFFSET_R	= 0.017f;
-static const float PITCH_OFFSET_N	= 0.012f;
+static const float PITCH_OFFSET_R	= 0.0f;
+static const float PITCH_OFFSET_N	= 0.0f;
 static const float PITCH_OFFSET_D	= 0.02f;
 static const float ORIGIN_OFFSET	= -0.05f;
 static const float TENDTO_SPEED		= 5.f;
@@ -646,8 +674,21 @@ void player_hud::update_inertion(Fmatrix& trans)
 		// pitch compensation
 		float pitch							= angle_normalize_signed(xform.k.getP());
 		origin.mad							(xform.k,	-pitch * PITCH_OFFSET_D);
-		origin.mad							(xform.i,	-pitch * PITCH_OFFSET_R);
-		origin.mad							(xform.j,	-pitch * PITCH_OFFSET_N);
+
+		if (Actor()->inventory().GetActiveSlot() != NO_ACTIVE_SLOT)
+		{
+			CWeapon *pW = smart_cast<CWeapon*>(Actor()->inventory().ItemFromSlot(Actor()->inventory().GetActiveSlot()));
+			if (pW && pW->IsZoomed())
+			{
+				origin.mad							(xform.i,	-pitch * 0.f);
+				origin.mad							(xform.j,	-pitch * 0.f);
+			}
+			else 
+			{
+				origin.mad(xform.i, -pitch * PITCH_OFFSET_R);
+				origin.mad(xform.j, -pitch * PITCH_OFFSET_N);
+			}
+		}
 	}
 }
 

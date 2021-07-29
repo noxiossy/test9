@@ -24,7 +24,7 @@ public:
 	virtual void			net_Export				(NET_Packet& P);
 	virtual void			net_Import				(NET_Packet& P);
 	virtual void			OnH_A_Chield			();
-
+	virtual void 			OnH_B_Independent	(bool just_before_destroy);
 	float					GetDefHitTypeProtection	(ALife::EHitType hit_type);
 	float					GetHitTypeProtection	(ALife::EHitType hit_type, s16 element);
 	float					GetBoneArmor			(s16 element);

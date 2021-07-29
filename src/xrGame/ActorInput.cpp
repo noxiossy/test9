@@ -103,11 +103,11 @@ void CActor::IR_OnKeyboardPress(int cmd)
 	case kCAM_1:	cam_Set			(eacFirstEye);				break;
 	case kCAM_2:	cam_Set			(eacLookAt);				break;
 	case kCAM_3:	cam_Set			(eacFreeLook);				break;
-	case kNIGHT_VISION:
+	/*case kNIGHT_VISION:
 		{
 			SwitchNightVision();
 			break;
-		}
+		}*/
 	case kTORCH:
 		{
 			SwitchTorch();
@@ -159,7 +159,7 @@ void CActor::IR_OnKeyboardPress(int cmd)
 			OnPrevWeaponSlot();
 		}break;
 
-	case kQUICK_USE_1:
+	/*case kQUICK_USE_1:
 	case kQUICK_USE_2:
 	case kQUICK_USE_3:
 	case kQUICK_USE_4:
@@ -187,7 +187,7 @@ void CActor::IR_OnKeyboardPress(int cmd)
 					CurrentGameUI()->GetActorMenu().m_pQuickSlot->ReloadReferences(this);
 				}
 			}
-		}break;
+		}break;*/
 	}
 }
 
@@ -218,6 +218,10 @@ void CActor::IR_OnKeyboardRelease(int cmd)
 
 	if (g_Alive())	
 	{
+        if (cmd == kUSE && !psActorFlags.test(AF_MULTI_ITEM_PICKUP)) 
+			m_bPickupMode = false;
+			//PickupModeOff();
+
 		if(m_holder)
 		{
 			m_holder->OnKeyboardRelease(cmd);
@@ -380,7 +384,10 @@ void CActor::ActorUse()
 		CGameObject::u_EventSend	(P);
 		return;
 	}
-				
+	
+    if (!psActorFlags.test(AF_MULTI_ITEM_PICKUP))
+        m_bPickupMode = true;
+	
 	if(character_physics_support()->movement()->PHCapture())
 		character_physics_support()->movement()->PHReleaseObject();
 
@@ -428,7 +435,7 @@ void CActor::ActorUse()
 						if ( !m_pPersonWeLookingAt->deadbody_closed_status() )
 						{
 							if(pEntityAliveWeLookingAt->AlreadyDie() && 
-								pEntityAliveWeLookingAt->GetLevelDeathTime()+3000 < Device.dwTimeGlobal)
+								pEntityAliveWeLookingAt->GetLevelDeathTime()+1000 < Device.dwTimeGlobal)
 								// 99.9% dead
 								pGameSP->StartCarBody(this, m_pPersonWeLookingAt );
 						}

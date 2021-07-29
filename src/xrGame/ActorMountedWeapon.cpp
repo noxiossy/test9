@@ -50,7 +50,7 @@ bool CActor::use_HolderEx(CHolderCustom* object, bool bForce)
 				if (object->attach_Actor(this)){
 					// destroy actor character
 					character_physics_support()->movement()->DestroyCharacter();
-
+					PickupModeOff();
 					m_holder = object;
 					if (pCamBobbing){
 						Cameras().RemoveCamEffector(eCEBobbing);

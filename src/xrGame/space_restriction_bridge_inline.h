@@ -21,7 +21,7 @@ IC	CSpaceRestrictionBase &CSpaceRestrictionBridge::object	() const
 }
 
 template <typename T>
-IC	u32	CSpaceRestrictionBridge::accessible_nearest	(T &restriction, const Fvector &position, Fvector &result, bool out_restriction)
+IC	u32	CSpaceRestrictionBridge::accessible_nearest	(const T restriction, const Fvector &position, Fvector &result, bool out_restriction)
 {
 #pragma todo("Dima to Dima : _Warning : this place can be optimized in case of a slowdown")
 	VERIFY							(initialized());
@@ -55,6 +55,7 @@ IC	u32	CSpaceRestrictionBridge::accessible_nearest	(T &restriction, const Fvecto
 			VPUSH(position)
 		)
 	);
+    if (!ai().level_graph().valid_vertex_id(selected)) return u32(-1);
 
 	{
 		min_dist_sqr = flt_max;
@@ -81,6 +82,7 @@ IC	u32	CSpaceRestrictionBridge::accessible_nearest	(T &restriction, const Fvecto
 		selected	= new_selected;
 	}
 	VERIFY	(ai().level_graph().valid_vertex_id(selected));
+    if (!ai().level_graph().valid_vertex_id(selected)) return u32(-1);
 
 	{
 		Fvector		center = ai().level_graph().vertex_position(selected);
@@ -117,7 +119,7 @@ IC	u32	CSpaceRestrictionBridge::accessible_nearest	(T &restriction, const Fvecto
 		VERIFY	(found);
 	}
 	VERIFY		(ai().level_graph().valid_vertex_id(selected));
-	
+    if (!ai().level_graph().valid_vertex_id(selected)) return u32(-1);
 	return		(selected);
 }
 

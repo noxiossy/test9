@@ -30,7 +30,7 @@ CDestroyablePhysicsObject::~CDestroyablePhysicsObject()
 void CDestroyablePhysicsObject::OnChangeVisual()
 {
 	if (m_pPhysicsShell){
-		m_pPhysicsShell->Deactivate();
+		if(m_pPhysicsShell)m_pPhysicsShell->Deactivate();
 		xr_delete		(m_pPhysicsShell);
 		VERIFY			(0==Visual());
 	}
@@ -50,6 +50,16 @@ void CDestroyablePhysicsObject::net_Destroy()
 
 BOOL CDestroyablePhysicsObject::net_Spawn(CSE_Abstract* DC)
 {
+	CSE_Abstract *E = (CSE_Abstract*)DC;
+	const CSE_Visual *visual = smart_cast<const CSE_Visual*>( E );
+	if ( visual ) {
+	  shared_str N = visual_name( E );
+	  if ( !( N.c_str() && N[ 0 ] ) ) {
+	    Msg( "! [%s]: prevent %s[%u] from spawn because it has no visual", __FUNCTION__, E->name_replace()[ 0 ] ? E->name_replace() : E->s_name.c_str(), E->ID );
+	    return FALSE;
+	  }
+	}
+
 	BOOL res=inherited::net_Spawn(DC);
 	IKinematics		*K=smart_cast<IKinematics*>(Visual());
 	CInifile* ini=K->LL_UserData();

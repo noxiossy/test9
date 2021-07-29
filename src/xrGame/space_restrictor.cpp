@@ -66,6 +66,14 @@ BOOL CSpaceRestrictor::net_Spawn	(CSE_Abstract* data)
 		}
 	}
 
+	if ( se_shape->shapes.empty() ) {
+		Msg( "! [%s]: %s has no shapes", __FUNCTION__, cName().c_str() );
+		CShapeData::shape_def _shape;
+		_shape.data.sphere.P.set( 0.0f, 0.0f, 0.0f );
+		_shape.data.sphere.R = 1.0f;
+		shape->add_sphere( _shape.data.sphere );
+	}
+
 	shape->ComputeBounds			();
 
 	BOOL							result = inherited::net_Spawn(data);

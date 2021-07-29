@@ -103,6 +103,19 @@ void CHelmet::OnH_A_Chield()
 //	ReloadBonesProtection();
 }
 
+void CHelmet::OnH_B_Independent(bool just_before_destroy) 
+{
+	inherited::OnH_B_Independent(just_before_destroy);
+	
+	CActor* pActor = smart_cast<CActor*> (H_Parent());
+		if (pActor)
+		{
+			CTorch* pTorch = smart_cast<CTorch*>(pActor->inventory().ItemFromSlot(TORCH_SLOT));
+			if(pTorch)
+				pTorch->SwitchNightVision(false);
+		}
+}
+
 void CHelmet::OnMoveToSlot(const SInvItemPlace& previous_place)
 {
 	inherited::OnMoveToSlot		(previous_place);

@@ -15,6 +15,7 @@
 #include "PhraseDialogManager.h"
 #include "ui_defs.h"
 
+#include "car.h"
 #include "step_manager.h"
 #include "script_export_space.h"
 
@@ -385,6 +386,10 @@ protected:
     void					PickupModeUpdate	();
     void					PickupInfoDraw		(CObject* object);
     void					PickupModeUpdate_COD ();
+
+public:
+	void					PickupModeOn		();
+	void					PickupModeOff		();
 
     //////////////////////////////////////////////////////////////////////////
     // Motions (передвижения актрера)
@@ -787,6 +792,16 @@ private:
 				mstate_wishful = state;
 			}
       
+public:
+	// mmccxvii: FWR code
+	//*
+
+	// ?.anm anims\\camera_effects
+	void PlayAnm(LPCSTR Section);
+
+	//*
+
+private:
 DECLARE_SCRIPT_REGISTER_FUNCTION
 };
 add_to_type_list(CActor)

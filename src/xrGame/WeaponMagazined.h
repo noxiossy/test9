@@ -45,7 +45,14 @@ protected:
     virtual void	switch2_Hiding();
     virtual void	switch2_Hidden();
     virtual void	switch2_Showing();
+	// mmccxvii: FWR code
+	//*
+	virtual void	switch2_Torch();
+	virtual void	OnSwitchTorch();
 
+	virtual void	switch2_FireMode();
+	virtual void	OnSwitchFireMode();
+	//*
     virtual void	OnShot();
 
     virtual void	OnEmptyClick();
@@ -154,8 +161,7 @@ protected:
 public:
     virtual void	OnZoomIn();
     virtual void	OnZoomOut();
-    void	OnNextFireMode();
-    void	OnPrevFireMode();
+
     bool	HasFireModes()
     {
         return m_bHasDifferentFireModes;
@@ -191,6 +197,11 @@ protected:
     virtual void	PlayReloadSound();
     virtual void	PlayAnimAim();
 
+	// mmccxvii: FWR code
+	//*
+	virtual void	PlayAnimSwitchTorch();
+	virtual void	PlayAnimSwitchFireMode();
+	//*
     virtual	int		ShotsFired()
     {
         return m_iShotNum;
@@ -204,6 +215,13 @@ protected:
         u16 parent_id,
         u16 weapon_id,
         bool send_hit);
+private:
+	// mmccxvii: FWR code
+	//*
+	bool m_bNextFireMode;
+	//*
+
+public:
     //AVO: for custom added sounds check if sound exists
     bool WeaponSoundExist(LPCSTR section, LPCSTR sound_name);
 

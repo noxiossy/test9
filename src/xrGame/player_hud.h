@@ -39,6 +39,8 @@ struct hud_item_measures
 
 	Fvector							m_hands_offset[2][3];//pos,rot/ normal,aim,GL
 
+	Fvector 						m_strafe_offset[3][2]; // pos,rot,data1/ normal,aim-GL 
+	
 	u16								m_fire_bone;
 	Fvector							m_fire_point_offset;
 	u16								m_fire_bone2;

@@ -5,6 +5,7 @@
 #include "../../../xrEngine/motion.h"
 #include "../Include/xrRender/RenderVisual.h"
 #include "../Include/xrRender/KinematicsAnimated.h"
+#include "../../CharacterPhysicsSupport.h"
 
 CPhantom::CPhantom()
 {
@@ -51,6 +52,9 @@ void CPhantom::Load( LPCSTR section )
 	m_state_data[stShoot].particles	= pSettings->r_string(section,"particles_shoot");
 	snd_name						= pSettings->r_string(section,"sound_shoot");
 	if (snd_name&&snd_name[0])		m_state_data[stShoot].sound.create(snd_name,st_Effect,sg_SourceType);
+
+	fPsyHit							= pSettings->r_float(section,"psy_hit");
+
 }
 BOOL CPhantom::net_Spawn(CSE_Abstract* DC)
 {
@@ -181,6 +185,22 @@ void CPhantom::SwitchToState_internal(EState new_state)
 			SStateData& sdata	= m_state_data[new_state];
 			sdata.sound.play_at_pos(0,xform.c);
 			K->PlayCycle		(sdata.motion, TRUE, animation_end_callback, this);
+			if (fPsyHit>EPS_L) {
+				//Hit Actor
+				NET_Packet		P;
+				SHit			HS;
+				HS.GenHeader		(GE_HIT, Actor()->ID());
+				HS.whoID			= (ID());
+				HS.weaponID			= (ID());
+				HS.dir				= (Fvector().set(0.f,1.f,0.f));			// direction
+				HS.power			= (fPsyHit);								// hit value
+				HS.boneID			= (BI_NONE);							// bone
+				HS.p_in_bone_space	= (Fvector().set(0.f,0.f,0.f));
+				HS.impulse			= (0.f);
+				HS.hit_type			= (ALife::eHitTypeTelepatic);
+				HS.Write_Packet	(P);
+				u_EventSend		(P);
+			}
 		}break;
 		case stShoot:{
 			UpdateEvent.bind	(this,&CPhantom::OnDeadState);	
@@ -267,7 +287,7 @@ void	CPhantom::Hit							(SHit* pHDS)
 {
 	if (m_TgtState==stFly)	SwitchToState(stShoot);
 	if (g_Alive()){
-//		SetfHealth		(-1.f);
+		SetfHealth		(-1.f);
 //		inherited::Hit	(P,dir,who,element,p_in_object_space,impulse/100.f, hit_type);
 		inherited::Hit	(pHDS);
 	}
@@ -329,11 +349,11 @@ void CPhantom::PsyHit(const CObject *object, float value)
 // Core events
 void CPhantom::save(NET_Packet &output_packet)
 {
-	//output_packet.w_s32	(s32(m_CurState));
+	output_packet.w_s32	(s32(m_CurState));
 }
 void CPhantom::load(IReader &input_packet)
 {
-	//SwitchToState	(EState(input_packet.r_s32()));
+	SwitchToState	(EState(input_packet.r_s32()));
 }
 void CPhantom::net_Export	(NET_Packet& P)					// export to server
 {

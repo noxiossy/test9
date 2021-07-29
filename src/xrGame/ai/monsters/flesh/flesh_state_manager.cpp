@@ -46,8 +46,16 @@ void CStateManagerFlesh::execute()
 		const CEntityAlive* enemy	= object->EnemyMan.get_enemy();
 
 		if (enemy) {
-			state_id = object->EnemyMan.get_danger_type() == eStrong &&
-					   !object->HitMemory.is_hit() ? eStatePanic : eStateAttack;
+			CMonsterSquad* squad = monster_squad().get_squad(object);
+			switch ( object->EnemyMan.get_danger_type() ) 
+			{
+				case eStrong: state_id = eStatePanic;  break;
+				case eWeak:   state_id = eStatePanic; break;
+			}
+			if ( state_id == eStatePanic && squad->squad_alife_count() > 2 )
+			{
+				state_id = eStateAttack;
+			}
 
 		} else if (object->HitMemory.is_hit()) {
 			state_id = eStateHitted;
