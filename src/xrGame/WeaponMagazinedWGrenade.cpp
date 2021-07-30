@@ -606,7 +606,7 @@ void CWeaponMagazinedWGrenade::PlayAnimHide()
         PlayHUDMotion("anm_hide", TRUE, this, GetState());
 }
 
-CWeaponMagazinedWGrenade::PlayAnimReload()
+void CWeaponMagazinedWGrenade::PlayAnimReload()
 {
 	if (GetState() != eReload)
 		return;
