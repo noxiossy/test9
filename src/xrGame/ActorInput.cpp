@@ -80,7 +80,7 @@ void CActor::IR_OnKeyboardPress(int cmd)
 		case kQUICK_USE_1:
 		case kQUICK_USE_2:
 		case kQUICK_USE_3:
-		case kQUICK_USE_4:
+	case kQUICK_USE_4:
 		{
 			const shared_str& item_name		= g_quick_use_slots[cmd-kQUICK_USE_1];
 			if(item_name.size())
@@ -96,13 +96,20 @@ void CActor::IR_OnKeyboardPress(int cmd)
 					{
 						inventory().ClientEat		(itm);
 					}
-					CurrentGameUI()->ActorMenu().m_pQuickSlot->ReloadReferences(this);
+					
+					StaticDrawableWrapper* _s		= CurrentGameUI()->AddCustomStatic("item_used", true);
+					string1024					str;
+					strconcat					(sizeof(str),str,*CStringTable().translate("st_item_used"),": ", itm->NameItem());
+					_s->wnd()->TextItemControl()->SetText(str);
+					
+					CurrentGameUI()->GetActorMenu().m_pQuickSlot->ReloadReferences(this);
 				}
+
 			}
 		}break;
 	};		
-
-
+		
+		
 	if(m_holder && kUSE != cmd)
 	{
 		m_holder->OnKeyboardPress			(cmd);
