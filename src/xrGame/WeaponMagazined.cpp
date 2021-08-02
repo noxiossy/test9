@@ -134,7 +134,7 @@ void CWeaponMagazined::Load(LPCSTR section)
 	//*
     m_sSndShotCurrent = IsSilencerAttached() ? "sndSilencerShot" : "sndShot";
 
-    //звуки и партиклы глушителя, еслит такой есть
+    //Г§ГўГіГЄГЁ ГЁ ГЇГ Г°ГІГЁГЄГ«Г» ГЈГ«ГіГёГЁГІГҐГ«Гї, ГҐГ±Г«ГЁГІ ГІГ ГЄГ®Г© ГҐГ±ГІГј
     if (m_eSilencerStatus == ALife::eAddonAttachable || m_eSilencerStatus == ALife::eAddonPermanent)
     {
         if (pSettings->line_exist(section, "silencer_flame_particles"))
@@ -387,7 +387,7 @@ void CWeaponMagazined::ReloadMagazine()
 {
     m_BriefInfo_CalcFrame = 0;
 
-    //устранить осечку при перезарядке
+    //ГіГ±ГІГ°Г Г­ГЁГІГј Г®Г±ГҐГ·ГЄГі ГЇГ°ГЁ ГЇГҐГ°ГҐГ§Г Г°ГїГ¤ГЄГҐ
     if (IsMisfire())	bMisfire = false;
 
     if (!m_bLockType)
@@ -413,14 +413,14 @@ void CWeaponMagazined::ReloadMagazine()
         if (!tmp_sect_name)
             return;
 
-        //попытаться найти в инвентаре патроны текущего типа
+        //ГЇГ®ГЇГ»ГІГ ГІГјГ±Гї Г­Г Г©ГІГЁ Гў ГЁГ­ГўГҐГ­ГІГ Г°ГҐ ГЇГ ГІГ°Г®Г­Г» ГІГҐГЄГіГ№ГҐГЈГ® ГІГЁГЇГ 
         m_pCurrentAmmo = smart_cast<CWeaponAmmo*>(m_pInventory->GetAny(tmp_sect_name));
 
         if (!m_pCurrentAmmo && !m_bLockType)
         {
             for (u8 i = 0; i < u8(m_ammoTypes.size()); ++i)
             {
-                //проверить патроны всех подходящих типов
+                //ГЇГ°Г®ГўГҐГ°ГЁГІГј ГЇГ ГІГ°Г®Г­Г» ГўГ±ГҐГµ ГЇГ®Г¤ГµГ®Г¤ГїГ№ГЁГµ ГІГЁГЇГ®Гў
                 m_pCurrentAmmo = smart_cast<CWeaponAmmo*>(m_pInventory->GetAny(m_ammoTypes[i].c_str()));
                 if (m_pCurrentAmmo)
                 {
@@ -431,10 +431,10 @@ void CWeaponMagazined::ReloadMagazine()
         }
     }
 
-    //нет патронов для перезарядки
+    //Г­ГҐГІ ГЇГ ГІГ°Г®Г­Г®Гў Г¤Г«Гї ГЇГҐГ°ГҐГ§Г Г°ГїГ¤ГЄГЁ
     if (!m_pCurrentAmmo && !unlimited_ammo()) return;
 
-    //разрядить магазин, если загружаем патронами другого типа
+    //Г°Г Г§Г°ГїГ¤ГЁГІГј Г¬Г ГЈГ Г§ГЁГ­, ГҐГ±Г«ГЁ Г§Г ГЈГ°ГіГ¦Г ГҐГ¬ ГЇГ ГІГ°Г®Г­Г Г¬ГЁ Г¤Г°ГіГЈГ®ГЈГ® ГІГЁГЇГ 
     if (!m_bLockType && !m_magazine.empty() &&
         (!m_pCurrentAmmo || xr_strcmp(m_pCurrentAmmo->cNameSect(),
         *m_magazine.back().m_ammoSect)))
@@ -458,7 +458,7 @@ void CWeaponMagazined::ReloadMagazine()
 
     VERIFY((u32) iAmmoElapsed == m_magazine.size());
 
-    //выкинуть коробку патронов, если она пустая
+    //ГўГ»ГЄГЁГ­ГіГІГј ГЄГ®Г°Г®ГЎГЄГі ГЇГ ГІГ°Г®Г­Г®Гў, ГҐГ±Г«ГЁ Г®Г­Г  ГЇГіГ±ГІГ Гї
     if (m_pCurrentAmmo && !m_pCurrentAmmo->m_boxCurr && OnServer())
         m_pCurrentAmmo->SetDropManual(TRUE);
 
@@ -531,8 +531,8 @@ void CWeaponMagazined::UpdateCL()
     inherited::UpdateCL();
     float dt = Device.fTimeDelta;
 
-    //когда происходит апдейт состояния оружия
-    //ничего другого не делать
+    //ГЄГ®ГЈГ¤Г  ГЇГ°Г®ГЁГ±ГµГ®Г¤ГЁГІ Г ГЇГ¤ГҐГ©ГІ Г±Г®Г±ГІГ®ГїГ­ГЁГї Г®Г°ГіГ¦ГЁГї
+    //Г­ГЁГ·ГҐГЈГ® Г¤Г°ГіГЈГ®ГЈГ® Г­ГҐ Г¤ГҐГ«Г ГІГј
     if (GetNextState() == GetState())
     {
         switch (GetState())
@@ -767,10 +767,10 @@ void CWeaponMagazined::OnShot()
     PHGetLinearVell(vel);
     OnShellDrop(get_LastSP(), vel);
 
-    // Огонь из ствола
+    // ГЋГЈГ®Г­Гј ГЁГ§ Г±ГІГўГ®Г«Г 
     StartFlameParticles();
 
-    //дым из ствола
+    //Г¤Г»Г¬ ГЁГ§ Г±ГІГўГ®Г«Г 
     ForceUpdateFireParticles();
     StartSmokeParticles(get_LastFP(), vel);
 }
@@ -954,17 +954,17 @@ void CWeaponMagazined::switch2_Torch()
 
 void CWeaponMagazined::OnSwitchTorch()
 {
-	// Если обладатель - актор
+	// Г…Г±Г«ГЁ Г®ГЎГ«Г Г¤Г ГІГҐГ«Гј - Г ГЄГІГ®Г°
 	CActor* pActor = smart_cast<CActor*>(H_Parent());
 	if (!pActor)
 		return;
 
-	// Если у актора есть фонарь
+	// Г…Г±Г«ГЁ Гі Г ГЄГІГ®Г°Г  ГҐГ±ГІГј ГґГ®Г­Г Г°Гј
 	CTorch* pTorch = smart_cast<CTorch*>(pActor->inventory().ItemFromSlot(TORCH_SLOT));
 	if (!pTorch)
 		return;
 
-	// Переключаем режим работы фонаря
+	// ГЏГҐГ°ГҐГЄГ«ГѕГ·Г ГҐГ¬ Г°ГҐГ¦ГЁГ¬ Г°Г ГЎГ®ГІГ» ГґГ®Г­Г Г°Гї
 	pTorch->RealSwitch(!pTorch->torch_active());
 }
 
@@ -997,7 +997,7 @@ bool CWeaponMagazined::Action(u16 cmd, u32 flags)
 {
     if (inherited::Action(cmd, flags)) return true;
 
-    //если оружие чем-то занято, то ничего не делать
+    //ГҐГ±Г«ГЁ Г®Г°ГіГ¦ГЁГҐ Г·ГҐГ¬-ГІГ® Г§Г Г­ГїГІГ®, ГІГ® Г­ГЁГ·ГҐГЈГ® Г­ГҐ Г¤ГҐГ«Г ГІГј
     if (IsPending()) return false;
 
     switch (cmd)
@@ -1151,7 +1151,7 @@ bool CWeaponMagazined::Attach(PIItem pIItem, bool b_send_event)
     {
         if (b_send_event && OnServer())
         {
-            //уничтожить подсоединенную вещь из инвентаря
+            //ГіГ­ГЁГ·ГІГ®Г¦ГЁГІГј ГЇГ®Г¤Г±Г®ГҐГ¤ГЁГ­ГҐГ­Г­ГіГѕ ГўГҐГ№Гј ГЁГ§ ГЁГ­ГўГҐГ­ГІГ Г°Гї
             //.			pIItem->Drop					();
             pIItem->object().DestroyObject();
         };
@@ -1284,7 +1284,7 @@ void CWeaponMagazined::InitAddons()
         m_sSmokeParticlesCurrent = m_sSilencerSmokeParticles;
         m_sSndShotCurrent = "sndSilencerShot";
 
-        //подсветка от выстрела
+        //ГЇГ®Г¤Г±ГўГҐГІГЄГ  Г®ГІ ГўГ»Г±ГІГ°ГҐГ«Г 
         LoadLights(*cNameSect(), "silencer_");
         ApplySilencerKoeffs();
     }
@@ -1294,7 +1294,7 @@ void CWeaponMagazined::InitAddons()
         m_sSmokeParticlesCurrent = m_sSmokeParticles;
         m_sSndShotCurrent = "sndShot";
 
-        //подсветка от выстрела
+        //ГЇГ®Г¤Г±ГўГҐГІГЄГ  Г®ГІ ГўГ»Г±ГІГ°ГҐГ«Г 
         LoadLights(*cNameSect(), "");
         ResetSilencerKoeffs();
     }
@@ -1352,11 +1352,11 @@ void CWeaponMagazined::PlayAnimReload()
 
 	LPCSTR CurrentAnimation = "anm_reload";
 
-	if (bMisfire && m_sounds.FindSoundItem("sndReloadMisfire", false))
+	if (bMisfire && IsHudAnimationExist("anm_reload_misfire"))
 	{
 		CurrentAnimation = "anm_reload_misfire";
 	}
-	else if (iAmmoElapsed == 0 && m_sounds.FindSoundItem("sndReloadEmpty", false))
+	else if (iAmmoElapsed == 0 && IsHudAnimationExist("anm_reload_empty"))
 	{
 		CurrentAnimation = "anm_reload_empty";
 	}
@@ -1373,20 +1373,20 @@ void CWeaponMagazined::PlayAnimAim()
 //*
 void CWeaponMagazined::PlayAnimSwitchTorch()
 {
-	// Сверяем текущий стейт
+	// Г‘ГўГҐГ°ГїГҐГ¬ ГІГҐГЄГіГ№ГЁГ© Г±ГІГҐГ©ГІ
 	if (GetState() != eTorch)
 		return;
 
-	// Проверяем, что обладатель оружия - актор
+	// ГЏГ°Г®ГўГҐГ°ГїГҐГ¬, Г·ГІГ® Г®ГЎГ«Г Г¤Г ГІГҐГ«Гј Г®Г°ГіГ¦ГЁГї - Г ГЄГІГ®Г°
 	CActor* pActor = smart_cast<CActor*>(H_Parent());
 
-	// А также, что анимация существует
-	if (pActor && IsHUDAnimationExist("anm_torch_switch") && !Actor()->HasInfo("block_torch") && !Actor()->HasInfo("block_torch_switch"))
+	// ГЂ ГІГ ГЄГ¦ГҐ, Г·ГІГ® Г Г­ГЁГ¬Г Г¶ГЁГї Г±ГіГ№ГҐГ±ГІГўГіГҐГІ
+	if (pActor && IsHUDAnimationExist("anm_torch_switch"))
 	{
-		// Проигрываем .anm-эффектор
+		// ГЏГ°Г®ГЁГЈГ°Г»ГўГ ГҐГ¬ .anm-ГЅГґГґГҐГЄГІГ®Г°
 		pActor->PlayAnm("torch_switch_slow");
 		
-		// Проигрываем худовую анимацию
+		// ГЏГ°Г®ГЁГЈГ°Г»ГўГ ГҐГ¬ ГµГіГ¤Г®ГўГіГѕ Г Г­ГЁГ¬Г Г¶ГЁГѕ
 		PlayHUDMotion("anm_torch_switch", true, this, GetState());
 		
 		luabind::functor<void> functor;
@@ -1402,21 +1402,21 @@ void CWeaponMagazined::PlayAnimSwitchTorch()
 
 void CWeaponMagazined::PlayAnimSwitchFireMode()
 {
-	// Сверяем текущий стейт
+	// Г‘ГўГҐГ°ГїГҐГ¬ ГІГҐГЄГіГ№ГЁГ© Г±ГІГҐГ©ГІ
 	if (GetState() != eFireMode)
 		return;
 
-	// Проверяем, что обладатель оружия - актор
+	// ГЏГ°Г®ГўГҐГ°ГїГҐГ¬, Г·ГІГ® Г®ГЎГ«Г Г¤Г ГІГҐГ«Гј Г®Г°ГіГ¦ГЁГї - Г ГЄГІГ®Г°
 	CActor* pActor = smart_cast<CActor*>(H_Parent());
 
-	// А также, что анимация существует
+	// ГЂ ГІГ ГЄГ¦ГҐ, Г·ГІГ® Г Г­ГЁГ¬Г Г¶ГЁГї Г±ГіГ№ГҐГ±ГІГўГіГҐГІ
 	if (pActor && IsHUDAnimationExist("anm_weapon_firemode"))
 	{
-		// Проигрываем .anm-эффектор
+		// ГЏГ°Г®ГЁГЈГ°Г»ГўГ ГҐГ¬ .anm-ГЅГґГґГҐГЄГІГ®Г°
 		pActor->PlayAnm("weapon_switch");
 
-		// Проигрываем худовую анимацию
-		PlayHUDMotion("anm_switch_firemode", true, this, GetState());
+		// ГЏГ°Г®ГЁГЈГ°Г»ГўГ ГҐГ¬ ГµГіГ¤Г®ГўГіГѕ Г Г­ГЁГ¬Г Г¶ГЁГѕ
+		PlayHUDMotion("anm_weapon_firemode", true, this, GetState());
 	}
 	else
 	{
@@ -1495,7 +1495,7 @@ void CWeaponMagazined::OnZoomOut()
         pActor->Cameras().RemoveCamEffector(eCEZoom);
 }
 
-//переключение режимов стрельбы одиночными и очередями
+//ГЇГҐГ°ГҐГЄГ«ГѕГ·ГҐГ­ГЁГҐ Г°ГҐГ¦ГЁГ¬Г®Гў Г±ГІГ°ГҐГ«ГјГЎГ» Г®Г¤ГЁГ­Г®Г·Г­Г»Г¬ГЁ ГЁ Г®Г·ГҐГ°ГҐГ¤ГїГ¬ГЁ
 bool CWeaponMagazined::SwitchMode()
 {
     if (eIdle != GetState() || IsPending()) return false;
@@ -1759,7 +1759,7 @@ bool CWeaponMagazined::install_upgrade_impl(LPCSTR section, bool test)
 
     return result;
 }
-//текущая дисперсия (в радианах) оружия с учетом используемого патрона и недисперсионных пуль
+//ГІГҐГЄГіГ№Г Гї Г¤ГЁГ±ГЇГҐГ°Г±ГЁГї (Гў Г°Г Г¤ГЁГ Г­Г Гµ) Г®Г°ГіГ¦ГЁГї Г± ГіГ·ГҐГІГ®Г¬ ГЁГ±ГЇГ®Г«ГјГ§ГіГҐГ¬Г®ГЈГ® ГЇГ ГІГ°Г®Г­Г  ГЁ Г­ГҐГ¤ГЁГ±ГЇГҐГ°Г±ГЁГ®Г­Г­Г»Гµ ГЇГіГ«Гј
 float CWeaponMagazined::GetFireDispersion(float cartridge_k, bool for_crosshair)
 {
     float fire_disp = GetBaseDispersion(cartridge_k);
