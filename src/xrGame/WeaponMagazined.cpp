@@ -1004,15 +1004,6 @@ bool CWeaponMagazined::Action(u16 cmd, u32 flags)
     {
     case kWPN_RELOAD:
     {
-			// mmccxvii: FWR code
-			//*
-			CActor* pActor = smart_cast<CActor*>(H_Parent());
-			if (pActor && pActor->MovingState() & mcSprint)
-			{
-				return true;
-			}
-			//*
-
         if (flags&CMD_START)
             if (iAmmoElapsed < iMagazineSize || IsMisfire())
                 Reload();
