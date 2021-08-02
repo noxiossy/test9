@@ -55,48 +55,48 @@ void CStateManagerPoltergeist::execute()
 		state_id = eStateRest;
 	}
 
-	//const CEntityAlive* enemy	= object->EnemyMan.get_enemy();
+	const CEntityAlive* enemy	= object->EnemyMan.get_enemy();
 
-	//if (enemy) {
-	//	if (object->is_hidden()) state_id = eStateAttack_AttackHidden;
-	//	else {
-	//		switch (object->EnemyMan.get_danger_type()) {
-	//			case eStrong:	state_id = eStatePanic; break;
-	//			case eWeak:		state_id = eStateAttack; break;
-	//		}
-	//	}
-	//} else if (object->HitMemory.is_hit() && !object->is_hidden()) {
-	//	state_id = eStateHitted;
-	//} else if (object->hear_dangerous_sound) {
-	//	if (!object->is_hidden()) state_id = eStateHearDangerousSound;
-	//	else state_id = eStateHearInterestingSound;
-	//} else if (object->hear_interesting_sound ) {
-	//	state_id = eStateHearInterestingSound;
-	//} else {
-	//	if (can_eat()) state_id = eStateEat;
-	//	else state_id = eStateRest;
-	//	
-	//	if (state_id == eStateEat) {
-	//		if (object->CorpseMan.get_corpse()->Position().distance_to(object->Position()) < 5.f) {
-	//			if (object->is_hidden()) {
-	//				object->CEnergyHolder::deactivate();
-	//			}
-	//			
-	//			object->DisableHide();
-	//		}
-	//	}
+	if (enemy) {
+		if (object->is_hidden()) state_id = eStateAttack_AttackHidden;
+		else {
+			switch (object->EnemyMan.get_danger_type()) {
+				case eStrong:	state_id = eStatePanic; break;
+				case eWeak:		state_id = eStateAttack; break;
+			}
+		}
+	} else if (object->HitMemory.is_hit() && !object->is_hidden()) {
+		state_id = eStateHitted;
+	} else if (object->hear_dangerous_sound) {
+		if (!object->is_hidden()) state_id = eStateHearDangerousSound;
+		else state_id = eStateHearInterestingSound;
+	} else if (object->hear_interesting_sound ) {
+		state_id = eStateHearInterestingSound;
+	} else {
+		if (can_eat()) state_id = eStateEat;
+		else state_id = eStateRest;
+		
+		if (state_id == eStateEat) {
+			if (object->CorpseMan.get_corpse()->Position().distance_to(object->Position()) < 5.f) {
+				if (object->is_hidden()) {
+					object->CEnergyHolder::deactivate();
+				}
+				
+				object->DisableHide();
+			}
+		}
 
-	//}
+	}
 
-	////if (state_id == eStateAttack_AttackHidden) polter_attack();
+	if (state_id == eStateAttack_AttackHidden) polter_attack();
 
-	//if ((prev_substate == eStateEat) && (state_id != eStateEat)) 
-	//	object->EnableHide();
+	if ((prev_substate == eStateEat) && (state_id != eStateEat)) 
+		object->EnableHide();
 
 
 	select_state(state_id); 
 
-	// âûïîëíèòü òåêóùåå ñîñòîÿíèå
+	// Ã¢Ã»Ã¯Ã®Ã«Ã­Ã¨Ã²Ã¼ Ã²Ã¥ÃªÃ³Ã¹Ã¥Ã¥ Ã±Ã®Ã±Ã²Ã®Ã¿Ã­Ã¨Ã¥
 	get_state_current()->execute();
 
 	prev_substate = current_substate;
@@ -106,10 +106,10 @@ void CStateManagerPoltergeist::execute()
 
 void CStateManagerPoltergeist::polter_attack()
 {
-	//u32 cur_time = Device.dwTimeGlobal;
-	//const CEntityAlive* enemy	= object->EnemyMan.get_enemy();
-	//
-	//bool b_aggressive = object->conditions().GetHealth() < 0.5f;
+	u32 cur_time = Device.dwTimeGlobal;
+	const CEntityAlive* enemy	= object->EnemyMan.get_enemy();
+	
+	bool b_aggressive = object->conditions().GetHealth() < 0.5f;
 
 	//if ((time_next_flame_attack < cur_time) && (object->EnemyMan.get_enemy_time_last_seen() + TIME_SEEN_FOR_FIRE > cur_time)) {
 	//	
@@ -123,12 +123,12 @@ void CStateManagerPoltergeist::polter_attack()
 	//	time_next_tele_attack = cur_time + Random.randI(object->m_tele_delay.min, (b_aggressive) ? object->m_tele_delay.aggressive : object->m_tele_delay.normal);
 	//}
 
-	//if (time_next_scare_attack < cur_time) {
-	//	if (Random.randI(2))
-	//		object->PhysicalImpulse(enemy->Position());
-	//	else 
-	//		object->StrangeSounds(enemy->Position());
-	//	
-	//	time_next_scare_attack = cur_time + Random.randI(object->m_scare_delay.min, (b_aggressive) ? object->m_scare_delay.aggressive : object->m_scare_delay.normal);
-	//}
+	if (time_next_scare_attack < cur_time) {
+		if (Random.randI(2))
+			object->PhysicalImpulse(enemy->Position());
+		else 
+			object->StrangeSounds(enemy->Position());
+		
+		time_next_scare_attack = cur_time + Random.randI(object->m_scare_delay.min, (b_aggressive) ? object->m_scare_delay.aggressive : object->m_scare_delay.normal);
+	}
 }
