@@ -56,7 +56,7 @@ xr_token							qsun_quality_token							[ ]={
 	{ 0,							0												}
 };
 
-u32 r2_SmapSize = 2048;
+u32 r2_SmapSize = 1024;
 xr_token SmapSizeToken[] = {
   { "1024x1024",   1024 },
   { "1536x1536",   1536 },
@@ -103,9 +103,9 @@ xr_token							qminmax_sm_token					[ ]={
 	{ 0,							0												}
 };
 
-//	“Off”
-//	“DX10.0 style [Standard]”
-//	“DX10.1 style [Higher quality]”
+//	вЂњOffвЂќ
+//	вЂњDX10.0 style [Standard]вЂќ
+//	вЂњDX10.1 style [Higher quality]вЂќ
 
 // Common
 extern int			psSkeletonUpdate;
@@ -258,7 +258,7 @@ Flags32 ps_actor_shadow_flags = {0}; //Swartz: actor shadow
 Flags32		ps_common_flags = {0};		// r1-only
 u32			ps_steep_parallax = 0;
 int			ps_r__detail_radius = 49;
-#ifdef DETAIL_RADIUS // управление радиусом отрисовки травы
+#ifdef DETAIL_RADIUS // ГіГЇГ°Г ГўГ«ГҐГ­ГЁГҐ Г°Г Г¤ГЁГіГ±Г®Г¬ Г®ГІГ°ГЁГ±Г®ГўГЄГЁ ГІГ°Г ГўГ»
 u32			dm_size = 24;
 u32 		dm_cache1_line = 12;	//dm_size*2/dm_cache1_count
 u32			dm_cache_line = 49;	//dm_size+1+dm_size
