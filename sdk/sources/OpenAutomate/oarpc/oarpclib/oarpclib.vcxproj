@@ -14,7 +14,6 @@
     <ProjectGuid>{BE268FF1-A2BE-4E2A-904C-ED8F8231078C}</ProjectGuid>
     <RootNamespace>oarpclib</RootNamespace>
     <Keyword>Win32Proj</Keyword>
-    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">

@@ -14,7 +14,6 @@
     <ProjectGuid>{182900AF-5689-48DE-857F-2629343484A2}</ProjectGuid>
     <RootNamespace>oatestlib</RootNamespace>
     <Keyword>Win32Proj</Keyword>
-    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">

@@ -14,7 +14,6 @@
     <ProjectGuid>{D48E67C2-D5DD-4A13-9452-E970A365C472}</ProjectGuid>
     <RootNamespace>oaremote</RootNamespace>
     <Keyword>Win32Proj</Keyword>
-    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
