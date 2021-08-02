@@ -90,9 +90,11 @@ void CStateManagerPoltergeist::execute()
 
 	if (state_id == eStateAttack_AttackHidden) polter_attack();
 
-	if ((prev_substate == eStateEat) && (state_id != eStateEat)) 
+	if ((prev_substate == eStateEat) && (state_id != eStateEat) && !(object->conditions().GetHealth() < 0.3f)) 
 		object->EnableHide();
 
+	if (object->conditions().GetHealth() < 0.3f)
+		object->DisableHide();
 
 	select_state(state_id); 
 
@@ -109,7 +111,7 @@ void CStateManagerPoltergeist::polter_attack()
 	u32 cur_time = Device.dwTimeGlobal;
 	const CEntityAlive* enemy	= object->EnemyMan.get_enemy();
 	
-	bool b_aggressive = object->conditions().GetHealth() < 0.5f;
+	bool b_aggressive = object->conditions().GetHealth() < 0.65f;
 
 	//if ((time_next_flame_attack < cur_time) && (object->EnemyMan.get_enemy_time_last_seen() + TIME_SEEN_FOR_FIRE > cur_time)) {
 	//	
