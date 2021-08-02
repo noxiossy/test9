@@ -70,6 +70,39 @@ void CActor::IR_OnKeyboardPress(int cmd)
 
 	if (!g_Alive()) return;
 
+	switch (cmd)
+	{
+		case kNIGHT_VISION:
+		{
+							  SwitchNightVision();
+							  break;
+		};
+		case kQUICK_USE_1:
+		case kQUICK_USE_2:
+		case kQUICK_USE_3:
+		case kQUICK_USE_4:
+		{
+			const shared_str& item_name		= g_quick_use_slots[cmd-kQUICK_USE_1];
+			if(item_name.size())
+			{
+				PIItem itm = inventory().GetAny(item_name.c_str());
+
+				if(itm)
+				{
+					if (IsGameTypeSingle())
+					{
+						inventory().Eat				(itm);
+					} else
+					{
+						inventory().ClientEat		(itm);
+					}
+					CurrentGameUI()->ActorMenu().m_pQuickSlot->ReloadReferences(this);
+				}
+			}
+		}break;
+	};		
+
+
 	if(m_holder && kUSE != cmd)
 	{
 		m_holder->OnKeyboardPress			(cmd);
@@ -428,7 +461,7 @@ void CActor::ActorUse()
 					TryToTalk();
 				}else
 				{
-					//только если находимся в режиме single
+					//ГІГ®Г«ГјГЄГ® ГҐГ±Г«ГЁ Г­Г ГµГ®Г¤ГЁГ¬Г±Гї Гў Г°ГҐГ¦ГЁГ¬ГҐ single
 					CUIGameSP* pGameSP = smart_cast<CUIGameSP*>(CurrentGameUI());
 					if ( pGameSP )
 					{
