@@ -319,7 +319,6 @@ static class cl_screen_params : public R_constant_setup
 // Standart constant-binding
 void	CBlender_Compile::SetMapping	()
 {
-	r_Constant              ("ogse_c_screen", &binder_screen_params);
 	// matrices
 	r_Constant				("m_W",				&binder_w);
 	r_Constant				("m_invW",			&binder_invw);
