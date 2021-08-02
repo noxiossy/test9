@@ -1343,11 +1343,11 @@ void CWeaponMagazined::PlayAnimReload()
 
 	LPCSTR CurrentAnimation = "anm_reload";
 
-	if (bMisfire && IsHudAnimationExist("anm_reload_misfire"))
+	if (bMisfire && IsHUDAnimationExist("anm_reload_misfire"))
 	{
 		CurrentAnimation = "anm_reload_misfire";
 	}
-	else if (iAmmoElapsed == 0 && IsHudAnimationExist("anm_reload_empty"))
+	else if (iAmmoElapsed == 0 && IsHUDAnimationExist("anm_reload_empty"))
 	{
 		CurrentAnimation = "anm_reload_empty";
 	}
