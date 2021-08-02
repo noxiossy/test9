@@ -188,7 +188,7 @@
 #include <list>
 #include <set>
 #include <map>
-#include <typeinfo.h>
+#include <typeinfo>
 
 #ifndef _EDITOR
 # include <hash_map>
