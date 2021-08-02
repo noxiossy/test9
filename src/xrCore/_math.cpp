@@ -203,7 +203,8 @@ void Detect()
     // Detect QPC Overhead
     QueryPerformanceFrequency((PLARGE_INTEGER)&qpc_freq);
     qpc_overhead = 0;
-		for (int i=0; i<256; i++)	{
+    for (i = 0; i < 256; i++)
+    {
         start = QPC();
         qpc_overhead += QPC() - start - dummy;
     }
