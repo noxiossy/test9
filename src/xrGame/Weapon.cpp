@@ -1431,12 +1431,10 @@ float CWeapon::GetHudFov()
     {
         //float fDiff = m_nearwall_last_hud_fov /*- m_zoom_params.m_fZoomHudFov*/;
         //return /*m_zoom_params.m_fZoomHudFov + */(fDiff * (1 - m_zoom_params.m_fZoomRotationFactor));
-		if (Actor()->HasInfo("block_collision")) return psHUD_FOV_def;
 		return m_nearwall_last_hud_fov;
     }
     else
     {
-	if (Actor()->HasInfo("block_collision")) return psHUD_FOV_def;
         return m_nearwall_last_hud_fov;
     }
 }
