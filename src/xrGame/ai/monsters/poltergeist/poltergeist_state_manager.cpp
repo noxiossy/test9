@@ -57,6 +57,11 @@ void CStateManagerPoltergeist::execute()
 
 	const CEntityAlive* enemy	= object->EnemyMan.get_enemy();
 
+	if ((object->conditions().GetHealth() < 0.3f) && object->is_hidden()) {
+		object->CEnergyHolder::deactivate();
+		object->DisableHide();
+	}
+
 	if (enemy /* && object->detected_enemy()*/) {
 		if (object->is_hidden()) state_id = eStateAttack_AttackHidden;
 		else {
@@ -90,13 +95,8 @@ void CStateManagerPoltergeist::execute()
 
 	//if (state_id == eStateAttack_AttackHidden) polter_attack();
 
-	if ((prev_substate == eStateEat) && (state_id != eStateEat) && (!object->is_hidden()) && (object->conditions().GetHealth() > 0.3f)) 
+	if ((prev_substate == eStateEat) && (state_id != eStateEat) && (object->conditions().GetHealth() > 0.3f)) 
 		object->EnableHide();
-
-	if ((object->conditions().GetHealth() < 0.3f) && (object->is_hidden())) {
-		object->CEnergyHolder::deactivate();
-		object->DisableHide();
-	}
 
 	select_state(state_id); 
 
