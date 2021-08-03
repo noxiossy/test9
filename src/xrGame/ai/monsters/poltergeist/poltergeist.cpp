@@ -368,8 +368,9 @@ void CPoltergeist::net_Destroy()
 
 void CPoltergeist::Die(CObject* who)
 {
- 	//if (m_tele) {
+ 	if (m_tele) {
  		if (state_invisible) {
+ 		 	state_invisible = false;
  			setVisible(true);
  
  			if (PPhysicsShell()) {
@@ -380,7 +381,7 @@ void CPoltergeist::Die(CObject* who)
  			} else 
  				Position() = m_current_position;
  		}
- 	//}
+ 	}
 
 	inherited::Die				(who);
 	Energy::disable				();
