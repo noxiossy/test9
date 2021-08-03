@@ -82,7 +82,7 @@ void CStateManagerPoltergeist::execute()
 					object->CEnergyHolder::deactivate();
 				}
 				
-				object->Show();
+				object->DisableHide();
 			}
 		}
 
@@ -91,10 +91,10 @@ void CStateManagerPoltergeist::execute()
 	//if (state_id == eStateAttack_AttackHidden) polter_attack();
 
 	if ((prev_substate == eStateEat) && (state_id != eStateEat) && !(object->conditions().GetHealth() < 0.3f)) 
-		object->Hide();
+		object->EnableHide();
 
 	if (object->conditions().GetHealth() < 0.3f)
-		object->Show();
+		object->DisableHide();
 
 	select_state(state_id); 
 
