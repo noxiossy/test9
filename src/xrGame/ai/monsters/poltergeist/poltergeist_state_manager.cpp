@@ -21,6 +21,7 @@ CStateManagerPoltergeist::CStateManagerPoltergeist(CPoltergeist *obj) : inherite
 {
 	add_state(eStateRest,					xr_new<CPoltergeistStateRest<CPoltergeist> > (obj));
 	add_state(eStateEat,					xr_new<CStateMonsterEat<CPoltergeist> >(obj));
+	add_state(eStateAttack,					xr_new<CStateMonsterAttack<CPoltergeist> >(obj));
 	add_state(eStateAttack_AttackHidden,	xr_new<CStatePoltergeistAttackHidden<CPoltergeist> > (obj));
 	add_state(eStatePanic,					xr_new<CStateMonsterPanic<CPoltergeist> >(obj));
 	add_state(eStateHitted,					xr_new<CStateMonsterHitted<CPoltergeist> >(obj));
@@ -57,22 +58,30 @@ void CStateManagerPoltergeist::execute()
 
 	const CEntityAlive* enemy	= object->EnemyMan.get_enemy();
 
-	if (enemy) {
+	if (enemy && object->detected_enemy()) {
 		if (object->is_hidden()) state_id = eStateAttack_AttackHidden;
 		else {
 			switch (object->EnemyMan.get_danger_type()) {
 				case eStrong:	state_id = eStatePanic; break;
-				case eWeak:		state_id = eStateAttack; break;
+				case eWeak:	state_id = eStateAttack; break;
 			}
 		}
 	} else if (object->HitMemory.is_hit() && !object->is_hidden()) {
-		state_id = eStateHitted;
+		// only inform squad of new hit (made not later then after 1 sec)
+		if ( current_substate != eStateHitted && 
+			 time() < object->HitMemory.get_last_hit_time()+1000 ){
+			state_id = eStateHitted;
+		}
 	} else if (object->hear_dangerous_sound) {
 		if (!object->is_hidden()) state_id = eStateHearDangerousSound;
 		else state_id = eStateHearInterestingSound;
 	} else if (object->hear_interesting_sound ) {
 		state_id = eStateHearInterestingSound;
 	} else {
+		if ( object->get_custom_anim_state() ) 
+		{
+			return; 
+		}
 		if (can_eat()) state_id = eStateEat;
 		else state_id = eStateRest;
 
@@ -90,10 +99,24 @@ void CStateManagerPoltergeist::execute()
 
 	//if (state_id == eStateAttack_AttackHidden) polter_attack();
 
-	//if ((prev_substate == eStateEat) && (state_id != eStateEat)) 
-	//	object->EnableHide();
+//	if ((prev_substate == eStateEat) && (state_id != eStateEat)) 
+//		object->EnableHide();
 
 	select_state(state_id); 
+
+	if ( prev_substate != current_substate && object->get_custom_anim_state() )
+	{
+		object->anim_end_reinit();
+	}
+
+	if ( prev_substate == eStateEat && current_substate != eStateEat )
+	{
+		if ( object->character_physics_support()->movement()->PHCapture() )
+		{
+			object->character_physics_support()->movement()->PHReleaseObject();
+		}
+		object->EnableHide();
+	}
 
 	// âûïîëíèòü òåêóùåå ñîñòîÿíèå
 	get_state_current()->execute();
