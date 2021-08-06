@@ -78,10 +78,6 @@ void CStateManagerPoltergeist::execute()
 	} else if (object->hear_interesting_sound ) {
 		state_id = eStateHearInterestingSound;
 	} else {
-		if ( object->get_custom_anim_state() ) 
-		{
-			return; 
-		}
 		if (can_eat()) state_id = eStateEat;
 		else state_id = eStateRest;
 
@@ -103,11 +99,6 @@ void CStateManagerPoltergeist::execute()
 //		object->EnableHide();
 
 	select_state(state_id); 
-
-	if ( prev_substate != current_substate && object->get_custom_anim_state() )
-	{
-		object->anim_end_reinit();
-	}
 
 	if ( prev_substate == eStateEat && current_substate != eStateEat )
 	{
