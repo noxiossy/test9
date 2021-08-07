@@ -376,7 +376,7 @@ void CCustomMonster::shedule_Update	( u32 DT )
 			//////////////////////////////////////
 			//Fvector C; float R;
 			//////////////////////////////////////
-			// С Олеся - ПИВО!!!! (Диме :-))))
+			// Г‘ ГЋГ«ГҐГ±Гї - ГЏГ€Г‚ГЋ!!!! (Г„ГЁГ¬ГҐ :-))))
 			// m_PhysicMovementControl->GetBoundingSphere	(C,R);
 			//////////////////////////////////////
 			//Center(C);
@@ -602,7 +602,7 @@ void CCustomMonster::update_range_fov	(float &new_range, float &new_fov, float s
 
 	float	current_fog_density				= GamePersistent().Environment().CurrentEnv->fog_density	;	
 	// 0=no_fog, 1=full_fog, >1 = super-fog
-	float	current_far_plane				= GamePersistent().Environment().CurrentEnv->far_plane	;	
+	float	current_far_plane				= GamePersistent().Environment().CurrentEnv->fog_far	;	
 	// 300=standart, 50=super-fog
 
 	new_fov									= start_fov;
@@ -623,6 +623,7 @@ void CCustomMonster::update_range_fov	(float &new_range, float &new_fov, float s
 			)
 		)
 	;
+	clamp( new_range, 0.f, current_far_plane );
 }
 
 void CCustomMonster::eye_pp_s1			()
@@ -845,12 +846,12 @@ void CCustomMonster::PitchCorrection()
 	Fvector position_on_plane;
 	P.project(position_on_plane,Position());
 
-	// находим проекцию точки, лежащей на векторе текущего направления
+	// Г­Г ГµГ®Г¤ГЁГ¬ ГЇГ°Г®ГҐГЄГ¶ГЁГѕ ГІГ®Г·ГЄГЁ, Г«ГҐГ¦Г Г№ГҐГ© Г­Г  ГўГҐГЄГІГ®Г°ГҐ ГІГҐГЄГіГ№ГҐГЈГ® Г­Г ГЇГ°Г ГўГ«ГҐГ­ГЁГї
 	Fvector dir_point, proj_point;
 	dir_point.mad(position_on_plane, Direction(), 1.f);
 	P.project(proj_point,dir_point);
 	
-	// получаем искомый вектор направления
+	// ГЇГ®Г«ГіГ·Г ГҐГ¬ ГЁГ±ГЄГ®Г¬Г»Г© ГўГҐГЄГІГ®Г° Г­Г ГЇГ°Г ГўГ«ГҐГ­ГЁГї
 	Fvector target_dir;
 	target_dir.sub(proj_point,position_on_plane);
 
@@ -1132,7 +1133,7 @@ void CCustomMonster::OnRender()
 				const DetailPathManager::STravelPathPoint&	N2 = path[I];	Fvector	P2; P2.set(N2.position); P2.y+=0.1f;
 				if (!fis_zero(P1.distance_to_sqr(P2),EPS_L))
 					Level().debug_renderer().draw_line			(Fidentity,P1,P2,color0);
-				if ((path.size() - 1) == I) // песледний box?
+				if ((path.size() - 1) == I) // ГЇГҐГ±Г«ГҐГ¤Г­ГЁГ© box?
 					Level().debug_renderer().draw_aabb			(P1,radius0,radius0,radius0,color1);
 				else 
 					Level().debug_renderer().draw_aabb			(P1,radius0,radius0,radius0,color2);
