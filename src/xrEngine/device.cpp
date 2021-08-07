@@ -39,7 +39,7 @@ ENGINE_API BOOL g_bRendering = FALSE;
 u32 g_dwFPSlimit = 60;
 
 BOOL g_bLoaded = FALSE;
-ref_light precache_light = 0;
+//ref_light precache_light = 0;
 
 BOOL CRenderDevice::Begin()
 {
@@ -102,11 +102,11 @@ void CRenderDevice::End(void)
 
             m_pRender->updateGamma();
 
-            if (precache_light) 
+            /*if (precache_light) 
 			{
 				precache_light->set_active(false);
 				precache_light.destroy();
-			}
+			}*/
             ::Sound->set_master_volume(1.f);
 
             m_pRender->ResourcesDestroyNecessaryTextures();
@@ -188,7 +188,7 @@ void CRenderDevice::PreCache(u32 amount, bool b_draw_loadscreen, bool b_wait_use
 #endif
 
     dwPrecacheFrame = dwPrecacheTotal = amount;
-    if (amount && !precache_light && g_pGameLevel && g_loading_events.empty())
+    /*if (amount && !precache_light && g_pGameLevel && g_loading_events.empty())
     {
         precache_light = ::Render->light_create();
         precache_light->set_shadow(false);
@@ -196,7 +196,7 @@ void CRenderDevice::PreCache(u32 amount, bool b_draw_loadscreen, bool b_wait_use
         precache_light->set_color(255, 255, 255);
         precache_light->set_range(5.0f);
         precache_light->set_active(true);
-    }
+    }*/
 
     if (amount && b_draw_loadscreen && !load_screen_renderer.b_registered)
     {
