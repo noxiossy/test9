@@ -63,7 +63,7 @@ void CStateManagerPoltergeist::execute()
 		else {
 			switch (object->EnemyMan.get_danger_type()) {
 				case eStrong:	state_id = eStatePanic; break;
-				case eWeak:	state_id = eStateAttack; break;
+				case eWeak:	state_id = eStatePanic; break;
 			}
 		}
 	} else if (object->HitMemory.is_hit() && !object->is_hidden()) {
@@ -100,14 +100,23 @@ void CStateManagerPoltergeist::execute()
 
 	select_state(state_id); 
 
+	bool b_almost_dead_polter = object->conditions().GetHealth() < 0.3f;
+
 	if ( prev_substate == eStateEat && current_substate != eStateEat )
 	{
 		if ( object->character_physics_support()->movement()->PHCapture() )
 		{
 			object->character_physics_support()->movement()->PHReleaseObject();
 		}
-		if ( !enemy && !object->conditions().GetHealth() < 0.3f )
+		if ( !enemy && !b_almost_dead_polter )
 			object->EnableHide();
+	}
+
+	if (b_almost_dead_polter) {
+		if (object->is_hidden()) {
+			object->CEnergyHolder::deactivate();
+		}
+		object->DisableHide();
 	}
 
 	// âûïîëíèòü òåêóùåå ñîñòîÿíèå
