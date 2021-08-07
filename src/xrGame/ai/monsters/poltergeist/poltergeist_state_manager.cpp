@@ -100,7 +100,7 @@ void CStateManagerPoltergeist::execute()
 
 	select_state(state_id); 
 
-	if ( prev_substate == eStateEat && current_substate != eStateEat )
+	if ( prev_substate == eStateEat && current_substate != eStateEat && !enemy && !object->conditions().GetHealth() < 0.3f)
 	{
 		if ( object->character_physics_support()->movement()->PHCapture() )
 		{
