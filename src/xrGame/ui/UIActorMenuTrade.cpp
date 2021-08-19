@@ -156,6 +156,8 @@ void CUIActorMenu::DeInitTradeMode()
 	CUIGameSP* pGameSP = smart_cast<CUIGameSP*>(CurrentGameUI());
 	if(!pGameSP) return;
 
+	pGameSP->TalkMenu->Show();
+
 	if(pGameSP->TalkMenu->IsShown())
 	{
 		pGameSP->TalkMenu->NeedUpdateQuestions();
