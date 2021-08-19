@@ -350,7 +350,10 @@ void CWeaponMagazined::UnloadMagazine(bool spawn_ammo)
 
         if (l_it == l_ammo.end()) l_ammo[*l_cartridge.m_ammoSect] = 1;
         m_magazine.pop_back();
-        --iAmmoElapsed;
+		if (iAmmoElapsed > 0)
+		{
+			--iAmmoElapsed;
+		}
     }
 
     VERIFY((u32) iAmmoElapsed == m_magazine.size());
@@ -388,7 +391,19 @@ void CWeaponMagazined::ReloadMagazine()
     m_BriefInfo_CalcFrame = 0;
 
     //óñòðàíèòü îñå÷êó ïðè ïåðåçàðÿäêå
-    if (IsMisfire())	bMisfire = false;
+	if (IsMisfire())
+	{
+		bMisfire = false;
+
+		// mmccxvii: FWR code
+		//**
+		if (iAmmoElapsed > 0)
+		{
+			--iAmmoElapsed;
+		}
+		return;
+		//*
+	}
 
     if (!m_bLockType)
     {
