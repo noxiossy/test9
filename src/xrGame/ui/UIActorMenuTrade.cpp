@@ -63,9 +63,9 @@ void CUIActorMenu::InitTradeMode()
 
 	UpdatePrices();
 
-	CUIGameSP* pGameSP = smart_cast<CUIGameSP*>(CurrentGameUI());
+	//CUIGameSP* pGameSP = smart_cast<CUIGameSP*>(CurrentGameUI());
 
-	pGameSP->TalkMenu->Show(false);
+	//pGameSP->TalkMenu->Show(false);
 }
 bool is_item_in_list(CUIDragDropListEx* pList, PIItem item)
 {
@@ -152,7 +152,7 @@ void CUIActorMenu::DeInitTradeMode()
 
 	if(!CurrentGameUI())
 		return;
-	//только если находимся в режиме single
+	//ГІГ®Г«ГјГЄГ® ГҐГ±Г«ГЁ Г­Г ГµГ®Г¤ГЁГ¬Г±Гї Гў Г°ГҐГ¦ГЁГ¬ГҐ single
 	CUIGameSP* pGameSP = smart_cast<CUIGameSP*>(CurrentGameUI());
 	if(!pGameSP) return;
 
@@ -161,7 +161,7 @@ void CUIActorMenu::DeInitTradeMode()
 		pGameSP->TalkMenu->NeedUpdateQuestions();
 	}
 
-	pGameSP->TalkMenu->Show(true);
+	//pGameSP->TalkMenu->Show(true);
 }
 
 bool CUIActorMenu::ToActorTrade(CUICellItem* itm, bool b_use_cursor_pos)
