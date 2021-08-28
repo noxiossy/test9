@@ -140,7 +140,7 @@ CActor::CActor() : CEntityAlive(), current_ik_cam_shift(0)
     fPrevCamPos = 0.0f;
     vPrevCamDir.set(0.f, 0.f, 1.f);
     fCurAVelocity = 0.0f;
-    // эффекторы
+    // ГЅГґГґГҐГЄГІГ®Г°Г»
     pCamBobbing = 0;
 
 
@@ -180,7 +180,7 @@ CActor::CActor() : CEntityAlive(), current_ik_cam_shift(0)
     Device.seqRender.Add	(this,REG_PRIORITY_LOW);
 #endif
 
-    //разрешить использование пояса в inventory
+    //Г°Г Г§Г°ГҐГёГЁГІГј ГЁГ±ГЇГ®Г«ГјГ§Г®ГўГ Г­ГЁГҐ ГЇГ®ГїГ±Г  Гў inventory
     inventory().SetBeltUseful(true);
 
     m_pPersonWeLookingAt = NULL;
@@ -440,7 +440,7 @@ void CActor::Load(LPCSTR section)
     // sheduler
     shedule.t_min = shedule.t_max = 1;
 
-    // настройки дисперсии стрельбы
+    // Г­Г Г±ГІГ°Г®Г©ГЄГЁ Г¤ГЁГ±ГЇГҐГ°Г±ГЁГЁ Г±ГІГ°ГҐГ«ГјГЎГ»
     m_fDispBase = pSettings->r_float(section, "disp_base");
     m_fDispBase = deg2rad(m_fDispBase);
 
@@ -524,12 +524,12 @@ void	CActor::Hit(SHit* pHDS)
             if (Device.dwFrame != last_hit_frame &&
                 HDS.bone() != BI_NONE)
             {
-                // вычислить позицию и направленность партикла
+                // ГўГ»Г·ГЁГ±Г«ГЁГІГј ГЇГ®Г§ГЁГ¶ГЁГѕ ГЁ Г­Г ГЇГ°Г ГўГ«ГҐГ­Г­Г®Г±ГІГј ГЇГ Г°ГІГЁГЄГ«Г 
                 Fmatrix pos;
 
                 CParticlesPlayer::MakeXFORM(this, HDS.bone(), HDS.dir, HDS.p_in_bone_space, pos);
 
-                // установить particles
+                // ГіГ±ГІГ Г­Г®ГўГЁГІГј particles
                 CParticlesObject* ps = NULL;
 
                 if (eacFirstEye == cam_active && this == Level().CurrentEntity())
@@ -856,7 +856,7 @@ void CActor::Die(CObject* who)
         };
 
 
-        ///!!! чистка пояса
+        ///!!! Г·ГЁГ±ГІГЄГ  ГЇГ®ГїГ±Г 
         TIItemContainer &l_blist = inventory().m_belt;
         while (!l_blist.empty())
             inventory().Ruck(l_blist.front());
@@ -1346,7 +1346,7 @@ void CActor::shedule_Update(u32 DT)
 
     inherited::shedule_Update(DT);
 
-    //эффектор включаемый при ходьбе
+    //ГЅГґГґГҐГЄГІГ®Г° ГўГЄГ«ГѕГ·Г ГҐГ¬Г»Г© ГЇГ°ГЁ ГµГ®Г¤ГјГЎГҐ
     if (!pCamBobbing)
     {
         pCamBobbing = xr_new<CEffectorBobbing>();
@@ -1354,7 +1354,7 @@ void CActor::shedule_Update(u32 DT)
     }
     pCamBobbing->SetState(mstate_real, conditions().IsLimping(), IsZoomAimingMode());
 
-    //звук тяжелого дыхания при уталости и хромании
+    //Г§ГўГіГЄ ГІГїГ¦ГҐГ«Г®ГЈГ® Г¤Г»ГµГ Г­ГЁГї ГЇГ°ГЁ ГіГІГ Г«Г®Г±ГІГЁ ГЁ ГµГ°Г®Г¬Г Г­ГЁГЁ
     if (this == Level().CurrentControlEntity() && !g_dedicated_server)
     {
         if (conditions().IsLimping() && g_Alive() && !psActorFlags.test(AF_GODMODE_RT))
@@ -1422,11 +1422,11 @@ void CActor::shedule_Update(u32 DT)
             m_DangerSnd.stop();
     }
 
-    //если в режиме HUD, то сама модель актера не рисуется
+    //ГҐГ±Г«ГЁ Гў Г°ГҐГ¦ГЁГ¬ГҐ HUD, ГІГ® Г±Г Г¬Г  Г¬Г®Г¤ГҐГ«Гј Г ГЄГІГҐГ°Г  Г­ГҐ Г°ГЁГ±ГіГҐГІГ±Гї
     if (!character_physics_support()->IsRemoved())
         setVisible(!HUDview());
 
-    //что актер видит перед собой
+    //Г·ГІГ® Г ГЄГІГҐГ° ГўГЁГ¤ГЁГІ ГЇГҐГ°ГҐГ¤ Г±Г®ГЎГ®Г©
     collide::rq_result& RQ = HUD().GetCurrentRayQuery();
 
 
@@ -1501,7 +1501,7 @@ void CActor::shedule_Update(u32 DT)
 
     //	UpdateSleep									();
 
-    //для свойст артефактов, находящихся на поясе
+    //Г¤Г«Гї Г±ГўГ®Г©Г±ГІ Г Г°ГІГҐГґГ ГЄГІГ®Гў, Г­Г ГµГ®Г¤ГїГ№ГЁГµГ±Гї Г­Г  ГЇГ®ГїГ±ГҐ
     UpdateArtefactsOnBeltAndOutfit();
     m_pPhysics_support->in_shedule_Update(DT);
     Check_for_AutoPickUp();
@@ -2036,11 +2036,11 @@ bool CActor::can_attach(const CInventoryItem *inventory_item) const
     if (!item || /*!item->enabled() ||*/ !item->can_be_attached())
         return			(false);
 
-    //можно ли присоединять объекты такого типа
+    //Г¬Г®Г¦Г­Г® Г«ГЁ ГЇГ°ГЁГ±Г®ГҐГ¤ГЁГ­ГїГІГј Г®ГЎГєГҐГЄГІГ» ГІГ ГЄГ®ГЈГ® ГІГЁГЇГ 
     if (m_attach_item_sections.end() == std::find(m_attach_item_sections.begin(), m_attach_item_sections.end(), inventory_item->object().cNameSect()))
         return false;
 
-    //если уже есть присоединненый объет такого типа 
+    //ГҐГ±Г«ГЁ ГіГ¦ГҐ ГҐГ±ГІГј ГЇГ°ГЁГ±Г®ГҐГ¤ГЁГ­Г­ГҐГ­Г»Г© Г®ГЎГєГҐГІ ГІГ ГЄГ®ГЈГ® ГІГЁГЇГ  
     if (attached(inventory_item->object().cNameSect()))
         return false;
 
@@ -2240,3 +2240,46 @@ void CActor::PlayAnm(LPCSTR Section)
 	}
 }
 //* 
+
+void CActor::RepackAmmo() {
+	xr_vector<CWeaponAmmo*> _ammo;
+	// Р·Р°РїРѕР»РЅСЏРµРј РјР°СЃСЃРёРІ РЅРµРїРѕР»РЅС‹РјРё РїР°С‡РєР°РјРё
+	for ( PIItem& _pIItem : inventory().m_ruck ) {
+		CWeaponAmmo* pAmmo = smart_cast<CWeaponAmmo*>( _pIItem );
+		if ( pAmmo && pAmmo->m_boxCurr < pAmmo->m_boxSize )
+			_ammo.push_back( pAmmo );
+  	}
+	while ( !_ammo.empty() ) {
+		shared_str asect = _ammo[ 0 ]->cNameSect(); // С‚РµРєСѓС‰Р°СЏ СЃРµРєС†РёСЏ
+		u16 box_size     = _ammo[ 0 ]->m_boxSize; // СЂР°Р·РјРµСЂ РїР°С‡РєРё
+		u32 cnt          = 0;
+		u16 cart_cnt     = 0;
+		// СЃС‡РёС‚Р°РµРј РєРѕР»=РІРѕ РїР°С‚СЂРѕРЅРѕРІ С‚РµРєСѓС‰РµР№ СЃРµРєС†РёРё
+		for ( CWeaponAmmo* ammo : _ammo ) {
+			if ( asect == ammo->cNameSect() ) {
+				cnt = cnt + ammo->m_boxCurr;
+				cart_cnt++;
+			}
+		}
+		// РµСЃР»Рё Р±РѕР»СЊС€Рµ РѕРґРЅРѕР№ РЅРµРїРѕР»РЅРѕР№ РїР°С‡РєРё, С‚Рѕ РїРµСЂРµРїР°РєРѕРІС‹РІР°РµРј
+		if ( cart_cnt > 1 ) {
+			for ( CWeaponAmmo* ammo : _ammo ) {
+				if ( asect == ammo->cNameSect() ) {
+					if ( cnt > 0 ) {
+						if ( cnt > box_size ) {
+							ammo->m_boxCurr = box_size;
+							cnt             = cnt - box_size;
+						} else {
+							ammo->m_boxCurr = ( u16 )cnt;
+							cnt             = 0;
+						}
+					} else {
+						ammo->DestroyObject();
+					}
+				}
+			}
+		}
+		//С‡РёСЃС‚РёРј РјР°СЃСЃРёРІ РѕС‚ РѕР±СЂР°Р±РѕС‚Р°РЅРЅС‹С… РїР°С‡РµРє
+		_ammo.erase( std::remove_if( _ammo.begin(), _ammo.end(), [asect]( CWeaponAmmo* a ) { return a->cNameSect() == asect; } ), _ammo.end() );
+	}
+}
