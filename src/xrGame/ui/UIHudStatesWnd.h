@@ -4,6 +4,7 @@
 #include "..\..\xrServerEntities\alife_space.h"
 #include "..\..\xrServerEntities\inventory_space.h"
 #include "..\actor_defs.h"
+#include "UICharacterInfo.h"
 
 class CUIStatic;
 class CUITextWnd;
@@ -21,6 +22,7 @@ private:
 	typedef CUIWindow						inherited;
 //-	typedef ALife::EInfluenceType	EIndicatorType;
 
+	CUIStatic*			m_actor_icon;
 	CUIStatic*			m_back;
 //	CUIStatic*			m_back_v;
 //	CUIStatic*			m_back_over_arrow;
