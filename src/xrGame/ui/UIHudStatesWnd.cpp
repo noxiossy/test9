@@ -95,6 +95,8 @@ void CUIHudStatesWnd::InitFromXml( CUIXml& xml, LPCSTR path )
 	XML_NODE* new_root = xml.NavigateToNode( path, 0 );
 	xml.SetLocalRoot( new_root );
 
+	m_actor_icon      = UIHelper::CreateStatic( xml, "actor_icon", this );
+        m_actor_icon.InitCharacterInfo(Fvector2().set(0, 0), m_actor_icon->GetWndSize(), "talk_character.xml");
 
 	m_back            = UIHelper::CreateStatic( xml, "back", this );
 	m_ui_health_bar   = UIHelper::CreateProgressBar( xml, "progress_bar_health", this );
@@ -525,12 +527,12 @@ void CUIHudStatesWnd::UpdateZones()
 			if ( dist_to_zone < rad_zone )
 			{
 				fRelPow *= 0.3f;
-				fRelPow *= ( 2.5f - 2.0f * power ); // çâóê çàâèñèò îò ñèëû çîíû
+				fRelPow *= ( 2.5f - 2.0f * power ); // Ã§Ã¢Ã³Ãª Ã§Ã Ã¢Ã¨Ã±Ã¨Ã² Ã®Ã² Ã±Ã¨Ã«Ã» Ã§Ã®Ã­Ã»
 			}
 		}
 		clamp( fRelPow, 0.0f, 1.0f );
 
-		//îïðåäåëèòü òåêóùóþ ÷àñòîòó ñðàáàòûâàíèÿ ñèãíàëà
+		//Ã®Ã¯Ã°Ã¥Ã¤Ã¥Ã«Ã¨Ã²Ã¼ Ã²Ã¥ÃªÃ³Ã¹Ã³Ã¾ Ã·Ã Ã±Ã²Ã®Ã²Ã³ Ã±Ã°Ã Ã¡Ã Ã²Ã»Ã¢Ã Ã­Ã¨Ã¿ Ã±Ã¨Ã£Ã­Ã Ã«Ã 
 		zone_info.cur_period = zone_type->freq.x + (zone_type->freq.y - zone_type->freq.x) * (fRelPow * fRelPow);
 		
 		//string256	buff_z;
