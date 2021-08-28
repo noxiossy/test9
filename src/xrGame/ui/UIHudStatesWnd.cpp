@@ -95,8 +95,9 @@ void CUIHudStatesWnd::InitFromXml( CUIXml& xml, LPCSTR path )
 	XML_NODE* new_root = xml.NavigateToNode( path, 0 );
 	xml.SetLocalRoot( new_root );
 
-	m_actor_icon      = UIHelper::CreateStatic( xml, "actor_icon", this );
-        m_actor_icon.InitCharacterInfo(Fvector2().set(0, 0), m_actor_icon->GetWndSize(), "talk_character.xml");
+	UIOurIcon         = UIHelper::CreateStatic( xml, "actor_icon", this );
+        UIOurIcon->AttachChild(&UICharacterInfoHud);
+        UICharacterInfoHud.InitCharacterInfo(Fvector2().set(0, 0), UIOurIcon->GetWndSize(), "talk_character.xml");
 
 	m_back            = UIHelper::CreateStatic( xml, "back", this );
 	m_ui_health_bar   = UIHelper::CreateProgressBar( xml, "progress_bar_health", this );
