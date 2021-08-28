@@ -23,6 +23,7 @@ private:
 //-	typedef ALife::EInfluenceType	EIndicatorType;
 
 	CUIStatic*			m_actor_icon;
+	CUICharacterInfo 		m_actor_info_hud;
 	CUIStatic*			m_back;
 //	CUIStatic*			m_back_v;
 //	CUIStatic*			m_back_over_arrow;
