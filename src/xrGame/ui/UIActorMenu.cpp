@@ -192,6 +192,9 @@ void CUIActorMenu::Show(bool status)
 		SetMenuMode							(mmUndefined);
 	}
 	m_ActorStateInfo->Show					(status);
+
+	CActor *pActor = smart_cast<CActor*>(Level().CurrentEntity());
+	if (pActor) pActor->RepackAmmo();
 }
 
 void CUIActorMenu::Draw()
@@ -247,7 +250,7 @@ void CUIActorMenu::Update()
 	m_hint_wnd->Update();
 }
 
-bool CUIActorMenu::StopAnyMove()  // true = актёр не идёт при открытом меню
+bool CUIActorMenu::StopAnyMove()  // true = Г ГЄГІВёГ° Г­ГҐ ГЁГ¤ВёГІ ГЇГ°ГЁ Г®ГІГЄГ°Г»ГІГ®Г¬ Г¬ГҐГ­Гѕ
 {
 	switch ( m_currMenuMode )
 	{
