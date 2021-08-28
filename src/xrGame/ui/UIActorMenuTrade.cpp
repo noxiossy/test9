@@ -63,6 +63,9 @@ void CUIActorMenu::InitTradeMode()
 
 	UpdatePrices();
 
+	CActor *pActor = smart_cast<CActor*>(Level().CurrentEntity());
+	if (pActor) pActor->RepackAmmo();
+
 	//CUIGameSP* pGameSP = smart_cast<CUIGameSP*>(CurrentGameUI());
 
 	//pGameSP->TalkMenu->Show(false);
