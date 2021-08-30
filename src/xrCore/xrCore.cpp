@@ -34,15 +34,25 @@ void xrCore::_initialize(LPCSTR _ApplicationName, LogCallback cb, BOOL init_fs, 
     {
 #ifdef XRCORE_STATIC
         _clear87();
+#ifdef _M_IX86
         _control87(_PC_53, MCW_PC);
+#endif
         _control87(_RC_CHOP, MCW_RC);
         _control87(_RC_NEAR, MCW_RC);
         _control87(_MCW_EM, MCW_EM);
 #endif
-        // Init COM so we can use CoCreateInstance
-        // HRESULT co_res =
         Params = xr_strdup(GetCommandLine());
         xr_strlwr(Params);
+
+
+		if (strstr(Params, "-verboselog"))
+			ParamFlags.set(ParamFlag::verboselog, TRUE);
+			
+		if (strstr(Params, "-dev"))
+			ParamFlags.set(ParamFlag::dev, TRUE);
+
+		// Init COM so we can use CoCreateInstance
+        // HRESULT co_res =
         //if (!strstr(Params, "-editor"))
         //    CoInitializeEx(NULL, COINIT_MULTITHREADED);
 
@@ -167,7 +177,9 @@ BOOL WINAPI DllMain(HINSTANCE hinstDLL, DWORD ul_reason_for_call, LPVOID lpvRese
     case DLL_PROCESS_ATTACH:
     {
         _clear87();
+#ifdef _M_IX86
         _control87(_PC_53, MCW_PC);
+#endif
         _control87(_RC_CHOP, MCW_RC);
         _control87(_RC_NEAR, MCW_RC);
         _control87(_MCW_EM, MCW_EM);

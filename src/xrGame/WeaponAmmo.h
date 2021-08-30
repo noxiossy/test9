@@ -28,6 +28,7 @@ class CCartridge : public IAnticheatDumpable
 public:
 	CCartridge();
 	void Load(LPCSTR section, u8 LocalAmmoType);
+	float Weight() const;
 
 	shared_str	m_ammoSect;
 	enum{
@@ -46,6 +47,8 @@ public:
 	Flags8	m_flags;
 
 	shared_str	m_InvShortName;
+
+	LPCSTR GetInventoryName(){ return m_InvShortName.c_str(); };
 	virtual void				DumpActiveParams		(shared_str const & section_name, CInifile & dst_ini) const;
 	virtual shared_str const 	GetAnticheatSectionName	() const { return m_ammoSect; };
 };

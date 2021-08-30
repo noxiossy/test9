@@ -55,7 +55,7 @@ CWeaponMagazined::CWeaponMagazined(ESoundTypes eSoundType) : CWeapon()
 
     m_bFireSingleShot = false;
     m_iShotNum = 0;
-    m_fOldBulletSpeed = 0;
+    m_fOldBulletSpeed = 0.f;
     m_iQueueSize = WEAPON_ININITE_QUEUE;
     m_bLockType = false;
 
@@ -119,7 +119,7 @@ void CWeaponMagazined::Load(LPCSTR section)
 	//*
 	if (WeaponSoundExist(section, "snd_fire_modes"))
 	{
-		m_sounds.LoadSound(section, "snd_fire_modes", "sndFireModes", false, m_eSoundEmptyClick);
+		m_sounds.LoadSound(section, "snd_fire_modes", "sndFireModes", false, m_eSoundFireModes);
 	}
 
 	if (WeaponSoundExist(section, "snd_reload_empty"))
@@ -239,12 +239,6 @@ void CWeaponMagazined::FireStart()
 void CWeaponMagazined::FireEnd()
 {
     inherited::FireEnd();
-
-	/* Alundaio: Removed auto-reload since it's widely asked by just about everyone who is a gun whore
-    CActor	*actor = smart_cast<CActor*>(H_Parent());
-    if (m_pInventory && !iAmmoElapsed && actor && GetState() != eReload)
-        Reload();
-	*/
 }
 
 void CWeaponMagazined::Reload()
@@ -257,7 +251,7 @@ bool CWeaponMagazined::TryReload()
 {
     if (m_pInventory)
     {
-        if (IsGameTypeSingle() && ParentIsActor())
+        if (ParentIsActor())
         {
             int	AC = GetSuitableAmmoTotal();
             Actor()->callback(GameObject::eWeaponNoAmmoAvailable)(lua_game_object(), AC);
@@ -311,7 +305,7 @@ bool CWeaponMagazined::IsAmmoAvailable()
 void CWeaponMagazined::OnMagazineEmpty()
 {
 #ifdef	EXTENDED_WEAPON_CALLBACKS
-	if (IsGameTypeSingle() && ParentIsActor())
+	if (ParentIsActor())
 	{
 		int	AC = GetSuitableAmmoTotal();
 		Actor()->callback(GameObject::eOnWeaponMagazineEmpty)(lua_game_object(), AC);
@@ -359,7 +353,7 @@ void CWeaponMagazined::UnloadMagazine(bool spawn_ammo)
     VERIFY((u32) iAmmoElapsed == m_magazine.size());
 
 #ifdef	EXTENDED_WEAPON_CALLBACKS
-	if (IsGameTypeSingle() && ParentIsActor())
+	if (ParentIsActor())
 	{
 		int	AC = GetSuitableAmmoTotal();
 		Actor()->callback(GameObject::eOnWeaponMagazineEmpty)(lua_game_object(), AC);
@@ -616,36 +610,33 @@ void CWeaponMagazined::state_Fire(float dt)
 {
     if (iAmmoElapsed > 0)
     {
-        VERIFY(fOneShotTime > 0.f);
-
-        Fvector					p1, d;
-        p1.set(get_LastFP());
-        d.set(get_LastFD());
-
-        if (!H_Parent()) return;
-        if (smart_cast<CMPPlayersBag*>(H_Parent()) != NULL)
-        {
-            Msg("! WARNING: state_Fire of object [%d][%s] while parent is CMPPlayerBag...", ID(), cNameSect().c_str());
-            return;
-        }
+        if (!H_Parent())
+		{
+			StopShooting();
+			return;
+		}
 
         CInventoryOwner* io = smart_cast<CInventoryOwner*>(H_Parent());
-        if (NULL == io->inventory().ActiveItem())
+        if (!io->inventory().ActiveItem())
         {
-            Log("current_state", GetState());
-            Log("next_state", GetNextState());
-            Log("item_sect", cNameSect().c_str());
-            Log("H_Parent", H_Parent()->cNameSect().c_str());
 			StopShooting();
-			return; //Alundaio: This is not supposed to happen but it does. GSC was aware but why no return here? Known to cause crash on game load if npc immediatly enters combat.
+			return;
         }
 
-        CEntity* E = smart_cast<CEntity*>(H_Parent());
-        E->g_fireParams(this, p1, d);
-
+		CEntity* E = smart_cast<CEntity*>(H_Parent());
         if (!E->g_stateFire())
+		{
             StopShooting();
+			return;
+		}
 
+		Fvector p1, d;
+        p1.set(get_LastFP());
+        d.set(get_LastFD());
+		
+        
+        E->g_fireParams(this, p1, d);
+		
         if (m_iShotNum == 0)
         {
             m_vStartPos = p1;
@@ -656,17 +647,11 @@ void CWeaponMagazined::state_Fire(float dt)
 
         while (!m_magazine.empty() && fShotTimeCounter < 0 && (IsWorking() || m_bFireSingleShot) && (m_iQueueSize < 0 || m_iShotNum < m_iQueueSize))
         {
-            if (CheckForMisfire())
-            {
-                StopShooting();
-                return;
-            }
-
             m_bFireSingleShot = false;
 
 			//Alundaio: Use fModeShotTime instead of fOneShotTime if current fire mode is 2-shot burst
 			//Alundaio: Cycle down RPM after two shots; used for Abakan/AN-94
-			if (GetCurrentFireMode() == 2 || (bCycleDown == true && m_iShotNum <= 1) )
+			if (GetCurrentFireMode() == 2 || (bCycleDown == true && m_iShotNum < 1) )
 			{
 				fShotTimeCounter = fModeShotTime;
 			}
@@ -682,6 +667,12 @@ void CWeaponMagazined::state_Fire(float dt)
                 FireTrace(p1, d);
             else
                 FireTrace(m_vStartPos, m_vStartDir);
+
+			if (CheckForMisfire())
+			{
+				StopShooting();
+				return;
+			}
         }
 
         if (m_iShotNum == m_iQueueSize)
@@ -1216,6 +1207,7 @@ bool CWeaponMagazined::Detach(const char* item_section_name, bool b_spawn_item)
 
         UpdateAddonsVisibility();
         InitAddons();
+
         return CInventoryItemObject::Detach(item_section_name, b_spawn_item);
     }
     else if (m_eGrenadeLauncherStatus == ALife::eAddonAttachable &&
@@ -1230,6 +1222,7 @@ bool CWeaponMagazined::Detach(const char* item_section_name, bool b_spawn_item)
 
         UpdateAddonsVisibility();
         InitAddons();
+
         return CInventoryItemObject::Detach(item_section_name, b_spawn_item);
     }
     else

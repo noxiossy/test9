@@ -416,9 +416,6 @@ void CActor::g_SetAnimation( u32 mstate_rl )
 	{
 		CInventoryItem* _i = inventory().ActiveItem();
 		CHudItem		*H = smart_cast<CHudItem*>(_i);
-		CWeapon			*W = smart_cast<CWeapon*>(_i);
-		CMissile		*M = smart_cast<CMissile*>(_i);
-		CArtefact		*A = smart_cast<CArtefact*>(_i);
 					
 		if (H) {
 			VERIFY(H->animation_slot() <= _total_anim_slots_);
@@ -437,6 +434,10 @@ void CActor::g_SetAnimation( u32 mstate_rl )
 			{
 				if (!m_bAnimTorsoPlayed) 
 				{
+					CWeapon			*W = smart_cast<CWeapon*>(_i);
+					CMissile		*M = smart_cast<CMissile*>(_i);
+					CArtefact		*A = smart_cast<CArtefact*>(_i);
+		
 					if (W) 
 					{
 						bool K	=inventory().GetActiveSlot() == KNIFE_SLOT;

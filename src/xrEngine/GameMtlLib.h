@@ -126,6 +126,7 @@ public:
     {
         ID = -1;
         m_Name = "unknown";
+		m_Desc = "unknown";
         Flags.zero();
         // factors
         fFlotationFactor = 1.f;
@@ -226,9 +227,9 @@ public:
     void FillProp(PropItemVec& values);
     void TransferFromParent(SGameMtlPair* parent);
 #endif
-#ifdef DEBUG
+//#ifdef DEBUG
     LPCSTR dbg_Name();
-#endif
+//#endif
 };
 
 DEFINE_VECTOR(SGameMtlPair*, GameMtlPairVec, GameMtlPairIt);

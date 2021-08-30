@@ -141,12 +141,12 @@ CDetailManager::CDetailManager	()
 
 CDetailManager::~CDetailManager	()
 {
-#ifdef DETAIL_RADIUS
     if (dtFS)
     {
         FS.r_close(dtFS);
 		dtFS = NULL;
     }
+#ifdef DETAIL_RADIUS
     for (u32 i = 0; i < dm_cache_size; ++i)
         cache_pool[i].~Slot();
     Memory.mem_free(cache_pool);

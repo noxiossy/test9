@@ -120,15 +120,7 @@ void SBinocVisibleObj::Update()
 			u32 clr	= subst_alpha(m_lt.GetTextureColor(),255);
 
 			//-----------------------------------------------------
-			CActor* pActor = NULL;
-			if (IsGameTypeSingle()) pActor = Actor();
-			else
-			{
-				if (Level().CurrentViewEntity())
-				{
-					pActor = smart_cast<CActor*> (Level().CurrentViewEntity());
-				}
-			}
+			CActor* pActor = Actor();
 			if (pActor) 
 			{
 				//-----------------------------------------------------
@@ -196,15 +188,7 @@ void CBinocularsVision::Update()
 	if (g_dedicated_server)
 		return;
 	//-----------------------------------------------------
-	const CActor* pActor = NULL;
-	if (IsGameTypeSingle()) pActor = Actor();
-	else
-	{
-		if (Level().CurrentViewEntity())
-		{
-			pActor = smart_cast<const CActor*> (Level().CurrentViewEntity());
-		}
-	}
+	const CActor* pActor = Actor();
 	if (!pActor) return;
 	//-----------------------------------------------------
 	const CVisualMemoryManager::VISIBLES& vVisibles = pActor->memory().visual().objects();

@@ -147,7 +147,7 @@ CSE_Abstract::CSE_Abstract					(LPCSTR caSection)
 
 		}
 		else
-			Msg					( "! cannot open config file %s", raw_file_name );
+			Msg( "ERROR! cannot open config file %s", raw_file_name );
 	}
 
 #ifndef AI_COMPILER
@@ -183,8 +183,8 @@ CInifile &CSE_Abstract::spawn_ini			()
 #pragma warning(disable:4238)
 		m_ini_file			= xr_new<CInifile>(
 			&IReader			(
-				(void*)(*(m_ini_string)),
-				m_ini_string.size()
+				(void*)(*m_ini_string),
+				xr_strlen(m_ini_string)
 			),
 			FS.get_path("$game_config$")->m_Path
 		);

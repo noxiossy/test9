@@ -58,7 +58,7 @@ private:
 
 		if (l_tID_Block.m_tCount == 1) {
 			--m_available_count;
-			VERIFY				(m_available_count >= 0);
+			//VERIFY				(m_available_count >= 0);
 		}
 
 		if (tInvalidValueID == tValueID)

@@ -49,10 +49,8 @@ void CActor::IR_OnKeyboardPress(int cmd)
 	{
 	case kWPN_FIRE:
 		{
-			if( (mstate_wishful & mcLookout) && !IsGameTypeSingle() ) return;
-
 			u16 slot = inventory().GetActiveSlot();
-			if(inventory().ActiveItem() && (slot==INV_SLOT_3 || slot==INV_SLOT_2) )
+			if(inventory().ActiveItem() && (slot==INV_SLOT_3 || slot==INV_SLOT_2 || slot==KNIFE_SLOT) )
 				mstate_wishful &=~mcSprint;
 			//-----------------------------
 			if (OnServer())
@@ -729,7 +727,8 @@ void CActor::NoClipFly(int cmd)
 			if(det_active)
 			{
 				CCustomDetector* det = smart_cast<CCustomDetector*>(det_active);
-				det->ToggleDetector(g_player_hud->attached_item(0)!=NULL);
+				if (det)
+					det->ToggleDetector(g_player_hud->attached_item(0)!=NULL);
 				return;
 			}
 		}

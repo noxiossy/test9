@@ -21,7 +21,7 @@ class CUIHudStatesWnd : public CUIWindow
 private:
 	typedef CUIWindow						inherited;
 //-	typedef ALife::EInfluenceType	EIndicatorType;
-
+public:
 	CUIStatic*			m_actor_icon;
 	CUICharacterInfo 		m_actor_info_hud;
 	CUIStatic*			m_back;
@@ -49,17 +49,7 @@ private:
 
 //	CUIProgressShape*	m_progress_self;
 	CUIStatic*			m_radia_damage;
-//	UI_Arrow*			m_arrow;
-//	UI_Arrow*			m_arrow_shadow;
-/*	
-	CUIStatic*			m_bleeding_lev1;
-	CUIStatic*			m_bleeding_lev2;
-	CUIStatic*			m_bleeding_lev3;
-	
-	CUIStatic*			m_radiation_lev1;
-	CUIStatic*			m_radiation_lev2;
-	CUIStatic*			m_radiation_lev3;
-*/
+private:
 	float				m_last_health;
 	float				m_health_blink;
 

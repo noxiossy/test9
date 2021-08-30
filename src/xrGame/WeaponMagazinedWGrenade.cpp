@@ -322,8 +322,7 @@ void  CWeaponMagazinedWGrenade::LaunchGrenade()
             }
             E->g_fireParams(this, p1, d);
         }
-        if (IsGameTypeSingle())
-            p1.set(get_LastFP2());
+        p1.set(get_LastFP2());
 
         Fmatrix							launch_matrix;
         launch_matrix.identity();
@@ -334,7 +333,7 @@ void  CWeaponMagazinedWGrenade::LaunchGrenade()
 
         launch_matrix.c.set(p1);
 
-        if (IsGameTypeSingle() && IsZoomed() && smart_cast<CActor*>(H_Parent()))
+        if (IsZoomed() && smart_cast<CActor*>(H_Parent()))
         {
             H_Parent()->setEnabled(FALSE);
             setEnabled(FALSE);
@@ -635,7 +634,7 @@ void CWeaponMagazinedWGrenade::PlayAnimIdle()
 		if (IsZoomed())
 		{
 			if (m_bGrenadeMode)
-				PlayHUDMotion("anm_idle_g_aim", FALSE, NULL, GetState());
+                PlayHUDMotion("anm_idle_g_aim", /*FALSE*/TRUE, NULL, GetState()); //AVO: fix fast anim switch
 			else
 				PlayHUDMotion("anm_idle_w_gl_aim", TRUE, NULL, GetState());
 		}
@@ -669,7 +668,7 @@ void CWeaponMagazinedWGrenade::PlayAnimIdle()
 			{
 				if (act_state == 0)
 				{
-					PlayHUDMotion("anm_idle_g", FALSE, NULL, GetState());
+                    PlayHUDMotion("anm_idle_g", /*FALSE*/TRUE, NULL, GetState()); //AVO: fix fast anim switch
 				}
 				else if (act_state == 1)
 				{
@@ -691,7 +690,7 @@ void CWeaponMagazinedWGrenade::PlayAnimIdle()
 			{
 				if (act_state == 0)
 				{
-					PlayHUDMotion("anm_idle_w_gl", FALSE, NULL, GetState());
+                    PlayHUDMotion("anm_idle_w_gl", /*FALSE*/TRUE, NULL, GetState()); //AVO: fix fast anim switch
 				}
 				else if (act_state == 1)
 				{
@@ -845,7 +844,7 @@ bool CWeaponMagazinedWGrenade::install_upgrade_ammo_class(LPCSTR section, bool t
     bool result2 = process_if_exists_set(section, "ammo_class", &CInifile::r_string, str, test);
     if (result2 && !test)
     {
-        xr_vector<shared_str>& ammo_types = m_bGrenadeMode ? m_ammoTypes2 : m_ammoTypes;
+        xr_vector<shared_str>& ammo_types = !m_bGrenadeMode ? m_ammoTypes2 : m_ammoTypes;
         ammo_types.clear();
         for (int i = 0, count = _GetItemCount(str); i < count; ++i)
         {

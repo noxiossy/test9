@@ -148,7 +148,6 @@ private:
     xr_string m_sConnectResult;
 
 public:
-    void OnGameSpyChallenge(NET_Packet* P);
     void OnBuildVersionChallenge();
     void OnConnectResult(NET_Packet* P);
     // Static particles
@@ -248,7 +247,7 @@ public:
     // Game
     void InitializeClientGame(NET_Packet& P);
     void ClientReceive();
-    void ClientSend();
+    void ClientSend(bool bForce = false);
     void ClientSendProfileData();
     void ClientSave();
     u32 Objects_net_Save(NET_Packet* _Packet, u32 start, u32 count);
@@ -403,7 +402,7 @@ IC CPHCommander& CLevel::ph_commander_physics_worldstep()
 
 IC bool OnServer() { return Level().IsServer(); }
 IC bool OnClient() { return Level().IsClient(); }
-IC bool IsGameTypeSingle() { return (g_pGamePersistent->GameType() == eGameIDSingle); }
+IC bool IsGameTypeSingle() { return true; }
 
 extern bool g_bDebugEvents;
 

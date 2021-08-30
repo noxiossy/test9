@@ -56,9 +56,8 @@ xr_token							qsun_quality_token							[ ]={
 	{ 0,							0												}
 };
 
-u32 r2_SmapSize = 1024;
+u32 r2_SmapSize = 1536;
 xr_token SmapSizeToken[] = {
-  { "1024x1024",   1024 },
   { "1536x1536",   1536 },
   { "2048x2048",   2048 },
   { "2560x2560",   2560 },
@@ -75,7 +74,7 @@ xr_token sunshafts_mode_token[] = {
 	{ "volumetric", 0 },
 	{ "screen_space", 1 },
 	{ 0, 0 }
-	};
+};
 
 u32			ps_r3_msaa				=	0;			//	=	0;
 xr_token							qmsaa_token							[ ]={
@@ -960,7 +959,7 @@ void		xrRender_initconsole	()
 	CMD3(CCC_Token,		"r3_minmax_sm",					&ps_r3_minmax_sm,			qminmax_sm_token);
 
 #ifdef DETAIL_RADIUS
-    CMD4(CCC_detail_radius, "r__detail_radius", &ps_r__detail_radius, 49, 300);
+    CMD4(CCC_detail_radius, "r__detail_radius", &ps_r__detail_radius, 49, 200);
 	CMD4(CCC_Integer, "r__clear_models_on_unload", &ps_clear_models_on_unload, 0, 1); //Alundaio
 #endif
 

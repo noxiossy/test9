@@ -61,8 +61,6 @@ CMapLocation::CMapLocation(LPCSTR type, u16 object_id)
 	m_cached.m_Position.set	(10000,10000);
 	m_cached.m_updatedFrame = u32(-1);
 	m_cached.m_graphID		= GameGraph::_GRAPH_ID(-1);
-	if(!IsGameTypeSingle())
-		m_cached.m_LevelName = Level().name();
 }
 
 CMapLocation::~CMapLocation()

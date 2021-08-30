@@ -38,8 +38,21 @@ IC static void generate_orthonormal_basis1(const Fvector& dir,Fvector& updir, Fv
 void CActor::g_cl_ValidateMState(float dt, u32 mstate_wf)
 {
 	// Lookout
-	if (mstate_wf&mcLookout)	mstate_real		|= mstate_wf&mcLookout;
-	else						mstate_real		&= ~mcLookout;
+	if ((mstate_wf & mcLLookout) && (mstate_wf & mcRLookout))
+	{
+		// It's impossible to perform right and left lookouts in the same time
+		mstate_real &= ~mcLookout;
+	}
+	else if (mstate_wf & mcLookout)
+	{		
+		// Activate one of lookouts
+		mstate_real |= mstate_wf & mcLookout;
+	}
+	else
+	{
+		// No lookouts needed
+		mstate_real &= ~mcLookout;
+	}
 	
 	if (mstate_real&(mcJump|mcFall|mcLanding|mcLanding2))
 		mstate_real		&= ~mcLookout;
@@ -286,7 +299,7 @@ void CActor::g_cl_CheckControls(u32 mstate_wf, Fvector &vControlAccel, float &Ju
 		}//(mstate_real&mcAnyMove)
 	}//peOnGround || peAtWall
 
-	if(IsGameTypeSingle() && cam_eff_factor>EPS)
+	if(cam_eff_factor>EPS)
 	{
 	LPCSTR state_anm				= NULL;
 
@@ -485,7 +498,7 @@ void CActor::g_cl_Orientate	(u32 mstate_rl, float dt)
 	} else {
 		// if camera rotated more than 45 degrees - align model with it
 		float ty = angle_normalize(r_torso.yaw);
-		if (_abs(r_model_yaw-ty)>PI_DIV_4)	{
+		if (_abs(r_model_yaw-ty)>PI_DIV_4-30)	{
 			r_model_yaw_dest = ty;
 			// 
 			mstate_real	|= mcTurn;

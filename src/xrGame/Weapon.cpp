@@ -114,12 +114,7 @@ void CWeapon::UpdateXForm()
     CEntityAlive*			E = smart_cast<CEntityAlive*>(H_Parent());
 
     if (!E)
-    {
-        if (!IsGameTypeSingle())
-            UpdatePosition(H_Parent()->XFORM());
-
-        return;
-    }
+       return;
 
     const CInventoryOwner	*parent = smart_cast<const CInventoryOwner*>(E);
     if (parent && parent->use_simplified_visual())
@@ -262,9 +257,7 @@ void CWeapon::Load(LPCSTR section)
     float temp_f = 0.0f;
     temp_f = pSettings->r_float(section, "cam_relax_speed");
     cam_recoil.RelaxSpeed = _abs(deg2rad(temp_f));
-    //AVO: commented out as very minor and is clashing with weapon mods
-    //UNDONE after non fatal VERIFY implementation
-    VERIFY(!fis_zero(cam_recoil.RelaxSpeed));
+	//VERIFY(!fis_zero(cam_recoil.RelaxSpeed));
     if (fis_zero(cam_recoil.RelaxSpeed))
     {
         cam_recoil.RelaxSpeed = EPS_L;
@@ -283,7 +276,7 @@ void CWeapon::Load(LPCSTR section)
     }
     temp_f = pSettings->r_float(section, "cam_max_angle");
     cam_recoil.MaxAngleVert = _abs(deg2rad(temp_f));
-    VERIFY(!fis_zero(cam_recoil.MaxAngleVert));
+	//VERIFY(!fis_zero(cam_recoil.MaxAngleVert));
     if (fis_zero(cam_recoil.MaxAngleVert))
     {
         cam_recoil.MaxAngleVert = EPS;
@@ -291,7 +284,7 @@ void CWeapon::Load(LPCSTR section)
 
     temp_f = pSettings->r_float(section, "cam_max_angle_horz");
     cam_recoil.MaxAngleHorz = _abs(deg2rad(temp_f));
-    VERIFY(!fis_zero(cam_recoil.MaxAngleHorz));
+    //VERIFY(!fis_zero(cam_recoil.MaxAngleHorz));
     if (fis_zero(cam_recoil.MaxAngleHorz))
     {
         cam_recoil.MaxAngleHorz = EPS;
@@ -591,6 +584,7 @@ void CWeapon::net_Export(NET_Packet& P)
     P.w_u8(m_ammoType);
     P.w_u8((u8) GetState());
     P.w_u8((u8) IsZoomed());
+
 }
 
 void CWeapon::net_Import(NET_Packet& P)
@@ -788,10 +782,7 @@ void CWeapon::OnHiddenItem()
 {
     m_BriefInfo_CalcFrame = 0;
 
-    if (IsGameTypeSingle())
-        SwitchState(eHiding);
-    else
-        SwitchState(eHidden);
+    SwitchState(eHiding);
 
     OnZoomOut();
     inherited::OnHiddenItem();
@@ -844,10 +835,7 @@ void CWeapon::UpdateCL()
     UpdateFlameParticles();
     UpdateFlameParticles2();
 
-    if (!IsGameTypeSingle())
-        make_Interpolation();
-
-    if ((GetNextState() == GetState()) && IsGameTypeSingle() && H_Parent() == Level().CurrentEntity())
+    if ((GetNextState() == GetState()) && H_Parent() == Level().CurrentEntity())
     {
         CActor* pActor = smart_cast<CActor*>(H_Parent());
         if (pActor && !pActor->AnyMove() && this == pActor->inventory().ActiveItem())
@@ -1464,12 +1452,9 @@ void CWeapon::OnZoomIn()
     if (m_zoom_params.m_sUseZoomPostprocess.size() && IsScopeAttached())
     {
         CActor *pA = smart_cast<CActor *>(H_Parent());
-        if (pA)
+		if (pA && !m_zoom_params.m_pNight_vision)
         {
-            if (NULL == m_zoom_params.m_pNight_vision)
-            {
                 m_zoom_params.m_pNight_vision = xr_new<CNightVisionEffector>(m_zoom_params.m_sUseZoomPostprocess/*"device_torch"*/);
-            }
         }
     }
 }
@@ -1641,14 +1626,6 @@ int		g_iWeaponRemove = 1;
 
 bool CWeapon::NeedToDestroyObject()	const
 {
-    if (GameID() == eGameIDSingle) return false;
-    if (Remote()) return false;
-    if (H_Parent()) return false;
-    if (g_iWeaponRemove == -1) return false;
-    if (g_iWeaponRemove == 0) return true;
-    if (TimePassedAfterIndependant() > m_dwWeaponRemoveTime)
-        return true;
-
     return false;
 }
 
@@ -2026,7 +2003,7 @@ void CWeapon::debug_draw_firedeps()
 const float &CWeapon::hit_probability() const
 {
     VERIFY((g_SingleGameDifficulty >= egdNovice) && (g_SingleGameDifficulty <= egdMaster));
-    return					(m_hit_probability[egdNovice]);
+    return					(m_hit_probability[g_SingleGameDifficulty]);
 }
 
 void CWeapon::OnStateSwitch(u32 S)

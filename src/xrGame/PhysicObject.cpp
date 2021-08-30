@@ -216,8 +216,9 @@ void CPhysicObject::RunStartupAnim(CSE_Abstract *D)
 			CSE_Visual					*visual = smart_cast<CSE_Visual*>(D);
 			R_ASSERT					(visual);
 			R_ASSERT2					(*visual->startup_animation,"no startup animation");
-	
+#ifdef DEBUG	
 			VERIFY2( (!!PKinematicsAnimated->LL_MotionID( visual->startup_animation.c_str() ) .valid() ) , ( make_string(" animation %s not faund ",visual->startup_animation.c_str() ) + dbg_object_base_dump_string( this )).c_str() );
+#endif
 			m_anim_blend				= m_anim_script_callback.play_cycle( PKinematicsAnimated, visual->startup_animation );
 		}
 		smart_cast<IKinematics*>(Visual())->CalculateBones_Invalidate();
@@ -346,11 +347,6 @@ void CPhysicObject::UpdateCL()
 	if (m_pPhysicsShell->PPhysicsShellAnimator())
 	{
 		m_pPhysicsShell->AnimatorOnFrame();
-	}
-	
-	if (!IsGameTypeSingle())
-	{
-		Interpolate();
 	}
 
 	m_anim_script_callback.update( *this );
@@ -550,48 +546,8 @@ net_updatePhData* CPhysicObject::NetSync()
 
 void CPhysicObject::net_Export			(NET_Packet& P) 
 {	
-	if (this->H_Parent() || IsGameTypeSingle()) 
-	{
-		P.w_u8				(0);
-		return;
-	}
-
-	CPHSynchronize* pSyncObj				= NULL;
-	SPHNetState								State;
-	pSyncObj = this->PHGetSyncItem		(0);
-
-	if (pSyncObj && !this->H_Parent()) 
-		pSyncObj->get_State					(State);
-	else 	
-		State.position.set					(this->Position());
-
-
-	mask_num_items			num_items;
-	num_items.mask			= 0;
-	u16						temp = this->PHGetSyncItemsNumber();
-	R_ASSERT				(temp < (u16(1) << 5));
-	num_items.num_items		= u8(temp);
-
-	if (State.enabled)									num_items.mask |= CSE_ALifeObjectPhysic::inventory_item_state_enabled;
-	if (fis_zero(State.angular_vel.square_magnitude()))	num_items.mask |= CSE_ALifeObjectPhysic::inventory_item_angular_null;
-	if (fis_zero(State.linear_vel.square_magnitude()))	num_items.mask |= CSE_ALifeObjectPhysic::inventory_item_linear_null;
-	//if (m_pPhysicsShell->PPhysicsShellAnimator())		{num_items.mask |= CSE_ALifeObjectPhysic::animated;}
-
-	P.w_u8					(num_items.common);
-
-	/*if (num_items.mask&CSE_ALifeObjectPhysic::animated)
-	{
-		net_Export_Anim_Params(P);
-	}*/
-	net_Export_PH_Params(P,State,num_items);
-	
-	if (PPhysicsShell()->isEnabled())
-	{
-		P.w_u8(1);	//not freezed
-	} else
-	{
-		P.w_u8(0);  //freezed
-	}
+	P.w_u8				(0);
+	return;
 };
 
 void CPhysicObject::net_Export_PH_Params(NET_Packet& P, SPHNetState& State, mask_num_items&	num_items)

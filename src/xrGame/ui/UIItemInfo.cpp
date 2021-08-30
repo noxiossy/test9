@@ -182,8 +182,6 @@ void CUIItemInfo::InitItemInfo(Fvector2 pos, Fvector2 size, LPCSTR xml_name)
     InitItemInfo			(xml_name);
 }
 
-bool	IsGameTypeSingle();
-
 void CUIItemInfo::InitItem(CUICellItem* pCellItem, CInventoryItem* pCompareItem, u32 item_price, LPCSTR trade_tip)
 {
 	if(!pCellItem)
@@ -235,7 +233,7 @@ void CUIItemInfo::InitItem(CUICellItem* pCellItem, CInventoryItem* pCompareItem,
 			UIWeight->SetWndPos	(pos);
 		}
 	}
-	if ( UICost && IsGameTypeSingle() && item_price!=u32(-1) )
+	if ( UICost && item_price!=u32(-1) )
 	{
 		xr_sprintf				(str, "%d RU", item_price);// will be owerwritten in multiplayer
 		UICost->SetText		(str);
@@ -256,7 +254,7 @@ void CUIItemInfo::InitItem(CUICellItem* pCellItem, CInventoryItem* pCompareItem,
 //		IBuyWnd* buy_menu = gs_mp->pCurBuyMenu->GetItemPrice();
 //		GetItemPrice();
 //	}
-	if ( UITradeTip && IsGameTypeSingle())
+	if ( UITradeTip)
 	{
 		pos.y = UITradeTip->GetWndPos().y;
 		if ( UIWeight && m_complex_desc )
@@ -367,6 +365,9 @@ void CUIItemInfo::TryAddWpnInfo( CInventoryItem& pInvItem, CInventoryItem* pComp
 
 void CUIItemInfo::TryAddArtefactInfo	(CInventoryItem& pInvItem)
 {
+	if (!UIArtefactParams)
+		return;
+
 	if ( UIArtefactParams->Check( pInvItem.object().cNameSect() ) )
 	{
 		UIArtefactParams->SetInfo( pInvItem );
@@ -376,21 +377,23 @@ void CUIItemInfo::TryAddArtefactInfo	(CInventoryItem& pInvItem)
 
 void CUIItemInfo::TryAddOutfitInfo( CInventoryItem& pInvItem, CInventoryItem* pCompareItem )
 {
+	if (!UIOutfitInfo)
+		return;
+
 	CCustomOutfit* outfit = smart_cast<CCustomOutfit*>(&pInvItem);
 	CHelmet* helmet = smart_cast<CHelmet*>(&pInvItem);
-	if ( outfit && UIOutfitInfo )
+	if (outfit)
 	{
 		CCustomOutfit* comp_outfit = smart_cast<CCustomOutfit*>(pCompareItem);
 		UIOutfitInfo->UpdateInfo( outfit, comp_outfit );
 		UIDesc->AddWindow( UIOutfitInfo, false );
 	}
-	if ( helmet && UIOutfitInfo )
+	else if (helmet)
 	{
 		CHelmet* comp_helmet = smart_cast<CHelmet*>(pCompareItem);
 		UIOutfitInfo->UpdateInfo( helmet, comp_helmet );
 		UIDesc->AddWindow( UIOutfitInfo, false );
 	}
-
 }
 
 void CUIItemInfo::TryAddUpgradeInfo( CInventoryItem& pInvItem )

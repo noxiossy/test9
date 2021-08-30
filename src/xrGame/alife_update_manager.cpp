@@ -22,6 +22,7 @@
 #include "restriction_space.h"
 #include "profiler.h"
 #include "mt_config.h"
+#include "script_engine.h"
 
 using namespace ALife;
 #ifdef	ENGINE_LUA_ALIFE_UPDAGE_MANAGER_CALLBACKS
@@ -169,7 +170,7 @@ bool CALifeUpdateManager::change_level	(NET_Packet &net_packet)
 	// then change actor server entity 
 	// then call client net_Save 
 	// then restore actor server entity 
-	Level().ClientSend				();
+	Level().ClientSend				(true);
 
 	m_changing_level				= true;
 	

@@ -318,12 +318,14 @@ void xrDebug::backend(const char* expression, const char* description, const cha
 
 LPCSTR xrDebug::error2string(long code)
 {
-    LPCSTR result = 0;
+    char* result = 0;
     static string1024 desc_storage;
 
 #ifdef _M_AMD64
 #else
-    result = DXGetErrorDescription(code);
+	WCHAR err_result[1024];
+    DXGetErrorDescription(code,err_result,sizeof(err_result));
+	wcstombs(result, err_result, sizeof(err_result));
 #endif
     if (0 == result)
     {

@@ -31,8 +31,8 @@ namespace PAPI{
 		IC void			clear			()
         {
 			R_ASSERT(!m_bLocked);
-			for (PAVecIt it=actions.begin(); it!=actions.end(); it++) 
-				xr_delete(*it);
+			for (auto& it : actions)
+				xr_delete(it);
 			actions.clear();
 		}
 		IC void			append			(ParticleAction* pa)	{R_ASSERT(!m_bLocked);actions.push_back(pa);	}

@@ -40,6 +40,16 @@ void	CCar::OnMouseMove(int dx, int dy)
 		float d		= ((psMouseInvert.test(1))?-1:1)*float(dy)*scale*3.f/4.f;
 		C->Move		((d>0)?kUP:kDOWN, _abs(d));
 	}
+	if (m_car_weapon)
+	{
+		Fvector pos = active_camera->Position();
+		Fvector cam_dir = active_camera->Direction();
+
+		collide::rq_result& RQ = HUD().GetCurrentRayQuery();
+
+		pos.mad(cam_dir, RQ.range>3.f ? RQ.range : 30.f);
+		SetParam(CCarWeapon::eWpnDesiredPos, pos);
+	};
 }
 
 bool CCar::bfAssignMovement(CScriptEntityAction *tpEntityAction)

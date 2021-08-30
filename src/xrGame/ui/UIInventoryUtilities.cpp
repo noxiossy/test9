@@ -365,7 +365,7 @@ LPCSTR InventoryUtilities::GetTimePeriodAsString(LPSTR _buff, u32 buff_sz, ALife
 	int cnt		= 0;
 	_buff[0]	= 0;
 
-	u8 yrdiff = ((year2 - year1) * 12);
+	u32 yrdiff = ((year2 - year1) * 12);
 
 	if (month1 != month2 || yrdiff > 0)
 		cnt = xr_sprintf(_buff + cnt, buff_sz - cnt, "%d %s", month2 + (yrdiff - month1), *CStringTable().translate("ui_st_months"));
@@ -518,8 +518,6 @@ LPCSTR InventoryUtilities::GetGoodwillAsText(CHARACTER_GOODWILL goodwill)
 // (для tutorial)
 void InventoryUtilities::SendInfoToActor(LPCSTR info_id)
 {
-	if (GameID() != eGameIDSingle) return;
-	
 	CActor* actor = smart_cast<CActor*>(Level().CurrentEntity());
 	if(actor)
 	{
@@ -529,7 +527,6 @@ void InventoryUtilities::SendInfoToActor(LPCSTR info_id)
 
 void InventoryUtilities::SendInfoToLuaScripts(shared_str info)
 {
-	if (GameID() != eGameIDSingle) return;
 	if ( info == shared_str("ui_talk_show") )
 	{
 		int mode = 10; // now Menu is Talk Dialog (show)

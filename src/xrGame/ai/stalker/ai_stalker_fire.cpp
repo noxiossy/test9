@@ -719,7 +719,7 @@ void CAI_Stalker::update_can_kill_info	()
 
 bool CAI_Stalker::undetected_anomaly	()
 {
-	return					(inside_anomaly() || brain().CStalkerPlanner::m_storage.property(StalkerDecisionSpace::eWorldPropertyAnomaly));
+	return					(inside_anomaly() /*|| brain().CStalkerPlanner::m_storage.property(StalkerDecisionSpace::eWorldPropertyAnomaly)*/);
 }
 
 bool CAI_Stalker::inside_anomaly		()
@@ -728,7 +728,7 @@ bool CAI_Stalker::inside_anomaly		()
 	xr_vector<CObject*>::const_iterator	E = feel_touch.end();
 	for ( ; I != E; ++I) {
 		CCustomZone			*zone = smart_cast<CCustomZone*>(*I);
-		if ( zone && (zone->restrictor_type() != RestrictionSpace::eRestrictorTypeNone) ) {
+		if ( zone /* && (zone->restrictor_type() != RestrictionSpace::eRestrictorTypeNone) */) {
 			if (smart_cast<CRadioactiveZone*>(zone))
 				continue;
 

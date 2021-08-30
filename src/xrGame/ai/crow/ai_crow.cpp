@@ -133,8 +133,9 @@ void CAI_Crow::Load( LPCSTR section )
 	vVarGoal					= pSettings->r_fvector3	(section,"goal_variability");
 	fIdleSoundDelta				= pSettings->r_float	(section,"idle_sound_delta");
 	fIdleSoundTime				= fIdleSoundDelta+fIdleSoundDelta*Random.randF(-.5f,.5f);
+#ifdef DEBUG
 	VERIFY2( valid_pos( Position() ), dbg_valide_pos_string(Position(),this,"CAI_Crow::Load( LPCSTR section )") );
-
+#endif
 }
 
 BOOL CAI_Crow::net_Spawn		(CSE_Abstract* DC)
@@ -155,8 +156,8 @@ BOOL CAI_Crow::net_Spawn		(CSE_Abstract* DC)
     o_workload_rframe = 0;
 
     if (GetfHealth() > 0) {
-        st_current = ECrowStates::eFlyIdle;
-        st_target = ECrowStates::eFlyIdle;
+		st_current = eFlyIdle;
+		st_target = eFlyIdle;
 	// disable UpdateCL, enable only on HIT
 	processing_deactivate		();
 		auto tmp = Actor()->Position();
@@ -167,14 +168,16 @@ BOOL CAI_Crow::net_Spawn		(CSE_Abstract* DC)
     }
     else
     {
-        st_current = ECrowStates::eDeathFall;
-        st_target = ECrowStates::eDeathDead;
+		st_current = eDeathFall;
+		st_target = eDeathDead;
 
         // turn on physic
         processing_activate();
         CreateSkeleton();
     }
+#ifdef DEBUG
 	VERIFY2( valid_pos( Position() ), dbg_valide_pos_string(Position(),this,"CAI_Crow::net_Spawn") );
+#endif
 	return		R;
 }
 
@@ -257,7 +260,9 @@ void CAI_Crow::state_Flying		(float fdt)
 	vOldPosition.set(Position());
 	XFORM().setHPB	(vHPB.x,vHPB.y,vHPB.z);
 	Position().mad	(vOldPosition,vDirection,fSpeed*fdt);
+#ifdef DEBUG
 	VERIFY2( valid_pos( Position() ), dbg_valide_pos_string(Position(),this,"state_Flying		(float fdt)") );
+#endif
 }
 
 static Fvector vV={0,0,0};
@@ -278,7 +283,9 @@ void CAI_Crow::state_DeathFall()
 		smart_cast<IKinematicsAnimated*>(Visual())->PlayCycle	(m_Anims.m_death_idle.GetRandom());
 		bPlayDeathIdle		= false;
 	}
+#ifdef DEBUG
 	VERIFY2( valid_pos( Position() ), dbg_valide_pos_string(Position(),this,"CAI_Crow::state_DeathFall()") );
+#endif
 }
 
 void CAI_Crow::Die				(CObject* who)
@@ -309,7 +316,9 @@ void CAI_Crow::UpdateWorkload	(float fdt)
 void CAI_Crow::UpdateCL		()
 {
 	inherited::UpdateCL		();
+#ifdef DEBUG
 	VERIFY2( valid_pos( Position() ), dbg_valide_pos_string(Position(),this," CAI_Crow::UpdateCL		()") );
+#endif
 	if (m_pPhysicsShell)	{
 		m_pPhysicsShell->Update		();
 		XFORM().set					(m_pPhysicsShell->mXFORM);
@@ -369,7 +378,9 @@ void CAI_Crow::shedule_Update		(u32 DT)
         ;
     else
         UpdateWorkload(fDT);
+#ifdef DEBUG
 	VERIFY2( valid_pos( Position() ), dbg_valide_pos_string(Position(),this," CAI_Crow::shedule_Update		(u32 DT)") );
+#endif
 }
 
 // Core events
@@ -424,7 +435,9 @@ void CAI_Crow::net_Import	(NET_Packet& P)
 	id_Group			= P.r_u8();
 
 	XFORM().setHPB		(yaw,pitch,bank);
+#ifdef DEBUG
 	VERIFY2				( valid_pos( Position() ), dbg_valide_pos_string(Position(),this," CAI_Crow::net_Import	(NET_Packet& P)") );
+#endif
 }
 //---------------------------------------------------------------------
 void CAI_Crow::HitSignal	(float /**HitAmount/**/, Fvector& /**local_dir/**/, CObject* who, s16 /**element/**/)

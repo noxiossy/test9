@@ -144,9 +144,19 @@ void CSoundRender_CoreA::_initialize(int stage)
 
 	if(stage==1)//first initialize
 	{
+
+		//Alun: Because Hardware devices usually cannot support number greater then 32, unlike software
+		ALCint nummono;
+		alcGetIntegerv(pDevice, ALC_MONO_SOURCES, 1, &nummono);
+		int iMaxTargets = std::min(nummono, psSoundTargets);
+
+		Msg("SOUND: Max Mono Targets %d | psSoundTargets %d | supported %d", nummono, psSoundTargets, iMaxTargets);
+
+		//-Alun
+
 		// Pre-create targets
 		CSoundRender_Target*	T	= 0;
-		for (u32 tit=0; tit<u32(psSoundTargets); tit++)
+		for (int tit = 0; tit<iMaxTargets; tit++)
 		{
 			T						=	xr_new<CSoundRender_TargetA>();
 			if (T->_initialize())
