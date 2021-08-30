@@ -71,6 +71,8 @@ ENGINE_API
 extern	float	psHUD_FOV_def;
 extern	float	psSqueezeVelocity;
 extern	int		psLUA_GCSTEP;
+extern Fvector	m_hud_offset_pos;
+extern Fvector	m_hand_offset_pos;
 
 extern	int		x_m_x;
 extern	int		x_m_z;
@@ -1892,7 +1894,7 @@ void CCC_RegisterCommands()
 
 	//#ifdef DEBUG
 	CMD4(CCC_Float,				"hud_fov",				&psHUD_FOV_def,		0.2f,	0.55f);
-	CMD4(CCC_Float,				"fov",					&g_fov,			40.0f,	75.0f);
+	CMD4(CCC_Float,				"fov",					&g_fov,			40.0f,	85.0f);
 	//#endif // DEBUG
 
 	// Demo
@@ -2222,11 +2224,12 @@ void CCC_RegisterCommands()
 
 	CMD3(CCC_Mask, "ai_use_torch_dynamic_lights", &g_uCommonFlags, flAiUseTorchDynamicLights);
 
-#ifndef MASTER_GOLD
+//#ifndef MASTER_GOLD
 	CMD4(CCC_Vector3, "psp_cam_offset", &CCameraLook2::m_cam_offset, Fvector().set(-1000, -1000, -1000), Fvector().set(1000, 1000, 1000));
-#endif // MASTER_GOLD
+	CMD4(CCC_Vector3, "hud_offset_pos", &m_hud_offset_pos, Fvector().set(-1000, -1000, -1000), Fvector().set(1000, 1000, 1000));
+	CMD4(CCC_Vector3, "hand_offset_pos", &m_hand_offset_pos, Fvector().set(-1000, -1000, -1000), Fvector().set(1000, 1000, 1000));
+//#endif // MASTER_GOLD
 
-	CMD1(CCC_GSCheckForUpdates, "check_for_updates");
 #ifdef DEBUG
 	CMD1(CCC_Crash, "crash");
 	CMD1(CCC_DumpObjects, "dump_all_objects");
