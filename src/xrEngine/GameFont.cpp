@@ -215,7 +215,12 @@ u16 CGameFont::GetCutLengthPos(float fTargetWidth, const char* pszText)
 {
     VERIFY(pszText);
 
-    wide_char wsStr[MAX_MB_CHARS], wsPos[MAX_MB_CHARS];
+	u16 idx = 1;
+	wide_char* wsStr = (wide_char*)malloc(MAX_MB_CHARS);
+	wide_char wsPos[MAX_MB_CHARS];
+
+	if (wsStr != NULL)
+	{
 		float fCurWidth = 0.0f, fDelta = 0.0f;
 
 		u16 len = mbhMulti2Wide(wsStr, wsPos, MAX_MB_CHARS, pszText);

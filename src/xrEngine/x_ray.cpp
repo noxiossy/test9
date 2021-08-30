@@ -59,7 +59,7 @@ static int start_year = 1999; // 1999
 
 // binary hash, mainly for copy-protection
 
-#include "../xrGameSpy/gamespy/md5c.c"
+
 #include <ctype.h>
 
 #define DEFAULT_MODULE_HASH "3CAABCFCFF6F3A810019C6A72180F166"
@@ -696,7 +696,9 @@ int APIENTRY WinMain_impl(HINSTANCE hInstance,
                     &HeapFragValue,
                     sizeof(HeapFragValue)
                 );
+#ifdef DEBUG
             VERIFY2(result, "can't set process heap low fragmentation");
+#endif
         }
     }
 
@@ -1140,7 +1142,8 @@ void CApplication::LoadBegin()
 
         m_pRender->LoadBegin();
 
-        phase_timer.Start();
+		if (Core.ParamFlags.test(Core.verboselog))
+			phase_timer.Start();
         load_stage = 0;
 
     }
@@ -1151,9 +1154,12 @@ void CApplication::LoadEnd()
     ll_dwReference--;
     if (0 == ll_dwReference)
     {
-        Msg("* phase time: %d ms", phase_timer.GetElapsed_ms());
-        Msg("* phase cmem: %d K", Memory.mem_usage() / 1024);
-        Console->Execute("stat_memory");
+		if (Core.ParamFlags.test(Core.verboselog))
+		{
+			Msg("* phase time: %d ms", phase_timer.GetElapsed_ms());
+			Msg("* phase cmem: %d K", Memory.mem_usage() / 1024);
+			Console->Execute("stat_memory");
+		}
         g_appLoaded = TRUE;
         // DUMP_PHASE;
     }
@@ -1193,9 +1199,12 @@ void CApplication::LoadStage()
 {
     load_stage++;
     VERIFY(ll_dwReference);
-    Msg("* phase time: %d ms", phase_timer.GetElapsed_ms());
-    phase_timer.Start();
-    Msg("* phase cmem: %d K", Memory.mem_usage() / 1024);
+	if (Core.ParamFlags.test(Core.verboselog))
+	{
+		Msg("* phase time: %d ms", phase_timer.GetElapsed_ms());
+		phase_timer.Start();
+		Msg("* phase cmem: %d K", Memory.mem_usage() / 1024);
+	}
 
 	if (g_pGamePersistent->GameType()==1 && strstr(Core.Params,"alife"))
         max_load_stage = 17;
