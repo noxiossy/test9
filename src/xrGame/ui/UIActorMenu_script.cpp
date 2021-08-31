@@ -25,6 +25,10 @@
 #include "UIPdaWnd.h"
 #include "UITabControl.h"
 #include "UIActorMenu.h"
+#include "UIMainIngameWnd.h"
+#include "UIZoneMap.h"
+#include "UIMotionIcon.h"
+#include "UIHudStatesWnd.h"
 
 #include "../InventoryBox.h"
 
@@ -38,6 +42,11 @@ CUIActorMenu* GetActorMenu()
 CUIPdaWnd* GetPDAMenu()
 {
 	return &CurrentGameUI()->GetPdaMenu();
+}
+
+CUIMainIngameWnd* GetMainGameMenu()
+{
+	return CurrentGameUI()->UIMainIngameWnd;
 }
 
 u8 GrabMenuMode()

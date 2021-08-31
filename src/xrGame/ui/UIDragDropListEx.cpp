@@ -4,8 +4,10 @@
 #include "object_broker.h"
 #include "UICellItem.h"
 #include "UICursor.h"
+#include "../Level.h"
 //Alundaio
-#include "../Inventory.h" 
+#include "../Inventory.h"
+#include <dinput.h>
 //-Alundaio
 
 CUIDragItem* CUIDragDropListEx::m_drag_item = NULL;
