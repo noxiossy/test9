@@ -119,7 +119,7 @@ void CWeaponMagazined::Load(LPCSTR section)
 	//*
 	if (WeaponSoundExist(section, "snd_fire_modes"))
 	{
-		m_sounds.LoadSound(section, "snd_fire_modes", "sndFireModes", false, m_eSoundFireModes);
+		m_sounds.LoadSound(section, "snd_fire_modes", "sndFireModes", false, m_eSoundEmptyClick);
 	}
 
 	if (WeaponSoundExist(section, "snd_reload_empty"))
