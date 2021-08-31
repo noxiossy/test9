@@ -6,6 +6,7 @@
 #define AFX_GAMEOBJECT_H__3DA72D03_C759_4688_AEBB_89FA812AA873__INCLUDED_
 #pragma once
 
+#include "stdafx.h"
 #include "../xrEngine/xr_object.h"
 #include "xrServer_Space.h"
 #include "alife_space.h"
@@ -14,10 +15,10 @@
 #include "Hit.h"
 #include "game_object_space.h"
 
+class CScriptGameObject;
 class CPhysicsShell;
 class CSE_Abstract;
 class CPHSynchronize;
-class CScriptGameObject;
 class CInventoryItem;
 class CEntity;
 class CEntityAlive;
