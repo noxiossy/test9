@@ -127,6 +127,7 @@ const u32 &CPatrolPoint::level_vertex_id					() const
 const GameGraph::_GRAPH_ID &CPatrolPoint::game_vertex_id	() const
 {
 	CGameGraph::CVertex const*	vertex = ai().game_graph().vertex(m_game_vertex_id);
+#ifdef DEBUG
 	VERIFY2				(
 		vertex,
 		make_string(
@@ -138,10 +139,26 @@ const GameGraph::_GRAPH_ID &CPatrolPoint::game_vertex_id	() const
 			VPUSH(m_position)
 		)
 	);
-
+#endif
 	if (vertex->level_id() == ai().level_graph().level_id())
 		return			(game_vertex_id(&ai().level_graph(),&ai().cross_table(),&ai().game_graph()));
 
 	return				(m_game_vertex_id);
 }
 #endif
+
+CPatrolPoint &CPatrolPoint::position(Fvector position) {
+	m_position = position;
+
+	auto level_graph = &ai().level_graph();
+	if (level_graph && level_graph->valid_vertex_position(m_position)) {
+		Fvector pos = m_position;
+		pos.y += .15f;
+		m_level_vertex_id = level_graph->vertex_id(pos);
+	}
+	else
+		m_level_vertex_id = u32(-1);
+	correct_position(level_graph, &ai().cross_table(), &ai().game_graph());
+
+	return *this;
+}

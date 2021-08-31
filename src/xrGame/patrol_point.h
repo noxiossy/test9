@@ -47,7 +47,7 @@ public:
 	IC		const GameGraph::_GRAPH_ID	&game_vertex_id		(const CLevelGraph *level_graph, const CGameLevelCrossTable *cross, const CGameGraph *game_graph) const;
 	IC		const u32					&flags				() const;
 	IC		const shared_str			&name				() const;
-
+	CPatrolPoint &position(Fvector position);
 public:
 #ifdef XRGAME_EXPORTS
 			const u32					&level_vertex_id	() const;
