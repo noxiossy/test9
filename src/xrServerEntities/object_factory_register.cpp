@@ -186,7 +186,7 @@ void CObjectFactory::register_classes	()
 	add<CUIGameSP>												(CLSID_GAME_UI_SINGLE			,"game_ui_single");
 
 #	ifndef NO_SINGLE
-		ADD_MP(CActor,CActorMP,CSE_ALifeCreatureActor,CSE_ActorMP	,CLSID_OBJECT_ACTOR				,"actor");
+		ADD(CActor,CSE_ALifeCreatureActor	,CLSID_OBJECT_ACTOR				,"actor");
 #	else // #ifndef NO_SINGLE
 		ADD(CActorMP,CSE_ActorMP	,CLSID_OBJECT_ACTOR				,"actor");
 #	endif // #ifndef NO_SINGLE
