@@ -59,7 +59,7 @@ IC bool CCoverManager::cover(CLevelGraph::CVertex* v, u32 index0, u32 index1) co
 	);
 }
 
-IC	bool CCoverManager::critical_point	(CLevelGraph::CVertex *v, u32 index, u32 index0, u32 index1)
+IC bool CCoverManager::critical_point(CLevelGraph::CVertex* v, u32 index, u32 index0, u32 index1) const
 {
 	return					(
 		!ai().level_graph().valid_vertex_id(v->link(index)) &&
