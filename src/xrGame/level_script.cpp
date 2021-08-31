@@ -717,13 +717,6 @@ void stop_tutorial()
 		g_tutorial->Stop();	
 }
 
-LPCSTR tutorial_name()
-{
-	if (g_tutorial)
-		return g_tutorial->m_name;
-	return "invalid";
-}
-
 LPCSTR translate_string(LPCSTR str)
 {
 	return *CStringTable().translate(str);
