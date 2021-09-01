@@ -426,7 +426,7 @@ void CDemoRecord::IR_OnKeyboardPress(int dik)
 //#ifndef MASTER_GOLD
 	if (dik == DIK_RETURN)
 	{
-		if (Core.ParamFlags.test(Core.dev))
+		if (strstr(Core.Params, "-dbg"))
 		{
 			if (g_pGameLevel->CurrentEntity())
 			{

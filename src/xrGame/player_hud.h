@@ -21,7 +21,6 @@ struct player_hud_motion
 	shared_str				m_base_name;
 	shared_str				m_additional_name;
 	xr_vector<motion_descr>	m_animations;
-	float					m_anim_speed;
 };
 
 struct player_hud_motion_container
@@ -46,7 +45,6 @@ struct hud_item_measures
 	Fvector							m_fire_point_offset;
 	u16								m_fire_bone2;
 	Fvector							m_fire_point2_offset;
-	Fvector							m_fire_direction;
 	u16								m_shell_bone;
 	Fvector							m_shell_point_offset;
 
@@ -80,7 +78,7 @@ struct attachable_hud_item
 	void render_item_ui				();
 	bool render_item_ui_query		();
 	bool need_renderable			();
-	bool set_bone_visible			(const shared_str& bone_name, BOOL bVisibility, BOOL bSilent=FALSE);
+	void set_bone_visible			(const shared_str& bone_name, BOOL bVisibility, BOOL bSilent=FALSE);
 	void debug_draw_firedeps		();
 
 	//hands bind position

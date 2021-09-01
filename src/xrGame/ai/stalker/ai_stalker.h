@@ -88,7 +88,7 @@ class CAI_Stalker :
 	public CAI_PhraseDialogManager,
 	public CStepManager
 {
-private:
+protected:
 	typedef CCustomMonster								inherited;
 
 public:
@@ -213,9 +213,6 @@ public:
 	virtual	void						PHHit								(SHit &H);
 	virtual bool						feel_vision_isRelevant				(CObject* who);
 	virtual float						Radius								() const;
-
-	virtual void			ChangeVisual			( shared_str NewVisual );
-
 #ifdef DEBUG
 	virtual void						OnHUDDraw							(CCustomHUD* hud);
 	virtual void						OnRender							();

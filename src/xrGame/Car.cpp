@@ -78,7 +78,7 @@ CCar::CCar()
 	m_exhaust_particles	="vehiclefx\\exhaust_1";
 	m_car_sound			=xr_new<SCarSound>	(this);
 
-	//Гі Г¬Г ГёГЁГ­Г» Г±Г«Г®ГІГ®Гў Гў ГЁГ­ГўГҐГ­ГІГ Г°ГҐ Г­ГҐГІ
+	//у машины слотов в инвентаре нет
 	inventory			= xr_new<CInventory>();
 	inventory->SetSlotsUseful(false);
 	m_doors_torque_factor = 2.f;
@@ -130,9 +130,7 @@ void CCar::reload		(LPCSTR section)
 
 void CCar::cb_Steer			(CBoneInstance* B)
 {
-#ifdef DEBUG
 	VERIFY2(fsimilar(DET(B->mTransform),1.f,DET_CHECK_EPS),"Bones receive returns 0 matrix");
-#endif
 	CCar*	C			= static_cast<CCar*>(B->callback_param());
 	Fmatrix m;
 
@@ -163,38 +161,26 @@ BOOL	CCar::net_Spawn				(CSE_Abstract* DC)
 #ifdef DEBUG
 	InitDebug();
 #endif
+	CSE_Abstract					*e = (CSE_Abstract*)(DC);
+	CSE_ALifeCar					*co=smart_cast<CSE_ALifeCar*>(e);
+	BOOL							R = inherited::net_Spawn(DC);
 
-	if (!inherited::net_Spawn(DC))
-		return (FALSE);
-
-	CSE_Abstract *e = (CSE_Abstract*)(DC);
-	CSE_ALifeCar *car = smart_cast<CSE_ALifeCar*>(e);
+	PKinematics(Visual())->CalculateBones_Invalidate();
+	PKinematics(Visual())->CalculateBones(TRUE);
 
 	CPHSkeleton::Spawn(e);
+	setEnabled						(TRUE);
+	setVisible						(TRUE);
+	PKinematics(Visual())->CalculateBones_Invalidate();
+	PKinematics(Visual())->CalculateBones(TRUE);
+	m_fSaveMaxRPM					= m_max_rpm;
+	SetfHealth						(co->health);
 
-	IKinematics* K = smart_cast<IKinematics*>(Visual());
-	IKinematicsAnimated	*A = smart_cast<IKinematicsAnimated*>(Visual());
-	if (A) {
-		if (car->startup_animation.size())
-			A->PlayCycle(*car->startup_animation);
-		K->CalculateBones(TRUE);
-	}
-
-	setEnabled(TRUE);
-	setVisible(TRUE);
-
-	m_fSaveMaxRPM = m_max_rpm;
-	SetfHealth(car->health);
-
-	if(!g_Alive())					
-		b_exploded=true;
-	else
-	{
-		b_exploded = false;
-		processing_activate();
-	}
+	if(!g_Alive())					b_exploded=true;
+	else							b_exploded=false;
 									
 	CDamagableItem::RestoreEffect();
+	
 	
 	CInifile* pUserData		= PKinematics(Visual())->LL_UserData(); 
 	if(pUserData->section_exist("destroyed"))
@@ -208,7 +194,8 @@ BOOL	CCar::net_Spawn				(CSE_Abstract* DC)
 		m_memory->reload	(pUserData->r_string("visual_memory_definition", "section"));
 	}
 
-	return							(CScriptEntity::net_Spawn(DC));
+	return							(CScriptEntity::net_Spawn(DC) && R);
+	
 }
 
 void CCar::ActorObstacleCallback					(bool& do_colide,bool bo1,dContact& c,SGameMtl* material_1,SGameMtl* material_2)	
@@ -442,8 +429,7 @@ void CCar::UpdateEx			(float fov)
 	{
 		cam_Update(Device.fTimeDelta, fov);
 		OwnerActor()->Cameras().UpdateFromCamera(Camera());
-		if (eacFirstEye == active_camera->tag && !Level().Cameras().GetCamEffector(cefDemo))
-			OwnerActor()->Cameras().ApplyDevice(VIEWPORT_NEAR);
+		OwnerActor()->Cameras().ApplyDevice(VIEWPORT_NEAR);
 	}
 
 	
@@ -483,19 +469,20 @@ void CCar::UpdateCL				( )
 
  void CCar::VisualUpdate(float fov)
 {
+	m_pPhysicsShell->InterpolateGlobalTransform(&XFORM());
 
-	if (m_pPhysicsShell)
-	{
-		m_pPhysicsShell->InterpolateGlobalTransform(&XFORM());
-		IKinematics* K = smart_cast<IKinematics*>(Visual());
-		K->CalculateBones();
-	}
+	Fvector lin_vel;
+	m_pPhysicsShell->get_LinearVel(lin_vel);
+	// Sound
+	Fvector		C,V;
+	Center		(C);
+	V.set		(lin_vel);
 
 	m_car_sound->Update();
 	if(Owner())
 	{
 		
-		if (m_pPhysicsShell && m_pPhysicsShell->isEnabled())
+		if(m_pPhysicsShell->isEnabled())
 		{
 			Owner()->XFORM().mul_43	(XFORM(),m_sits_transforms[0]);
 		}
@@ -892,11 +879,8 @@ void CCar::ParseDefinitions()
 
 void CCar::CreateSkeleton(CSE_Abstract	*po)
 {
-	if (m_pPhysicsShell)
-		return;
 
-	if (!Visual()) 
-		return;
+	if (!Visual()) return;
 	IRenderVisual *pVis = Visual();
 	IKinematics* pK = smart_cast<IKinematics*>(pVis);
 	IKinematicsAnimated* pKA = smart_cast<IKinematicsAnimated*>(pVis);
@@ -938,7 +922,7 @@ void CCar::Init()
 
 	if(ini->section_exist("air_resistance"))
 	{
-		m_pPhysicsShell->SetAirResistance(default_k_l*ini->r_float("air_resistance", "linear_factor"), default_k_w*ini->r_float("air_resistance", "angular_factor"));
+		PPhysicsShell()->SetAirResistance(default_k_l*ini->r_float("air_resistance","linear_factor"),default_k_w*ini->r_float("air_resistance","angular_factor"));
 	}
 	if(ini->line_exist("car_definition","steer"))
 	{
@@ -1432,7 +1416,7 @@ void CCar::PhTune(float step)
 	
 
 
-	for (u16 i = m_pPhysicsShell->get_ElementsNumber(); i != 0; i--)
+	for(u16 i=PPhysicsShell()->get_ElementsNumber();i!=0;i--)	
 	{
 		CPhysicsElement* e=PPhysicsShell()->get_ElementByStoreOrder(i-1);
 		if(e->isActive()&&e->isEnabled())
@@ -1755,7 +1739,7 @@ void CCar::OnEvent(NET_Packet& P, u16 type)
 	inherited::OnEvent		(P,type);
 	CExplosive::OnEvent		(P,type);
 
-	//Г®ГЎГ°Г ГЎГ®ГІГЄГ  Г±Г®Г®ГЎГ№ГҐГ­ГЁГ©, Г­ГіГ¦Г­Г»Гµ Г¤Г«Гї Г°Г ГЎГ®ГІГ» Г± ГЎГ ГЈГ Г¦Г­ГЁГЄГ®Г¬ Г¬Г ГёГЁГ­Г»
+	//обработка сообщений, нужных для работы с багажником машины
 	u16 id;
 	switch (type)
 	{
@@ -2112,7 +2096,7 @@ Fvector	CCar::		ExitVelocity				()
 
 /************************************************** added by Ray Twitty (aka Shadows) START **************************************************/
 #ifdef ENABLE_CAR
-// ГЇГ®Г«ГіГ·ГЁГІГј ГЁ Г§Г Г¤Г ГІГј ГІГҐГЄГіГ№ГҐГҐ ГЄГ®Г«ГЁГ·ГҐГ±ГІГўГ® ГІГ®ГЇГ«ГЁГўГ 
+// получить и задать текущее количество топлива
 float CCar::GetfFuel()
 {
 	return m_fuel;
@@ -2121,7 +2105,7 @@ void CCar::SetfFuel(float fuel)
 {
 	m_fuel = fuel;
 }
-// ГЇГ®Г«ГіГ·ГЁГІГј ГЁ Г§Г Г¤Г ГІГј Г°Г Г§Г¬ГҐГ° ГІГ®ГЇГ«ГЁГўГ­Г®ГЈГ® ГЎГ ГЄГ  
+// получить и задать размер топливного бака 
 float CCar::GetfFuelTank()
 {
 	return m_fuel_tank;
@@ -2130,7 +2114,7 @@ void CCar::SetfFuelTank(float fuel_tank)
 {
 	m_fuel_tank = fuel_tank;
 }
-// ГЇГ®Г«ГіГ·ГЁГІГј ГЁ Г§Г Г¤Г ГІГј ГўГҐГ«ГЁГ·ГЁГ­Гі ГЇГ®ГІГ°ГҐГЎГ«ГҐГ­ГЁГҐ ГІГ®ГЇГ«ГЁГўГ 
+// получить и задать величину потребление топлива
 float CCar::GetfFuelConsumption()
 {
 	return m_fuel_consumption;
@@ -2139,7 +2123,7 @@ void CCar::SetfFuelConsumption(float fuel_consumption)
 {
 	m_fuel_consumption = fuel_consumption;
 }
-// ГЇГ°ГЁГЎГ ГўГЁГІГј ГЁГ«ГЁ ГіГЎГ ГўГЁГІГј ГЄГ®Г«ГЁГ·ГҐГ±ГІГўГ® ГІГ®ГЇГ«ГЁГўГ 
+// прибавить или убавить количество топлива
 void CCar::ChangefFuel(float fuel)
 {
 	if(m_fuel + fuel < 0)
@@ -2157,7 +2141,7 @@ void CCar::ChangefFuel(float fuel)
 		m_fuel = m_fuel_tank;
 	}
 }
-// ГЇГ°ГЁГЎГ ГўГЁГІГј ГЁГ«ГЁ ГіГЎГ ГўГЁГІГј Г¦ГЁГ§Г­ГҐГ© :)
+// прибавить или убавить жизней :)
 void CCar::ChangefHealth(float health)
 {
 	float current_health = GetfHealth();
@@ -2176,16 +2160,10 @@ void CCar::ChangefHealth(float health)
 		SetfHealth(1);
 	}
 }
-// Г ГЄГІГЁГўГҐГ­ Г«ГЁ Г±ГҐГ©Г·Г Г± Г¤ГўГЁГЈГ ГІГҐГ«Гј
+// активен ли сейчас двигатель
 bool CCar::isActiveEngine()
 {
 	return b_engine_on;
 }
 #endif
 /*************************************************** added by Ray Twitty (aka Shadows) END ***************************************************/
-Fvector CCar::ExitPosition()
-{
-	if (!m_doors.empty())m_doors.begin()->second.GetExitPosition(m_exit_position);
-	else m_exit_position.set(Position());
-	return m_exit_position;
-}

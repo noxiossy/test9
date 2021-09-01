@@ -233,7 +233,7 @@ m_identifier(identifier)
     m_fWaterIntensity = 1;
 
 #ifdef TREE_WIND_EFFECT
-    m_fTreeAmplitudeIntensity = 0.01f;
+    m_fTreeAmplitudeIntensity = 0.01;
 #endif
 
     lens_flare_id = "";

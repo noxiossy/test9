@@ -792,7 +792,7 @@ void CCC_Register()
     // CMD4(CCC_Integer, "rs_ib_size", &rsDIB_Size, 32, 4096);
 
     // Texture manager
-    CMD4(CCC_Integer, "texture_lod", &psTextureLOD, 0, 2);
+    CMD4(CCC_Integer, "texture_lod", &psTextureLOD, 0, 4);
     CMD4(CCC_Integer, "net_dedicated_sleep", &psNET_DedicatedSleep, 0, 64);
 
     // General video control
@@ -810,7 +810,7 @@ void CCC_Register()
     CMD1(CCC_SND_Restart, "snd_restart");
     CMD3(CCC_Mask, "snd_acceleration", &psSoundFlags, ss_Hardware);
     CMD3(CCC_Mask, "snd_efx", &psSoundFlags, ss_EAX);
-    CMD4(CCC_Integer, "snd_targets", &psSoundTargets, 4, 256);
+    CMD4(CCC_Integer, "snd_targets", &psSoundTargets, 200, 1000);
     CMD4(CCC_Integer, "snd_cache_size", &psSoundCacheSizeMB, 4, 64);
 
 #ifdef DEBUG
@@ -852,6 +852,13 @@ void CCC_Register()
 #endif
 
     CMD1(CCC_ExclusiveMode, "input_exclusive_mode");
+
+    extern int g_svTextConsoleUpdateRate;
+    CMD4(CCC_Integer, "sv_console_update_rate", &g_svTextConsoleUpdateRate, 1, 100);
+
+    extern int g_svDedicateServerUpdateReate;
+    CMD4(CCC_Integer, "sv_dedicated_server_update_rate", &g_svDedicateServerUpdateReate, 1, 1000);
+
     CMD1(CCC_HideConsole, "hide");
 
 #ifdef DEBUG

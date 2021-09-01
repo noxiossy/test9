@@ -479,7 +479,7 @@ void CUIHudStatesWnd::UpdateZones()
 	}
 
 	Fvector posf; 
-	posf.set(Level().CurrentControlEntity()->Position());
+	posf.set( Device.vCameraPosition );
 	Level().hud_zones_list->feel_touch_update( posf, m_zone_feel_radius_max );
 	
 	if ( Level().hud_zones_list->m_ItemInfos.size() == 0 )
@@ -503,7 +503,7 @@ void CUIHudStatesWnd::UpdateZones()
 		}
 */
 
-		Fvector P = Level().CurrentControlEntity()->Position();
+		Fvector P			= Device.vCameraPosition;
 		P.y					-= 0.5f;
 		float dist_to_zone	= 0.0f;
 		float rad_zone		= 0.0f;

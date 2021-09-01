@@ -25,10 +25,10 @@ void	game_sv_Single::Create			(shared_str& options)
 {
 	inherited::Create					(options);
 
-	m_alife_simulator = xr_new<CALifeSimulator>(&server(),&options);
+	if (strstr(*options,"/alife"))
+		m_alife_simulator				= xr_new<CALifeSimulator>(&server(),&options);
 
 	switch_Phase						(GAME_PHASE_INPROGRESS);
-	Msg("alife simulator created");
 }
 
 
@@ -144,7 +144,14 @@ void game_sv_Single::OnDetach(u16 eid_who, u16 eid_what)
 
 void	game_sv_Single::Update			()
 {
-	inherited::Update();
+	inherited::Update	();
+/*	switch(phase) 	{
+		case GAME_PHASE_PENDING : {
+			OnRoundStart();
+			switch_Phase(GAME_PHASE_INPROGRESS);
+			break;
+		}
+	}*/
 }
 
 ALife::_TIME_ID game_sv_Single::GetStartGameTime	()
@@ -330,7 +337,4 @@ void game_sv_Single::restart_simulator			(LPCSTR saved_game_name)
 	g_pGamePersistent->LoadTitle		();
 	Device.PreCache			(60, true, true);
 	pApp->LoadEnd			();
-
-	switch_Phase(GAME_PHASE_INPROGRESS);
-	Msg("alife simulator restarted");
 }

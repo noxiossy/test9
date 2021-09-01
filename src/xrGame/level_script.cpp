@@ -266,15 +266,9 @@ Fvector vertex_position(u32 level_vertex_id)
 {
 	if (!ai().level_graph().valid_vertex_id(level_vertex_id))
 	{
-		ai().script_engine().print_stack();
-		Msg("level.vertex_position | Invalid vertex id %d", level_vertex_id);
+		return Fvector{};
 	}
 	return			(ai().level_graph().vertex_position(level_vertex_id));
-}
-
-bool valid_vertex(u32 level_vertex_id)
-{
-	return ai().level_graph().valid_vertex_id(level_vertex_id);
 }
 
 void map_add_object_spot(u16 id, LPCSTR spot_type, LPCSTR text)
@@ -319,11 +313,7 @@ bool patrol_path_exists(LPCSTR patrol_path)
 
 LPCSTR get_name()
 {
-	if (Level().name().size())
-		return Level().name().c_str();
-
-	//Alun: This fixes level.name() being an empty string when checking it while server entities are being registered
-	return ai().game_graph().header().level(ai().level_graph().level_id()).name().c_str();
+	return		(*Level().name());
 }
 
 void prefetch_sound	(LPCSTR name)
@@ -533,18 +523,17 @@ void iterate_sounds2				(LPCSTR prefix, u32 max_count, luabind::object object, l
 }
 
 #include "actoreffector.h"
-float add_cam_effector(LPCSTR fn, int id, bool cyclic, LPCSTR cb_func, bool hud_affect = true)
+float add_cam_effector(LPCSTR fn, int id, bool cyclic, LPCSTR cb_func)
 {
 	CAnimatorCamEffectorScriptCB* e		= xr_new<CAnimatorCamEffectorScriptCB>(cb_func);
 	e->SetType					((ECamEffectorType)id);
 	e->SetCyclic				(cyclic);
 	e->Start					(fn);
-	e->SetHudAffect(hud_affect);
 	Actor()->Cameras().AddCamEffector(e);
 	return						e->GetAnimatorLength();
 }
 
-float add_cam_effector2(LPCSTR fn, int id, bool cyclic, LPCSTR cb_func, float cam_fov, bool hud_affect = true)
+float add_cam_effector2(LPCSTR fn, int id, bool cyclic, LPCSTR cb_func, float cam_fov)
 {
 	CAnimatorCamEffectorScriptCB* e		= xr_new<CAnimatorCamEffectorScriptCB>(cb_func);
 	e->m_bAbsolutePositioning	= true;
@@ -552,7 +541,6 @@ float add_cam_effector2(LPCSTR fn, int id, bool cyclic, LPCSTR cb_func, float ca
 	e->SetType					((ECamEffectorType)id);
 	e->SetCyclic				(cyclic);
 	e->Start					(fn);
-	e->SetHudAffect(hud_affect);
 	Actor()->Cameras().AddCamEffector(e);
 	return						e->GetAnimatorLength();
 }
@@ -851,7 +839,6 @@ void CLevel::script_register(lua_State *L)
 		def("get_active_cam", &get_active_cam),
 		def("set_active_cam", &set_active_cam),
 		def("get_start_time", &get_start_time),
-		def("valid_vertex", &valid_vertex),
 #endif
 		//Alundaio: END
 		// obsolete\deprecated

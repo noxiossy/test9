@@ -38,7 +38,8 @@ CCustomOutfit::~CCustomOutfit()
 
 BOOL CCustomOutfit::net_Spawn(CSE_Abstract* DC)
 {
-	ReloadBonesProtection();
+	if(IsGameTypeSingle())
+		ReloadBonesProtection();
 
 	BOOL res = inherited::net_Spawn(DC);
 	return					(res);
@@ -61,6 +62,8 @@ void CCustomOutfit::net_Import(NET_Packet& P)
 void CCustomOutfit::OnH_A_Chield()
 {
 	inherited::OnH_A_Chield();
+	if (!IsGameTypeSingle())
+		ReloadBonesProtection();
 }
 
 

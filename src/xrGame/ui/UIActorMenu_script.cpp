@@ -25,10 +25,6 @@
 #include "UIPdaWnd.h"
 #include "UITabControl.h"
 #include "UIActorMenu.h"
-#include "UIMainIngameWnd.h"
-#include "UIZoneMap.h"
-#include "UIMotionIcon.h"
-#include "UIHudStatesWnd.h"
 
 #include "../InventoryBox.h"
 
@@ -42,11 +38,6 @@ CUIActorMenu* GetActorMenu()
 CUIPdaWnd* GetPDAMenu()
 {
 	return &CurrentGameUI()->GetPdaMenu();
-}
-
-CUIMainIngameWnd* GetMainGameMenu()
-{
-	return CurrentGameUI()->UIMainIngameWnd;
 }
 
 u8 GrabMenuMode()
@@ -77,10 +68,8 @@ CScriptGameObject* ActorMenuGetPartner_script(CUIActorMenu* menu)
 {
 	CInventoryOwner* io = menu->GetPartner();
 	if (io)
-	{
-		CGameObject* GO = smart_cast<CGameObject*>(io);
-		return GO->lua_game_object();
-	}
+		return io->cast_game_object()->lua_game_object();
+	
 	return (0);
 }
 
@@ -88,10 +77,8 @@ CScriptGameObject* ActorMenuGetInvbox_script(CUIActorMenu* menu)
 {
 	CInventoryBox* inv_box = menu->GetInvBox();
 	if (inv_box)
-	{
-		CGameObject* GO = smart_cast<CGameObject*>(inv_box);
-		return GO->lua_game_object();
-	}
+		return inv_box->cast_game_object()->lua_game_object();
+	
 	return (0);
 }
 
@@ -251,7 +238,7 @@ void CUIActorMenu::HighlightSectionInSlot(LPCSTR section, u8 type, u16 slot_id)
 }
 
 
-void CUIActorMenu::HighlightForEachInSlot(const luabind::functor<bool> &functor, u8 type, u16 slot_id)
+void CUIActorMenu::HighlightForEachInSlot(luabind::functor<bool> functor, u8 type, u16 slot_id)
 {
 	if (!functor)
 		return;

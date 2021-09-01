@@ -24,7 +24,6 @@
 #include "UIListBoxItem.h"
 
 #include "../../xrEngine/xr_input.h"		//remove me !!!
-#include "script_engine.h"
 
 CUIMapWnd* g_map_wnd = NULL; // quick temporary solution -(
 CUIMapWnd* GetMapWnd()
@@ -141,7 +140,10 @@ void CUIMapWnd::Init(LPCSTR xml_name, LPCSTR start_from)
 
 	// initialize local maps
 	xr_string sect_name;
-	sect_name = "level_maps_single";
+	if( IsGameTypeSingle() )
+		sect_name = "level_maps_single";
+	else
+		sect_name = "level_maps_mp";
 
 	if (pGameIni->section_exist(sect_name.c_str()))
 	{

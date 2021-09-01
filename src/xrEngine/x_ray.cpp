@@ -59,7 +59,7 @@ static int start_year = 1999; // 1999
 
 // binary hash, mainly for copy-protection
 
-
+#include "../xrGameSpy/gamespy/md5c.c"
 #include <ctype.h>
 
 #define DEFAULT_MODULE_HASH "3CAABCFCFF6F3A810019C6A72180F166"
@@ -67,7 +67,6 @@ static char szEngineHash[33] = DEFAULT_MODULE_HASH;
 
 char * ComputeModuleHash( char * pszHash )
 {
-	/*
     char szModuleFileName[MAX_PATH];
     HANDLE hModuleHandle = NULL, hFileMapping = NULL;
     LPVOID lpvMapping = NULL;
@@ -115,7 +114,6 @@ char * ComputeModuleHash( char * pszHash )
     CloseHandle(hFileMapping);
     CloseHandle(hModuleHandle);
 
-	*/
     return pszHash;
 }
 
@@ -129,7 +127,7 @@ void compute_build_id()
     string16 month;
     string256 buffer;
     xr_strcpy(buffer, __DATE__);
-    sscanf(buffer, "%s %d %d\0", month, &days, &years);
+    sscanf(buffer, "%s %d %d", month, &days, &years);
 
     for (int i = 0; i < 12; i++)
     {
@@ -696,9 +694,7 @@ int APIENTRY WinMain_impl(HINSTANCE hInstance,
                     &HeapFragValue,
                     sizeof(HeapFragValue)
                 );
-#ifdef DEBUG
             VERIFY2(result, "can't set process heap low fragmentation");
-#endif
         }
     }
 
@@ -1142,8 +1138,7 @@ void CApplication::LoadBegin()
 
         m_pRender->LoadBegin();
 
-		if (Core.ParamFlags.test(Core.verboselog))
-			phase_timer.Start();
+        phase_timer.Start();
         load_stage = 0;
 
     }
@@ -1154,12 +1149,9 @@ void CApplication::LoadEnd()
     ll_dwReference--;
     if (0 == ll_dwReference)
     {
-		if (Core.ParamFlags.test(Core.verboselog))
-		{
-			Msg("* phase time: %d ms", phase_timer.GetElapsed_ms());
-			Msg("* phase cmem: %d K", Memory.mem_usage() / 1024);
-			Console->Execute("stat_memory");
-		}
+        Msg("* phase time: %d ms", phase_timer.GetElapsed_ms());
+        Msg("* phase cmem: %d K", Memory.mem_usage() / 1024);
+        Console->Execute("stat_memory");
         g_appLoaded = TRUE;
         // DUMP_PHASE;
     }
@@ -1199,12 +1191,9 @@ void CApplication::LoadStage()
 {
     load_stage++;
     VERIFY(ll_dwReference);
-	if (Core.ParamFlags.test(Core.verboselog))
-	{
-		Msg("* phase time: %d ms", phase_timer.GetElapsed_ms());
-		phase_timer.Start();
-		Msg("* phase cmem: %d K", Memory.mem_usage() / 1024);
-	}
+    Msg("* phase time: %d ms", phase_timer.GetElapsed_ms());
+    phase_timer.Start();
+    Msg("* phase cmem: %d K", Memory.mem_usage() / 1024);
 
 	if (g_pGamePersistent->GameType()==1 && strstr(Core.Params,"alife"))
         max_load_stage = 17;

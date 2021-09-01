@@ -232,8 +232,7 @@ void CRender::LoadBuffers		(CStreamReader *base_fs,	BOOL _alternative)
 			// count, size
 			u32 vCount			= fs->r_u32	();
 			u32 vSize			= D3DXGetDeclVertexSize	(dcl,0);
-			if (Core.ParamFlags.test(Core.verboselog))
-				Msg	("* [Loading VB] %d verts, %d Kb",vCount,(vCount*vSize)/1024);
+			Msg	("* [Loading VB] %d verts, %d Kb",vCount,(vCount*vSize)/1024);
 
 			// Create and fill
 			BYTE*	pData		= 0;
@@ -257,8 +256,7 @@ void CRender::LoadBuffers		(CStreamReader *base_fs,	BOOL _alternative)
 		for (u32 i=0; i<count; i++)
 		{
 			u32 iCount			= fs->r_u32	();
-			if (Core.ParamFlags.test(Core.verboselog))
-				Msg("* [Loading IB] %d indices, %d Kb",iCount,(iCount*2)/1024);
+			Msg("* [Loading IB] %d indices, %d Kb",iCount,(iCount*2)/1024);
 
 			// Create and fill
 			BYTE*	pData		= 0;

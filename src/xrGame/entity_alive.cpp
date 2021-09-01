@@ -239,15 +239,15 @@ BOOL CEntityAlive::net_Spawn	(CSE_Abstract* DC)
 	conditions().reinit			();
 	inherited::net_Spawn		(DC);
 
+	m_BloodWounds.clear			();
+	m_ParticleWounds.clear		();
+
 	//добавить кровь и огонь на партиклы, если нужно
-	CEntityCondition::WOUND_VECTOR::const_iterator it = conditions().wounds().begin();
-	CEntityCondition::WOUND_VECTOR::const_iterator it_e = conditions().wounds().end();
-	for (; it != it_e; ++it)
+	for(WOUND_VECTOR::const_iterator it = conditions().wounds().begin(); conditions().wounds().end() != it; ++it)
 	{
-		CWound* pWound = *it;
-		if (pWound->GetDestroy())
-			continue;
-		StartFireParticles(pWound);
+		CWound					*pWound = *it;
+		StartFireParticles		(pWound);
+		StartBloodDrops			(pWound);
 	}
 
 	return						(TRUE);
@@ -275,10 +275,12 @@ void	CEntityAlive::Hit(SHit* pHDS)
 
 	//изменить состояние, перед тем как родительский класс обработает хит
 	CWound* pWound = conditions().ConditionHit(&HDS);
-	if (pWound && !pWound->GetDestroy())
-	{
+
+	if(pWound){
 		if(ALife::eHitTypeBurn == HDS.hit_type || ALife::eHitTypeLightBurn == HDS.hit_type)
 			StartFireParticles(pWound);
+		else if(ALife::eHitTypeWound == HDS.hit_type || ALife::eHitTypeFireWound == HDS.hit_type)
+			StartBloodDrops(pWound);
 	}
 
 	switch (HDS.hit_type)
@@ -312,23 +314,19 @@ void	CEntityAlive::Hit(SHit* pHDS)
 
 }
 
-void CEntityAlive::OnEvent(NET_Packet& P, u16 type)
-{
-	inherited::OnEvent(P, type);
-}
-
 void CEntityAlive::Die	(CObject* who)
 {
-	RELATION_REGISTRY().Action(smart_cast<CEntityAlive*>(who), this, RELATION_REGISTRY::KILL);
+	if(IsGameTypeSingle())
+		RELATION_REGISTRY().Action(smart_cast<CEntityAlive*>(who), this, RELATION_REGISTRY::KILL);
 	inherited::Die(who);
 	
 	const CGameObject *who_object = smart_cast<const CGameObject*>(who);
 	callback(GameObject::eDeath)(lua_game_object(), who_object ? who_object->lua_game_object() : 0);
 
-	if (!getDestroy()) {
+	if (!getDestroy() && (GameID() == eGameIDSingle)) {
 		NET_Packet		P;
 		u_EventGen		(P,GE_ASSIGN_KILLER,ID());
-		P.w_u16			(u16(who->ID()));
+		P.w_u16			(who ? who->ID() : u16(-1));
 		u_EventSend		(P);
 	}
 
@@ -455,6 +453,13 @@ void CEntityAlive::StartFireParticles(CWound* pWound)
 {
 	if(pWound->TypeSize(ALife::eHitTypeBurn)>m_fStartBurnWoundSize)
 	{
+		if(std::find(m_ParticleWounds.begin(),
+			m_ParticleWounds.end(),
+			pWound) == m_ParticleWounds.end())
+		{
+			m_ParticleWounds.push_back(pWound);
+		}
+
 		IKinematics* V = smart_cast<IKinematics*>(Visual());
 
 		u16 particle_bone = CParticlesPlayer::GetNearestBone(V, pWound->GetBoneNum());
@@ -483,25 +488,27 @@ void CEntityAlive::StartFireParticles(CWound* pWound)
 
 void CEntityAlive::UpdateFireParticles()
 {
-	CEntityCondition::WOUND_VECTOR const& wounds = conditions().wounds();
-	CEntityCondition::WOUND_VECTOR::const_iterator it = wounds.begin();
-	CEntityCondition::WOUND_VECTOR::const_iterator it_e = wounds.end();
+	if(m_ParticleWounds.empty()) return;
+	
+//	WOUND_VECTOR_IT last_it;
 
-	for (; it != it_e; ++it)
+	for(WOUND_VECTOR_IT it = m_ParticleWounds.begin(); 
+					  it != m_ParticleWounds.end();)
 	{
 		CWound* pWound = *it;
-		if (pWound->GetDestroy())
-			continue;
-		
-		if (!pWound->GetParticleName() || pWound->GetParticleBoneNum() == BI_NONE)
-			continue;
-
 		float burn_size = pWound->TypeSize(ALife::eHitTypeBurn);
 
-		if ((burn_size>0 && (burn_size<m_fStopBurnWoundSize || !g_Alive())))
+		if(pWound->GetDestroy() || 
+			(burn_size>0 && (burn_size<m_fStopBurnWoundSize || !g_Alive())))
 		{
-			CParticlesPlayer::AutoStopParticles(pWound->GetParticleName(),pWound->GetParticleBoneNum(),u32(float(m_dwMinBurnTime)*::Random.randF(0.5f, 1.5f)));
+			CParticlesPlayer::AutoStopParticles(pWound->GetParticleName(),
+												pWound->GetParticleBoneNum(),
+												u32(float(m_dwMinBurnTime)*::Random.randF(0.5f,1.5f))
+												);
+			it = m_ParticleWounds.erase(it);
+			continue;
 		}
+		it++;
 	}
 }
 
@@ -525,45 +532,66 @@ bool CEntityAlive::is_relation_enemy(const CEntityAlive *tpEntityAlive) const
 		(tfGetRelationType(tpEntityAlive) == ALife::eRelationTypeWorstEnemy));
 }
 
+void CEntityAlive::StartBloodDrops			(CWound* pWound)
+{
+	if(pWound->BloodSize()>m_fStartBloodWoundSize)
+	{
+		if(std::find(m_BloodWounds.begin(), m_BloodWounds.end(),
+			  pWound) == m_BloodWounds.end())
+		{
+			m_BloodWounds.push_back(pWound);
+			pWound->m_fDropTime = 0.f;
+		}
+	}
+}
+
 void CEntityAlive::UpdateBloodDrops()
 {
 	static float m_fBloodDropTimeMax = pSettings->r_float(BLOOD_MARKS_SECT, "blood_drop_time_max");
 	static float m_fBloodDropTimeMin = pSettings->r_float(BLOOD_MARKS_SECT, "blood_drop_time_min");
 
+	if(m_BloodWounds.empty()) return;
+
 	if(!g_Alive())
+	{
+		m_BloodWounds.clear();
 		return;
+	}
 
-	CEntityCondition::WOUND_VECTOR const& wounds = conditions().wounds();
-	CEntityCondition::WOUND_VECTOR::const_iterator it = wounds.begin();
-	CEntityCondition::WOUND_VECTOR::const_iterator it_e = wounds.end();
+//	WOUND_VECTOR_IT last_it;
 
-	for (; it != it_e; ++it)
+	for(WOUND_VECTOR_IT it = m_BloodWounds.begin(); 
+		it != m_BloodWounds.end();)
 	{
 		CWound* pWound = *it;
-		if (pWound->GetDestroy())
-			continue;
-
-		if (pWound->GetBoneNum() == BI_NONE)
-			continue;
-
 		float blood_size = pWound->BloodSize();
-		if (blood_size < m_fStopBloodWoundSize)
-			continue;
 
-		if (pWound->m_fDropTime<Device.fTimeGlobal)
+		if(pWound->GetDestroy() || blood_size < m_fStopBloodWoundSize)
+		{
+			it =  m_BloodWounds.erase(it);
+			continue;
+		}
+
+		if(pWound->m_fDropTime<Device.fTimeGlobal)
 		{
 			float size_k = blood_size - m_fStopBloodWoundSize;
-			size_k = size_k<1.f ? size_k : 1.f;
-			pWound->m_fDropTime = Device.fTimeGlobal + (m_fBloodDropTimeMax - (m_fBloodDropTimeMax - m_fBloodDropTimeMin)*size_k)*Random.randF(0.8f, 1.2f);
+			size_k = size_k<1.f?size_k:1.f;
+			pWound->m_fDropTime = Device.fTimeGlobal + (m_fBloodDropTimeMax - (m_fBloodDropTimeMax-m_fBloodDropTimeMin)*size_k)*Random.randF(0.8f, 1.2f);
 			VERIFY(m_pBloodDropsVector);
-			Fvector pos;
-			Fvector pos_distort;
-			pos_distort.random_dir();
-			pos_distort.mul(0.15f);
-			CParticlesPlayer::GetBonePos(this, pWound->GetBoneNum(), Fvector().set(0, 0, 0), pos);
-			pos.add(pos_distort);
-			PlaceBloodWallmark(Fvector().set(0.f, -1.f, 0.f), pos, m_fBloodMarkDistance, m_fBloodDropSize, &**m_pBloodDropsVector);
+			if(pWound->GetBoneNum() != BI_NONE)
+			{
+				Fvector pos;
+				Fvector pos_distort;
+				pos_distort.random_dir();
+				pos_distort.mul(0.15f);
+				CParticlesPlayer::GetBonePos(this, pWound->GetBoneNum(), Fvector().set(0,0,0), pos);
+				pos.add(pos_distort);
+				PlaceBloodWallmark(Fvector().set(0.f, -1.f, 0.f),
+								pos, m_fBloodMarkDistance, 
+								m_fBloodDropSize, &**m_pBloodDropsVector);
+			}
 		}
+		it++;
 	}
 }
 

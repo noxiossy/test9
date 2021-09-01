@@ -124,9 +124,8 @@ public:
         clamp(d, mn, mx);
 
         SubGraphVecIt it = subgraphs.begin() + SubGraphID;
-		CStatGraph::ElementsDeq& elem = it->elements;
-		elem.push_back(SElement(d, clr));
-		while (elem.size() > max_item_count) elem.pop_front();
+        it->elements.push_back(SElement(d, clr));
+        while (it->elements.size() > max_item_count) it->elements.pop_front();
     };
     IC u32 AppendSubGraph(EStyle S)
     {

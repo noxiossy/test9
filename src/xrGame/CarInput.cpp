@@ -25,7 +25,6 @@
 #include "inventory.h"
 #include "../xrEngine/CustomHud.h"
 #include "UIDialogHolder.h"
-#include "HUDManager.h"
 
 void	CCar::OnMouseMove(int dx, int dy)
 {

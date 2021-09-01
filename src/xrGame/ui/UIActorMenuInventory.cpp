@@ -29,13 +29,12 @@
 #include "../CustomOutfit.h"
 #include "../ActorHelmet.h"
 #include "../UICursor.h"
-
+#include "../MPPlayersBag.h"
 #include "../player_hud.h"
 #include "../CustomDetector.h"
 #include "../PDA.h"
 
 #include "../actor_defs.h"
-#include "script_engine.h"
 
 using namespace luabind; //Alundaio
 
@@ -129,6 +128,8 @@ void CUIActorMenu::SendEvent_Item_Eat(PIItem pItem, u16 recipient)
 void CUIActorMenu::SendEvent_Item_Drop(PIItem pItem, u16 recipient)
 {
 	R_ASSERT(pItem->parent_id()==recipient);
+	if (!IsGameTypeSingle())
+		pItem->DenyTrade();
 	//pItem->SetDropManual			(TRUE);
 	NET_Packet					P;
 	pItem->object().u_EventGen	(P,GE_OWNERSHIP_REJECT,pItem->parent_id());
@@ -333,6 +334,9 @@ void CUIActorMenu::OnInventoryAction(PIItem pItem, u16 action_type)
 					CUIDragDropListEx* curr = all_lists[i];
 					if(RemoveItemFromList(curr, pItem))
 					{
+#ifndef MASTER_GOLD
+						Msg("all ok. item [%d] removed from list", pItem->object_id());
+#endif // #ifndef MASTER_GOLD
 						break;
 					}
 					++i;
@@ -391,10 +395,7 @@ void CUIActorMenu::InitCellForSlot( u16 slot_idx )
 		return;
 	}
 
-	CUIDragDropListEx* curr_list = GetSlotList( slot_idx );
-	if (!curr_list)
-		return;
-
+	CUIDragDropListEx* curr_list	= GetSlotList( slot_idx );
 	CUICellItem* cell_item			= create_cell_item( item );
 	curr_list->SetItem( cell_item );
 	if ( m_currMenuMode == mmTrade && m_pPartnerInvOwner )
@@ -466,6 +467,10 @@ void CUIActorMenu::InitInventoryContents(CUIDragDropListEx* pBagList)
 	ite = ruck_list.end();
 	for ( ; itb != ite; ++itb )
 	{
+		CMPPlayersBag* bag = smart_cast<CMPPlayersBag*>( &(*itb)->object() );
+		if ( bag )
+			continue;
+
 		CUICellItem* itm = create_cell_item( *itb );
 		curr_list->SetItem(itm);
 		if (m_currMenuMode == mmTrade && m_pPartnerInvOwner)
@@ -580,9 +585,6 @@ bool CUIActorMenu::ToSlot(CUICellItem* itm, bool force_place, u16 slot_id)
 			old_owner->SetItem(child);
 		}
 
-		if (!new_owner->CanSetItem(i))
-			return ToSlot(i, true, slot_id);
-		
 		new_owner->SetItem					(i);
 
 		SendEvent_Item2Slot					(iitem, m_pActorInvOwner->object_id(), slot_id);
@@ -623,13 +625,10 @@ bool CUIActorMenu::ToSlot(CUICellItem* itm, bool force_place, u16 slot_id)
 				return false;
 
 			CUICellItem* slot_cell = slot_list->GetItemIdx(0);
-			if (!slot_cell)
-				return false;
-			
-			if ((PIItem)slot_cell->m_pData != _iitem)
+			if (!(slot_cell && ((PIItem)slot_cell->m_pData) == _iitem))
 				return false;
 
-			if (!ToBag(slot_cell, false))
+			if (ToBag(slot_cell, false) == false)
 				return false;
 		}
 		else
@@ -656,19 +655,14 @@ bool CUIActorMenu::ToSlot(CUICellItem* itm, bool force_place, u16 slot_id)
 			return ToSlot(itm, false, slot_id);
 		}
 
-		if(b_own_item && slot_id == DETECTOR_SLOT)
+		bool result	= ToSlot(itm, false, slot_id);
+		if(b_own_item && result && slot_id==DETECTOR_SLOT)
 		{
-			if (ToSlot(itm, false, slot_id))
-			{
-				CCustomDetector* det = smart_cast<CCustomDetector*>(iitem);
-				if (det)
-					det->ToggleDetector(g_player_hud->attached_item(0)!=NULL);
-				return true;
-			}
-			return false;
+			CCustomDetector* det			= smart_cast<CCustomDetector*>(iitem);
+			det->ToggleDetector				(g_player_hud->attached_item(0)!=NULL);
 		}
 
-		return ToSlot(itm, false, slot_id);
+		return result;
 	}
 }
 
@@ -876,18 +870,14 @@ bool CUIActorMenu::ToQuickSlot(CUICellItem* itm)
 	if(!eat_item)
 		return false;
 
-	//Update: Should not be necessary now
 	//Alundaio: Fix deep recursion if placing icon greater then col/row set in actor_menu.xml
-/* 	Ivector2 iWH = iitem->GetInvGridRect().rb;
+	Ivector2 iWH = iitem->GetInvGridRect().rb;
 	if (iWH.x > 1 || iWH.y > 1)
-		return false; */
+		return false;
 	//Alundaio: END
 		
 	u8 slot_idx = u8(m_pQuickSlot->PickCell(GetUICursor().GetCursorPosition()).x);
 	if(slot_idx==255)
-		return false;
-	
-	if (!m_pQuickSlot->CanSetItem(itm))
 		return false;
 
 	m_pQuickSlot->SetItem(create_cell_item(iitem), GetUICursor().GetCursorPosition());
@@ -1078,7 +1068,7 @@ void CUIActorMenu::PropertiesBoxForWeapon( CUICellItem* cell_item, PIItem item, 
 		{
 		}
 	}
-	if ( smart_cast<CWeaponMagazined*>(pWeapon) )
+	if ( smart_cast<CWeaponMagazined*>(pWeapon) && IsGameTypeSingle() )
 	{
 		bool b = ( pWeapon->GetAmmoElapsed() !=0 );
 		if ( !b )

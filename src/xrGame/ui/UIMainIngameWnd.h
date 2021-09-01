@@ -26,7 +26,8 @@ public:
 	virtual void Update();
 
 
-public:
+protected:
+	
 	CUIStatic*			UIStaticDiskIO;
 	CUITextWnd*			UIStaticQuickHelp;
 	CUIMotionIcon*		UIMotionIcon;
@@ -42,6 +43,7 @@ public:
 	CUIStatic*			m_ind_outfit_broken;
 	CUIStatic*			m_ind_overweight;
 
+public:
 	CUIStatic*			m_ind_boost_psy;
 	CUIStatic*			m_ind_boost_radia;
 	CUIStatic*			m_ind_boost_chem;

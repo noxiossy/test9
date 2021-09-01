@@ -445,10 +445,8 @@ void CObject::setDestroy(BOOL _destroy)
         Msg("cl setDestroy [%d][%d]", ID(), Device.dwFrame);
 #endif //#ifdef MP_LOGGING
     }
-#ifdef DEBUG
     else
         VERIFY(!g_pGameLevel->Objects.registered_object_to_destroy(this));
-#endif
 }
 
 Fvector CObject::get_new_local_point_on_mesh(u16& bone_id) const
@@ -460,7 +458,6 @@ Fvector CObject::get_new_local_point_on_mesh(u16& bone_id) const
 Fvector CObject::get_last_local_point_on_mesh(Fvector const& local_point, u16 const bone_id) const
 {
     VERIFY(bone_id == u16(-1));
-	VERIFY2(CFORM(), NameVisual.c_str());
 
     Fvector result;
     // Fetch data

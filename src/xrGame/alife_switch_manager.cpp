@@ -68,6 +68,11 @@ void CALifeSwitchManager::add_online(CSE_ALifeDynamicObject *object, bool update
         }
 	R_ASSERT3						(!object->used_ai_locations() || ai().level_graph().valid_vertex_id(object->m_tNodeID),"Invalid vertex for object ",object->name_replace());
 
+
+	//Alundaio: Knowing last object to spawn can be very useful to debugging
+	if (strstr(Core.Params, "-dbg"))
+		Msg("[LSS] Spawning object [%s][%s][%d]", object->name_replace(), *object->s_name, object->ID);
+
 	//Alundaio: Workaround for crash with corpses that end up outside AI map
 	//R_ASSERT2(!object->used_ai_locations() || ai().level_graph().valid_vertex_id(object->m_tNodeID), make_string("Invalid vertex for object %s", object->name_replace()));
 
@@ -183,7 +188,7 @@ void CALifeSwitchManager::try_switch_online	(CSE_ALifeDynamicObject	*I)
 #endif
 		return;
 	}
-#ifdef DEBUG
+
 	VERIFY2						(
 		(
 			ai().game_graph().vertex(I->m_tGraphID)->level_id()
@@ -194,7 +199,7 @@ void CALifeSwitchManager::try_switch_online	(CSE_ALifeDynamicObject	*I)
 		Level().Objects.dump_all_objects(),
 		make_string("frame [%d] time [%d] object [%s] with id [%d] is offline, but is on the level",Device.dwFrame,Device.dwTimeGlobal,I->name_replace(),I->ID)
 	);
-#endif
+
 	I->try_switch_online		();
 
 	if (!I->m_bOnline && !I->keep_saved_data_anyway())

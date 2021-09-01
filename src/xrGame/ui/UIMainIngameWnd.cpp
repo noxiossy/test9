@@ -50,6 +50,7 @@
 #include "../game_news.h"
 
 #include "static_cast_checked.hpp"
+#include "game_cl_capture_the_artefact.h"
 #include "UIHudStatesWnd.h"
 #include "UIActorMenu.h"
 
@@ -165,12 +166,35 @@ void CUIMainIngameWnd::Init()
 	m_ind_boost_power		->Show(false);
 	m_ind_boost_rad			->Show(false);
 	
+	// Загружаем иконки 
+/*	if ( IsGameTypeSingle() )
+	{
+		xml_init.InitStatic		(uiXml, "starvation_static", 0, &UIStarvationIcon);
+		UIStarvationIcon.Show	(false);
+
+//		xml_init.InitStatic		(uiXml, "psy_health_static", 0, &UIPsyHealthIcon);
+//		UIPsyHealthIcon.Show	(false);
+	}
+*/
 	UIWeaponJammedIcon			= UIHelper::CreateStatic(uiXml, "weapon_jammed_static", NULL);
 	UIWeaponJammedIcon->Show	(false);
+
+//	xml_init.InitStatic			(uiXml, "radiation_static", 0, &UIRadiaitionIcon);
+//	UIRadiaitionIcon.Show		(false);
+
+//	xml_init.InitStatic			(uiXml, "wound_static", 0, &UIWoundIcon);
+//	UIWoundIcon.Show			(false);
 
 	UIInvincibleIcon			= UIHelper::CreateStatic(uiXml, "invincible_static", NULL);
 	UIInvincibleIcon->Show		(false);
 
+
+	if ( (GameID() == eGameIDArtefactHunt) || (GameID() == eGameIDCaptureTheArtefact) )
+	{
+		UIArtefactIcon			= UIHelper::CreateStatic(uiXml, "artefact_static", NULL);
+		UIArtefactIcon->Show		(false);
+	}
+	
 	shared_str warningStrings[7] = 
 	{	
 		"jammed",
@@ -257,6 +281,16 @@ void CUIMainIngameWnd::Draw()
 	}
 	FS.dwOpenCounter = 0;
 
+	if(!IsGameTypeSingle())
+	{
+		float		luminocity = smart_cast<CGameObject*>(Level().CurrentEntity())->ROS()->get_luminocity();
+		float		power = log(luminocity > .001f ? luminocity : .001f)*(1.f/*luminocity_factor*/);
+		luminocity	= exp(power);
+
+		static float cur_lum = luminocity;
+		cur_lum = luminocity*0.01f + cur_lum*0.99f;
+		UIMotionIcon->SetLuminosity((s16)iFloor(cur_lum*100.0f));
+	}
 	if ( !pActor || !pActor->g_Alive() ) return;
 
 	UIMotionIcon->SetNoise((s16)(0xffff&iFloor(pActor->m_snd_noise*100)));
@@ -299,7 +333,7 @@ void CUIMainIngameWnd::Update()
 	
 //	UIHealthBar.SetProgressPos	(m_pActor->GetfHealth()*100.0f);
 //	UIMotionIcon->SetPower		(m_pActor->conditions().GetPower()*100.0f);
-	
+
 	UpdatePickUpItem			();
 
 	if( Device.dwFrame % 10 )
@@ -321,6 +355,45 @@ void CUIMainIngameWnd::Update()
 	}
 	
 	UpdateMainIndicators();
+	if (IsGameTypeSingle())
+		return;
+
+	// ewiArtefact
+	if ( GameID() == eGameIDArtefactHunt )
+	{
+		bool b_Artefact = !!( pActor->inventory().ItemFromSlot(ARTEFACT_SLOT) );
+		if ( b_Artefact )
+		{
+			SetWarningIconColor( ewiArtefact, 0xffffff00 );
+		}
+		else
+		{
+			SetWarningIconColor( ewiArtefact, 0x00ffffff );
+		}
+	}
+	else if ( GameID() == eGameIDCaptureTheArtefact )
+	{
+		//this is a bad style... It left for backward compatibility
+		//need to move this logic into UIGameCTA class
+		//bool b_Artefact = (NULL != m_pActor->inventory().ItemFromSlot(ARTEFACT_SLOT));
+		game_cl_CaptureTheArtefact* cta_game = static_cast_checked<game_cl_CaptureTheArtefact*>(&Game());
+		R_ASSERT(cta_game);
+		R_ASSERT(lookat_player);
+		
+		if ( ( pActor->ID() == cta_game->GetGreenArtefactOwnerID() ) ||
+			 ( pActor->ID() == cta_game->GetBlueArtefactOwnerID()  ) )
+		{
+			SetWarningIconColor( ewiArtefact, 0xffff0000 );
+		}
+		else if ( pActor->inventory().ItemFromSlot(ARTEFACT_SLOT) ) //own artefact
+		{
+			SetWarningIconColor( ewiArtefact, 0xff00ff00 );
+		}
+		else
+		{
+			SetWarningIconColor(ewiArtefact, 0x00ffffff );
+		}
+	}
 }//update
 
 
@@ -590,7 +663,8 @@ void CUIMainIngameWnd::UpdateMainIndicators()
 		return;
 
 	UpdateQuickSlots();
-	CurrentGameUI()->GetPdaMenu().UpdateRankingWnd();
+	if (IsGameTypeSingle())
+		CurrentGameUI()->GetPdaMenu().UpdateRankingWnd();
 
 	u8 flags = 0;
 	flags |= LA_CYCLIC;

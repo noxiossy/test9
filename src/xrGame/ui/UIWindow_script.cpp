@@ -5,6 +5,7 @@
 #include "UIDialogWnd.h"
 #include "UIDialogHolder.h"
 #include "../GamePersistent.h"
+#include "UILabel.h"
 #include "UIMMShniaga.h"
 #include "UITextureMaster.h"
 #include "UIScrollView.h"
@@ -120,14 +121,10 @@ void CUIWindow::script_register(lua_State *L)
 		.def("ResetPPMode",				&CUIWindow::ResetPPMode),
 
 		class_<CDialogHolder>("CDialogHolder")
-		.def(constructor<>())
-		.def("TopInputReceiver", 		&CDialogHolder::TopInputReceiver)
-		.def("SetMainInputReceiver",	&CDialogHolder::SetMainInputReceiver)
 		.def("AddDialogToRender",		&CDialogHolder::AddDialogToRender)
 		.def("RemoveDialogToRender",	&CDialogHolder::RemoveDialogToRender),
 
 		class_<CUIDialogWnd, CUIWindow>("CUIDialogWnd")
-		.def(constructor<>())
 		.def("ShowDialog",				&CUIDialogWnd::ShowDialog)
 		.def("HideDialog",				&CUIDialogWnd::HideDialog)
 		.def("GetHolder",				&CUIDialogWnd::GetHolder),

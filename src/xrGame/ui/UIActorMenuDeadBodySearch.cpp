@@ -17,7 +17,6 @@
 #include "../InventoryBox.h"
 #include "../string_table.h"
 #include "../ai/monsters/BaseMonster/base_monster.h"
-#include "script_engine.h"
 
 void move_item_from_to (u16 from_id, u16 to_id, u16 what_id)
 {

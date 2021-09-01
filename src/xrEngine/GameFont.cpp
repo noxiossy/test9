@@ -215,79 +215,64 @@ u16 CGameFont::GetCutLengthPos(float fTargetWidth, const char* pszText)
 {
     VERIFY(pszText);
 
-	u16 idx = 1;
-	wide_char* wsStr = (wide_char*)malloc(MAX_MB_CHARS);
-	wide_char wsPos[MAX_MB_CHARS];
+    wide_char wsStr[MAX_MB_CHARS], wsPos[MAX_MB_CHARS];
+    float fCurWidth = 0.0f, fDelta = 0.0f;
 
-	if (wsStr != NULL)
-	{
-		float fCurWidth = 0.0f, fDelta = 0.0f;
+    u16 len = mbhMulti2Wide(wsStr, wsPos, MAX_MB_CHARS, pszText);
 
-		u16 len = mbhMulti2Wide(wsStr, wsPos, MAX_MB_CHARS, pszText);
+	u16 i = 1;
+	for ( ; i <= len ; i++ ) {
 
-		for (idx = 1; idx <= len; idx++)
-		{
+        fDelta = GetCharTC(wsStr[i]).z - 2;
 
-			fDelta = GetCharTC(wsStr[idx]).z - 2;
+        if (IsNeedSpaceCharacter(wsStr[i]))
+            fDelta += fXStep;
 
-			if (IsNeedSpaceCharacter(wsStr[idx]))
-				fDelta += fXStep;
+        if ((fCurWidth + fDelta) > fTargetWidth)
+            break;
+        else
+            fCurWidth += fDelta;
+    }
 
-			if ((fCurWidth + fDelta) > fTargetWidth)
-				break;
-			else
-				fCurWidth += fDelta;
-		}
-		free(wsStr);
-	}
-
-    return wsPos[idx - 1];
+    return wsPos[i - 1];
 }
 
 u16 CGameFont::SplitByWidth(u16* puBuffer, u16 uBufferSize, float fTargetWidth, const char* pszText)
 {
     VERIFY(puBuffer && uBufferSize && pszText);
 
-	u16 nLines = 0;
-	wide_char* wsStr = (wide_char*)malloc(MAX_MB_CHARS);
-	wide_char wsPos[MAX_MB_CHARS];
+    wide_char wsStr[MAX_MB_CHARS], wsPos[MAX_MB_CHARS];
+    float fCurWidth = 0.0f, fDelta = 0.0f;
+    u16 nLines = 0;
 
-	if (wsStr != NULL)
-	{
+    u16 len = mbhMulti2Wide(wsStr, wsPos, MAX_MB_CHARS, pszText);
 
-		float fCurWidth = 0.0f, fDelta = 0.0f;
-		
+    for (u16 i = 1; i <= len; i++)
+    {
 
-		u16 len = mbhMulti2Wide(wsStr, wsPos, MAX_MB_CHARS, pszText);
+        fDelta = GetCharTC(wsStr[i]).z - 2;
 
-		for (u16 i = 1; i <= len; i++)
-		{
+        if (IsNeedSpaceCharacter(wsStr[i]))
+            fDelta += fXStep;
 
-			fDelta = GetCharTC(wsStr[i]).z - 2;
-
-			if (IsNeedSpaceCharacter(wsStr[i]))
-				fDelta += fXStep;
-
-			if (
-				((fCurWidth + fDelta) > fTargetWidth) && // overlength
-				(!IsBadStartCharacter(wsStr[i])) && // can start with this character
-				(i < len) && // is not the last character
-				((i > 1) && (!IsBadEndCharacter(wsStr[i - 1]))) // && // do not stop the string on a "bad" character
-				// ( ( i > 1 ) && ( ! ( ( IsAlphaCharacter( wsStr[ i - 1 ] ) ) && ( IsAlphaCharacter( wsStr[ i ] ) ) ) ) ) // do not split numbers or words
-				)
-			{
-				fCurWidth = fDelta;
-				VERIFY(nLines < uBufferSize);
-				puBuffer[nLines++] = wsPos[i - 1];
-			}
-			else
-				fCurWidth += fDelta;
-		}
-		free(wsStr);
-	}
+        if (
+            ((fCurWidth + fDelta) > fTargetWidth) && // overlength
+            (!IsBadStartCharacter(wsStr[i])) && // can start with this character
+            (i < len) && // is not the last character
+            ((i > 1) && (!IsBadEndCharacter(wsStr[i - 1]))) // && // do not stop the string on a "bad" character
+            // ( ( i > 1 ) && ( ! ( ( IsAlphaCharacter( wsStr[ i - 1 ] ) ) && ( IsAlphaCharacter( wsStr[ i ] ) ) ) ) ) // do not split numbers or words
+            )
+        {
+            fCurWidth = fDelta;
+            VERIFY(nLines < uBufferSize);
+            puBuffer[nLines++] = wsPos[i - 1];
+        }
+        else
+            fCurWidth += fDelta;
+    }
 
     return nLines;
-}
+    }
 
 void CGameFont::MasterOut(
     BOOL bCheckDevice, BOOL bUseCoords, BOOL bScaleCoords, BOOL bUseSkip,

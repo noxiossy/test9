@@ -437,12 +437,19 @@ if(!psNET_direct_connect)
 	net_Disconnected= FALSE;
 
 	//---------------------------
+	string1024 tmp="";
+//	HRESULT CoInitializeExRes = CoInitializeEx(NULL, 0);
+//	if (CoInitializeExRes != S_OK && CoInitializeExRes != S_FALSE)
+//	{
+//		DXTRACE_ERR(tmp, CoInitializeExRes);
+//		CHK_DX(CoInitializeExRes);
+//	};	
+	//---------------------------
     // Create the IDirectPlay8Client object.
     HRESULT CoCreateInstanceRes = CoCreateInstance	(CLSID_DirectPlay8Client, NULL, CLSCTX_INPROC_SERVER, IID_IDirectPlay8Client, (LPVOID*) &NET);
 	//---------------------------	
 	if (CoCreateInstanceRes != S_OK)
 	{
-		const wchar_t* tmp;
 		DXTRACE_ERR(tmp, CoCreateInstanceRes );
 		CHK_DX(CoCreateInstanceRes );
 	}	
@@ -640,7 +647,8 @@ if(!psNET_direct_connect)
 				else
 					Msg("! IPureClient : port %d is BUSY!", c_port);
 
-				const wchar_t* tmp;
+//				const char* x = DXGetErrorString9(res);
+				string1024 tmp = "";
 				DXTRACE_ERR(tmp, res);
 #endif				
 				c_port++;
@@ -690,7 +698,7 @@ if(!psNET_direct_connect)
 		_RELEASE					(pHostAddress);
 #ifdef DEBUG	
 //		const char* x = DXGetErrorString9(res);
-		const wchar_t* tmp;
+		string1024 tmp = "";
 		DXTRACE_ERR(tmp, res);
 #endif
 		switch (res)
@@ -871,7 +879,7 @@ HRESULT	IPureClient::net_Handler(u32 dwMessageType, PVOID pMessage)
 //					const char* x = DXGetErrorString9(pMsg->hResultCode);
 					if (pMsg->hResultCode != S_OK)
 					{
-						const wchar_t* tmp;
+						string1024 tmp="";
 						DXTRACE_ERR(tmp, pMsg->hResultCode);
 					}					
 #endif
@@ -965,7 +973,7 @@ void	IPureClient::SendTo_LL(void* data, u32 size, u32 dwFlags, u32 dwTimeout)
 	{
 		Msg	("! ERROR: Failed to send net-packet, reason: %s",::Debug.error2string(hr));
 //		const char* x = DXGetErrorString9(hr);
-		const wchar_t* tmp;
+		string1024 tmp="";
 		DXTRACE_ERR(tmp, hr);
 	}
 

@@ -168,53 +168,55 @@ IC static int CollideIntoGroup(dGeomID o1, dGeomID o2,dJointGroupID jointGroup,C
 
 		if(is_tri_1)
 		{
-			if (flags_1.test(SGameMtl::flSlowDown))
+#pragma warning(push)
+#pragma warning(disable:4245)
+			if(material_1->Flags.test(SGameMtl::flSlowDown)&&!(usr_data_2->pushing_neg||usr_data_2->pushing_b_neg))
+#pragma warning(pop)
 			{
-				if (!usr_data_2 || !(usr_data_2->pushing_neg || usr_data_2->pushing_b_neg))
+				dBodyID body=dGeomGetBody(g2);
+				R_ASSERT2(body,"static - static collision !!!");
+				if(material_1->Flags.test(SGameMtl::flLiquid))
 				{
-					dBodyID body = dGeomGetBody(g2);
-					R_ASSERT2(body, "static - static collision !!!");
-					if (flags_1.test(SGameMtl::flLiquid))
+					add_contact_body_effector(body,c,material_1);
+				}
+				else
+				{
+					if(!usr_data_2 || !usr_data_2->ph_object || !usr_data_2->ph_object->IsRayMotion())
 					{
-						add_contact_body_effector(body, c, material_1);
-					}
-					else
-					{
-						if (!usr_data_2 || !usr_data_2->ph_object || !usr_data_2->ph_object->IsRayMotion())
-						{
-							add_contact_body_effector(body, c, material_1);
-						}
+						add_contact_body_effector(body,c,material_1);
 					}
 				}
+				
 			}
-			if (flags_1.test(SGameMtl::flPassable))
+			if(material_1->Flags.test(SGameMtl::flPassable)) 
 				do_collide=false;
 		//	if(material_2->Flags.is(SGameMtl::flClimable)) 
 		//		do_collide=false;
 		}
 		if(is_tri_2)
 		{
-			if (flags_2.test(SGameMtl::flSlowDown))
+#pragma warning(push)
+#pragma warning(disable:4245)
+			if(material_2->Flags.test(SGameMtl::flSlowDown)&&!(usr_data_1->pushing_neg||usr_data_1->pushing_b_neg))
+#pragma warning(pop)
 			{
-				if (!usr_data_1 || !(usr_data_1->pushing_neg || usr_data_1->pushing_b_neg))
-				{
 
-					dBodyID body = dGeomGetBody(g1);
-					R_ASSERT2(body, "static - static collision !!!");
-					if (flags_2.test(SGameMtl::flLiquid))
+				dBodyID body=dGeomGetBody(g1);
+				R_ASSERT2(body,"static - static collision !!!");
+				if(material_2->Flags.test(SGameMtl::flLiquid))
+				{
+					add_contact_body_effector(body,c,material_2);
+				}
+				else
+				{
+					if(!usr_data_1 || !usr_data_1->ph_object || !usr_data_1->ph_object->IsRayMotion())
 					{
-						add_contact_body_effector(body, c, material_2);
-					}
-					else
-					{
-						if (!usr_data_1 || !usr_data_1->ph_object || !usr_data_1->ph_object->IsRayMotion())
-						{
-							add_contact_body_effector(body, c, material_2);
-						}
+						add_contact_body_effector(body,c,material_2);
 					}
 				}
+
 			}
-			if (flags_2.test(SGameMtl::flPassable))
+			if(material_2->Flags.test(SGameMtl::flPassable)) 
 				do_collide=false;
 
 		}

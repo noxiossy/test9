@@ -31,6 +31,7 @@
 #include "ai/monsters/BaseMonster/base_monster.h"
 #include "date_time.h"
 #include "mt_config.h"
+#include "ui/UIOptConCom.h"
 #include "UIGameSP.h"
 #include "ui/UIActorMenu.h"
 #include "ui/UIStatic.h"
@@ -44,6 +45,9 @@
 #include "cameralook.h"
 #include "character_hit_animations_params.h"
 #include "inventory_upgrade_manager.h"
+
+#include "GameSpy/GameSpy_Full.h"
+#include "GameSpy/GameSpy_Patching.h"
 
 #include "ai_debug_variables.h"
 #include "../xrphysics/console_vars.h"
@@ -71,8 +75,6 @@ ENGINE_API
 extern	float	psHUD_FOV_def;
 extern	float	psSqueezeVelocity;
 extern	int		psLUA_GCSTEP;
-extern Fvector	m_hud_offset_pos;
-extern Fvector	m_hand_offset_pos;
 
 extern	int		x_m_x;
 extern	int		x_m_z;
@@ -103,6 +105,7 @@ extern BOOL		g_ai_die_in_anomaly; //Alundaio
 
 ENGINE_API extern float	g_console_sensitive;
 
+void register_mp_console_commands();
 //-----------------------------------------------------------
 
 BOOL	g_bCheckTime = FALSE;
@@ -136,6 +139,8 @@ enum E_COMMON_FLAGS
 {
 	flAiUseTorchDynamicLights = 1
 };
+
+CUIOptConCom g_OptConCom;
 
 #ifndef PURE_ALLOC
 //#	ifndef USE_MEMORY_MONITOR
@@ -551,6 +556,11 @@ public:
 			return;
 		}
 #endif
+		if (!IsGameTypeSingle())
+		{
+			Msg("for single-mode only");
+			return;
+		}
 		if (!g_actor || !Actor()->g_Alive())
 		{
 			Msg("cannot make saved game because actor is dead :(");
@@ -1783,6 +1793,28 @@ public:
 	CCC_GSCheckForUpdates(LPCSTR N) : IConsole_Command(N) { bEmptyArgsHandled = true; };
 	virtual void Execute(LPCSTR arguments)
 	{
+		if (!MainMenu()) return;
+		/*
+		CGameSpy_Available GSA;
+		shared_str result_string;
+		if (!GSA.CheckAvailableServices(result_string))
+		{
+		Msg(*result_string);
+		//			return;
+		};
+		CGameSpy_Patching GameSpyPatching;
+		*/
+		bool InformOfNoPatch = true;
+		if (arguments && *arguments)
+		{
+			int bInfo = 1;
+			sscanf(arguments, "%d", &bInfo);
+			InformOfNoPatch = (bInfo != 0);
+		}
+
+		//		GameSpyPatching.CheckForPatch(InformOfNoPatch);
+
+		MainMenu()->GetGS()->GetGameSpyPatching()->CheckForPatch(InformOfNoPatch);
 	}
 };
 
@@ -1845,6 +1877,8 @@ public:
 void CCC_RegisterCommands()
 {
 	// options
+	g_OptConCom.Init();
+
 	CMD1(CCC_MemStats, "stat_memory");
 #ifdef DEBUG
 	CMD1(CCC_MemCheckpoint, "stat_memory_checkpoint");
@@ -1894,7 +1928,7 @@ void CCC_RegisterCommands()
 
 	//#ifdef DEBUG
 	CMD4(CCC_Float,				"hud_fov",				&psHUD_FOV_def,		0.2f,	0.55f);
-	CMD4(CCC_Float,				"fov",					&g_fov,			40.0f,	85.0f);
+	CMD4(CCC_Float,				"fov",					&g_fov,			40.0f,	75.0f);
 	//#endif // DEBUG
 
 	// Demo
@@ -2039,7 +2073,7 @@ void CCC_RegisterCommands()
 	/* AVO: changing restriction to -dbg key instead of DEBUG */
 	//#ifndef MASTER_GOLD
 #ifdef MASTER_GOLD
-	if (0 != strstr(Core.Params, "-dev"))
+	if (0 != strstr(Core.Params, "-dbg"))
 	{
 		CMD1(CCC_JumpToLevel, "jump_to_level");
 		CMD3(CCC_Mask, "g_god", &psActorFlags, AF_GODMODE);
@@ -2224,12 +2258,11 @@ void CCC_RegisterCommands()
 
 	CMD3(CCC_Mask, "ai_use_torch_dynamic_lights", &g_uCommonFlags, flAiUseTorchDynamicLights);
 
-//#ifndef MASTER_GOLD
+#ifndef MASTER_GOLD
 	CMD4(CCC_Vector3, "psp_cam_offset", &CCameraLook2::m_cam_offset, Fvector().set(-1000, -1000, -1000), Fvector().set(1000, 1000, 1000));
-	CMD4(CCC_Vector3, "hud_offset_pos", &m_hud_offset_pos, Fvector().set(-1000, -1000, -1000), Fvector().set(1000, 1000, 1000));
-	CMD4(CCC_Vector3, "hand_offset_pos", &m_hand_offset_pos, Fvector().set(-1000, -1000, -1000), Fvector().set(1000, 1000, 1000));
-//#endif // MASTER_GOLD
+#endif // MASTER_GOLD
 
+	CMD1(CCC_GSCheckForUpdates, "check_for_updates");
 #ifdef DEBUG
 	CMD1(CCC_Crash, "crash");
 	CMD1(CCC_DumpObjects, "dump_all_objects");
@@ -2308,4 +2341,5 @@ void CCC_RegisterCommands()
 	CMD3(CCC_String, "slot_3", g_quick_use_slots[3], 32);
 
 	CMD4(CCC_Integer, "keypress_on_start", &g_keypress_on_start, 0, 1);
+	register_mp_console_commands();
 }

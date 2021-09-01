@@ -49,8 +49,10 @@ void CActor::IR_OnKeyboardPress(int cmd)
 	{
 	case kWPN_FIRE:
 		{
+			if( (mstate_wishful & mcLookout) && !IsGameTypeSingle() ) return;
+
 			u16 slot = inventory().GetActiveSlot();
-			if(inventory().ActiveItem() && (slot==INV_SLOT_3 || slot==INV_SLOT_2 || slot==KNIFE_SLOT) )
+			if(inventory().ActiveItem() && (slot==INV_SLOT_3 || slot==INV_SLOT_2) )
 				mstate_wishful &=~mcSprint;
 			//-----------------------------
 			if (OnServer())
@@ -451,35 +453,6 @@ void CActor::ActorUse()
 
 	if(!m_pUsableObject||m_pUsableObject->nonscript_usable())
 	{
-		bool bCaptured = false;
-
-		collide::rq_result& RQ = HUD().GetCurrentRayQuery();
-		CPhysicsShellHolder* object = smart_cast<CPhysicsShellHolder*>(RQ.O);
-		u16 element = BI_NONE;
-		if (object)
-		{
-			element = (u16)RQ.element;
-
-			if (Level().IR_GetKeyState(DIK_LSHIFT))
-			{
-				bool b_allow = !!pSettings->line_exist("ph_capture_visuals", object->cNameVisual());
-				if (b_allow && !character_physics_support()->movement()->PHCapture())
-				{
-					character_physics_support()->movement()->PHCaptureObject(object, element);
-					bCaptured = true;
-				}
-
-			}
-			else if (smart_cast<CHolderCustom*>(object))
-			{
-				NET_Packet		P;
-				CGameObject::u_EventGen(P, GEG_PLAYER_ATTACH_HOLDER, ID());
-				P.w_u16(object->ID());
-				CGameObject::u_EventSend(P);
-				return;
-			}
-		}
-
 		if(m_pPersonWeLookingAt)
 		{
 			CEntityAlive* pEntityAliveWeLookingAt = 
@@ -487,26 +460,57 @@ void CActor::ActorUse()
 
 			VERIFY(pEntityAliveWeLookingAt);
 
-			if(pEntityAliveWeLookingAt->g_Alive())
-			{
-				TryToTalk();
-			}
-			else if (!bCaptured)
-			{
-				//òîëüêî åñëè íàõîäèìñÿ â ðåæèìå single
-				CUIGameSP* pGameSP = smart_cast<CUIGameSP*>(CurrentGameUI());
-				if (pGameSP)
+			if (IsGameTypeSingle())
+			{			
+
+				if(pEntityAliveWeLookingAt->g_Alive())
 				{
-					if (!m_pPersonWeLookingAt->deadbody_closed_status())
+					TryToTalk();
+				}else
+				{
+					//òîëüêî åñëè íàõîäèìñÿ â ðåæèìå single
+					CUIGameSP* pGameSP = smart_cast<CUIGameSP*>(CurrentGameUI());
+					if ( pGameSP )
 					{
-						if (pEntityAliveWeLookingAt->AlreadyDie() && pEntityAliveWeLookingAt->GetLevelDeathTime() + 1000 < Device.dwTimeGlobal)
-						{	
-							// 99.9% dead
-							pGameSP->StartCarBody(this, m_pPersonWeLookingAt);
+						if ( !m_pPersonWeLookingAt->deadbody_closed_status() )
+						{
+							if(pEntityAliveWeLookingAt->AlreadyDie() && 
+								pEntityAliveWeLookingAt->GetLevelDeathTime()+1000 < Device.dwTimeGlobal)
+								// 99.9% dead
+								pGameSP->StartCarBody(this, m_pPersonWeLookingAt );
 						}
 					}
 				}
 			}
+		}
+
+		collide::rq_result& RQ = HUD().GetCurrentRayQuery();
+		CPhysicsShellHolder* object = smart_cast<CPhysicsShellHolder*>(RQ.O);
+		u16 element = BI_NONE;
+		if(object) 
+			element = (u16)RQ.element;
+
+		if(object && Level().IR_GetKeyState(DIK_LSHIFT))
+		{
+			bool b_allow = !!pSettings->line_exist("ph_capture_visuals",object->cNameVisual());
+			if(b_allow && !character_physics_support()->movement()->PHCapture())
+			{
+				character_physics_support()->movement()->PHCaptureObject( object, element );
+
+			}
+
+		}
+		else
+		{
+			if (object && smart_cast<CHolderCustom*>(object))
+			{
+					NET_Packet		P;
+					CGameObject::u_EventGen		(P, GEG_PLAYER_ATTACH_HOLDER, ID());
+					P.w_u16						(object->ID());
+					CGameObject::u_EventSend	(P);
+					return;
+			}
+
 		}
 	}
 }
@@ -725,8 +729,7 @@ void CActor::NoClipFly(int cmd)
 			if(det_active)
 			{
 				CCustomDetector* det = smart_cast<CCustomDetector*>(det_active);
-				if (det)
-					det->ToggleDetector(g_player_hud->attached_item(0)!=NULL);
+				det->ToggleDetector(g_player_hud->attached_item(0)!=NULL);
 				return;
 			}
 		}

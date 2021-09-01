@@ -7,8 +7,6 @@
 ////////////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
-#include "../sdk/include/tbb/parallel_for.h"
-#include "../sdk/include/tbb/blocked_range.h"
 #include "level_graph.h"
 #include "cover_manager.h"
 #include "ai_space.h"
@@ -35,7 +33,7 @@ CCoverManager::~CCoverManager				()
 	xr_delete				(m_smart_covers_storage);
 }
 
-IC bool CCoverManager::edge_vertex(u32 index) const
+IC	bool CCoverManager::edge_vertex		(u32 index)
 {
 	CLevelGraph::CVertex	*v = ai().level_graph().vertex(index);
 	return					(
@@ -50,7 +48,7 @@ IC bool CCoverManager::edge_vertex(u32 index) const
 	);
 }
 
-IC bool CCoverManager::cover(CLevelGraph::CVertex* v, u32 index0, u32 index1) const
+IC	bool CCoverManager::cover			(CLevelGraph::CVertex *v, u32 index0, u32 index1)
 {
 	return					(
 		ai().level_graph().valid_vertex_id(v->link(index0)) &&
@@ -59,7 +57,7 @@ IC bool CCoverManager::cover(CLevelGraph::CVertex* v, u32 index0, u32 index1) co
 	);
 }
 
-IC bool CCoverManager::critical_point(CLevelGraph::CVertex* v, u32 index, u32 index0, u32 index1) const
+IC	bool CCoverManager::critical_point	(CLevelGraph::CVertex *v, u32 index, u32 index0, u32 index1)
 {
 	return					(
 		!ai().level_graph().valid_vertex_id(v->link(index)) &&
@@ -72,7 +70,7 @@ IC bool CCoverManager::critical_point(CLevelGraph::CVertex* v, u32 index, u32 in
 	);
 }
 
-IC bool CCoverManager::critical_cover(u32 index) const
+IC	bool CCoverManager::critical_cover	(u32 index)
 {
 	CLevelGraph::CVertex	*v = ai().level_graph().vertex(index);
 	return					(
@@ -90,17 +88,14 @@ void CCoverManager::compute_static_cover	()
 	m_covers				= xr_new<CPointQuadTree>(ai().level_graph().header().box(),ai().level_graph().header().cell_size()*.5f,8*65536,4*65536);
 	m_temp.resize			(ai().level_graph().header().vertex_count());
 
-	const CLevelGraph& graph = ai().level_graph();
-	const u32 levelVertexCount = ai().level_graph().header().vertex_count();
-	tbb::parallel_for(tbb::blocked_range<u32>(0, levelVertexCount), [&](const tbb::blocked_range<u32>& range) {
-		for (u32 i = range.begin(); i != range.end(); ++i)
-		{
-			const CLevelGraph::CVertex& vertex = *graph.vertex(i);
-			if (vertex.high_cover(0) + vertex.high_cover(1) + vertex.high_cover(2) + vertex.high_cover(3))
-			{
-				m_temp[i] = edge_vertex(i);
-				continue;
-			}
+	CLevelGraph const		&graph = ai().level_graph();
+	u32 n = ai().level_graph().header().vertex_count();
+	for (u32 i=0; i<n; ++i) {
+		CLevelGraph::CVertex const &vertex = *graph.vertex(i);
+		if (vertex.high_cover(0) + vertex.high_cover(1) + vertex.high_cover(2) + vertex.high_cover(3)) {
+			m_temp[i]		= edge_vertex(i);
+			continue;
+		}
 
 		if (vertex.low_cover(0) + vertex.low_cover(1) + vertex.low_cover(2) + vertex.low_cover(3)) {
 			m_temp[i]		= edge_vertex(i);
@@ -109,9 +104,8 @@ void CCoverManager::compute_static_cover	()
 
 		m_temp[i]			= false;
 	}
-	});
 
-	for (u32 i = 0; i < levelVertexCount; ++i)
+	for (u32 i=0; i<n; ++i)
 		if (m_temp[i] && critical_cover(i))
 			m_covers->insert(xr_new<CCoverPoint>(ai().level_graph().vertex_position(ai().level_graph().vertex(i)),i));
 
@@ -170,13 +164,21 @@ namespace smart_cover {
 void CCoverManager::remove_nearby_covers	(smart_cover::cover const &cover, smart_cover::object const &object) const
 {
 	m_nearest.clear			();
-	for (const smart_cover::loophole* loophole : cover.loopholes())
-	{
-		Fvector position = cover.fov_position(*loophole);
+	typedef smart_cover::description::Loopholes::const_iterator const_iterator;
+	const_iterator			I = cover.loopholes().begin();
+	const_iterator			E = cover.loopholes().end();
+	for ( ; I != E; ++I ) {
+		Fvector				position = cover.fov_position(**I);
 		m_covers->nearest	(position, object.Radius() + 1.f, m_nearest);
 
 		m_nearest.erase(
-			std::remove_if(m_nearest.begin(), m_nearest.end(), smart_cover::predicate(object)), m_nearest.end());
+			std::remove_if(
+				m_nearest.begin(),
+				m_nearest.end(),
+				smart_cover::predicate(object)
+			),
+			m_nearest.end()
+		);
 
 		typedef PointVector::const_iterator const_iterator;
 		const_iterator		i = m_nearest.begin();

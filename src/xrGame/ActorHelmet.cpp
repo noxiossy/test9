@@ -76,7 +76,9 @@ void CHelmet::ReloadBonesProtection()
 
 BOOL CHelmet::net_Spawn(CSE_Abstract* DC)
 {
-	ReloadBonesProtection();
+	if(IsGameTypeSingle())
+		ReloadBonesProtection();
+
 	BOOL res = inherited::net_Spawn(DC);
 	return					(res);
 }

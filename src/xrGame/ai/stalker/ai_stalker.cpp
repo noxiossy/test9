@@ -991,7 +991,7 @@ void CAI_Stalker::shedule_Update		( u32 DT )
 	}
 
 	START_PROFILE("stalker/schedule_update/inherited")
-	CEntityAlive::shedule_Update(DT);
+	inherited::inherited::shedule_Update(DT);
 	STOP_PROFILE
 	
 	if (Remote())		{
@@ -1387,7 +1387,7 @@ bool CAI_Stalker::unlimited_ammo()
 
 void CAI_Stalker::ResetBoneProtections(LPCSTR imm_sect, LPCSTR bone_sect)
 {
-	IKinematics* pKinematics = smart_cast<IKinematics*>(Visual());
+	IKinematics* pKinematics = renderable.visual->dcast_PKinematics();
 	CInifile* ini = pKinematics->LL_UserData();
 	if (ini)
 	{
@@ -1405,18 +1405,3 @@ void CAI_Stalker::ResetBoneProtections(LPCSTR imm_sect, LPCSTR bone_sect)
 		}
 	}
 }
-
-void CAI_Stalker::ChangeVisual(shared_str NewVisual)
-{
-	if (!NewVisual.size()) return;
-	if (cNameVisual().size())
-	{
-		if (cNameVisual() == NewVisual) return;
-	}
-
-	cNameVisual_set(NewVisual);
-
-	Visual()->dcast_PKinematics()->CalculateBones_Invalidate();
-	Visual()->dcast_PKinematics()->CalculateBones(TRUE);
-};
-

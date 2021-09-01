@@ -339,19 +339,23 @@ void CCameraManager::Update(const Fvector& P, const Fvector& D, const Fvector& N
 
 bool CCameraManager::ProcessCameraEffector(CEffectorCam* eff)
 {
-    // Do NOT delete effector here! It's unsafe because:
-    // 1. Leads to failed iterators in UpdateCamEffectors
-    // 2. Child classes with overrided ProcessCameraEffector would be surprised if eff becames invalid pointer
-    // The best way - return 'false' when the effector should be deleted, and delete it in ProcessCameraEffector
-
     bool res = false;
     if (eff->Valid() && eff->ProcessCam(m_cam_info))
     {
         res = true;
     }
-    else if (eff->AllowProcessingIfInvalid())
+    else
     {
-        eff->ProcessIfInvalid(m_cam_info);
+        if (eff->AllowProcessingIfInvalid())
+        {
+            eff->ProcessIfInvalid(m_cam_info);
+            res = true;
+        }
+
+        EffectorCamVec::iterator it = std::find(m_EffectorsCam.begin(), m_EffectorsCam.end(), eff);
+
+        m_EffectorsCam.erase(it);
+        OnEffectorReleased(eff);
     }
     return res;
 }
@@ -359,24 +363,9 @@ bool CCameraManager::ProcessCameraEffector(CEffectorCam* eff)
 void CCameraManager::UpdateCamEffectors()
 {
     if (m_EffectorsCam.empty()) return;
-        
-    auto r_it = m_EffectorsCam.rbegin();    
-    while (r_it != m_EffectorsCam.rend())
-    {
-        if (ProcessCameraEffector(*r_it))
-        {
-            ++r_it;
-        }
-        else
-        {
-            // Dereferencing reverse iterator returns previous element of the list, r_it.base() returns current element
-            // So, we should use base()-1 iterator to delete just processed element. 'Previous' element would be 
-            // automatically changed after deletion, so r_it would dereferencing to another value, no need to change it
-            OnEffectorReleased(*r_it);
-            auto r_to_del = r_it.base();
-            m_EffectorsCam.erase(--r_to_del);
-        }
-    }
+    EffectorCamVec::reverse_iterator rit = m_EffectorsCam.rbegin();
+    for (; rit != m_EffectorsCam.rend(); ++rit)
+        ProcessCameraEffector(*rit);
 
     m_cam_info.d.normalize();
     m_cam_info.n.normalize();
@@ -430,6 +419,8 @@ void CCameraManager::UpdatePPEffectors()
 
     pp_affected.validate("after applying pp");
 }
+
+
 
 void CCameraManager::ApplyDevice(float _viewport_near)
 {

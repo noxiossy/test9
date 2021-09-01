@@ -24,7 +24,6 @@
 #include "../../../alife_simulator.h"
 #include "../../../alife_object_registry.h"
 #include "../../../xrServer.h"
-#include "../../../game_sv_base.h"
 #include "../../../inventory_item.h"
 #include "../../../../xrServerEntities/xrServer_objects_ALife.h"
 #include "../../../phMovementControl.h"
@@ -147,11 +146,6 @@ void CBaseMonster::Load(LPCSTR section)
 		LPCSTR protections_sect = pSettings->r_string(section, "protections_sect");
 		m_fSkinArmor = READ_IF_EXISTS(pSettings,r_float,protections_sect,"skin_armor", 0.f);
 		m_fHitFracMonster = READ_IF_EXISTS(pSettings,r_float,protections_sect,"hit_fraction_monster", 0.1f);
-	}
-	else
-	{
-		m_fSkinArmor = READ_IF_EXISTS(pSettings, r_float, section, "skin_armor", 0.f);
-		m_fHitFracMonster = READ_IF_EXISTS(pSettings, r_float, section, "hit_fraction_monster", 0.1f);
 	}
 
 	m_force_anti_aim						=	false;
