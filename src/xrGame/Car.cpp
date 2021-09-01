@@ -78,7 +78,7 @@ CCar::CCar()
 	m_exhaust_particles	="vehiclefx\\exhaust_1";
 	m_car_sound			=xr_new<SCarSound>	(this);
 
-	//у машины слотов в инвентаре нет
+	//Гі Г¬Г ГёГЁГ­Г» Г±Г«Г®ГІГ®Гў Гў ГЁГ­ГўГҐГ­ГІГ Г°ГҐ Г­ГҐГІ
 	inventory			= xr_new<CInventory>();
 	inventory->SetSlotsUseful(false);
 	m_doors_torque_factor = 2.f;
@@ -1755,7 +1755,7 @@ void CCar::OnEvent(NET_Packet& P, u16 type)
 	inherited::OnEvent		(P,type);
 	CExplosive::OnEvent		(P,type);
 
-	//обработка сообщений, нужных для работы с багажником машины
+	//Г®ГЎГ°Г ГЎГ®ГІГЄГ  Г±Г®Г®ГЎГ№ГҐГ­ГЁГ©, Г­ГіГ¦Г­Г»Гµ Г¤Г«Гї Г°Г ГЎГ®ГІГ» Г± ГЎГ ГЈГ Г¦Г­ГЁГЄГ®Г¬ Г¬Г ГёГЁГ­Г»
 	u16 id;
 	switch (type)
 	{
@@ -2112,7 +2112,7 @@ Fvector	CCar::		ExitVelocity				()
 
 /************************************************** added by Ray Twitty (aka Shadows) START **************************************************/
 #ifdef ENABLE_CAR
-// получить и задать текущее количество топлива
+// ГЇГ®Г«ГіГ·ГЁГІГј ГЁ Г§Г Г¤Г ГІГј ГІГҐГЄГіГ№ГҐГҐ ГЄГ®Г«ГЁГ·ГҐГ±ГІГўГ® ГІГ®ГЇГ«ГЁГўГ 
 float CCar::GetfFuel()
 {
 	return m_fuel;
@@ -2121,7 +2121,7 @@ void CCar::SetfFuel(float fuel)
 {
 	m_fuel = fuel;
 }
-// получить и задать размер топливного бака 
+// ГЇГ®Г«ГіГ·ГЁГІГј ГЁ Г§Г Г¤Г ГІГј Г°Г Г§Г¬ГҐГ° ГІГ®ГЇГ«ГЁГўГ­Г®ГЈГ® ГЎГ ГЄГ  
 float CCar::GetfFuelTank()
 {
 	return m_fuel_tank;
@@ -2130,7 +2130,7 @@ void CCar::SetfFuelTank(float fuel_tank)
 {
 	m_fuel_tank = fuel_tank;
 }
-// получить и задать величину потребление топлива
+// ГЇГ®Г«ГіГ·ГЁГІГј ГЁ Г§Г Г¤Г ГІГј ГўГҐГ«ГЁГ·ГЁГ­Гі ГЇГ®ГІГ°ГҐГЎГ«ГҐГ­ГЁГҐ ГІГ®ГЇГ«ГЁГўГ 
 float CCar::GetfFuelConsumption()
 {
 	return m_fuel_consumption;
@@ -2139,7 +2139,7 @@ void CCar::SetfFuelConsumption(float fuel_consumption)
 {
 	m_fuel_consumption = fuel_consumption;
 }
-// прибавить или убавить количество топлива
+// ГЇГ°ГЁГЎГ ГўГЁГІГј ГЁГ«ГЁ ГіГЎГ ГўГЁГІГј ГЄГ®Г«ГЁГ·ГҐГ±ГІГўГ® ГІГ®ГЇГ«ГЁГўГ 
 void CCar::ChangefFuel(float fuel)
 {
 	if(m_fuel + fuel < 0)
@@ -2157,7 +2157,7 @@ void CCar::ChangefFuel(float fuel)
 		m_fuel = m_fuel_tank;
 	}
 }
-// прибавить или убавить жизней :)
+// ГЇГ°ГЁГЎГ ГўГЁГІГј ГЁГ«ГЁ ГіГЎГ ГўГЁГІГј Г¦ГЁГ§Г­ГҐГ© :)
 void CCar::ChangefHealth(float health)
 {
 	float current_health = GetfHealth();
@@ -2176,10 +2176,16 @@ void CCar::ChangefHealth(float health)
 		SetfHealth(1);
 	}
 }
-// активен ли сейчас двигатель
+// Г ГЄГІГЁГўГҐГ­ Г«ГЁ Г±ГҐГ©Г·Г Г± Г¤ГўГЁГЈГ ГІГҐГ«Гј
 bool CCar::isActiveEngine()
 {
 	return b_engine_on;
 }
 #endif
 /*************************************************** added by Ray Twitty (aka Shadows) END ***************************************************/
+Fvector CCar::ExitPosition()
+{
+	if (!m_doors.empty())m_doors.begin()->second.GetExitPosition(m_exit_position);
+	else m_exit_position.set(Position());
+	return m_exit_position;
+}
