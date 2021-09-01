@@ -25,6 +25,7 @@
 #include "clsid_game.h"
 #include "static_cast_checked.hpp"
 #include "player_hud.h"
+#include "Grenade.h"
 
 using namespace InventoryUtilities;
 //Alundaio
@@ -307,7 +308,16 @@ bool CInventory::DropItem(CGameObject *pObj, bool just_before_destroy, bool dont
 		if (Level().CurrentViewEntity() == pActor_owner)
 			CurrentGameUI()->OnInventoryAction(pIItem, GE_OWNERSHIP_REJECT);
 	};
-	pObj->H_SetParent(0, dont_create_shell);
+	if (smart_cast<CWeapon*>(pObj))
+	{
+		Fvector dir = Actor()->Direction();
+		dir.y = sin(-45.f * PI / 180.f);
+		dir.normalize();
+		smart_cast<CWeapon*>(pObj)->SetActivationSpeedOverride(dir.mul(7));
+		pObj->H_SetParent(nullptr, dont_create_shell);
+	}
+	else
+		pObj->H_SetParent(nullptr, dont_create_shell);
 	return							true;
 }
 
