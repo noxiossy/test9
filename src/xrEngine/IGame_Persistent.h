@@ -53,9 +53,8 @@ public:
     };
     params m_game_params;
 public:
-    xr_set<CPS_Instance*> ps_active;
-    xr_vector<CPS_Instance*> ps_destroy;
-    xr_vector<CPS_Instance*> ps_needtoplay;
+	xr_set<CPS_Instance*> ps_active, ps_destroy;
+	std::vector<CPS_Instance*> ps_needtoplay;
 
 public:
     void destroy_particles(const bool& all_particles);
@@ -83,7 +82,7 @@ public:
     virtual void OnAppDeactivate();
     virtual void _BCL OnFrame();
 
-    // вызывается только когда изменяется тип игры
+    // ГўГ»Г§Г»ГўГ ГҐГІГ±Гї ГІГ®Г«ГјГЄГ® ГЄГ®ГЈГ¤Г  ГЁГ§Г¬ГҐГ­ГїГҐГІГ±Гї ГІГЁГЇ ГЁГЈГ°Г»
     virtual void OnGameStart();
     virtual void OnGameEnd();
 
