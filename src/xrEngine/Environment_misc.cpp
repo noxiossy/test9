@@ -233,7 +233,7 @@ m_identifier(identifier)
     m_fWaterIntensity = 1;
 
 #ifdef TREE_WIND_EFFECT
-    m_fTreeAmplitudeIntensity = 0.01;
+    m_fTreeAmplitudeIntensity = 0.01f;
 #endif
 
     lens_flare_id = "";
@@ -490,7 +490,7 @@ void CEnvDescriptorMixer::lerp(CEnvironment*, CEnvDescriptor& A, CEnvDescriptor&
     sun_dir.lerp(A.sun_dir, B.sun_dir, f).normalize();
     R_ASSERT(_valid(sun_dir));
 
-    VERIFY2(sun_dir.y < 0, "Invalid sun direction settings while lerp");
+    //VERIFY2(sun_dir.y < 0, "Invalid sun direction settings while lerp");
 }
 
 //-----------------------------------------------------------------------------

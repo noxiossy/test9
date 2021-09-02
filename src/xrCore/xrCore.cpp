@@ -43,6 +43,11 @@ void xrCore::_initialize(LPCSTR _ApplicationName, LogCallback cb, BOOL init_fs, 
         // HRESULT co_res =
         Params = xr_strdup(GetCommandLine());
         xr_strlwr(Params);
+
+
+		if (strstr(Params, "-verboselog"))
+			ParamFlags.set(ParamFlag::verboselog, TRUE);
+
         //if (!strstr(Params, "-editor"))
         //    CoInitializeEx(NULL, COINIT_MULTITHREADED);
 

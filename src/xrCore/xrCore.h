@@ -309,6 +309,10 @@ public:
     char* Params;
     DWORD dwFrame;
 
+	Flags16 ParamFlags;				//Alun: TODO: Add all params
+	enum ParamFlag{
+		verboselog		= (1 << 0),
+	};
 public:
     void _initialize(LPCSTR ApplicationName, LogCallback cb = 0, BOOL init_fs = TRUE, LPCSTR fs_fname = 0);
     void _destroy();

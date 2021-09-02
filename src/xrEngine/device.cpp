@@ -307,13 +307,6 @@ void CRenderDevice::on_idle()
         seqFrameMT.Process(rp_Frame);
     }
 
-#ifdef DEDICATED_SERVER
-    u32 FrameEndTime = TimerGlobal.GetElapsed_ms();
-    u32 FrameTime = (FrameEndTime - FrameStartTime);
-    u32 DSUpdateDelta = 1000 / g_svDedicateServerUpdateReate;
-    if (FrameTime < DSUpdateDelta)
-        Sleep(DSUpdateDelta - FrameTime);
-#endif
     if (!b_is_Active)
         Sleep(1);
 }
