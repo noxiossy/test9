@@ -186,24 +186,23 @@ void IGame_Persistent::OnFrame()
     Device.Statistic->Particles_destroy = ps_destroy.size();
 
     // Play req particle systems
-    while (ps_needtoplay.size())
+    while (!ps_needtoplay.empty())
     {
-        CPS_Instance* psi = ps_needtoplay.back();
+        auto& psi = ps_needtoplay.back();
         ps_needtoplay.pop_back();
         psi->Play(false);
     }
     // Destroy inactive particle systems
-    while (ps_destroy.size())
+    while (!ps_destroy.empty())
     {
         // u32 cnt = ps_destroy.size();
-        CPS_Instance* psi = ps_destroy.back();
-        VERIFY(psi);
+        auto& psi = ps_destroy.begin();
+        R_ASSERT(psi);
         if (psi->Locked())
         {
             Log("--locked");
             break;
         }
-        ps_destroy.pop_back();
         psi->PSI_internal_delete();
     }
 #endif
@@ -215,24 +214,38 @@ void IGame_Persistent::destroy_particles(const bool& all_particles)
 
     ps_needtoplay.clear();
 
-	xr_set<CPS_Instance*>::iterator I = ps_active.begin();
-	xr_set<CPS_Instance*>::iterator E = ps_active.end();
-	for (; I != E; ++I)
+	while (!ps_destroy.empty())
 	{
-		if (all_particles || (*I)->destroy_on_game_load())
-			(*I)->PSI_destroy();
-	}
-
-	while (ps_destroy.size())
-	{
-		CPS_Instance* psi = ps_destroy.back();
-		VERIFY(psi);
+		auto& psi = *ps_destroy.begin();
+		R_ASSERT(psi);
 		VERIFY(!psi->Locked());
-		ps_destroy.pop_back();
 		psi->PSI_internal_delete();
 	}
 
-    VERIFY(ps_needtoplay.empty() && ps_destroy.empty() && (!all_particles || ps_active.empty()));
+	if (all_particles)
+	{
+		while (!ps_active.empty())
+			(*ps_active.begin())->PSI_internal_delete();
+	}
+	else
+	{
+		size_t processed = 0;
+		auto iter = ps_active.rbegin();
+		while (iter != ps_active.rend()) {
+			const auto size = ps_active.size();
+			auto& object = *(iter++);
+
+			if (object->destroy_on_game_load())
+				object->PSI_internal_delete();
+			if (size != ps_active.size()) {
+				iter = ps_active.rbegin();
+				std::advance(iter, processed);
+			}
+			else {
+				processed++;
+			}
+		}
+	}
 #endif
 }
 
