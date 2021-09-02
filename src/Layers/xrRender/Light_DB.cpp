@@ -202,7 +202,7 @@ void			CLight_DB::Update			()
 		light*	_sun_original		= (light*) sun_original._get();
 		light*	_sun_adapted		= (light*) sun_adapted._get();
 		CEnvDescriptor&	E			= *g_pGamePersistent->Environment().CurrentEnv;
-		VERIFY						(_valid(E.sun_dir));
+		//VERIFY						(_valid(E.sun_dir));
 #ifdef DEBUG
 		if(E.sun_dir.y>=0)
 		{
@@ -222,7 +222,7 @@ void			CLight_DB::Update			()
 		}
 #endif
 
-		VERIFY2						(E.sun_dir.y<0,"Invalid sun direction settings in evironment-config");
+		//VERIFY2						(E.sun_dir.y<0,"Invalid sun direction settings in evironment-config");
 		Fvector						OD,OP,AD,AP;
 		OD.set						(E.sun_dir).normalize			();
 		OP.mad						(Device.vCameraPosition,OD,-500.f);
