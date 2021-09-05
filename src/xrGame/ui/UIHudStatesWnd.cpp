@@ -95,8 +95,8 @@ void CUIHudStatesWnd::InitFromXml( CUIXml& xml, LPCSTR path )
 	XML_NODE* new_root = xml.NavigateToNode( path, 0 );
 	xml.SetLocalRoot( new_root );
 
-	m_actor_icon      = UIHelper::CreateStatic( xml, "actor_icon", this );
-        m_actor_icon->AttachChild(&m_actor_info_hud);
+//m_actor_icon      = UIHelper::CreateStatic( xml, "actor_icon", this );
+   //     m_actor_icon->AttachChild(&m_actor_info_hud);
 
 	m_back            = UIHelper::CreateStatic( xml, "back", this );
 	m_ui_health_bar   = UIHelper::CreateProgressBar( xml, "progress_bar_health", this );
@@ -244,7 +244,7 @@ void CUIHudStatesWnd::UpdateHealth( CActor* actor )
 //		m_timer_1sec = Device.dwTimeGlobal;
 //	}
 	
-        m_actor_info_hud.InitCharacterInfo(Fvector2().set(0, 0), m_actor_icon->GetWndSize(), "talk_character.xml");
+      //  m_actor_info_hud.InitCharacterInfo(Fvector2().set(0, 0), m_actor_icon->GetWndSize(), "talk_character.xml");
 
 	float cur_health = actor->GetfHealth();
 	m_ui_health_bar->SetProgressPos(iCeil(cur_health * 100.0f * 35.f) / 35.f);
