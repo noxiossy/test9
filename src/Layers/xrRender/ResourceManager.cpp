@@ -9,7 +9,6 @@
 #include <d3dx9.h>
 #pragma warning(default:4995)
 
-#include <tbb/parallel_for_each.h>
 #include "ResourceManager.h"
 #include "tss.h"
 #include "blenders\blender.h"
@@ -338,13 +337,15 @@ void CResourceManager::Delete(const Shader* S)
 void CResourceManager::DeferredUpload()
 {
 	if (!RDEVICE.b_is_Ready) return;
-	tbb::parallel_for_each(m_textures, [&](struct std::pair<const char*,CTexture*> m_tex) { m_tex.second->Load(); });
+	for (map_TextureIt t=m_textures.begin(); t!=m_textures.end(); t++)
+		t->second->Load();
 }
 
 void	CResourceManager::DeferredUnload	()
 {
 	if (!RDEVICE.b_is_Ready)				return;
-	tbb::parallel_for_each(m_textures, [&](struct std::pair<const char*,CTexture*> m_tex) { m_tex.second->Unload(); });
+	for (map_TextureIt t=m_textures.begin(); t!=m_textures.end(); t++)
+		t->second->Unload();
 }
 
 #ifdef _EDITOR
