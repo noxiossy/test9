@@ -59,7 +59,8 @@ void	CROS_impl::add		(light* source)
 		if (source == I->source)	{ I->frame_touched = Device.dwFrame; return; }
 
 	// Register _new_
-	auto& L = track.emplace_back();
+	track.push_back		(Item());
+	Item&	L			= track.back();
 	L.frame_touched		= Device.dwFrame;
 	L.source			= source;
 	L.cache.verts[0].set(0,0,0);
