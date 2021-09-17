@@ -94,7 +94,7 @@ xr_token							qmsaa__atest_token					[ ]={
 	{ 0,							0												}
 };
 
-u32			ps_r3_minmax_sm			=	3;			//	=	0;
+u32			ps_r3_minmax_sm			=	0;
 xr_token							qminmax_sm_token					[ ]={
 	{ "off",						0												},
 	{ "on",							1												},
@@ -119,7 +119,6 @@ int			ps_r__LightSleepFrames		= 10	;
 float		ps_r__Detail_l_ambient		= 0.9f	;
 float		ps_r__Detail_l_aniso		= 0.25f	;
 float		ps_r__Detail_density		= 0.3f	;
-float 		ps_r__Detail_height 		= 1.f	;
 float		ps_r__Detail_rainbow_hemi	= 0.75f	;
 
 float		ps_r__Tree_w_rot			= 10.0f	;
@@ -189,6 +188,7 @@ Flags32		ps_r2_ls_flags_ext			= {
 	};
 
 BOOL		ps_clear_models_on_unload	= 0; //Alundaio
+BOOL		ps_no_scale_on_fade			= 0; //Alundaio
 float		ps_r2_df_parallax_h			= 0.02f;
 float		ps_r2_df_parallax_range		= 75.f;
 float		ps_r2_tonemap_middlegray	= 1.f;			// r2-only
@@ -271,7 +271,7 @@ u32			dm_current_cache_size = 2401;	//dm_current_cache_line*dm_current_cache_lin
 float		dm_current_fade = 47.5;	//float(2*dm_current_size)-.5f;
 #endif
 float		ps_current_detail_density = 0.6f;
-float 		ps_current_detail_height = 1.f;
+float		ps_current_detail_scale = 1.f;
 xr_token							ext_quality_token[] = {
     {"qt_off", 0},
     {"qt_low", 1},
@@ -283,7 +283,7 @@ xr_token							ext_quality_token[] = {
 //-AVO
 
 //- Mad Max
-float		ps_r2_gloss_factor			= 4.0f;
+float		ps_r2_gloss_factor			= 1.0f;
 //- Mad Max
 #ifndef _EDITOR
 #include	"../../xrEngine/xr_ioconsole.h"
@@ -362,7 +362,7 @@ public:
 #endif	//	USE_DX10
 	}
 
-	CCC_tf_MipBias(LPCSTR N, float*	v) : CCC_Float(N, v, -0.5f, +0.5f)	{ };
+	CCC_tf_MipBias(LPCSTR N, float*	v) : CCC_Float(N, v, -3.f, +3.f)	{ };
 	virtual void Execute(LPCSTR args)
 	{
 		CCC_Float::Execute	(args);
@@ -763,13 +763,13 @@ void		xrRender_initconsole	()
 
 	Fvector	tw_min,tw_max;
 	
-	CMD4(CCC_Float,		"r__geometry_lod",		&ps_r__LOD,					0.1f,	1.2f		);
+	CMD4(CCC_Float,		"r__geometry_lod",		&ps_r__LOD,					0.1f,	/*1.2f*/ 3.f		); //AVO: extended from 1.2f to 3.f
 //.	CMD4(CCC_Float,		"r__geometry_lod_pow",	&ps_r__LOD_Power,			0,		2		);
 
 //.	CMD4(CCC_Float,		"r__detail_density",	&ps_r__Detail_density,		.05f,	0.99f	);
 //    CMD4(CCC_Float, "r__detail_density", &ps_current_detail_density/*&ps_r__Detail_density*/, 0.04f/*.2f*/, 0.6f); //AVO: extended from 0.2 to 0.04 and replaced variable
 	CMD4(CCC_Float, "r__detail_density", &ps_current_detail_density/*&ps_r__Detail_density*/, 0.3f/*.2f*/, 0.9f);	// KD: extended from 0.2 to 0.04 and replaced variable
-
+	CMD4(CCC_Float, "r__detail_scale", &ps_current_detail_scale, 0.2f, 3.0f);
 #ifdef DEBUG
 	CMD4(CCC_Float,		"r__detail_l_ambient",	&ps_r__Detail_l_ambient,	.5f,	.95f	);
 	CMD4(CCC_Float,		"r__detail_l_aniso",	&ps_r__Detail_l_aniso,		.1f,	.5f		);
@@ -846,6 +846,10 @@ void		xrRender_initconsole	()
 	CMD3(CCC_Mask,		"r2_mt",				&ps_r2_ls_flags,			R2FLAG_EXP_MT_CALC);
 #endif // DEBUG
 
+#if 0 //KRodin: от шейдеркэша больше проблем чем пользы
+	CMD3(CCC_Mask, "r2_shader_cache", &ps_r2_ls_flags_ext, R2FLAGEXT_SHADER_CACHE);
+#endif
+
 	CMD3(CCC_Mask,		"r2_sun",				&ps_r2_ls_flags,			R2FLAG_SUN		);
 	CMD3(CCC_Mask,		"r2_sun_details",		&ps_r2_ls_flags,			R2FLAG_SUN_DETAILS);
 	CMD3(CCC_Mask,		"r2_sun_focus",			&ps_r2_ls_flags,			R2FLAG_SUN_FOCUS);
@@ -857,11 +861,11 @@ void		xrRender_initconsole	()
 	CMD3(CCC_Mask,		"r2_sun_tsm",			&ps_r2_ls_flags,			R2FLAG_SUN_TSM	);
 	CMD4(CCC_Float,		"r2_sun_tsm_proj",		&ps_r2_sun_tsm_projection,	.001f,	0.8f	);
 	CMD4(CCC_Float,		"r2_sun_tsm_bias",		&ps_r2_sun_tsm_bias,		-0.5,	+0.5	);
-	CMD4(CCC_Float,		"r2_sun_near",			&ps_r2_sun_near,			1.f,	/*50.f*/150.f	); //AVO: extended from 50 to 150
+	CMD4(CCC_Float,		"r2_sun_near",			&ps_r2_sun_near,			1.f,	/*50.f*/100.f	); //AVO: extended from 50 to 150
 #if RENDER!=R_R1
 	CMD4(CCC_Float,		"r2_sun_far",			&OLES_SUN_LIMIT_27_01_07,	51.f,	180.f	);
 #endif
-	CMD4(CCC_Float,		"r2_sun_near_border",	&ps_r2_sun_near_border,		.5f,	1.0f	);
+	CMD4(CCC_Float,		"r2_sun_near_border",	&ps_r2_sun_near_border,		.5f,	3.0f	);
 	CMD4(CCC_Float,		"r2_sun_depth_far_scale",&ps_r2_sun_depth_far_scale,0.5,	1.5		);
 	CMD4(CCC_Float,		"r2_sun_depth_far_bias",&ps_r2_sun_depth_far_bias,	-0.5,	+0.5	);
 	CMD4(CCC_Float,		"r2_sun_depth_near_scale",&ps_r2_sun_depth_near_scale,0.5,	1.5		);
@@ -901,7 +905,7 @@ void		xrRender_initconsole	()
 	CMD4(CCC_Float,		"r2_parallax_h",		&ps_r2_df_parallax_h,		.0f,	.5f		);
 //	CMD4(CCC_Float,		"r2_parallax_range",	&ps_r2_df_parallax_range,	5.0f,	175.0f	);
 
-	CMD4(CCC_Float,		"r2_slight_fade",		&ps_r2_slight_fade,			.2f,	1.f		);
+	CMD4(CCC_Float,		"r2_slight_fade",		&ps_r2_slight_fade,			.2f,	2.f		);
 
 	tw_min.set			(0,0,0);	tw_max.set	(1,1,1);
 	CMD4(CCC_Vector3,	"r2_aa_break",			&ps_r2_aa_barier,			tw_min, tw_max	);
@@ -962,6 +966,7 @@ void		xrRender_initconsole	()
 #ifdef DETAIL_RADIUS
     CMD4(CCC_detail_radius, "r__detail_radius", &ps_r__detail_radius, 49, 200);
 	CMD4(CCC_Integer, "r__clear_models_on_unload", &ps_clear_models_on_unload, 0, 1); //Alundaio
+	CMD4(CCC_Integer, "r__no_scale_on_fade", &ps_no_scale_on_fade, 0, 1); //Alundaio
 #endif
 
 	//	Allow real-time fog config reload
@@ -982,9 +987,6 @@ void		xrRender_initconsole	()
 	
 
 //	CMD3(CCC_Mask,		"r2_sun_ignore_portals",		&ps_r2_ls_flags,			R2FLAG_SUN_IGNORE_PORTALS);
-	// KD
-    CMD4(CCC_Float, 		"r__detail_height", 		&ps_r__Detail_height, 1, 2);
-	//CMD4(CCC_Integer, 		"r__no_scale_on_fade", 		&ps_no_scale_on_fade, 0, 1); //Alundaio
 }
 
 void	xrRender_apply_tf		()

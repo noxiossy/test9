@@ -267,6 +267,9 @@ void	CDetailManager::hw_Render_dump		(ref_constant x_array, u32 var_id, u32 lod_
 				SlotItemVecIt _iI			= items->begin();
 				SlotItemVecIt _iE			= items->end();
 				for (; _iI!=_iE; _iI++){
+
+					if (*_iI == nullptr) continue;
+
 					SlotItem&	Instance	= **_iI;
 					u32			base		= dwBatch*4;
 
@@ -318,11 +321,6 @@ void	CDetailManager::hw_Render_dump		(ref_constant x_array, u32 var_id, u32 lod_
 				RCache.Render				(D3DPT_TRIANGLELIST,vOffset,0,dwCNT_verts,iOffset,dwCNT_prims);
 				RCache.stat.r.s_details.add	(dwCNT_verts);
 			}
-#if RENDER==R_R2
-			// Grass Shadows when r2_sun_detail on
-			if (!ps_r2_ls_flags.test(R2FLAG_SUN_DETAILS) || ((RImplementation.PHASE_SMAP == RImplementation.phase) || (RImplementation.PHASE_NORMAL == RImplementation.phase) && (!RImplementation.is_sun())))
-#endif
-			vis.clear_not_free			();
 		}
 		vOffset		+=	hw_BatchSize * Object.number_vertices;
 		iOffset		+=	hw_BatchSize * Object.number_indices;

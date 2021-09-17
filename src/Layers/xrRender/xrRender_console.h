@@ -34,7 +34,6 @@ extern ECORE_API	int			ps_r__LightSleepFrames;
 extern ECORE_API	float		ps_r__Detail_l_ambient;
 extern ECORE_API	float		ps_r__Detail_l_aniso;
 extern ECORE_API	float		ps_r__Detail_density;
-extern ECORE_API 	float 		ps_r__Detail_height;
 
 extern ECORE_API	float		ps_r__Tree_w_rot;
 extern ECORE_API	float		ps_r__Tree_w_speed;
@@ -209,6 +208,7 @@ enum
 	R_FLAGEXT_HOM_DEPTH_DRAW		= (1<<7),
 	R2FLAGEXT_SUN_ZCULLING			= (1<<8),
 	R2FLAGEXT_SUN_OLD				= (1<<9),
+	R2FLAGEXT_SHADER_CACHE 			= 1 << 10,
 };
 
 extern ECORE_API int ps_r2_fxaa;
@@ -231,8 +231,5 @@ enum
 extern void						xrRender_initconsole	();
 extern BOOL						xrRender_test_hw		();
 extern void						xrRender_apply_tf		();
-
-// KD
-extern ECORE_API int			ps_r__detail_radius;
 
 #endif

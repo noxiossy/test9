@@ -32,8 +32,8 @@ void fix_texture_name(LPSTR fn)
 template <class T>
 BOOL	reclaim		(xr_vector<T*>& vec, const T* ptr)
 {
-	xr_vector<T*>::iterator it	= vec.begin	();
-	xr_vector<T*>::iterator end	= vec.end	();
+	auto it = vec.begin();
+	auto end = vec.end();
 	for (; it!=end; it++)
 		if (*it == ptr)	{ vec.erase	(it); return TRUE; }
 		return FALSE;
@@ -93,7 +93,7 @@ void	CResourceManager::_ParseList(sh_list& dest, LPCSTR names)
 	if (0==names || 0==names[0])
  		names 	= "$null";
 
-	ZeroMemory			(&dest, sizeof(dest));
+	dest.clear();
 	char*	P			= (char*) names;
 	svector<char,128>	N;
 

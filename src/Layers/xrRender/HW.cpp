@@ -35,8 +35,7 @@ CHW::CHW() :
     pDevice(NULL),
     pBaseRT(NULL),
     pBaseZB(NULL),
-    m_move_window(true),
-    maxRefreshRate(200)  //ECO_RENDER
+	m_move_window(true)
 {
     ;
 }
@@ -301,16 +300,7 @@ void		CHW::CreateDevice		(HWND m_hWnd, bool move_window)
         fDepth  = selectDepthStencil(fTarget);
     }
 
-    if ((D3DFMT_UNKNOWN==fTarget) || (D3DFMT_UNKNOWN==fTarget))	{
-        Msg					("Failed to initialize graphics hardware.\n"
-                             "Please try to restart the game.\n"
-                             "Can not find matching format for back buffer."
-                             );
-        FlushLog			();
-        MessageBox			(NULL,"Failed to initialize graphics hardware.\nPlease try to restart the game.","Error!",MB_OK|MB_ICONERROR);
-        TerminateProcess	(GetCurrentProcess(),0);
-    }
-
+	CHECK_OR_EXIT(D3DFMT_UNKNOWN != fTarget && D3DFMT_UNKNOWN != fDepth, "Failed to initialize graphics hardware.\nPlease try to restart the game.\nCan not find matching format for back buffer.");
 
     // Set up the presentation parameters
     D3DPRESENT_PARAMETERS&	P	= DevPP;
@@ -367,15 +357,9 @@ void		CHW::CreateDevice		(HWND m_hWnd, bool move_window)
                                         &P,
                                         &pDevice );
     }
-    if (D3DERR_DEVICELOST==R)	{
-        // Fatal error! Cannot create rendering device AT STARTUP !!!
-        Msg					("Failed to initialize graphics hardware.\n"
-                             "Please try to restart the game.\n"
-                             "CreateDevice returned 0x%08x(D3DERR_DEVICELOST)", R);
-        FlushLog			();
-        MessageBox			(NULL,"Failed to initialize graphics hardware.\nPlease try to restart the game.","Error!",MB_OK|MB_ICONERROR);
-        TerminateProcess	(GetCurrentProcess(),0);
-    };
+
+	CHECK_OR_EXIT(D3DERR_DEVICELOST != R, "Failed to initialize graphics hardware.\nPlease try to restart the game.\nCreateDevice returned D3DERR_DEVICELOST");
+
     R_CHK		(R);
 
     _SHOW_REF	("* CREATE: DeviceREF:",HW.pDevice);
@@ -501,11 +485,7 @@ u32 CHW::selectRefresh(u32 dwWidth, u32 dwHeight, D3DFORMAT fmt)
             pD3D->EnumAdapterModes(DevAdapter,fmt,I,&Mode);
             if (Mode.Width==dwWidth && Mode.Height==dwHeight)
             {
-#ifndef ECO_RENDER
-                if (Mode.RefreshRate>selected) selected = Mode.RefreshRate;
-#else
-                if (Mode.RefreshRate <= (UINT)maxRefreshRate && Mode.RefreshRate>selected) selected = Mode.RefreshRate;  //ECO_RENDER modif.
-#endif
+				if (Mode.RefreshRate>selected) selected = Mode.RefreshRate;
             }
         }
         return selected;

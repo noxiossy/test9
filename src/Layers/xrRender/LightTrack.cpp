@@ -34,6 +34,11 @@ CROS_impl::CROS_impl	()
 	sun_value			= 0.2f;
 	sun_smooth			= 0.2f;
 
+	for (size_t i = 0; i < NUM_FACES; ++i)
+	{
+		hemi_cube[i] = hemi_cube_smooth[i] = 0;
+	}
+
 #if RENDER!=R_R1
 	last_position.set( 0.0f, 0.0f, 0.0f );
 	ticks_to_update		= 0;
@@ -54,8 +59,7 @@ void	CROS_impl::add		(light* source)
 		if (source == I->source)	{ I->frame_touched = Device.dwFrame; return; }
 
 	// Register _new_
-	track.push_back		(Item());
-	Item&	L			= track.back();
+	auto& L = track.emplace_back();
 	L.frame_touched		= Device.dwFrame;
 	L.source			= source;
 	L.cache.verts[0].set(0,0,0);

@@ -74,7 +74,9 @@ void CHOM::Load			()
 		Msg		(" WARNING: Occlusion map '%s' not found.",fName);
 		return;
 	}
-	Msg	("* Loading HOM: %s",fName);
+
+	if (Core.ParamFlags.test(Core.verboselog))
+		Msg	("* Loading HOM: %s",fName);
 	
 	IReader* fs				= FS.r_open(fName);
 	IReader* S				= fs->open_chunk(1);
@@ -104,7 +106,7 @@ void CHOM::Load			()
 		rT.adjacent[0]	= (0xffffffff==adjacency[3*it+0])?((occTri*) (-1)):(m_pTris+adjacency[3*it+0]);
 		rT.adjacent[1]	= (0xffffffff==adjacency[3*it+1])?((occTri*) (-1)):(m_pTris+adjacency[3*it+1]);
 		rT.adjacent[2]	= (0xffffffff==adjacency[3*it+2])?((occTri*) (-1)):(m_pTris+adjacency[3*it+2]);
-		rT.flags		= clT.dummy;
+		rT.flags		= u32(clT.dummy);
 		rT.area			= Area	(v0,v1,v2);
 		if (rT.area<EPS_L)	{
 			Msg	("! Invalid HOM triangle (%f,%f,%f)-(%f,%f,%f)-(%f,%f,%f)",VPUSH(v0),VPUSH(v1),VPUSH(v2));

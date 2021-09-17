@@ -2,8 +2,6 @@
 //
 //////////////////////////////////////////////////////////////////////
 
-#ifndef ResourceManagerH
-#define ResourceManagerH
 #pragma once
 
 #include	"shader.h"
@@ -237,5 +235,3 @@ private:
 
 #endif	//	USE_DX10
 };
-
-#endif //ResourceManagerH

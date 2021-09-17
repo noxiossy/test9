@@ -1,9 +1,6 @@
 // SkeletonX.h: interface for the CSkeletonX class.
 //
 //////////////////////////////////////////////////////////////////////
-
-#ifndef SkeletonXH
-#define SkeletonXH
 #pragma once
 
 #include "SkeletonCustom.h"
@@ -29,7 +26,7 @@ protected:
 	ref_smem<vertBoned4W>	Vertices4W	;		// shared
 	ref_smem<u16>			BonesUsed	;		// actual bones which have influence on vertices
 
-	u16						RenderMode	;	
+	u16						RenderMode{};
 	u16						ChildIDX	;
 
 	// render-mode specifics
@@ -131,5 +128,3 @@ BOOL pick_bone(CKinematics* Parent, IKinematics::pick_result &r, float dist, con
 	return intersect;
 }
 #endif	//	USE_DX10
-
-#endif // SkeletonXH

@@ -96,7 +96,6 @@ CDetailManager::CDetailManager	()
     dm_cache_size = dm_current_cache_size;
     dm_fade = dm_current_fade;
     ps_r__Detail_density = ps_current_detail_density;
-    ps_current_detail_height = ps_r__Detail_height;
     cache_level1 = (CacheSlot1**) Memory.mem_alloc(dm_cache1_line*sizeof(CacheSlot1*)
 #ifdef USE_MEMORY_MONITOR
         , "CDetailManager::cache_level1"
@@ -256,6 +255,7 @@ void CDetailManager::Unload		()
 }
 
 extern ECORE_API float r_ssaDISCARD;
+extern BOOL ps_no_scale_on_fade;
 
 void CDetailManager::UpdateVisibleM()
 {
@@ -266,19 +266,15 @@ void CDetailManager::UpdateVisibleM()
 
 	Fvector		EYE				= RDEVICE.vCameraPosition_saved;
 
-	CFrustum	View;
-	//	View.CreateFromMatrix		(Device.mFullTransform, FRUSTUM_P_LRTB + FRUSTUM_P_FAR);
-	/* KD: there is some bug: frustrum created from full transform matrix seems to be broken in some frames, so we should use saved frustrum from render interface*/
-	View = RImplementation.ViewBase;
-	
- 	CFrustum	View_old;
- 	Fmatrix		Viewm_old = RDEVICE.mFullTransform;
- 	View_old.CreateFromMatrix		(Viewm_old, FRUSTUM_P_LRTB + FRUSTUM_P_FAR);
-	
-	float fade_limit			= dm_fade;	fade_limit=fade_limit*fade_limit;
-	float fade_start			= 1.f;		fade_start=fade_start*fade_start;
-	float fade_range			= fade_limit-fade_start;
- 	float		r_ssaCHEAP		= 16*r_ssaDISCARD;
+	CFrustum View;
+	View.CreateFromMatrix(RDEVICE.mFullTransform_saved, FRUSTUM_P_LRTB + FRUSTUM_P_FAR);
+		
+	float fade_limit = dm_fade;
+	fade_limit = fade_limit * fade_limit;
+	float fade_start = 1.f;
+	fade_start = fade_start * fade_start;
+	float fade_range = fade_limit - fade_start;
+	float r_ssaCHEAP = 16 * r_ssaDISCARD;
 
 	// Initialize 'vis' and 'cache'
 	// Collect objects for rendering
@@ -349,11 +345,13 @@ void CDetailManager::UpdateVisibleM()
 						float				R		= objects	[sp.id]->bv_sphere.R;
 						float				Rq_drcp	= R*R*dist_sq_rcp;	// reordered expression for 'ssa' calc
 
-						SlotItem			**siIT=&(*sp.items.begin()), **siEND=&(*sp.items.end());
-						for (; siIT!=siEND; siIT++){
-							SlotItem& Item			= *(*siIT);
-							float   scale			= Item.scale_calculated	= Item.scale*alpha_i;
-							float	ssa				= scale*scale*Rq_drcp;
+						for (auto& el: sp.items){
+
+							if (el == nullptr) continue;
+
+							SlotItem& Item			= *el;
+							float   scale = ps_no_scale_on_fade ? (Item.scale_calculated = Item.scale) : (Item.scale_calculated = Item.scale*alpha_i);
+							float	ssa = ps_no_scale_on_fade ? scale : scale*scale*Rq_drcp;
 							if (ssa < r_ssaDISCARD)
 							{
 								continue;
@@ -361,7 +359,7 @@ void CDetailManager::UpdateVisibleM()
 							u32		vis_id			= 0;
 							if (ssa > r_ssaCHEAP)	vis_id = Item.vis_ID;
 							
-							sp.r_items[vis_id].push_back	(*siIT);
+							sp.r_items[vis_id].push_back	(el);
 
 //2							visible[vis_id][sp.id].push_back(&Item);
 						}

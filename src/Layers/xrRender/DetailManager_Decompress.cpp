@@ -69,6 +69,7 @@ bool det_render_debug = false;
 
 #include "../../xrEngine/gamemtllib.h"
 
+extern float ps_current_detail_scale;
 //#define		DBG_SWITCHOFF_RANDOMIZE
 void		CDetailManager::cache_Decompress(Slot* S)
 {
@@ -222,11 +223,12 @@ RDEVICE.Statistic->TEST0.End		();
 
 			// Angles and scale
 #ifndef		DBG_SWITCHOFF_RANDOMIZE
-			Item.scale	= r_scale.randF		(Dobj->m_fMinScale*0.5f,Dobj->m_fMaxScale*0.9f) * ps_current_detail_height;
+			Item.scale	= r_scale.randF		(Dobj->m_fMinScale*0.5f,Dobj->m_fMaxScale*0.9f);
 #else
 			Item.scale	= (Dobj->m_fMinScale*0.5f+Dobj->m_fMaxScale*0.9f)/2;
 			//Item.scale	= 0.1f;
 #endif
+			Item.scale *= ps_current_detail_scale;
 			// X-Form BBox
 			Fmatrix		mScale,mXform;
 			Fbox		ItemBB;
