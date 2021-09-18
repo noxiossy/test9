@@ -301,7 +301,7 @@ void CInput::KeyUpdate()
 }
 bool CInput::get_dik_name(int dik, LPSTR dest_str, int dest_sz)
 {
-    DIPROPSTRING keyname;
+	DIPROPSTRING keyname{};
     keyname.diph.dwSize = sizeof(DIPROPSTRING);
     keyname.diph.dwHeaderSize = sizeof(DIPROPHEADER);
     keyname.diph.dwObj = static_cast<DWORD>(dik);
@@ -311,41 +311,38 @@ bool CInput::get_dik_name(int dik, LPSTR dest_str, int dest_sz)
         return false;
 
     const wchar_t* wct = keyname.wsz;
-    if (0 == wcslen(wct))
+	if(!wcslen(wct))
         return false;
 
-    int cnt = WideCharToMultiByte(CP_ACP, 0, keyname.wsz, -1, dest_str, dest_sz, NULL, NULL);
-    if (cnt == -1)
-    {
-        Msg("! cant convert dik_name for dik[%d], prop=[%S]", dik, keyname.wsz);
-        return false;
-    }
-    return (cnt != -1);
+	return WideCharToMultiByte(CP_ACP, 0, keyname.wsz, -1, dest_str, dest_sz, 0, 0) != -1;
 }
-
-#define MOUSE_1 (0xED + 100)
-#define MOUSE_8 (0xED + 107)
 
 BOOL CInput::iGetAsyncKeyState(int dik)
 {
-    if (dik < COUNT_KB_BUTTONS)
-        return !!KBState[dik];
-    else if (dik >= MOUSE_1 && dik <= MOUSE_8)
-    {
-        int mk = dik - MOUSE_1;
-        return iGetAsyncBtnState(mk);
-    }
-    else
-        return FALSE; //unknown key ???
+	//KRodin: да-да, я знаю, что этот код ужасен.
+	switch (dik)
+	{
+	case DIK_LMENU:    return GetAsyncKeyState(VK_LMENU) & 0x8000;
+	case DIK_RMENU:    return GetAsyncKeyState(VK_RMENU) & 0x8000;
+	case DIK_TAB:      return GetAsyncKeyState(VK_TAB) & 0x8000;
+	case DIK_LCONTROL: return GetAsyncKeyState(VK_LCONTROL) & 0x8000;
+	case DIK_RCONTROL: return GetAsyncKeyState(VK_RCONTROL) & 0x8000;
+	case DIK_DELETE:   return GetAsyncKeyState(VK_DELETE) & 0x8000;
+	default:           return KBState[dik];
+	}
 }
 
 BOOL CInput::iGetAsyncBtnState(int btn)
 {
-    return !!mouseState[btn];
+	return mouseState[btn];
 }
 
 void CInput::MouseUpdate()
 {
+#	pragma push_macro("FIELD_OFFSET")
+#	undef FIELD_OFFSET
+#	define FIELD_OFFSET offsetof // Фиксим warning C4644 - просто переводим макрос из винсдк на использование стандартного оффсетофа.
+
     HRESULT hr;
     DWORD dwElements = MOUSEBUFFERSIZE;
     DIDEVICEOBJECTDATA od[MOUSEBUFFERSIZE];
@@ -492,30 +489,51 @@ void CInput::MouseUpdate()
         }
     }
 
-    if (mouseState[0] && mouse_prev[0])
-    {
-        cbStack.back()->IR_OnMouseHold(0);
-    }
+	// Giperion: double check mouse buttons state
+	DIMOUSESTATE2 MouseState;
+	hr = pMouse->GetDeviceState(sizeof(MouseState), &MouseState);
 
-    if (mouseState[1] && mouse_prev[1])
-    {
-        cbStack.back()->IR_OnMouseHold(1);
-    }
+	auto RecheckMouseButtonFunc = [&](int i)
+	{
+		if (MouseState.rgbButtons[i] & 0x80 && mouseState[i] == FALSE)
+		{
+			mouseState[i] = TRUE;
+			cbStack.back()->IR_OnMousePress(i);
+		}
+		else if (!(MouseState.rgbButtons[i] & 0x80) && mouseState[i] == TRUE)
+		{
+			mouseState[i] = FALSE;
+			cbStack.back()->IR_OnMouseRelease(i);
+		}
+	};
 
-    if (mouseState[2] && mouse_prev[2])
-    {
-        cbStack.back()->IR_OnMouseHold(2);
-    }
-    if (dwElements)
-    {
-        if (offs[0] || offs[1]) cbStack.back()->IR_OnMouseMove(offs[0], offs[1]);
-        if (offs[2]) cbStack.back()->IR_OnMouseWheel(offs[2]);
-    }
-    else
-    {
-        if (timeStamp[1] && ((dwCurTime - timeStamp[1]) >= mouse_property.mouse_dt)) cbStack.back()->IR_OnMouseStop(DIMOFS_Y, timeStamp[1] = 0);
-        if (timeStamp[0] && ((dwCurTime - timeStamp[0]) >= mouse_property.mouse_dt)) cbStack.back()->IR_OnMouseStop(DIMOFS_X, timeStamp[0] = 0);
-    }
+	if (hr == S_OK)
+	{
+		RecheckMouseButtonFunc(0);
+		RecheckMouseButtonFunc(1);
+		RecheckMouseButtonFunc(2);
+	}
+	//-Giperion
+
+	auto isButtonOnHold = [&](int i)
+	{
+		if (mouseState[i] && mouse_prev[i])
+			cbStack.back()->IR_OnMouseHold(i);
+	};
+
+	isButtonOnHold(0);
+	isButtonOnHold(1);
+	isButtonOnHold(2);
+
+	if ( dwElements ){
+		if (offs[0] || offs[1]) cbStack.back()->IR_OnMouseMove	( offs[0], offs[1] );
+		if (offs[2])			cbStack.back()->IR_OnMouseWheel	( offs[2] );
+	} else {
+		if (timeStamp[1] && ((dwCurTime-timeStamp[1])>=mouse_property.mouse_dt))	cbStack.back()->IR_OnMouseStop(DIMOFS_Y, timeStamp[1] = 0);
+		if (timeStamp[0] && ((dwCurTime-timeStamp[0])>=mouse_property.mouse_dt))	cbStack.back()->IR_OnMouseStop(DIMOFS_X, timeStamp[0] = 0);
+	}
+
+#	pragma pop_macro("FIELD_OFFSET")
 }
 
 //-------------------------------------------------------
@@ -648,4 +666,71 @@ void CInput::feedback(u16 s1, u16 s2, float time)
 #ifndef _EDITOR
     //. set_vibration (s1, s2);
 #endif
+}
+
+char CInput::DikToChar(int dik)
+{
+	switch (dik)
+	{
+	// Эти клавиши через ToAscii не обработать, поэтому пропишем явно
+	case DIK_NUMPAD0: return '0';
+	case DIK_NUMPAD1: return '1';
+	case DIK_NUMPAD2: return '2';
+	case DIK_NUMPAD3: return '3';
+	case DIK_NUMPAD4: return '4';
+	case DIK_NUMPAD5: return '5';
+	case DIK_NUMPAD6: return '6';
+	case DIK_NUMPAD7: return '7';
+	case DIK_NUMPAD8: return '8';
+	case DIK_NUMPAD9: return '9';
+	case DIK_NUMPADSLASH: return '/';
+	case DIK_NUMPADPERIOD: return '.';
+	//
+	default:
+		u8 State[256] = {};
+		
+		if (!GetKeyboardState(State))
+			return 0;
+
+		u16 symbol;
+		if (ToAscii(MapVirtualKey(dik, MAPVK_VSC_TO_VK), dik, State, &symbol, 0) == 1)
+			return static_cast<char>(symbol);
+	}
+
+	return 0;
+}
+
+// https://stackoverflow.com/a/36827574
+void CInput::clip_cursor(bool clip)
+{
+	if (clip) {
+		ShowCursor(FALSE);
+		if (Device.m_hWnd && !psDeviceFlags.is(rsFullscreen)) {
+			RECT rect;
+			GetClientRect(Device.m_hWnd, &rect);
+
+			POINT ul;
+			ul.x = rect.left;
+			ul.y = rect.top;
+
+			POINT lr;
+			lr.x = rect.right;
+			lr.y = rect.bottom;
+
+			MapWindowPoints(Device.m_hWnd, nullptr, &ul, 1);
+			MapWindowPoints(Device.m_hWnd, nullptr, &lr, 1);
+
+			rect.left = ul.x;
+			rect.top = ul.y;
+
+			rect.right = lr.x;
+			rect.bottom = lr.y;
+
+			ClipCursor(&rect);
+		}
+	}
+	else {
+		while (ShowCursor(TRUE) < 0);
+		ClipCursor(nullptr);
+	}
 }

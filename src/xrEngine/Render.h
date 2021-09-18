@@ -1,5 +1,4 @@
-#ifndef _RENDER_H_
-#define _RENDER_H_
+#pragma once
 
 #include "../xrCDB/frustum.h"
 #include "vis_common.h"
@@ -298,7 +297,7 @@ public:
     virtual void rmFar() = 0;
     virtual void rmNormal() = 0;
     virtual u32 memory_usage() = 0;
-    virtual u32 active_phase() = 0; //Swartz: actor shadow
+	virtual u32 active_phase() const = 0;
     // Constructor/destructor
     virtual ~IRender_interface();
 protected:
@@ -307,4 +306,4 @@ protected:
 
 //extern ENGINE_API IRender_interface* Render;
 
-#endif
+

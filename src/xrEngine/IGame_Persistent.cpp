@@ -13,10 +13,6 @@
 # include "CustomHUD.h"
 #endif
 
-#ifdef _EDITOR
-bool g_dedicated_server = false;
-#endif
-
 #ifdef INGAME_EDITOR
 # include "editor_environment_manager.hpp"
 #endif // INGAME_EDITOR
@@ -129,6 +125,10 @@ void IGame_Persistent::Disconnect()
     if (g_hud)
         DEL_INSTANCE(g_hud);
     //. g_hud->OnDisconnected ();
+	
+	// Kill object - save memory
+	ObjectPool.clear();
+	Render->models_Clear(TRUE); // У нас вызывается ещё и в CLevel::remove_objects() Если что - убрать оттуда, пусть будет тут.
 #endif
 }
 
@@ -137,12 +137,12 @@ void IGame_Persistent::OnGameStart()
 #ifndef _EDITOR
     // LoadTitle("st_prefetching_objects");
     LoadTitle();
-    if (!strstr(Core.Params, "-noprefetch"))
-        Prefetch();
+//    if (!strstr(Core.Params, "-noprefetch"))
+//        Prefetch();
 #endif
 }
 
-#ifndef _EDITOR
+/*#ifndef _EDITOR
 void IGame_Persistent::Prefetch()
 {
     // prefetch game objects & models
@@ -163,7 +163,7 @@ void IGame_Persistent::Prefetch()
     Msg("* [prefetch] memory: %dKb", p_mem / 1024);
 }
 #endif
-
+*/
 
 void IGame_Persistent::OnGameEnd()
 {

@@ -306,8 +306,9 @@ void CEnvDescriptor::load(CEnvironment& environment, CInifile& config)
         m_fWaterIntensity = config.r_float(m_identifier.c_str(), "water_intensity");
 
 #ifdef TREE_WIND_EFFECT
-    if (config.line_exist(m_identifier.c_str(), "tree_amplitude_intensity"))
-        m_fTreeAmplitudeIntensity = config.r_float(m_identifier.c_str(), "tree_amplitude_intensity");
+	constexpr float def_min_TAI = 0.01f, def_max_TAI = 0.07f;
+	const float def_TAI = def_min_TAI + (rain_density * (def_max_TAI - def_min_TAI)); //Если не прописано, дефолт будет рассчитываться от силы дождя.
+	m_fTreeAmplitudeIntensity = READ_IF_EXISTS(reinterpret_cast<CInifile*>(&config), r_float, m_identifier.c_str(), "tree_amplitude_intensity", def_TAI);
 #endif
 
     C_CHECK(clouds_color);
@@ -338,11 +339,10 @@ void CEnvDescriptor::on_device_create()
 void CEnvDescriptor::on_device_destroy()
 {
     m_pDescriptor->OnDeviceDestroy();
-    /*
-    sky_texture.destroy ();
-    sky_texture_env.destroy ();
-    clouds_texture.destroy ();
-    */
+}
+
+void CEnvDescriptor::setEnvAmbient(LPCSTR sect, CEnvironment* parent) {
+	env_ambient = parent->AppendEnvAmb(sect);
 }
 
 //-----------------------------------------------------------------------------
@@ -453,7 +453,10 @@ void CEnvDescriptorMixer::lerp(CEnvironment*, CEnvDescriptor& A, CEnvDescriptor&
     wind_velocity = fi*A.wind_velocity + f*B.wind_velocity;
     wind_direction = fi*A.wind_direction + f*B.wind_direction;
 
-    m_fSunShaftsIntensity = fi*A.m_fSunShaftsIntensity + f*B.m_fSunShaftsIntensity;
+	if (ps_r_sunshafts_intensity > 0.f)
+		m_fSunShaftsIntensity = ps_r_sunshafts_intensity;
+	else
+		m_fSunShaftsIntensity = fi * A.m_fSunShaftsIntensity + f * B.m_fSunShaftsIntensity;
     m_fWaterIntensity = fi*A.m_fWaterIntensity + f*B.m_fWaterIntensity;
 
 #ifdef TREE_WIND_EFFECT

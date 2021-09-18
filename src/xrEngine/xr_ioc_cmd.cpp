@@ -556,7 +556,7 @@ ENGINE_API BOOL r2_sun_static = TRUE;
 ENGINE_API BOOL r2_simple_static = TRUE;
 ENGINE_API BOOL r2_advanced_pp = FALSE; // advanced post process and effects
 
-u32 renderer_value = 3;
+u32 renderer_value = 2;
 //void fill_render_mode_list();
 //void free_render_mode_list();
 
@@ -564,7 +564,7 @@ class CCC_r2 : public CCC_Token
 {
     typedef CCC_Token inherited;
 public:
-    CCC_r2(LPCSTR N) :inherited(N, &renderer_value, NULL) { renderer_value = 3; };
+    CCC_r2(LPCSTR N) :inherited(N, &renderer_value, NULL) { renderer_value = 2; };
     virtual ~CCC_r2()
     {
         //free_render_mode_list();
@@ -605,7 +605,8 @@ public:
     }
 
 };
-#ifndef DEDICATED_SERVER
+
+
 class CCC_soundDevice : public CCC_Token
 {
     typedef CCC_Token inherited;
@@ -641,7 +642,7 @@ public:
         inherited::Save(F);
     }
 };
-#endif
+
 //-----------------------------------------------------------------------
 class CCC_ExclusiveMode : public IConsole_Command
 {
@@ -708,18 +709,18 @@ ENGINE_API float	psHUD_FOV=psHUD_FOV_def;
 //extern int psSkeletonUpdate;
 extern int rsDVB_Size;
 extern int rsDIB_Size;
-extern int psNET_ClientUpdate;
-extern int psNET_ClientPending;
-extern int psNET_ServerUpdate;
-extern int psNET_ServerPending;
-extern int psNET_DedicatedSleep;
-extern char psNET_Name[32];
-extern Flags32 psEnvFlags;
+//extern int psNET_ClientUpdate;
+//extern int psNET_ClientPending;
+//extern int psNET_ServerUpdate;
+//extern int psNET_ServerPending;
+//extern int psNET_DedicatedSleep;
+//extern char psNET_Name[32];
+//extern Flags32 psEnvFlags;
 //extern float r__dtex_range;
 
 extern int g_ErrorLineCount;
 
-ENGINE_API int ps_r__Supersample = 1;
+//ENGINE_API int ps_r__Supersample = 1;
 void CCC_Register()
 {
     // General
@@ -767,7 +768,7 @@ void CCC_Register()
 #endif
 
     // Render device states
-    CMD4(CCC_Integer, "r__supersample", &ps_r__Supersample, 1, 4);
+    //CMD4(CCC_Integer, "r__supersample", &ps_r__Supersample, 1, 4);
 
 	CMD3(CCC_Token, 	"r_fps_lock", 			&g_dwFPSlimit, FpsLockToken);
 
@@ -793,7 +794,7 @@ void CCC_Register()
 
     // Texture manager
     CMD4(CCC_Integer, "texture_lod", &psTextureLOD, 0, 2);
-    CMD4(CCC_Integer, "net_dedicated_sleep", &psNET_DedicatedSleep, 0, 64);
+    //CMD4(CCC_Integer, "net_dedicated_sleep", &psNET_DedicatedSleep, 0, 64);
 
     // General video control
     CMD1(CCC_VidMode, "vid_mode");
@@ -842,10 +843,10 @@ void CCC_Register()
     psSoundOcclusionScale = pSettings->r_float("sound", "occlusion_scale");
     clamp(psSoundOcclusionScale, 0.1f, .5f);
 
-    extern int g_Dump_Export_Obj;
-    extern int g_Dump_Import_Obj;
-    CMD4(CCC_Integer, "net_dbg_dump_export_obj", &g_Dump_Export_Obj, 0, 1);
-    CMD4(CCC_Integer, "net_dbg_dump_import_obj", &g_Dump_Import_Obj, 0, 1);
+    //extern int g_Dump_Export_Obj;
+    //extern int g_Dump_Import_Obj;
+    //CMD4(CCC_Integer, "net_dbg_dump_export_obj", &g_Dump_Export_Obj, 0, 1);
+    //CMD4(CCC_Integer, "net_dbg_dump_import_obj", &g_Dump_Import_Obj, 0, 1);
 
 #ifdef DEBUG
     CMD1(CCC_DumpOpenFiles, "dump_open_files");

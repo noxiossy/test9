@@ -16,6 +16,7 @@
 #include "x_ray.h"
 #include "render.h"
 #include "IGame_Persistent.h"
+#include "xr_input.h"
 
 // must be defined before include of FS_impl.h
 #define INCLUDE_FROM_ENGINE
@@ -133,8 +134,8 @@ void CRenderDevice::End(void)
     g_bRendering = FALSE;
     // end scene
     // Present goes here, so call OA Frame end.
-    if (g_SASH.IsBenchmarkRunning())
-        g_SASH.DisplayFrame(Device.fTimeGlobal);
+    //if (g_SASH.IsBenchmarkRunning())
+    //    g_SASH.DisplayFrame(Device.fTimeGlobal);
     m_pRender->End();
 
 # ifdef INGAME_EDITOR
@@ -180,12 +181,8 @@ void mt_Thread(void* ptr)
 #include "igame_level.h"
 void CRenderDevice::PreCache(u32 amount, bool b_draw_loadscreen, bool b_wait_user_input)
 {
-#ifdef DEDICATED_SERVER
-    amount = 0;
-#else
     if (m_pRender->GetForceGPU_REF())
 		amount = 0;
-#endif
 
     dwPrecacheFrame = dwPrecacheTotal = amount;
     /*if (amount && !precache_light && g_pGameLevel && g_loading_events.empty())
@@ -237,8 +234,8 @@ void CRenderDevice::on_idle()
         return;
     }
     
-	if (!Device.dwPrecacheFrame && !g_SASH.IsBenchmarkRunning() && g_bLoaded)
-        g_SASH.StartBenchmark();
+	//if (!Device.dwPrecacheFrame && !g_SASH.IsBenchmarkRunning() && g_bLoaded)
+    //    g_SASH.StartBenchmark();
 
     FrameMove();
 
@@ -275,7 +272,6 @@ void CRenderDevice::on_idle()
 
 	Sleep(0);
 
-#ifndef DEDICATED_SERVER
     Statistic->RenderTOTAL_Real.FrameStart();
     Statistic->RenderTOTAL_Real.Begin();
 	
@@ -289,7 +285,7 @@ void CRenderDevice::on_idle()
     Statistic->RenderTOTAL_Real.End();
     Statistic->RenderTOTAL_Real.FrameEnd();
     Statistic->RenderTOTAL.accum = Statistic->RenderTOTAL_Real.accum;
-#endif // #ifndef DEDICATED_SERVER
+	
     // *** Suspend threads
     // Capture startup point
     // Release end point - allow thread to wait for startup point
@@ -505,10 +501,13 @@ void CRenderDevice::OnWM_Activate(WPARAM wParam, LPARAM lParam)
 	const	u16 fActive						= LOWORD(wParam);
 	const	BOOL fMinimized					= (BOOL) HIWORD(wParam);
 	const	BOOL bActive					= ((fActive!=WA_INACTIVE) && (!fMinimized))?TRUE:FALSE;
+	const BOOL isGameActive 				= (bActive) ? TRUE : FALSE;
 
-    if (bActive != Device.b_is_Active)
-    {
-        Device.b_is_Active = bActive;
+	pInput->clip_cursor(fActive != WA_INACTIVE);
+
+	if (isGameActive != Device.b_is_Active)
+	{
+		Device.b_is_Active = isGameActive;
 
         if (Device.b_is_Active)
         {
@@ -519,14 +518,14 @@ void CRenderDevice::OnWM_Activate(WPARAM wParam, LPARAM lParam)
 # ifdef INGAME_EDITOR
             if (!editor())
 # endif // #ifdef INGAME_EDITOR
-                ShowCursor(FALSE);
+				//pInput->clip_cursor(true);
 #endif // #ifndef DEDICATED_SERVER
         }
         else
         {
             app_inactive_time_start = TimerMM.GetElapsed_ms();
             Device.seqAppDeactivate.Process(rp_AppDeactivate);
-            ShowCursor(TRUE);
+			//pInput->clip_cursor(false);
         }
     }
 }

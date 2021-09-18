@@ -64,7 +64,7 @@ void IGame_Level::SoundEvent_Register(ref_sound_data_ptr S, float range)
             Power *= occ;
             if (Power > EPS_S)
             {
-                _esound_delegate D = {L, S, Power};
+				_esound_delegate D = { L, S, Power, snd_position };
                 snd_Events.push_back(D);
             }
         }
@@ -84,7 +84,7 @@ void IGame_Level::SoundEvent_Dispatch()
                 D.source->g_object,
                 D.source->g_type,
                 D.source->g_userdata,
-                D.source->feedback->get_params()->position,
+				D.position, //D.source->feedback->get_params()->position,
                 D.power
             );
         }

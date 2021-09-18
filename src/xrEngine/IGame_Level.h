@@ -34,8 +34,8 @@ public:
 
     IC SItem_ServerInfo& operator[] (u32 id) { VERIFY(id < max_item); return data[id]; }
 
-    CServerInfo() {};
-    ~CServerInfo() {};
+	//CServerInfo() {};
+	//~CServerInfo() {};
 };
 
 //-----------------------------------------------------------------------------------------------------------
@@ -53,8 +53,8 @@ protected:
 
     // Static sounds
     xr_vector<ref_sound> Sounds_Random;
-    u32 Sounds_Random_dwNextTime;
-    BOOL Sounds_Random_Enabled;
+	u32							Sounds_Random_dwNextTime{};
+	BOOL						Sounds_Random_Enabled{};
     CCameraManager* m_pCameras;
 
     // temporary
@@ -73,6 +73,7 @@ public: // deferred sound events
         Feel::Sound* dest;
         ref_sound_data_ptr source;
         float power;
+		Fvector position;
     };
     xr_vector<_esound_delegate> snd_Events;
 public:

@@ -49,6 +49,7 @@ CEnvironment::CEnvironment() :
 CurrentEnv(0),
 m_ambients_config(0)
 {
+	m_last_weather_shift = 0;
     bNeed_re_create_env = FALSE;
     bWFX = false;
     Current[0] = 0;
@@ -226,13 +227,8 @@ void CEnvironment::Invalidate()
     bWFX = false;
     Current[0] = 0;
     Current[1] = 0;
-	// LR_DEVS CHECK
-	if (eff_Rain){
-		eff_Rain->snd_Ambient.stop();
-		eff_Rain->InvalidateState();
-	}
-	// LR_DEVS CHECK
     if (eff_LensFlare) eff_LensFlare->Invalidate();
+	if (eff_Rain) eff_Rain->InvalidateState();
 }
 
 float CEnvironment::TimeDiff(float prev, float cur)
@@ -302,8 +298,8 @@ void CEnvironment::SetWeather(shared_str name, bool forced)
         R_ASSERT3(it != WeatherCycles.end(), "Invalid weather name.", *name);
         CurrentCycleName = it->first;
         if (forced) { Invalidate(); }
-        if (!bWFX)
-        {
+		if (!bWFX){
+			PrevWeatherName = ( forced || CurrentWeatherName.size() == 0 ) ? it->first : CurrentWeatherName;
             CurrentWeather = &it->second;
             CurrentWeatherName = it->first;
         }
@@ -388,14 +384,19 @@ bool CEnvironment::SetWeatherFX(shared_str name)
 
 bool CEnvironment::StartWeatherFXFromTime(shared_str name, float time)
 {
-    if (!SetWeatherFX(name))
-        return false;
-
-    for (EnvIt it = CurrentWeather->begin(); it != CurrentWeather->end(); it++)
-        (*it)->exec_time = NormalizeTime((*it)->exec_time - wfx_time + time);
-
-    wfx_time = time;
-    return true;
+	float _fGameTime = fGameTime;
+	fGameTime = NormalizeTime( fGameTime - time );
+	bool res  = SetWeatherFX( name );
+	fGameTime = _fGameTime;
+	if ( !res )
+		return false;
+	wfx_time -= time;
+#ifdef WEATHER_LOGGING
+	Msg( "Started WFX from time[%3.2f]: '%s' - %3.2f sec", time, *name, wfx_time );
+	for ( EnvIt l_it = CurrentWeather->begin(); l_it != CurrentWeather->end(); l_it++ )
+		Msg( ". Env: '%s' Tm: %3.2f", (*l_it)->m_identifier.c_str(), (*l_it)->exec_time );
+#endif
+	return true;
 }
 
 void CEnvironment::StopWFX()
@@ -452,6 +453,7 @@ void CEnvironment::SelectEnvs(float gt)
         VERIFY(!bWFX);
         // first or forced start
         SelectEnvs(CurrentWeather, Current[0], Current[1], gt);
+		m_last_weather_shift = Device.dwFrame;		
     }
     else
     {
@@ -469,6 +471,7 @@ void CEnvironment::SelectEnvs(float gt)
         {
             Current[0] = Current[1];
             SelectEnv(CurrentWeather, Current[1], gt);
+			m_last_weather_shift = Device.dwFrame;
 #ifdef WEATHER_LOGGING
             Msg("Weather: '%s' Desc: '%s' Time: %3.2f/%3.2f", CurrentWeatherName.c_str(), Current[1]->m_identifier.c_str(), Current[1]->exec_time, fGameTime);
 #endif
@@ -555,12 +558,12 @@ void CEnvironment::OnFrame()
 #ifndef MASTER_GOLD
     if (CurrentEnv->sun_dir.y > 0)
     {
-        Log("CurrentEnv->sun_dir", CurrentEnv->sun_dir);
+        //Log("CurrentEnv->sun_dir", CurrentEnv->sun_dir);
         // Log("current_weight", current_weight);
         // Log("mpower", mpower);
 
-        Log("Current[0]->sun_dir", Current[0]->sun_dir);
-        Log("Current[1]->sun_dir", Current[1]->sun_dir);
+        //Log("Current[0]->sun_dir", Current[0]->sun_dir);
+        //Log("Current[1]->sun_dir", Current[1]->sun_dir);
 
     }
     VERIFY2(CurrentEnv->sun_dir.y < 0, "Invalid sun direction settings in lerp");
@@ -703,4 +706,28 @@ CLensFlareDescriptor* CEnvironment::add_flare(xr_vector<CLensFlareDescriptor*>& 
     result->load(m_suns_config, id.c_str());
     collection.push_back(result);
     return (result);
+}
+
+void CEnvironment::ForceReselectEnvs() {
+	CEnvDescriptor** current_env_desc0 = &(*CurrentWeather)[0];
+	CEnvDescriptor** current_env_desc1 = &(*CurrentWeather)[1];
+	if ((*current_env_desc0)->exec_time > (*current_env_desc1)->exec_time) {
+		CEnvDescriptor *tmp_desc = *current_env_desc0;
+		*current_env_desc0 = *current_env_desc1;
+		*current_env_desc1 = tmp_desc;
+	}
+	SelectEnvs(CurrentWeather, Current[0], Current[1], fGameTime);
+	//eff_Rain->InvalidateState(); //Тоже самое делается в CEnvironment::Invalidate, здесь не нужно.
+}
+
+
+void CEnvironment::SetWeatherNext( shared_str name ) {
+  ASSERT_FMT( name.size(), "empty weather name" );
+  EnvsMapIt it = WeatherCycles.find( name );
+  if ( it == WeatherCycles.end() ) {
+    Msg("! [%s]: Invalid weather name: %s", __FUNCTION__, name.c_str());
+    return;
+  }
+  EnvVec* NextWeather = &it->second;
+  SelectEnv( NextWeather, Current[ 1 ], fGameTime );
 }
