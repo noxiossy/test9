@@ -216,7 +216,7 @@ void CConsole::OutFont(LPCSTR text, float& pos_y)
         int ln = 0;
         PSTR one_line = (PSTR)_alloca((CONSOLE_BUF_SIZE + 1) * sizeof(char));
 
-        while (text[sz] && (ln + sz < CONSOLE_BUF_SIZE - 5))// ïåðåíîñ ñòðîê
+        while (text[sz] && (ln + sz < CONSOLE_BUF_SIZE - 5))// ÄÄºÄ‘ÄºÃ­Ã®Å„ Å„ÅˆÄ‘Ã®Ä™
         {
             one_line[ln + sz] = text[sz];
             one_line[ln + sz + 1] = 0;
@@ -279,10 +279,6 @@ void CConsole::OnRender()
             (g_pGamePersistent && g_pGamePersistent->m_pMainMenu && g_pGamePersistent->m_pMainMenu->IsActive()))
     {
         bGame = true;
-    }
-    if (g_dedicated_server)
-    {
-        bGame = false;
     }
 
     DrawBackgrounds(bGame);
@@ -680,10 +676,6 @@ extern CInput* pInput;
 void CConsole::Hide()
 {
     if (!bVisible)
-    {
-        return;
-    }
-    if (g_pGamePersistent && g_dedicated_server)
     {
         return;
     }
