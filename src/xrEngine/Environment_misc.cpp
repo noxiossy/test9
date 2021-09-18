@@ -306,9 +306,8 @@ void CEnvDescriptor::load(CEnvironment& environment, CInifile& config)
         m_fWaterIntensity = config.r_float(m_identifier.c_str(), "water_intensity");
 
 #ifdef TREE_WIND_EFFECT
-	constexpr float def_min_TAI = 0.01f, def_max_TAI = 0.07f;
-	const float def_TAI = def_min_TAI + (rain_density * (def_max_TAI - def_min_TAI)); //Если не прописано, дефолт будет рассчитываться от силы дождя.
-	m_fTreeAmplitudeIntensity = READ_IF_EXISTS(reinterpret_cast<CInifile*>(&config), r_float, m_identifier.c_str(), "tree_amplitude_intensity", def_TAI);
+    if (config.line_exist(m_identifier.c_str(), "tree_amplitude_intensity"))
+        m_fTreeAmplitudeIntensity = config.r_float(m_identifier.c_str(), "tree_amplitude_intensity");
 #endif
 
     C_CHECK(clouds_color);
@@ -339,10 +338,6 @@ void CEnvDescriptor::on_device_create()
 void CEnvDescriptor::on_device_destroy()
 {
     m_pDescriptor->OnDeviceDestroy();
-}
-
-void CEnvDescriptor::setEnvAmbient(LPCSTR sect, CEnvironment* parent) {
-	env_ambient = parent->AppendEnvAmb(sect);
 }
 
 //-----------------------------------------------------------------------------
