@@ -717,12 +717,12 @@ void CEnvironment::ForceReselectEnvs() {
 		*current_env_desc1 = tmp_desc;
 	}
 	SelectEnvs(CurrentWeather, Current[0], Current[1], fGameTime);
-	//eff_Rain->InvalidateState(); //Òîæå ñàìîå äåëàåòñÿ â CEnvironment::Invalidate, çäåñü íå íóæíî.
+	//eff_Rain->InvalidateState(); //Ã’Ã®Ã¦Ã¥ Ã±Ã Ã¬Ã®Ã¥ Ã¤Ã¥Ã«Ã Ã¥Ã²Ã±Ã¿ Ã¢ CEnvironment::Invalidate, Ã§Ã¤Ã¥Ã±Ã¼ Ã­Ã¥ Ã­Ã³Ã¦Ã­Ã®.
 }
 
 
 void CEnvironment::SetWeatherNext( shared_str name ) {
-  ASSERT_FMT( name.size(), "empty weather name" );
+  VERIFY2( name.size(), "empty weather name" );
   EnvsMapIt it = WeatherCycles.find( name );
   if ( it == WeatherCycles.end() ) {
     Msg("! [%s]: Invalid weather name: %s", __FUNCTION__, name.c_str());
