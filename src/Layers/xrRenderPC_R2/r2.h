@@ -311,7 +311,7 @@ public:
     virtual void					rmNear						();
     virtual void					rmFar						();
     virtual void					rmNormal					();
-	u32 active_phase() const override { return phase; }
+    virtual u32 active_phase() { return phase; }
     // Constructor/destructor/loader
     CRender							();
     virtual ~CRender				();
