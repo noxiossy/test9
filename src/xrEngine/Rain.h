@@ -91,6 +91,7 @@ public:
 
     void Render();
     void OnFrame();
+	void InvalidateState()		{ state = stIdle; } //LR_DEV CHECK!!!
 };
 
 #endif //RainH

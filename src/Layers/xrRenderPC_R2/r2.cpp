@@ -1048,7 +1048,7 @@ HRESULT	CRender::shader_compile			(
 		xr_strcat		( file_name, temp_file_name );
 	}
 
-	if (FS.exist(file_name))
+	if (ps_r2_ls_flags_ext.test(R2FLAGEXT_SHADER_CACHE) && FS.exist(file_name))
 	{
 //		Msg				( "opening library or cache shader..." );
 		IReader* file = FS.r_open(file_name);
@@ -1091,25 +1091,28 @@ HRESULT	CRender::shader_compile			(
 		_result						= D3DXCompileShader((LPCSTR)pSrcData,SrcDataLen,defines,pInclude,pFunctionName,pTarget,Flags|D3DXSHADER_USE_LEGACY_D3DX9_31_DLL,&pShaderBuf,&pErrorBuf,&pConstants);
 		if (SUCCEEDED(_result)) {
 //			Msg						( "shader compilation succeeded" );
-			IWriter* file = FS.w_open(file_name);
 
-			boost::crc_32_type		processor;
-			processor.process_block	( pShaderBuf->GetBufferPointer(), ((char*)pShaderBuf->GetBufferPointer()) + pShaderBuf->GetBufferSize() );
-			u32 const crc			= processor.checksum( );
+			if (ps_r2_ls_flags_ext.test(R2FLAGEXT_SHADER_CACHE))
+			{
+				IWriter* file = FS.w_open(file_name);
 
-			file->w_u32				(crc);
-			file->w					( pShaderBuf->GetBufferPointer(), (u32)pShaderBuf->GetBufferSize());
-			FS.w_close				(file);
+				boost::crc_32_type		processor;
+				processor.process_block	( pShaderBuf->GetBufferPointer(), ((char*)pShaderBuf->GetBufferPointer()) + pShaderBuf->GetBufferSize() );
+				u32 const crc			= processor.checksum( );
+
+				file->w_u32(crc);
+				file->w(pShaderBuf->GetBufferPointer(), (u32)pShaderBuf->GetBufferSize());
+				FS.w_close(file);
+			}
 
 			_result					= create_shader(pTarget, (DWORD*)pShaderBuf->GetBufferPointer(), pShaderBuf->GetBufferSize(), file_name, result, o.disasm);
 		}
 		else {
-//			Msg						( "! shader compilation failed" );
-			Log						("! ", file_name);
+			Msg("! %s", file_name);
 			if ( pErrorBuf )
-				Log					("! error: ",(LPCSTR)pErrorBuf->GetBufferPointer());
+				Msg("! error: %s", pErrorBuf->GetBufferPointer());
 			else
-				Msg					("Can't compile shader hr=0x%08x", _result);
+				Msg("Can't compile shader hr=0x%08x", _result);
 		}
 	}
 

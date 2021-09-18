@@ -226,6 +226,12 @@ void CEnvironment::Invalidate()
     bWFX = false;
     Current[0] = 0;
     Current[1] = 0;
+	// LR_DEVS CHECK
+	if (eff_Rain){
+		eff_Rain->snd_Ambient.stop();
+		eff_Rain->InvalidateState();
+	}
+	// LR_DEVS CHECK
     if (eff_LensFlare) eff_LensFlare->Invalidate();
 }
 

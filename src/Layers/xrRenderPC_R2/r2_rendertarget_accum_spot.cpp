@@ -340,12 +340,10 @@ void CRenderTarget::accum_volumetric(light* L)
 		//	Set correct depth surface
 		//	It's slow. Make this when shader is created
 		{
-			char*		pszSMapName;
+			const char* pszSMapName;
 			BOOL		b_HW_smap	= RImplementation.o.HW_smap;
-			BOOL		b_HW_PCF	= RImplementation.o.HW_smap_PCF;
 			if (b_HW_smap)		{
-				if (b_HW_PCF)	pszSMapName = r2_RT_smap_depth;
-				else			pszSMapName = r2_RT_smap_depth;
+				pszSMapName = r2_RT_smap_depth;
 			}
 			else				pszSMapName = r2_RT_smap_surf;
 			//s_smap
