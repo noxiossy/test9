@@ -1,6 +1,6 @@
 //////////////////////////////////////////////////////////////////////
-// CustomRocket.cpp:	ðàêåòà, êîòîðîé ñòðåëÿåò RocketLauncher 
-//						(óìååò ëåòåòü, ñâåòèòüñÿ è îòûãðûâàòü ïàðòèêëû)
+// CustomRocket.cpp:	Ã°Ã ÃªÃ¥Ã²Ã , ÃªÃ®Ã²Ã®Ã°Ã®Ã© Ã±Ã²Ã°Ã¥Ã«Ã¿Ã¥Ã² RocketLauncher 
+//						(Ã³Ã¬Ã¥Ã¥Ã² Ã«Ã¥Ã²Ã¥Ã²Ã¼, Ã±Ã¢Ã¥Ã²Ã¨Ã²Ã¼Ã±Ã¿ Ã¨ Ã®Ã²Ã»Ã£Ã°Ã»Ã¢Ã Ã²Ã¼ Ã¯Ã Ã°Ã²Ã¨ÃªÃ«Ã»)
 //////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
@@ -22,8 +22,6 @@
 #include "PHDebug.h"
 #include "game_base_space.h"
 #endif
-
-extern ENGINE_API	bool g_dedicated_server;
 
 #define CHOOSE_MAX(x,inst_x,y,inst_y,z,inst_z)\
 	if(x>y)\
@@ -344,7 +342,7 @@ void CCustomRocket::PlayContact()
 
 	m_eState = eCollide;
 
-	//äåêòèâèðîâàòü ôèçè÷åñêóþ îáîëî÷êó,÷òîá ðàêåòà íå ëåòåëà äàëüøå
+	//Ã¤Ã¥ÃªÃ²Ã¨Ã¢Ã¨Ã°Ã®Ã¢Ã Ã²Ã¼ Ã´Ã¨Ã§Ã¨Ã·Ã¥Ã±ÃªÃ³Ã¾ Ã®Ã¡Ã®Ã«Ã®Ã·ÃªÃ³,Ã·Ã²Ã®Ã¡ Ã°Ã ÃªÃ¥Ã²Ã  Ã­Ã¥ Ã«Ã¥Ã²Ã¥Ã«Ã  Ã¤Ã Ã«Ã¼Ã¸Ã¥
 	if(m_pPhysicsShell)
 	{
 		m_pPhysicsShell->set_LinearVel(zero_vel);
@@ -404,9 +402,9 @@ void CCustomRocket::UpdateCL()
 	{
 	case eInactive:
 		break;
-	//ñîñòîÿíèÿ eEngine è eFlying îòëè÷àþòñÿ, òåì
-	//÷òî âûçûâàåòñÿ UpdateEngine ó eEngine, îñòàëüíûå
-	//ôóíêöèè îáùèå
+	//Ã±Ã®Ã±Ã²Ã®Ã¿Ã­Ã¨Ã¿ eEngine Ã¨ eFlying Ã®Ã²Ã«Ã¨Ã·Ã Ã¾Ã²Ã±Ã¿, Ã²Ã¥Ã¬
+	//Ã·Ã²Ã® Ã¢Ã»Ã§Ã»Ã¢Ã Ã¥Ã²Ã±Ã¿ UpdateEngine Ã³ eEngine, Ã®Ã±Ã²Ã Ã«Ã¼Ã­Ã»Ã¥
+	//Ã´Ã³Ã­ÃªÃ¶Ã¨Ã¨ Ã®Ã¡Ã¹Ã¨Ã¥
 	case eEngine:
 		UpdateEngine();
 	case eFlying:
@@ -513,7 +511,7 @@ void CCustomRocket::StartLights()
 {
 	if(!m_bLightsEnabled) return;
 
-	//âêëþ÷èòü ñâåòîâóþ ïîäñâåòêó îò äâèãàòåëÿ
+	//Ã¢ÃªÃ«Ã¾Ã·Ã¨Ã²Ã¼ Ã±Ã¢Ã¥Ã²Ã®Ã¢Ã³Ã¾ Ã¯Ã®Ã¤Ã±Ã¢Ã¥Ã²ÃªÃ³ Ã®Ã² Ã¤Ã¢Ã¨Ã£Ã Ã²Ã¥Ã«Ã¿
 	m_pTrailLight->set_color(m_TrailLightColor.r, 
 							 m_TrailLightColor.g, 
 							 m_TrailLightColor.b);
