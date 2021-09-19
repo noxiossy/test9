@@ -658,13 +658,13 @@ void	game_sv_mp::SetSkin					(CSE_Abstract* E, u16 Team, u16 ID)
 	//-------------------------------------------
 	string256 SkinName;
 	xr_strcpy(SkinName, pSettings->r_string("mp_skins_path", "skin_path"));
-	//çàãðóæåíû ëè ñêèíû äëÿ ýòîé êîììàíäû
+	//Ã§Ã Ã£Ã°Ã³Ã¦Ã¥Ã­Ã» Ã«Ã¨ Ã±ÃªÃ¨Ã­Ã» Ã¤Ã«Ã¿ Ã½Ã²Ã®Ã© ÃªÃ®Ã¬Ã¬Ã Ã­Ã¤Ã»
 
 	if (!TeamList.empty()	&&
 		TeamList.size() > Team	&&
 		!TeamList[Team].aSkins.empty())
 	{
-		//çàãðóæåíî ëè äîñòàòî÷íî ñêèíîâ äëÿ ýòîé êîììàíäû
+		//Ã§Ã Ã£Ã°Ã³Ã¦Ã¥Ã­Ã® Ã«Ã¨ Ã¤Ã®Ã±Ã²Ã Ã²Ã®Ã·Ã­Ã® Ã±ÃªÃ¨Ã­Ã®Ã¢ Ã¤Ã«Ã¿ Ã½Ã²Ã®Ã© ÃªÃ®Ã¬Ã¬Ã Ã­Ã¤Ã»
 		if (TeamList[Team].aSkins.size() > ID)
 		{
 			xr_strcat(SkinName, TeamList[Team].aSkins[ID].c_str());
@@ -1908,9 +1908,6 @@ void game_sv_mp::DumpOnlineStatistic()
 
 			if (!l_pC->ps)
 				return;
-		
-			if(m_server->GetServerClient()==l_pC && g_dedicated_server) 
-				return;
 			
 			if(!l_pC->net_Ready)
 				return;
@@ -2105,8 +2102,6 @@ void game_sv_mp::DumpRoundStatistics()
 		{
 			xrClientData *l_pC			= static_cast<xrClientData*>(client);
 		
-			if(m_server->GetServerClient()==l_pC && g_dedicated_server) 
-				return;
 			if (!l_pC->m_cdkey_digest.size())
 				return;
 			if (!l_pC->ps)
