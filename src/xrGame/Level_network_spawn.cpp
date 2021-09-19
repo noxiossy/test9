@@ -115,8 +115,7 @@ void CLevel::g_sv_Spawn		(CSE_Abstract* E)
 	if (0==O || (!O->net_Spawn	(E))) 
 	{
 		O->net_Destroy			( );
-		if(!g_dedicated_server)
-			client_spawn_manager().clear(O->ID());
+		client_spawn_manager().clear(O->ID());
 		Objects.Destroy			(O);
 		Msg						("! Failed to spawn entity '%s'",*E->s_name);
 #ifdef DEBUG_MEMORY_MANAGER
@@ -126,8 +125,7 @@ void CLevel::g_sv_Spawn		(CSE_Abstract* E)
 #ifdef DEBUG_MEMORY_MANAGER
 		mem_alloc_gather_stats	(!!psAI_Flags.test(aiDebugOnFrameAllocs));
 #endif // DEBUG_MEMORY_MANAGER
-		if(!g_dedicated_server)
-			client_spawn_manager().callback(O);
+		client_spawn_manager().callback(O);
 		//Msg			("--spawn--SPAWN: %f ms",1000.f*T.GetAsync());
 		
 		if ((E->s_flags.is(M_SPAWN_OBJECT_LOCAL)) && 
@@ -208,7 +206,7 @@ CSE_Abstract *CLevel::spawn_item		(LPCSTR section, const Fvector &position, u32 
 			dynamic_object->m_tGraphID	= ai().cross_table().vertex(level_vertex_id).game_vertex_id();
 	}
 
-	//оружие спавним с полным магазинои
+	//Г®Г°ГіГ¦ГЁГҐ Г±ГЇГ ГўГ­ГЁГ¬ Г± ГЇГ®Г«Г­Г»Г¬ Г¬Г ГЈГ Г§ГЁГ­Г®ГЁ
 	CSE_ALifeItemWeapon* weapon = smart_cast<CSE_ALifeItemWeapon*>(abstract);
 	if(weapon)
 		weapon->a_elapsed	= weapon->get_ammo_magsize();
