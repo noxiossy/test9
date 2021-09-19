@@ -91,9 +91,6 @@ void game_cl_Deathmatch::SetGameUI(CUIGameCustom* uigame)
 
 CUIGameCustom* game_cl_Deathmatch::createGameUI()
 {
-	if (g_dedicated_server)
-		return NULL;
-
 	CLASS_ID clsid			= CLSID_GAME_UI_DEATHMATCH;
 	m_game_ui				= smart_cast<CUIGameDM*> ( NEW_INSTANCE ( clsid ) );
 	R_ASSERT				(m_game_ui);
@@ -305,9 +302,6 @@ BOOL game_cl_Deathmatch::CanCallInventoryMenu			()
 
 void game_cl_Deathmatch::SetCurrentBuyMenu	()	
 {
-	if (g_dedicated_server)
-		return;
-
 	if (!pCurBuyMenu)
 	{
 		pCurBuyMenu	= InitBuyMenu(GetBaseCostSect(), 0);
@@ -437,7 +431,6 @@ void game_cl_Deathmatch::OnConnected()
 	inherited::OnConnected				();
 	if (m_game_ui)
 	{
-		VERIFY(!g_dedicated_server);
 		m_game_ui = smart_cast<CUIGameDM*>	(CurrentGameUI());
 		m_game_ui->SetClGame				(this);
 	}
@@ -448,8 +441,6 @@ void game_cl_Deathmatch::shedule_Update			(u32 dt)
 	CStringTable st;
 
 	inherited::shedule_Update(dt);
-
-	if(g_dedicated_server)	return;
 
 	//fake	
 	if(m_game_ui)
@@ -986,13 +977,13 @@ IC bool	DM_Compare_Players(game_PlayerState* p1, game_PlayerState* p2)
 void game_cl_Deathmatch::PlayParticleEffect(LPCSTR EffName, Fvector& pos)
 {
 	if (!EffName) return;
-	// вычислить позицию и направленность партикла
+	// ГўГ»Г·ГЁГ±Г«ГЁГІГј ГЇГ®Г§ГЁГ¶ГЁГѕ ГЁ Г­Г ГЇГ°Г ГўГ«ГҐГ­Г­Г®Г±ГІГј ГЇГ Г°ГІГЁГЄГ«Г 
 	Fmatrix M; 
 	M.translate(pos);
 
 //	CParticlesPlayer::MakeXFORM(pObj,0,Fvector().set(0.f,1.f,0.f),Fvector().set(0.f,0.f,0.f),pos);
 
-	// установить particles
+	// ГіГ±ГІГ Г­Г®ГўГЁГІГј particles
 	CParticlesObject* ps = NULL;
 
 	ps = CParticlesObject::Create(EffName,TRUE);
