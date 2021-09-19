@@ -1,6 +1,6 @@
 //////////////////////////////////////////////////////////////////////
-// RocketLauncher.cpp:	интерфейс для семейства объектов 
-//						стреляющих гранатами и ракетами
+// RocketLauncher.cpp:	ГЁГ­ГІГҐГ°ГґГҐГ©Г± Г¤Г«Гї Г±ГҐГ¬ГҐГ©Г±ГІГўГ  Г®ГЎГєГҐГЄГІГ®Гў 
+//						Г±ГІГ°ГҐГ«ГїГѕГ№ГЁГµ ГЈГ°Г Г­Г ГІГ Г¬ГЁ ГЁ Г°Г ГЄГҐГІГ Г¬ГЁ
 //////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
@@ -31,7 +31,7 @@ void CRocketLauncher::SpawnRocket(const shared_str& rocket_section, CGameObject*
 	R_ASSERT			(D);
 	CSE_Temporary		*l_tpTemporary = smart_cast<CSE_Temporary*>(D);
 	R_ASSERT			(l_tpTemporary);
-	l_tpTemporary->m_tNodeID= (g_dedicated_server)?u32(-1) : parent_rocket_launcher->ai_location().level_vertex_id();
+	l_tpTemporary->m_tNodeID= parent_rocket_launcher->ai_location().level_vertex_id();
 	D->s_name			= rocket_section;
 	D->set_name_replace	("");
 	
