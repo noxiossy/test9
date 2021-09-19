@@ -154,12 +154,12 @@ void CSpectator::UpdateCL()
 					}
 				}
 			}
-			// не найден объект с таким индексом - сбросим на первый объект
+			// Г­ГҐ Г­Г Г©Г¤ГҐГ­ Г®ГЎГєГҐГЄГІ Г± ГІГ ГЄГЁГ¬ ГЁГ­Г¤ГҐГЄГ±Г®Г¬ - Г±ГЎГ°Г®Г±ГЁГ¬ Г­Г  ГЇГҐГ°ГўГ»Г© Г®ГЎГєГҐГЄГІ
 			look_idx = 0;
-			// никого нет за кем смотреть - переключимся на 
+			// Г­ГЁГЄГ®ГЈГ® Г­ГҐГІ Г§Г  ГЄГҐГ¬ Г±Г¬Г®ГІГ°ГҐГІГј - ГЇГҐГ°ГҐГЄГ«ГѕГ·ГЁГ¬Г±Гї Г­Г  
 			if (0==idx) cam_Set(eacFreeFly);
 		}
-		// по умолчанию eacFreeFly
+		// ГЇГ® ГіГ¬Г®Г«Г·Г Г­ГЁГѕ eacFreeFly
 		cam_Update		(0);
 	}
 }
@@ -504,8 +504,7 @@ BOOL			CSpectator::net_Spawn				( CSE_Abstract*	DC )
 void			CSpectator::net_Destroy	()
 {
 	inherited::net_Destroy	();
-	if(!g_dedicated_server)
-		Level().MapManager		().OnObjectDestroyNotify(ID());
+	Level().MapManager		().OnObjectDestroyNotify(ID());
 }
 
 bool			CSpectator::SelectNextPlayerToLook	(bool const search_next)
