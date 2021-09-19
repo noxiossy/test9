@@ -25,8 +25,6 @@
 #include "Torch.h"
 #include "../build_config_defines.h"
 
-ENGINE_API	bool	g_dedicated_server;
-
 CUIXml*				pWpnScopeXml = NULL;
 
 void createWpnScopeXML()
@@ -1263,7 +1261,6 @@ void CWeaponMagazined::InitAddons()
                 xr_delete(m_UIScope);
             }
 
-            if (!g_dedicated_server)
             {
                 m_UIScope = xr_new<CUIWindow>();
                 createWpnScopeXML();
