@@ -1,6 +1,6 @@
-// Level_Bullet_Manager.cpp:	для обеспечения полета пули по траектории
-//								все пули и осколки передаются сюда
-//								(для просчета столкновений и их визуализации)
+// Level_Bullet_Manager.cpp:	Г¤Г«Гї Г®ГЎГҐГ±ГЇГҐГ·ГҐГ­ГЁГї ГЇГ®Г«ГҐГІГ  ГЇГіГ«ГЁ ГЇГ® ГІГ°Г ГҐГЄГІГ®Г°ГЁГЁ
+//								ГўГ±ГҐ ГЇГіГ«ГЁ ГЁ Г®Г±ГЄГ®Г«ГЄГЁ ГЇГҐГ°ГҐГ¤Г ГѕГІГ±Гї Г±ГѕГ¤Г 
+//								(Г¤Г«Гї ГЇГ°Г®Г±Г·ГҐГІГ  Г±ГІГ®Г«ГЄГ­Г®ГўГҐГ­ГЁГ© ГЁ ГЁГµ ГўГЁГ§ГіГ Г«ГЁГ§Г Г¶ГЁГЁ)
 //////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
@@ -23,17 +23,17 @@
 #include "actor.h"
 #include "ai/monsters/basemonster/base_monster.h"
 
-//константы ShootFactor, определяющие 
-//поведение пули при столкновении с объектом
+//ГЄГ®Г­Г±ГІГ Г­ГІГ» ShootFactor, Г®ГЇГ°ГҐГ¤ГҐГ«ГїГѕГ№ГЁГҐ 
+//ГЇГ®ГўГҐГ¤ГҐГ­ГЁГҐ ГЇГіГ«ГЁ ГЇГ°ГЁ Г±ГІГ®Г«ГЄГ­Г®ГўГҐГ­ГЁГЁ Г± Г®ГЎГєГҐГЄГІГ®Г¬
 #define RICOCHET_THRESHOLD		0.1
 #define STUCK_THRESHOLD			0.4
 
-//расстояния не пролетев которого пуля не трогает того кто ее пустил
+//Г°Г Г±Г±ГІГ®ГїГ­ГЁГї Г­ГҐ ГЇГ°Г®Г«ГҐГІГҐГў ГЄГ®ГІГ®Г°Г®ГЈГ® ГЇГіГ«Гї Г­ГҐ ГІГ°Г®ГЈГ ГҐГІ ГІГ®ГЈГ® ГЄГІГ® ГҐГҐ ГЇГіГ±ГІГЁГ«
 extern float gCheckHitK;
 
-//test callback функция 
+//test callback ГґГіГ­ГЄГ¶ГЁГї 
 //  object - object for testing
-//return TRUE-тестировать объект / FALSE-пропустить объект
+//return TRUE-ГІГҐГ±ГІГЁГ°Г®ГўГ ГІГј Г®ГЎГєГҐГЄГІ / FALSE-ГЇГ°Г®ГЇГіГ±ГІГЁГІГј Г®ГЎГєГҐГЄГІ
 BOOL CBulletManager::test_callback(const collide::ray_defs& rd, CObject* object, LPVOID params)
 {
 	if (!object)
@@ -54,20 +54,20 @@ BOOL CBulletManager::test_callback(const collide::ray_defs& rd, CObject* object,
 		if ((NULL!=cform) && (cftObject==cform->Type())){
 			CActor* actor		= smart_cast<CActor*>(entity);
 				//CAI_Stalker* stalker= smart_cast<CAI_Stalker*>(entity);
-			// в кого попали?
+			// Гў ГЄГ®ГЈГ® ГЇГ®ГЇГ Г«ГЁ?
 				if (actor/* || stalker*/) {
-				// попали в актера или сталкера
+				// ГЇГ®ГЇГ Г«ГЁ Гў Г ГЄГІГҐГ°Г  ГЁГ«ГЁ Г±ГІГ Г«ГЄГҐГ°Г 
 				Fsphere S		= cform->getSphere();
 				entity->XFORM().transform_tiny	(S.P)	;
 				float dist		= rd.range;
-				// проверим попали ли мы в описывающую сферу 
+				// ГЇГ°Г®ГўГҐГ°ГЁГ¬ ГЇГ®ГЇГ Г«ГЁ Г«ГЁ Г¬Г» Гў Г®ГЇГЁГ±Г»ГўГ ГѕГ№ГіГѕ Г±ГґГҐГ°Гі 
 				if (Fsphere::rpNone!=S.intersect_full(bullet->bullet_pos, bullet->dir, dist))
 				{
-					// да попали, найдем кто стрелял
+					// Г¤Г  ГЇГ®ГЇГ Г«ГЁ, Г­Г Г©Г¤ГҐГ¬ ГЄГІГ® Г±ГІГ°ГҐГ«ГїГ«
 					bool play_whine				= true;
 					CObject* initiator			= Level().Objects.net_Find	(bullet->parent_id);
 					if (actor){
-						// попали в актера
+						// ГЇГ®ГЇГ Г«ГЁ Гў Г ГЄГІГҐГ°Г 
 						float hpf				= 1.f;
 						float ahp				= actor->HitProbability();
 #if 1
@@ -102,7 +102,7 @@ BOOL CBulletManager::test_callback(const collide::ray_defs& rd, CObject* object,
 #	endif
 #else
 						CAI_Stalker* i_stalker	= smart_cast<CAI_Stalker*>(initiator);
-						// если стрелял сталкер, учитываем - hit_probability_factor сталкерa иначе - 1.0
+						// ГҐГ±Г«ГЁ Г±ГІГ°ГҐГ«ГїГ« Г±ГІГ Г«ГЄГҐГ°, ГіГ·ГЁГІГ»ГўГ ГҐГ¬ - hit_probability_factor Г±ГІГ Г«ГЄГҐГ°a ГЁГ­Г Г·ГҐ - 1.0
 						if (i_stalker) {
 							hpf					= i_stalker->SpecificCharacter().hit_probability_factor();
 							float fly_dist		= bullet->fly_dist+dist;
@@ -145,13 +145,13 @@ BOOL CBulletManager::test_callback(const collide::ray_defs& rd, CObject* object,
 	return bRes;
 }
 
-//callback функция 
+//callback ГґГіГ­ГЄГ¶ГЁГї 
 //	result.O;		// 0-static else CObject*
 //	result.range;	// range from start to element 
 //	result.element;	// if (O) "num tri" else "num bone"
 //	params;			// user defined abstract data
 //	Device.Statistic.TEST0.End();
-//return TRUE-продолжить трассировку / FALSE-закончить трассировку
+//return TRUE-ГЇГ°Г®Г¤Г®Г«Г¦ГЁГІГј ГІГ°Г Г±Г±ГЁГ°Г®ГўГЄГі / FALSE-Г§Г ГЄГ®Г­Г·ГЁГІГј ГІГ°Г Г±Г±ГЁГ°Г®ГўГЄГі
 
 void CBulletManager::FireShotmark (SBullet* bullet, const Fvector& vDir, const Fvector &vEnd, collide::rq_result& R, u16 target_material, const Fvector& vNormal, bool ShowMark)
 {
@@ -163,14 +163,13 @@ void CBulletManager::FireShotmark (SBullet* bullet, const Fvector& vDir, const F
 		particle_dir		 = vDir;
 		particle_dir.invert	();
 
-		//на текущем актере отметок не ставим
+		//Г­Г  ГІГҐГЄГіГ№ГҐГ¬ Г ГЄГІГҐГ°ГҐ Г®ГІГ¬ГҐГІГ®ГЄ Г­ГҐ Г±ГІГ ГўГЁГ¬
 		if ( !smart_cast<CActor*>( R.O ) && mtl_pair && !mtl_pair->m_pCollideMarks->empty() && ShowMark )
 		{
-			//добавить отметку на материале
+			//Г¤Г®ГЎГ ГўГЁГІГј Г®ГІГ¬ГҐГІГЄГі Г­Г  Г¬Г ГІГҐГ°ГЁГ Г«ГҐ
 			Fvector p;
 			p.mad(bullet->bullet_pos,bullet->dir,R.range-0.01f);
-			if(!g_dedicated_server)
-				::Render->add_SkeletonWallmark	(	&R.O->renderable.xform, 
+			::Render->add_SkeletonWallmark	(	&R.O->renderable.xform, 
 													PKinematics(R.O->Visual()), 
 													&*mtl_pair->m_pCollideMarks,
 													p, 
@@ -180,13 +179,13 @@ void CBulletManager::FireShotmark (SBullet* bullet, const Fvector& vDir, const F
 	} 
 	else 
 	{
-		//вычислить нормаль к пораженной поверхности
+		//ГўГ»Г·ГЁГ±Г«ГЁГІГј Г­Г®Г°Г¬Г Г«Гј ГЄ ГЇГ®Г°Г Г¦ГҐГ­Г­Г®Г© ГЇГ®ГўГҐГ°ГµГ­Г®Г±ГІГЁ
 		Fvector*	pVerts	= Level().ObjectSpace.GetStaticVerts();
 		CDB::TRI*	pTri	= Level().ObjectSpace.GetStaticTris()+R.element;
 
 		if (mtl_pair && !mtl_pair->m_pCollideMarks->empty() && ShowMark)
 		{
-			//добавить отметку на материале
+			//Г¤Г®ГЎГ ГўГЁГІГј Г®ГІГ¬ГҐГІГЄГі Г­Г  Г¬Г ГІГҐГ°ГЁГ Г«ГҐ
 			::Render->add_StaticWallmark	(&*mtl_pair->m_pCollideMarks, vEnd, bullet->wallmark_size, pTri, pVerts);
 		}
 	}
@@ -194,7 +193,7 @@ void CBulletManager::FireShotmark (SBullet* bullet, const Fvector& vDir, const F
 	ref_sound* pSound = (!mtl_pair || mtl_pair->CollideSounds.empty())?
 						NULL:&mtl_pair->CollideSounds[::Random.randI(0,mtl_pair->CollideSounds.size())];
 
-	//проиграть звук
+	//ГЇГ°Г®ГЁГЈГ°Г ГІГј Г§ГўГіГЄ
 	if(pSound && ShowMark)
 	{
 		CObject* O			= Level().Objects.net_Find(bullet->parent_id );
@@ -220,7 +219,7 @@ void CBulletManager::FireShotmark (SBullet* bullet, const Fvector& vDir, const F
 		pos.c.set(vEnd);
 		if(ps_name && ShowMark)
 		{
-			//отыграть партиклы попадания в материал
+			//Г®ГІГ»ГЈГ°Г ГІГј ГЇГ Г°ГІГЁГЄГ«Г» ГЇГ®ГЇГ Г¤Г Г­ГЁГї Гў Г¬Г ГІГҐГ°ГЁГ Г«
 			CParticlesObject* ps = CParticlesObject::Create(ps_name,TRUE);
 
 			ps->UpdateParent( pos, zero_vel );
@@ -244,7 +243,7 @@ void CBulletManager::StaticObjectHit	(CBulletManager::_event& E)
 static bool g_clear = false;
 void CBulletManager::DynamicObjectHit	(CBulletManager::_event& E)
 {
-	//только для динамических объектов
+	//ГІГ®Г«ГјГЄГ® Г¤Г«Гї Г¤ГЁГ­Г Г¬ГЁГ·ГҐГ±ГЄГЁГµ Г®ГЎГєГҐГЄГІГ®Гў
 	VERIFY(E.R.O);
 
 	if ( CEntity* entity = smart_cast<CEntity*>(E.R.O) )
@@ -272,7 +271,7 @@ void CBulletManager::DynamicObjectHit	(CBulletManager::_event& E)
 		NeedShootmark	=	monster->need_shotmark();
 	}
 	
-	//визуальное обозначение попадание на объекте
+	//ГўГЁГ§ГіГ Г«ГјГ­Г®ГҐ Г®ГЎГ®Г§Г­Г Г·ГҐГ­ГЁГҐ ГЇГ®ГЇГ Г¤Г Г­ГЁГҐ Г­Г  Г®ГЎГєГҐГЄГІГҐ
 //	Fvector			hit_normal;
 	FireShotmark	(&E.bullet, E.bullet.dir, E.point, E.R, E.tgt_material, E.normal, NeedShootmark);
 	
@@ -282,7 +281,7 @@ void CBulletManager::DynamicObjectHit	(CBulletManager::_event& E)
 	SBullet_Hit hit_param = E.hit_result;
 
 	// object-space
-	//вычислить координаты попадания
+	//ГўГ»Г·ГЁГ±Г«ГЁГІГј ГЄГ®Г®Г°Г¤ГЁГ­Г ГІГ» ГЇГ®ГЇГ Г¤Г Г­ГЁГї
 	Fvector				p_in_object_space,position_in_bone_space;
 	Fmatrix				m_inv;
 	m_inv.invert		(E.R.O->XFORM());
@@ -304,7 +303,7 @@ void CBulletManager::DynamicObjectHit	(CBulletManager::_event& E)
 		position_in_bone_space.set(p_in_object_space);
 	}
 
-	//отправить хит пораженному объекту
+	//Г®ГІГЇГ°Г ГўГЁГІГј ГµГЁГІ ГЇГ®Г°Г Г¦ГҐГ­Г­Г®Г¬Гі Г®ГЎГєГҐГЄГІГі
 	if (E.bullet.flags.allow_sendhit && !E.Repeated)
 	{
 		//-------------------------------------------------
@@ -355,7 +354,7 @@ bool CBulletManager::ObjectHit( SBullet_Hit* hit_res, SBullet* bullet, const Fve
 	//----------- normal - start
 	if ( R.O )
 	{
-		//вернуть нормаль по которой играть партиклы
+		//ГўГҐГ°Г­ГіГІГј Г­Г®Г°Г¬Г Г«Гј ГЇГ® ГЄГ®ГІГ®Г°Г®Г© ГЁГЈГ°Г ГІГј ГЇГ Г°ГІГЁГЄГ«Г»
 		CCF_Skeleton* skeleton = smart_cast<CCF_Skeleton*>(R.O->CFORM());
 		if ( skeleton )
 		{
@@ -370,7 +369,7 @@ bool CBulletManager::ObjectHit( SBullet_Hit* hit_res, SBullet* bullet, const Fve
 	}
 	else
 	{
-		//вычислить нормаль к поверхности
+		//ГўГ»Г·ГЁГ±Г«ГЁГІГј Г­Г®Г°Г¬Г Г«Гј ГЄ ГЇГ®ГўГҐГ°ГµГ­Г®Г±ГІГЁ
 		Fvector*	pVerts	=  Level().ObjectSpace.GetStaticVerts();
 		CDB::TRI*	pTri	= Level().ObjectSpace.GetStaticTris()+R.element;
 		hit_normal.mknormal	(pVerts[pTri->verts[0]],pVerts[pTri->verts[1]],pVerts[pTri->verts[2]]);
@@ -402,24 +401,24 @@ bool CBulletManager::ObjectHit( SBullet_Hit* hit_res, SBullet* bullet, const Fve
 	//----------- normal - end
 	float old_speed = bullet->speed;
 
-	//коэффициент уменьшение силы с падением скорости
+	//ГЄГ®ГЅГґГґГЁГ¶ГЁГҐГ­ГІ ГіГ¬ГҐГ­ГјГёГҐГ­ГЁГҐ Г±ГЁГ«Г» Г± ГЇГ Г¤ГҐГ­ГЁГҐГ¬ Г±ГЄГ®Г°Г®Г±ГІГЁ
 	float speed_factor = bullet->speed / bullet->max_speed;
-	//получить силу хита выстрела с учетом патрона
+	//ГЇГ®Г«ГіГ·ГЁГІГј Г±ГЁГ«Гі ГµГЁГІГ  ГўГ»Г±ГІГ°ГҐГ«Г  Г± ГіГ·ГҐГІГ®Г¬ ГЇГ ГІГ°Г®Г­Г 
 	*hit_res = bullet->hit_param; //default param
 	
 	hit_res->power = bullet->hit_param.power*speed_factor;
 	
-	//(Если = 0, то пуля либо рикошетит(если контакт идёт по касательной), либо застряёт в текущем 
-	//объекте, если больше 0, то пуля прошивает объект)
+	//(Г…Г±Г«ГЁ = 0, ГІГ® ГЇГіГ«Гї Г«ГЁГЎГ® Г°ГЁГЄГ®ГёГҐГІГЁГІ(ГҐГ±Г«ГЁ ГЄГ®Г­ГІГ ГЄГІ ГЁГ¤ВёГІ ГЇГ® ГЄГ Г±Г ГІГҐГ«ГјГ­Г®Г©), Г«ГЁГЎГ® Г§Г Г±ГІГ°ГїВёГІ Гў ГІГҐГЄГіГ№ГҐГ¬ 
+	//Г®ГЎГєГҐГЄГІГҐ, ГҐГ±Г«ГЁ ГЎГ®Г«ГјГёГҐ 0, ГІГ® ГЇГіГ«Гї ГЇГ°Г®ГёГЁГўГ ГҐГІ Г®ГЎГєГҐГЄГІ)
 
 	SGameMtl* mtl = GMLib.GetMaterialByIdx( target_material );
 	float mtl_ap = mtl->fShootFactor;
-	float shoot_factor = 0.0f; //default >> пуля НЕ пробила материал!
+	float shoot_factor = 0.0f; //default >> ГЇГіГ«Гї ГЌГ… ГЇГ°Г®ГЎГЁГ«Г  Г¬Г ГІГҐГ°ГЁГ Г«!
 	float ap = bullet->armor_piercing;
 
 	if ( ap > EPS && ap >= mtl_ap )
 	{
-		//пуля пробила материал
+		//ГЇГіГ«Гї ГЇГ°Г®ГЎГЁГ«Г  Г¬Г ГІГҐГ°ГЁГ Г«
 		shoot_factor = (( ap - mtl_ap ) / ap);
 	}
 
@@ -432,7 +431,7 @@ bool CBulletManager::ObjectHit( SBullet_Hit* hit_res, SBullet* bullet, const Fve
 	int bullet_state = 0;
 #endif
 
-	if ( fsimilar( mtl_ap, 0.0f ) )//Если материал полностью простреливаемый (кусты)
+	if ( fsimilar( mtl_ap, 0.0f ) )//Г…Г±Г«ГЁ Г¬Г ГІГҐГ°ГЁГ Г« ГЇГ®Г«Г­Г®Г±ГІГјГѕ ГЇГ°Г®Г±ГІГ°ГҐГ«ГЁГўГ ГҐГ¬Г»Г© (ГЄГіГ±ГІГ»)
 	{
 #ifdef DEBUG
 		bullet_state = 2;
@@ -450,7 +449,7 @@ bool CBulletManager::ObjectHit( SBullet_Hit* hit_res, SBullet* bullet, const Fve
 		return true;
 	}
 
-	//рикошет
+	//Г°ГЁГЄГ®ГёГҐГІ
 	Fvector			new_dir;
 	new_dir.reflect	( bullet->dir,hit_normal );
 	Fvector			tgt_dir;
@@ -460,14 +459,14 @@ bool CBulletManager::ObjectHit( SBullet_Hit* hit_res, SBullet* bullet, const Fve
 	float f			= Random.randF( 0.0f, 0.05f );//( 0.5f, 0.8f ); //(0.5f,1.f);
 	if ( (f < ricoshet_factor) && !mtl->Flags.test(SGameMtl::flNoRicoshet) && bullet->flags.allow_ricochet )	
 	{
-		// уменьшение скорости полета в зависимости от угла падения пули (чем прямее угол, тем больше потеря)
+		// ГіГ¬ГҐГ­ГјГёГҐГ­ГЁГҐ Г±ГЄГ®Г°Г®Г±ГІГЁ ГЇГ®Г«ГҐГІГ  Гў Г§Г ГўГЁГ±ГЁГ¬Г®Г±ГІГЁ Г®ГІ ГіГЈГ«Г  ГЇГ Г¤ГҐГ­ГЁГї ГЇГіГ«ГЁ (Г·ГҐГ¬ ГЇГ°ГїГ¬ГҐГҐ ГіГЈГ®Г«, ГІГҐГ¬ ГЎГ®Г«ГјГёГҐ ГЇГ®ГІГҐГ°Гї)
 		bullet->flags.allow_ricochet = 1;
 		float scale = 1.0f - _abs(bullet->dir.dotproduct(hit_normal)) * m_fCollisionEnergyMin;
 		clamp(scale, 0.0f, m_fCollisionEnergyMax);
 		speed_scale = scale;
 
-		// вычисление рикошета, делается немного фейком, т.к. пуля остается в точке столкновения
-		// и сразу выходит из RayQuery()
+		// ГўГ»Г·ГЁГ±Г«ГҐГ­ГЁГҐ Г°ГЁГЄГ®ГёГҐГІГ , Г¤ГҐГ«Г ГҐГІГ±Гї Г­ГҐГ¬Г­Г®ГЈГ® ГґГҐГ©ГЄГ®Г¬, ГІ.ГЄ. ГЇГіГ«Гї Г®Г±ГІГ ГҐГІГ±Гї Гў ГІГ®Г·ГЄГҐ Г±ГІГ®Г«ГЄГ­Г®ГўГҐГ­ГЁГї
+		// ГЁ Г±Г°Г Г§Гі ГўГ»ГµГ®Г¤ГЁГІ ГЁГ§ RayQuery()
 		bullet->dir.set				(tgt_dir);
 		bullet->bullet_pos			= end_point;
 		bullet->flags.ricochet_was	= 1;
@@ -478,7 +477,7 @@ bool CBulletManager::ObjectHit( SBullet_Hit* hit_res, SBullet* bullet, const Fve
 	}
 	else if ( shoot_factor < EPS )
 	{
-		//застрявание пули в материале
+		//Г§Г Г±ГІГ°ГїГўГ Г­ГЁГҐ ГЇГіГ«ГЁ Гў Г¬Г ГІГҐГ°ГЁГ Г«ГҐ
 		speed_scale = 0.0f;
 #ifdef DEBUG
 		bullet_state = 1;
@@ -486,11 +485,11 @@ bool CBulletManager::ObjectHit( SBullet_Hit* hit_res, SBullet* bullet, const Fve
 	}
 	else
 	{
-		//пробивание материала
+		//ГЇГ°Г®ГЎГЁГўГ Г­ГЁГҐ Г¬Г ГІГҐГ°ГЁГ Г«Г 
 		speed_scale = shoot_factor;//mtl->fShootFactor;
 		
 		bullet->bullet_pos.mad(bullet->bullet_pos,bullet->dir,EPS);//fake
-		//ввести коэффициент случайности при простреливании
+		//ГўГўГҐГ±ГІГЁ ГЄГ®ГЅГґГґГЁГ¶ГЁГҐГ­ГІ Г±Г«ГіГ·Г Г©Г­Г®Г±ГІГЁ ГЇГ°ГЁ ГЇГ°Г®Г±ГІГ°ГҐГ«ГЁГўГ Г­ГЁГЁ
 		Fvector rand_normal;
 		rand_normal.random_dir(bullet->dir, deg2rad(2.0f), Random);
 		bullet->dir.set(rand_normal);
@@ -499,11 +498,11 @@ bool CBulletManager::ObjectHit( SBullet_Hit* hit_res, SBullet* bullet, const Fve
 #endif
 	}
 
-	//уменьшить скорость в зависимости от простреливаемости
+	//ГіГ¬ГҐГ­ГјГёГЁГІГј Г±ГЄГ®Г°Г®Г±ГІГј Гў Г§Г ГўГЁГ±ГЁГ¬Г®Г±ГІГЁ Г®ГІ ГЇГ°Г®Г±ГІГ°ГҐГ«ГЁГўГ ГҐГ¬Г®Г±ГІГЁ
 	bullet->speed *= speed_scale;
-	//сколько энергии в процентах потеряла пуля при столкновении
+	//Г±ГЄГ®Г«ГјГЄГ® ГЅГ­ГҐГ°ГЈГЁГЁ Гў ГЇГ°Г®Г¶ГҐГ­ГІГ Гµ ГЇГ®ГІГҐГ°ГїГ«Г  ГЇГіГ«Гї ГЇГ°ГЁ Г±ГІГ®Г«ГЄГ­Г®ГўГҐГ­ГЁГЁ
 	float energy_lost = 1.0f - bullet->speed / old_speed;
-	//импульс переданный объекту равен прямопропорционален потерянной энергии
+	//ГЁГ¬ГЇГіГ«ГјГ± ГЇГҐГ°ГҐГ¤Г Г­Г­Г»Г© Г®ГЎГєГҐГЄГІГі Г°Г ГўГҐГ­ ГЇГ°ГїГ¬Г®ГЇГ°Г®ГЇГ®Г°Г¶ГЁГ®Г­Г Г«ГҐГ­ ГЇГ®ГІГҐГ°ГїГ­Г­Г®Г© ГЅГ­ГҐГ°ГЈГЁГЁ
 	hit_res->impulse = bullet->hit_param.impulse * speed_factor * energy_lost;
 
 
