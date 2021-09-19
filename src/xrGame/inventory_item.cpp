@@ -275,9 +275,9 @@ void CInventoryItem::OnEvent (NET_Packet& P, u16 type)
 	}
 }
 
-//процесс отсоединения вещи заключается в спауне новой вещи 
-//в инвентаре и установке соответствующих флагов в родительском
-//объекте, поэтому функция должна быть переопределена
+//ГЇГ°Г®Г¶ГҐГ±Г± Г®ГІГ±Г®ГҐГ¤ГЁГ­ГҐГ­ГЁГї ГўГҐГ№ГЁ Г§Г ГЄГ«ГѕГ·Г ГҐГІГ±Гї Гў Г±ГЇГ ГіГ­ГҐ Г­Г®ГўГ®Г© ГўГҐГ№ГЁ 
+//Гў ГЁГ­ГўГҐГ­ГІГ Г°ГҐ ГЁ ГіГ±ГІГ Г­Г®ГўГЄГҐ Г±Г®Г®ГІГўГҐГІГ±ГІГўГіГѕГ№ГЁГµ ГґГ«Г ГЈГ®Гў Гў Г°Г®Г¤ГЁГІГҐГ«ГјГ±ГЄГ®Г¬
+//Г®ГЎГєГҐГЄГІГҐ, ГЇГ®ГЅГІГ®Г¬Гі ГґГіГ­ГЄГ¶ГЁГї Г¤Г®Г«Г¦Г­Г  ГЎГ»ГІГј ГЇГҐГ°ГҐГ®ГЇГ°ГҐГ¤ГҐГ«ГҐГ­Г 
 bool CInventoryItem::Detach(const char* item_section_name, bool b_spawn_item) 
 {
 	if (OnClient()) return true;
@@ -289,7 +289,7 @@ bool CInventoryItem::Detach(const char* item_section_name, bool b_spawn_item)
 								smart_cast<CSE_ALifeDynamicObject*>(D);
 		R_ASSERT			(l_tpALifeDynamicObject);
 		
-		l_tpALifeDynamicObject->m_tNodeID = (g_dedicated_server)?u32(-1):object().ai_location().level_vertex_id();
+		l_tpALifeDynamicObject->m_tNodeID = object().ai_location().level_vertex_id();
 			
 		// Fill
 		D->s_name			=	item_section_name;
@@ -366,7 +366,7 @@ void CInventoryItem::net_Destroy		()
 		VERIFY(std::find(m_pInventory->m_all.begin(), m_pInventory->m_all.end(), this)==m_pInventory->m_all.end() );
 	}
 
-	//инвентарь которому мы принадлежали
+	//ГЁГ­ГўГҐГ­ГІГ Г°Гј ГЄГ®ГІГ®Г°Г®Г¬Гі Г¬Г» ГЇГ°ГЁГ­Г Г¤Г«ГҐГ¦Г Г«ГЁ
 //.	m_pInventory = NULL;
 }
 
@@ -958,7 +958,7 @@ void CInventoryItem::CalculateInterpolationParams()
 		for (u32 k=0; k<3; k++)
 		{
 			P0[k] = c*(c*(c*p->SCoeff[k][0]+p->SCoeff[k][1])+p->SCoeff[k][2])+p->SCoeff[k][3];
-			P1[k] = (c*c*p->SCoeff[k][0]*3+c*p->SCoeff[k][1]*2+p->SCoeff[k][2])/3; // сокрость из формулы в 3 раза превышает скорость при расчете коэффициентов !!!!
+			P1[k] = (c*c*p->SCoeff[k][0]*3+c*p->SCoeff[k][1]*2+p->SCoeff[k][2])/3; // Г±Г®ГЄГ°Г®Г±ГІГј ГЁГ§ ГґГ®Г°Г¬ГіГ«Г» Гў 3 Г°Г Г§Г  ГЇГ°ГҐГўГ»ГёГ ГҐГІ Г±ГЄГ®Г°Г®Г±ГІГј ГЇГ°ГЁ Г°Г Г±Г·ГҐГІГҐ ГЄГ®ГЅГґГґГЁГ¶ГЁГҐГ­ГІГ®Гў !!!!
 		};
 		P0.set(p->IStartPos);
 		P1.add(p->IStartPos);
