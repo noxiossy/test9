@@ -398,17 +398,6 @@ void game_sv_CaptureTheArtefact::OnPlayerConnect(ClientID id_who)
 	ps_who->setFlag(GAME_PLAYER_FLAG_SPECTATOR);
 	
 	ps_who->resetFlag(GAME_PLAYER_FLAG_SKIP);
-
-	if ((g_dedicated_server || m_bSpectatorMode) && (xrCData == m_server->GetServerClient()) )
-	{
-		ps_who->setFlag(GAME_PLAYER_FLAG_SKIP);
-		return;
-	}
-
-	/*if (!xrCData->flags.bReconnect) 
-		Money_SetStart				(id_who);
-
-	SetPlayersDefItems				(ps_who);*/
 }
 void game_sv_CaptureTheArtefact::OnPlayerConnectFinished(ClientID id_who)
 {
@@ -1224,18 +1213,18 @@ void game_sv_CaptureTheArtefact::LoadSkinsForTeam(const shared_str& caSection, T
 	string256			SkinSingleName;
 	string4096			Skins;
 
-	// Поле strSectionName должно содержать имя секции
+	// ГЏГ®Г«ГҐ strSectionName Г¤Г®Г«Г¦Г­Г® Г±Г®Г¤ГҐГ°Г¦Г ГІГј ГЁГ¬Гї Г±ГҐГЄГ¶ГЁГЁ
 	VERIFY(xr_strcmp(caSection,""));
 
 	pTeamSkins->clear();
 
-	// Имя поля
+	// Г€Г¬Гї ГЇГ®Г«Гї
 	if (!pSettings->line_exist(caSection, "skins")) return;
 
-	// Читаем данные этого поля
+	// Г—ГЁГІГ ГҐГ¬ Г¤Г Г­Г­Г»ГҐ ГЅГІГ®ГЈГ® ГЇГ®Г«Гї
 	xr_strcpy(Skins, pSettings->r_string(caSection, "skins"));
 	u32 count	= _GetItemCount(Skins);
-	// теперь для каждое имя оружия, разделенные запятыми, заносим в массив
+	// ГІГҐГЇГҐГ°Гј Г¤Г«Гї ГЄГ Г¦Г¤Г®ГҐ ГЁГ¬Гї Г®Г°ГіГ¦ГЁГї, Г°Г Г§Г¤ГҐГ«ГҐГ­Г­Г»ГҐ Г§Г ГЇГїГІГ»Г¬ГЁ, Г§Г Г­Г®Г±ГЁГ¬ Гў Г¬Г Г±Г±ГЁГў
 	for (u32 i = 0; i < count; ++i)
 	{
 		_GetItem(Skins, i, SkinSingleName);
@@ -1248,18 +1237,18 @@ void game_sv_CaptureTheArtefact::LoadDefItemsForTeam(const shared_str& caSection
 	string256			ItemName;
 	string4096			DefItems;
 
-	// Поле strSectionName должно содержать имя секции
+	// ГЏГ®Г«ГҐ strSectionName Г¤Г®Г«Г¦Г­Г® Г±Г®Г¤ГҐГ°Г¦Г ГІГј ГЁГ¬Гї Г±ГҐГЄГ¶ГЁГЁ
 	VERIFY(xr_strcmp(caSection,""));
 
 	pDefItems->clear();
 
-	// Имя поля
+	// Г€Г¬Гї ГЇГ®Г«Гї
 	if (!pSettings->line_exist(caSection, "default_items")) return;
 
-	// Читаем данные этого поля
+	// Г—ГЁГІГ ГҐГ¬ Г¤Г Г­Г­Г»ГҐ ГЅГІГ®ГЈГ® ГЇГ®Г«Гї
 	xr_strcpy(DefItems, pSettings->r_string(caSection, "default_items"));
 	u32 count	= _GetItemCount(DefItems);
-	// теперь для каждое имя оружия, разделенные запятыми, заносим в массив
+	// ГІГҐГЇГҐГ°Гј Г¤Г«Гї ГЄГ Г¦Г¤Г®ГҐ ГЁГ¬Гї Г®Г°ГіГ¦ГЁГї, Г°Г Г§Г¤ГҐГ«ГҐГ­Г­Г»ГҐ Г§Г ГЇГїГІГ»Г¬ГЁ, Г§Г Г­Г®Г±ГЁГ¬ Гў Г¬Г Г±Г±ГЁГў
 	for (u32 i = 0; i < count; ++i)
 	{
 		_GetItem(DefItems, i, ItemName);
@@ -2489,7 +2478,7 @@ void game_sv_CaptureTheArtefact::ReadOptions(shared_str &options)
 	g_sv_cta_activatedArtefactRet = get_option_i(*options,"actret",	g_sv_cta_activatedArtefactRet);	// in (sec)
 
 	m_bSpectatorMode = false;
-	if (!g_dedicated_server && (get_option_i(*options,"spectr",-1) != -1))
+	if ((get_option_i(*options,"spectr",-1) != -1))
 	{
 		m_bSpectatorMode = true;
 		m_dwSM_SwitchDelta =  get_option_i(*options,"spectr",0)*1000;
