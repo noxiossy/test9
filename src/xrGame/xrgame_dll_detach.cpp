@@ -47,7 +47,6 @@ void init_game_globals()
 {
 	CreateUIGeom									();
 	InitHudSoundSettings							();
-	if(!g_dedicated_server)
 	{
 //		CInfoPortion::InitInternal					();
 //.		CEncyclopediaArticle::InitInternal			();
@@ -80,7 +79,6 @@ void clean_game_globals()
 	story_ids.clear									();
 	spawn_story_ids.clear							();
 
-	if(!g_dedicated_server)
 	{
 //.		CInfoPortion::DeleteSharedData					();
 //.		CInfoPortion::DeleteIdToIndexData				();
@@ -108,11 +106,11 @@ void clean_game_globals()
 	//static shader for blood
 	CEntityAlive::UnloadBloodyWallmarks				();
 	CEntityAlive::UnloadFireParticles				();
-	//очищение памяти таблицы строк
+	//Г®Г·ГЁГ№ГҐГ­ГЁГҐ ГЇГ Г¬ГїГІГЁ ГІГ ГЎГ«ГЁГ¶Г» Г±ГІГ°Г®ГЄ
 	CStringTable::Destroy							();
-	// Очищение таблицы цветов
+	// ГЋГ·ГЁГ№ГҐГ­ГЁГҐ ГІГ ГЎГ«ГЁГ¶Г» Г¶ГўГҐГІГ®Гў
 	CUIXmlInit::DeleteColorDefs						();
-	// Очищение таблицы идентификаторов рангов и отношений сталкеров
+	// ГЋГ·ГЁГ№ГҐГ­ГЁГҐ ГІГ ГЎГ«ГЁГ¶Г» ГЁГ¤ГҐГ­ГІГЁГґГЁГЄГ ГІГ®Г°Г®Гў Г°Г Г­ГЈГ®Гў ГЁ Г®ГІГ­Г®ГёГҐГ­ГЁГ© Г±ГІГ Г«ГЄГҐГ°Г®Гў
 	InventoryUtilities::ClearCharacterInfoStrings	();
 
 	xr_delete										(g_sound_collection_storage);
