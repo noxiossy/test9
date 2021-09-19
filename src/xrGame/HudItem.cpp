@@ -51,13 +51,15 @@ void CHudItem::Load(LPCSTR section)
 
 void CHudItem::PlaySound(LPCSTR alias, const Fvector& position)
 {
-    m_sounds.PlaySound(alias, position, object().H_Root(), !!GetHUDmode());
+	Fvector pos = GetHUDmode() ? Fvector().sub( position, ::Sound->listener_position() ) : position;
+	m_sounds.PlaySound(alias, pos, object().H_Root(), !!GetHUDmode());
 }
 
 //Alundaio: Play at index
 void CHudItem::PlaySound(LPCSTR alias, const Fvector& position, u8 index)
 {
-	m_sounds.PlaySound(alias, position, object().H_Root(), !!GetHUDmode(), false, index);
+	Fvector pos = GetHUDmode() ? Fvector().sub( position, ::Sound->listener_position() ) : position;
+	m_sounds.PlaySound(alias, pos, object().H_Root(), !!GetHUDmode(), false, index);
 }
 //-Alundaio
 
@@ -438,11 +440,11 @@ attachable_hud_item* CHudItem::HudItemData()
     return NULL;
 }
 
-// mmccxvii: FWR code (на основе функции за авторством AVO)
+// mmccxvii: FWR code (Г­Г  Г®Г±Г­Г®ГўГҐ ГґГіГ­ГЄГ¶ГЁГЁ Г§Г  Г ГўГІГ®Г°Г±ГІГўГ®Г¬ AVO)
 //*
 bool CHudItem::IsHUDAnimationExist(LPCSTR AnimationName)
 {
-	// Пробуем получить худовой предмет
+	// ГЏГ°Г®ГЎГіГҐГ¬ ГЇГ®Г«ГіГ·ГЁГІГј ГµГіГ¤Г®ГўГ®Г© ГЇГ°ГҐГ¤Г¬ГҐГІ
 	attachable_hud_item* HI = HudItemData();
 	if (!HI)
 		return false;
