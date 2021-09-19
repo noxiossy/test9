@@ -980,7 +980,7 @@ void	game_sv_Deathmatch::OnPlayerBuyFinished		(ClientID id_who, NET_Packet& P)
 		xr_vector<u16>				ItemsToDelete;
 
 		bool ExactMatch	= true;
-		//проверяем пояс
+		//ГЇГ°Г®ГўГҐГ°ГїГҐГ¬ ГЇГ®ГїГ±
 		TIItemContainer::const_iterator	IBelt = pActor->inventory().m_belt.begin();
 		TIItemContainer::const_iterator	EBelt = pActor->inventory().m_belt.end();
 
@@ -990,7 +990,7 @@ void	game_sv_Deathmatch::OnPlayerBuyFinished		(ClientID id_who, NET_Packet& P)
 			CheckItem(ps, pItem, &ItemsDesired, &ItemsToDelete, ExactMatch);
 		};
 
-		//проверяем ruck
+		//ГЇГ°Г®ГўГҐГ°ГїГҐГ¬ ruck
 		TIItemContainer::const_iterator	IRuck = pActor->inventory().m_ruck.begin();
 		TIItemContainer::const_iterator	ERuck = pActor->inventory().m_ruck.end();
 
@@ -1001,7 +1001,7 @@ void	game_sv_Deathmatch::OnPlayerBuyFinished		(ClientID id_who, NET_Packet& P)
 			CheckItem(ps, pItem, &ItemsDesired, &ItemsToDelete, ExactMatch);
 		};
 
-		//проверяем слоты
+		//ГЇГ°Г®ГўГҐГ°ГїГҐГ¬ Г±Г«Г®ГІГ»
 		TISlotArr::const_iterator	ISlot = pActor->inventory().m_slots.begin();
 		TISlotArr::const_iterator	ESlot = pActor->inventory().m_slots.end();
 
@@ -1063,18 +1063,18 @@ void game_sv_Deathmatch::LoadSkinsForTeam(const shared_str& caSection, TEAM_SKIN
 	string256			SkinSingleName;
 	string4096			Skins;
 
-	// Поле strSectionName должно содержать имя секции
+	// ГЏГ®Г«ГҐ strSectionName Г¤Г®Г«Г¦Г­Г® Г±Г®Г¤ГҐГ°Г¦Г ГІГј ГЁГ¬Гї Г±ГҐГЄГ¶ГЁГЁ
 	R_ASSERT(xr_strcmp(caSection,""));
 
 	pTeamSkins->clear();
 
-	// Имя поля
+	// Г€Г¬Гї ГЇГ®Г«Гї
 	if (!pSettings->line_exist(caSection, "skins")) return;
 
-	// Читаем данные этого поля
+	// Г—ГЁГІГ ГҐГ¬ Г¤Г Г­Г­Г»ГҐ ГЅГІГ®ГЈГ® ГЇГ®Г«Гї
 	xr_strcpy(Skins, pSettings->r_string(caSection, "skins"));
 	u32 count	= _GetItemCount(Skins);
-	// теперь для каждое имя оружия, разделенные запятыми, заносим в массив
+	// ГІГҐГЇГҐГ°Гј Г¤Г«Гї ГЄГ Г¦Г¤Г®ГҐ ГЁГ¬Гї Г®Г°ГіГ¦ГЁГї, Г°Г Г§Г¤ГҐГ«ГҐГ­Г­Г»ГҐ Г§Г ГЇГїГІГ»Г¬ГЁ, Г§Г Г­Г®Г±ГЁГ¬ Гў Г¬Г Г±Г±ГЁГў
 	for (u32 i = 0; i < count; ++i)
 	{
 		_GetItem(Skins, i, SkinSingleName);
@@ -1087,18 +1087,18 @@ void game_sv_Deathmatch::LoadDefItemsForTeam(const shared_str& caSection, DEF_IT
 	string256			ItemName;
 	string4096			DefItems;
 
-	// Поле strSectionName должно содержать имя секции
+	// ГЏГ®Г«ГҐ strSectionName Г¤Г®Г«Г¦Г­Г® Г±Г®Г¤ГҐГ°Г¦Г ГІГј ГЁГ¬Гї Г±ГҐГЄГ¶ГЁГЁ
 	R_ASSERT(xr_strcmp(caSection,""));
 
 	pDefItems->clear();
 
-	// Имя поля
+	// Г€Г¬Гї ГЇГ®Г«Гї
 	if (!pSettings->line_exist(caSection, "default_items")) return;
 
-	// Читаем данные этого поля
+	// Г—ГЁГІГ ГҐГ¬ Г¤Г Г­Г­Г»ГҐ ГЅГІГ®ГЈГ® ГЇГ®Г«Гї
 	xr_strcpy(DefItems, pSettings->r_string(caSection, "default_items"));
 	u32 count	= _GetItemCount(DefItems);
-	// теперь для каждое имя оружия, разделенные запятыми, заносим в массив
+	// ГІГҐГЇГҐГ°Гј Г¤Г«Гї ГЄГ Г¦Г¤Г®ГҐ ГЁГ¬Гї Г®Г°ГіГ¦ГЁГї, Г°Г Г§Г¤ГҐГ«ГҐГ­Г­Г»ГҐ Г§Г ГЇГїГІГ»Г¬ГЁ, Г§Г Г­Г®Г±ГЁГ¬ Гў Г¬Г Г±Г±ГЁГў
 	for (u32 i = 0; i < count; ++i)
 	{
 		_GetItem(DefItems, i, ItemName);
@@ -1115,14 +1115,14 @@ void game_sv_Deathmatch::SetSkin(CSE_Abstract* E, u16 Team, u16 ID)
 	//-------------------------------------------
 	string256 SkinName;
 	xr_strcpy(SkinName, pSettings->r_string("mp_skins_path", "skin_path"));
-	//загружены ли скины для этой комманды
+	//Г§Г ГЈГ°ГіГ¦ГҐГ­Г» Г«ГЁ Г±ГЄГЁГ­Г» Г¤Г«Гї ГЅГІГ®Г© ГЄГ®Г¬Г¬Г Г­Г¤Г»
 //	if (SkinID != -1) ID = u16(SkinID);
 
 	if (!TeamList.empty()	&&
 		TeamList.size() > Team	&&
 		!TeamList[Team].aSkins.empty())
 	{
-		//загружено ли достаточно скинов для этой комманды
+		//Г§Г ГЈГ°ГіГ¦ГҐГ­Г® Г«ГЁ Г¤Г®Г±ГІГ ГІГ®Г·Г­Г® Г±ГЄГЁГ­Г®Гў Г¤Г«Гї ГЅГІГ®Г© ГЄГ®Г¬Г¬Г Г­Г¤Г»
 		if (TeamList[Team].aSkins.size() > ID)
 		{
 			xr_strcat(SkinName, TeamList[Team].aSkins[ID].c_str());
@@ -1132,7 +1132,7 @@ void game_sv_Deathmatch::SetSkin(CSE_Abstract* E, u16 Team, u16 ID)
 	}
 	else
 	{
-		//скины для такой комманды не загружены
+		//Г±ГЄГЁГ­Г» Г¤Г«Гї ГІГ ГЄГ®Г© ГЄГ®Г¬Г¬Г Г­Г¤Г» Г­ГҐ Г§Г ГЈГ°ГіГ¦ГҐГ­Г»
 		switch (Team)
 		{
 		case 0:
@@ -1775,7 +1775,7 @@ void game_sv_Deathmatch::OnPlayerConnect(ClientID id_who)
 	ps_who->resetFlag(GAME_PLAYER_FLAG_SKIP);
 	
 
-	if ( (g_dedicated_server||m_bSpectatorMode) && (xrCData == m_server->GetServerClient()) )
+	if ( (m_bSpectatorMode) && (xrCData == m_server->GetServerClient()) )
 	{
 		ps_who->setFlag(GAME_PLAYER_FLAG_SKIP);
 		return;
@@ -2104,7 +2104,7 @@ void	game_sv_Deathmatch::ReadOptions				(shared_str &options)
 	g_sv_dm_dwAnomalySetLengthTime = get_option_i(*options, "anslen", g_sv_dm_dwAnomalySetLengthTime); //in (min)
 	//-----------------------------------------------------------------------
 	m_bSpectatorMode = false;
-	if (!g_dedicated_server && (get_option_i(*options,"spectr",-1) != -1))
+	if ((get_option_i(*options,"spectr",-1) != -1))
 	{
 		m_bSpectatorMode = true;
 		m_dwSM_SwitchDelta =  get_option_i(*options,"spectr",0)*1000;
