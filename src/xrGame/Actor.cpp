@@ -886,7 +886,6 @@ void CActor::Die(CObject* who)
         };
     };
 
-    if (!g_dedicated_server)
     {
         ::Sound->play_at_pos(sndDie[Random.randI(SND_DIE_COUNT)], this, Position());
 
@@ -1355,7 +1354,7 @@ void CActor::shedule_Update(u32 DT)
     pCamBobbing->SetState(mstate_real, conditions().IsLimping(), IsZoomAimingMode());
 
     //çâóê òÿæåëîãî äûõàíèÿ ïðè óòàëîñòè è õðîìàíèè
-    if (this == Level().CurrentControlEntity() && !g_dedicated_server)
+    if (this == Level().CurrentControlEntity() )
     {
         if (conditions().IsLimping() && g_Alive() && !psActorFlags.test(AF_GODMODE_RT))
         {
