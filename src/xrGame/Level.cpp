@@ -59,7 +59,6 @@
 #include "PHDebug.h"
 #include "debug_text_tree.h"
 #endif
-ENGINE_API bool g_dedicated_server;
 //AVO: used by SPAWN_ANTIFREEZE (by alpet)
 #ifdef SPAWN_ANTIFREEZE
 ENGINE_API BOOL	g_bootComplete;
@@ -112,14 +111,12 @@ IPureClient(Device.GetTimerGlobal())
     eEnvironment = Engine.Event.Handler_Attach("LEVEL:Environment", this);
     eEntitySpawn = Engine.Event.Handler_Attach("LEVEL:spawn", this);
     m_pBulletManager = xr_new<CBulletManager>();
-    if (!g_dedicated_server)
     {
         m_map_manager = xr_new<CMapManager>();
         m_game_task_manager = xr_new<CGameTaskManager>();
     }
     m_dwDeltaUpdate = u32(fixed_step * 1000);
     m_seniority_hierarchy_holder = xr_new<CSeniorityHierarchyHolder>();
-    if (!g_dedicated_server)
     {
         m_level_sound_manager = xr_new<CLevelSoundManager>();
         m_space_restriction_manager = xr_new<CSpaceRestrictionManager>();
@@ -179,8 +176,7 @@ CLevel::~CLevel()
 #ifdef DEBUG
     xr_delete(m_debug_renderer);
 #endif
-    if (!g_dedicated_server)
-        ai().script_engine().remove_script_process(ScriptEngine::eScriptProcessorLevel);
+    ai().script_engine().remove_script_process(ScriptEngine::eScriptProcessorLevel);
     xr_delete(game);
     xr_delete(game_events);
     xr_delete(m_pBulletManager);
@@ -382,18 +378,18 @@ void CLevel::ProcessGameEvents()
             game_events->get(ID, dest, type, P);
             //AVO: spawn antifreeze implementation by alpet
 #ifdef SPAWN_ANTIFREEZE
-            // íå îòïðàâëÿòü ñîáûòèÿ íå çàñïàâíåííûì îáúåêòàì
+            // Ã­Ã¥ Ã®Ã²Ã¯Ã°Ã Ã¢Ã«Ã¿Ã²Ã¼ Ã±Ã®Ã¡Ã»Ã²Ã¨Ã¿ Ã­Ã¥ Ã§Ã Ã±Ã¯Ã Ã¢Ã­Ã¥Ã­Ã­Ã»Ã¬ Ã®Ã¡ÃºÃ¥ÃªÃ²Ã Ã¬
             if (g_bootComplete && M_EVENT == ID && PostponedSpawn(dest))
             {
                 spawn_events->insert(P);
                 continue;
             }
-            if (g_bootComplete && M_SPAWN == ID && Device.frame_elapsed() > work_limit) // alpet: ïîçâîëèò ïëàâíåå âûâîäèòü îáúåêòû â îíëàéí, áåç çàìåòíûõ ôðèçîâ
+            if (g_bootComplete && M_SPAWN == ID && Device.frame_elapsed() > work_limit) // alpet: Ã¯Ã®Ã§Ã¢Ã®Ã«Ã¨Ã² Ã¯Ã«Ã Ã¢Ã­Ã¥Ã¥ Ã¢Ã»Ã¢Ã®Ã¤Ã¨Ã²Ã¼ Ã®Ã¡ÃºÃ¥ÃªÃ²Ã» Ã¢ Ã®Ã­Ã«Ã Ã©Ã­, Ã¡Ã¥Ã§ Ã§Ã Ã¬Ã¥Ã²Ã­Ã»Ãµ Ã´Ã°Ã¨Ã§Ã®Ã¢
             {
                 u16 parent_id;
                 GetSpawnInfo(P, parent_id);
                 //-------------------------------------------------				
-                if (parent_id < 0xffff) // îòêëàäûâàòü ñïàâí òîëüêî îáúåêòîâ â êîíòåéíåðû
+                if (parent_id < 0xffff) // Ã®Ã²ÃªÃ«Ã Ã¤Ã»Ã¢Ã Ã²Ã¼ Ã±Ã¯Ã Ã¢Ã­ Ã²Ã®Ã«Ã¼ÃªÃ® Ã®Ã¡ÃºÃ¥ÃªÃ²Ã®Ã¢ Ã¢ ÃªÃ®Ã­Ã²Ã¥Ã©Ã­Ã¥Ã°Ã»
                 {
                     if (!spawn_events->available(svT))
                         Msg("* ProcessGameEvents, spawn event postponed. Events rest = %d", game_events->queue.size());
@@ -547,8 +543,7 @@ void CLevel::OnFrame()
     ProcessGameEvents();
     if (m_bNeed_CrPr)
         make_NetCorrectionPrediction();
-    if (!g_dedicated_server)
-    {
+
         if (g_mt_config.test(mtMap))
             Device.seqParallel.push_back(fastdelegate::FastDelegate0<>(m_map_manager, &CMapManager::Update));
         else
@@ -564,11 +559,10 @@ void CLevel::OnFrame()
             //else
             GameTaskManager().UpdateTasks();
         }
-    }
     // Inherited update
     inherited::OnFrame();
     // Draw client/server stats
-    if (!g_dedicated_server && psDeviceFlags.test(rsStatistic))
+    if (psDeviceFlags.test(rsStatistic))
     {
         CGameFont* F = UI().Font().pFontDI;
         if (!psNET_direct_connect)
@@ -653,15 +647,13 @@ void CLevel::OnFrame()
 #endif
     g_pGamePersistent->Environment().SetGameTime(GetEnvironmentGameDayTimeSec(),
         game->GetEnvironmentGameTimeFactor());
-    if (!g_dedicated_server)
-        ai().script_engine().script_process(ScriptEngine::eScriptProcessorLevel)->update();
+    ai().script_engine().script_process(ScriptEngine::eScriptProcessorLevel)->update();
     m_ph_commander->update();
     m_ph_commander_scripts->update();
     Device.Statistic->TEST0.Begin();
     BulletManager().CommitRenderSet();
     Device.Statistic->TEST0.End();
     // update static sounds
-    if (!g_dedicated_server)
     {
         if (g_mt_config.test(mtLevelSounds))
         {
@@ -672,7 +664,6 @@ void CLevel::OnFrame()
             m_level_sound_manager->Update();
     }
     // defer LUA-GC-STEP
-    if (!g_dedicated_server)
     {
         if (g_mt_config.test(mtLUA_GC))
             Device.seqParallel.push_back(fastdelegate::FastDelegate0<>(this, &CLevel::script_gc));
