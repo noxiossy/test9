@@ -759,7 +759,7 @@ void		xrRender_initconsole	()
 #endif // DEBUG
 	CMD4(CCC_Float,		"r__wallmark_ttl",		&ps_r__WallmarkTTL,			1.0f,	10.f*60.f);
 
-	CMD4(CCC_Integer,	"r__supersample",		&ps_r__Supersample,			1,		8		);
+//	CMD4(CCC_Integer,	"r__supersample",		&ps_r__Supersample,			1,		8		);
 
 	Fvector	tw_min,tw_max;
 	
