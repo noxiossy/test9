@@ -24,13 +24,13 @@ CParticleManager::~CParticleManager	()
 ParticleEffect*	CParticleManager::GetEffectPtr(int effect_id)
 {
 	R_ASSERT(effect_id>=0&&effect_id<(int)effect_vec.size());
-	return effect_vec[effect_id];
+	return effect_vec[ptrdiff_t(effect_id)];
 }
 
 ParticleActions* CParticleManager::GetActionListPtr(int a_list_num)
 {
 	R_ASSERT(a_list_num>=0&&a_list_num<(int)m_alist_vec.size());
-	return m_alist_vec[a_list_num];
+	return m_alist_vec[ptrdiff_t(a_list_num)];
 }
 
 // create
@@ -38,7 +38,7 @@ int CParticleManager::CreateEffect(u32 max_particles)
 {
 	int eff_id 		= -1;
 	for(int i=0; i<(int)effect_vec.size(); i++)
-		if(!effect_vec[i]){ eff_id=i; break;}
+		if (!effect_vec[ptrdiff_t(i)]){ eff_id = i; break; }
 	
     if (eff_id<0){
         // Couldn't find a big enough gap. Reallocate.
@@ -46,14 +46,14 @@ int CParticleManager::CreateEffect(u32 max_particles)
         effect_vec.push_back	(0);
     }
 
-    effect_vec[eff_id]	= xr_new<ParticleEffect>(max_particles);
+	effect_vec[ptrdiff_t(eff_id)] = xr_new<ParticleEffect>(max_particles);
 	
 	return eff_id;
 }
 void CParticleManager::DestroyEffect(int effect_id)
 {
 	R_ASSERT(effect_id>=0&&effect_id<(int)effect_vec.size());
-    xr_delete(effect_vec[effect_id]);
+	xr_delete(effect_vec[ptrdiff_t(effect_id)]);
 }
 int	CParticleManager::CreateActionList()
 {
@@ -96,11 +96,12 @@ void CParticleManager::PlayEffect(int effect_id, int alist_id)
 	for(PAVecIt it=pa->begin(); it!=pa->end(); ++it)
 	{
 		VERIFY((*it));
-		switch((*it)->type){
-		case PASourceID: 	static_cast<PASource*>(*it)->m_Flags.set(PASource::flSilent,FALSE); break;
-		case PAExplosionID: static_cast<PAExplosion*>(*it)->age = 0.f; break;
-		case PATurbulenceID:static_cast<PATurbulence*>(*it)->age = 0.f; break;
-		}
+		if ((*it))
+			switch((*it)->type){
+			case PASourceID: 	static_cast<PASource*>(*it)->m_Flags.set(PASource::flSilent,FALSE); break;
+			case PAExplosionID: static_cast<PAExplosion*>(*it)->age = 0.f; break;
+			case PATurbulenceID:static_cast<PATurbulence*>(*it)->age = 0.f; break;
+			}
 	}
 	pa->unlock();
 }
@@ -114,10 +115,11 @@ void CParticleManager::StopEffect(int effect_id, int alist_id, BOOL deffered)
 	pa->lock();
 
     // Step through all the actions in the action list.
-    for(PAVecIt it=pa->begin(); it!=pa->end(); it++){
-        switch((*it)->type){
-        case PASourceID: static_cast<PASource*>(*it)->m_Flags.set(PASource::flSilent,TRUE);		break;
-        }
+    for(PAVecIt it=pa->begin(); it!=pa->end(); ++it){
+		if ((*it))
+			switch((*it)->type){
+			case PASourceID: static_cast<PASource*>(*it)->m_Flags.set(PASource::flSilent,TRUE);		break;
+			}
     }
 	if (!deffered){
     	// effect
@@ -140,10 +142,11 @@ void CParticleManager::Update(int effect_id, int alist_id, float dt)
 
 	// Step through all the actions in the action list.
     float kill_old_time = 1.0f;
-	for(PAVecIt it=pa->begin(); it!=pa->end(); it++)
+	for(PAVecIt it=pa->begin(); it!=pa->end(); ++it)
 	{
 		VERIFY((*it));
-    	(*it)->Execute	(pe, dt, kill_old_time);
+		if ((*it))
+    		(*it)->Execute	(pe, dt, kill_old_time);
 	}
 	pa->unlock();
 }
@@ -164,6 +167,9 @@ void CParticleManager::Transform(int alist_id, const Fmatrix& full, const Fvecto
 
 	// Step through all the actions in the action list.
 	for(PAVecIt it=pa->begin(); it!=pa->end(); it++){
+		if (!(*it))
+			continue;
+
 		BOOL r 			= (*it)->m_Flags.is(ParticleAction::ALLOW_ROTATE);
 		const Fmatrix& m = r?full:mT;
         (*it)->Transform(m);
@@ -273,8 +279,12 @@ void CParticleManager::SaveActions(int alist_id, IWriter& W)
 	VERIFY(pa);
 	pa->lock();
     W.w_u32					(pa->size());
-    for (PAVecIt it=pa->begin(); it!=pa->end(); it++)
-        (*it)->Save			(W);
+	for (PAVecIt it = pa->begin(); it != pa->end(); ++it)
+	{
+		if (!(*it))
+			continue;
+		(*it)->Save(W);
+	}
 	pa->unlock();
 }
 

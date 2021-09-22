@@ -147,7 +147,7 @@ CSE_Abstract::CSE_Abstract					(LPCSTR caSection)
 
 		}
 		else
-			Msg					( "! cannot open config file %s", raw_file_name );
+			Msg( "ERROR! cannot open config file %s", raw_file_name );
 	}
 
 #ifndef AI_COMPILER
@@ -252,7 +252,7 @@ void CSE_Abstract::Spawn_Write				(NET_Packet	&tNetPacket, BOOL bLocal)
 	tNetPacket.w_seek			(position,&size,sizeof(u16));
 }
 
-enum EGameTypes {
+static enum EGameTypes {
 	GAME_ANY							= 0,
 	GAME_SINGLE							= 1,
 	GAME_DEATHMATCH						= 2,

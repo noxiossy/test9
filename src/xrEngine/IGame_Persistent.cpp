@@ -128,7 +128,7 @@ void IGame_Persistent::Disconnect()
 	
 	// Kill object - save memory
 	ObjectPool.clear();
-	Render->models_Clear(TRUE); // У нас вызывается ещё и в CLevel::remove_objects() Если что - убрать оттуда, пусть будет тут.
+	Render->models_Clear(TRUE); 
 #endif
 }
 

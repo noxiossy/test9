@@ -16,7 +16,6 @@
 #include "x_ray.h"
 #include "render.h"
 #include "IGame_Persistent.h"
-#include "xr_input.h"
 
 // must be defined before include of FS_impl.h
 #define INCLUDE_FROM_ENGINE
@@ -212,8 +211,8 @@ void CRenderDevice::on_idle()
     }
 
 	// FPS Lock
-	//constexpr u32 menuFPSlimit = 60, pauseFPSlimit = 60;
-	//u32 curFPSLimit = IsMainMenuActive() ? menuFPSlimit : Device.Paused() ? pauseFPSlimit : g_dwFPSlimit;
+	u32 menuFPSlimit = 60, pauseFPSlimit = 60; //constexpr 
+	u32 curFPSLimit = IsMainMenuActive() ? menuFPSlimit : Device.Paused() ? pauseFPSlimit : g_dwFPSlimit;
 	if (g_dwFPSlimit > 0)
 	{
 		static DWORD dwLastFrameTime = 0;
@@ -501,13 +500,10 @@ void CRenderDevice::OnWM_Activate(WPARAM wParam, LPARAM lParam)
 	const	u16 fActive						= LOWORD(wParam);
 	const	BOOL fMinimized					= (BOOL) HIWORD(wParam);
 	const	BOOL bActive					= ((fActive!=WA_INACTIVE) && (!fMinimized))?TRUE:FALSE;
-	const BOOL isGameActive 				= (bActive) ? TRUE : FALSE;
 
-	pInput->clip_cursor(fActive != WA_INACTIVE);
-
-	if (isGameActive != Device.b_is_Active)
-	{
-		Device.b_is_Active = isGameActive;
+    if (bActive != Device.b_is_Active)
+    {
+        Device.b_is_Active = bActive;
 
         if (Device.b_is_Active)
         {
@@ -518,14 +514,14 @@ void CRenderDevice::OnWM_Activate(WPARAM wParam, LPARAM lParam)
 # ifdef INGAME_EDITOR
             if (!editor())
 # endif // #ifdef INGAME_EDITOR
-				//pInput->clip_cursor(true);
+                ShowCursor(FALSE);
 #endif // #ifndef DEDICATED_SERVER
         }
         else
         {
             app_inactive_time_start = TimerMM.GetElapsed_ms();
             Device.seqAppDeactivate.Process(rp_AppDeactivate);
-			//pInput->clip_cursor(false);
+            ShowCursor(TRUE);
         }
     }
 }

@@ -5,6 +5,8 @@
 #define IDD_STARTUP 106
 #define IDI_ICON1   111
 #define IDB_BITMAP2 116
+#define IDB_BITMAP3                     120
+#define IDB_BITMAP1                     123
 
 #define IDC_STATIC_LOGO 1007
 #define RC_VIRT_MEM_ERROR 2071
