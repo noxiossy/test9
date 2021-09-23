@@ -72,7 +72,7 @@ void CAI_Stalker::on_best_cover_changed				(const CCoverPoint *new_cover, const 
 void CAI_Stalker::compute_enemy_distances			(float &minimum_enemy_distance, float &maximum_enemy_distance)
 {
 	minimum_enemy_distance				= MIN_SUITABLE_ENEMY_DISTANCE;
-	maximum_enemy_distance				= 170.f;
+	maximum_enemy_distance				= 250.f;
 
 	if (!best_weapon())
 		return;
@@ -81,12 +81,12 @@ void CAI_Stalker::compute_enemy_distances			(float &minimum_enemy_distance, floa
 	switch (weapon_type) {
 		// pistols
 		case 5 : {
-			maximum_enemy_distance		= 10.f;
+			maximum_enemy_distance		= 15.f;
 			break;
 		}
 		// shotguns
 		case 9 : {
-			maximum_enemy_distance		= 5.f;
+			maximum_enemy_distance		= 8.f;
 			break;
 		}
 		// sniper rifles
@@ -96,7 +96,7 @@ void CAI_Stalker::compute_enemy_distances			(float &minimum_enemy_distance, floa
 			break;
 		}
 		default: {
-			maximum_enemy_distance		= 20.f;
+			maximum_enemy_distance		= 30.f;
 			break;
 		}
 	}

@@ -38,8 +38,21 @@ IC static void generate_orthonormal_basis1(const Fvector& dir,Fvector& updir, Fv
 void CActor::g_cl_ValidateMState(float dt, u32 mstate_wf)
 {
 	// Lookout
-	if (mstate_wf&mcLookout)	mstate_real		|= mstate_wf&mcLookout;
-	else						mstate_real		&= ~mcLookout;
+	if ((mstate_wf & mcLLookout) && (mstate_wf & mcRLookout))
+	{
+		// It's impossible to perform right and left lookouts in the same time
+		mstate_real &= ~mcLookout;
+	}
+	else if (mstate_wf & mcLookout)
+	{		
+		// Activate one of lookouts
+		mstate_real |= mstate_wf & mcLookout;
+	}
+	else
+	{
+		// No lookouts needed
+		mstate_real &= ~mcLookout;
+	}
 	
 	if (mstate_real&(mcJump|mcFall|mcLanding|mcLanding2))
 		mstate_real		&= ~mcLookout;
@@ -286,7 +299,7 @@ void CActor::g_cl_CheckControls(u32 mstate_wf, Fvector &vControlAccel, float &Ju
 		}//(mstate_real&mcAnyMove)
 	}//peOnGround || peAtWall
 
-	if(IsGameTypeSingle() && cam_eff_factor>EPS)
+	if(cam_eff_factor>EPS)
 	{
 	LPCSTR state_anm				= NULL;
 
@@ -308,26 +321,29 @@ void CActor::g_cl_CheckControls(u32 mstate_wf, Fvector &vControlAccel, float &Ju
 		if(state_anm)
 		{ //play moving cam effect
 			CActor*	control_entity		= static_cast_checked<CActor*>(Level().CurrentControlEntity());
-			R_ASSERT2					(control_entity, "current control entity is NULL");
-			CEffectorCam* ec			= control_entity->Cameras().GetCamEffector(eCEActorMoving);
-			if(NULL==ec)
+			if (control_entity)
 			{
-				string_path			eff_name;
-				xr_sprintf			(eff_name, sizeof(eff_name), "%s.anm", state_anm);
-				string_path			ce_path;
-				string_path			anm_name;
-				strconcat			(sizeof(anm_name), anm_name, "camera_effects\\actor_move\\", eff_name);
-				if (FS.exist( ce_path, "$game_anims$", anm_name))
+				R_ASSERT2					(control_entity, "current control entity is NULL");
+				CEffectorCam* ec			= control_entity->Cameras().GetCamEffector(eCEActorMoving);
+				if(NULL==ec)
 				{
-					CAnimatorCamLerpEffectorConst* e		= xr_new<CAnimatorCamLerpEffectorConst>();
-					float max_scale				= 70.0f;
-					float factor				= cam_eff_factor/max_scale;
-					e->SetFactor				(factor);
-					e->SetType					(eCEActorMoving);
-					e->SetHudAffect				(false);
-					e->SetCyclic				(false);
-					e->Start					(anm_name);
-					control_entity->Cameras().AddCamEffector(e);
+					string_path			eff_name;
+					xr_sprintf			(eff_name, sizeof(eff_name), "%s.anm", state_anm);
+					string_path			ce_path;
+					string_path			anm_name;
+					strconcat			(sizeof(anm_name), anm_name, "camera_effects\\actor_move\\", eff_name);
+					if (FS.exist( ce_path, "$game_anims$", anm_name))
+					{
+						CAnimatorCamLerpEffectorConst* e		= xr_new<CAnimatorCamLerpEffectorConst>();
+						float max_scale				= 70.0f;
+						float factor				= cam_eff_factor/max_scale;
+						e->SetFactor				(factor);
+						e->SetType					(eCEActorMoving);
+						e->SetHudAffect				(false);
+						e->SetCyclic				(false);
+						e->Start					(anm_name);
+						control_entity->Cameras().AddCamEffector(e);
+					}
 				}
 			}
 		}
@@ -401,9 +417,10 @@ void CActor::g_Orientate	(u32 mstate_rl, float dt)
 		if( (mstate_rl&mcLLookout) && (mstate_rl&mcRLookout) )
 			tgt_roll	= 0.0f;
 	}
-	if (!fsimilar(tgt_roll,r_torso_tgt_roll,EPS)){
-		angle_lerp		(r_torso_tgt_roll,tgt_roll,PI_MUL_2,dt);
-		r_torso_tgt_roll= angle_normalize_signed(r_torso_tgt_roll);
+	if (!fsimilar(tgt_roll,r_torso_tgt_roll,EPS))
+	{
+		r_torso_tgt_roll = angle_inertion_var(r_torso_tgt_roll, tgt_roll, 0.f, CurrentHeight * PI_MUL_2, PI_DIV_2, dt);
+		r_torso_tgt_roll = angle_normalize_signed(r_torso_tgt_roll);
 	}
 }
 bool CActor::g_LadderOrient()
@@ -485,7 +502,7 @@ void CActor::g_cl_Orientate	(u32 mstate_rl, float dt)
 	} else {
 		// if camera rotated more than 45 degrees - align model with it
 		float ty = angle_normalize(r_torso.yaw);
-		if (_abs(r_model_yaw-ty)>PI_DIV_4)	{
+		if (_abs(r_model_yaw-ty)>PI_DIV_4-30)	{
 			r_model_yaw_dest = ty;
 			// 
 			mstate_real	|= mcTurn;
