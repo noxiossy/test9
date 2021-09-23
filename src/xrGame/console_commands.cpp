@@ -570,6 +570,10 @@ public:
 		if (!xr_strlen(S))
 		{
 			strconcat(sizeof(S), S, Core.UserName, " - ", "quicksave");
+			//if (FS.exist(S))
+			//{
+			//	FS.file_rename(S, "_1", true);
+			//}			
 			NET_Packet			net_packet;
 			net_packet.w_begin(M_SAVE_GAME);
 			net_packet.w_stringZ(S);
