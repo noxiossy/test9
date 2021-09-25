@@ -4,8 +4,10 @@
 #include "object_broker.h"
 #include "UICellItem.h"
 #include "UICursor.h"
+#include "../Level.h"
 //Alundaio
-#include "../Inventory.h" 
+#include "../Inventory.h"
+#include <dinput.h>
 //-Alundaio
 
 CUIDragItem* CUIDragDropListEx::m_drag_item = NULL;
@@ -146,8 +148,8 @@ void CUIDragDropListEx::DestroyDragItem()
 }
 
 Fvector2 CUIDragDropListEx::GetDragItemPosition()
-{
-	return m_drag_item->GetPosition();
+{	//Alun: More accurate then Left-Top of dragged icon
+	return GetUICursor().GetCursorPosition(); //m_drag_item->GetPosition();
 }
 
 
@@ -188,12 +190,15 @@ void CUIDragDropListEx::OnItemDrop(CUIWindow* w, void* pData)
 	if(old_owner&&new_owner && !b)
 	{
 		CUICellItem* i					= old_owner->RemoveItem(itm, (old_owner==new_owner) );
-		while(i->ChildsCount())
+		if (new_owner->CanSetItem(i))
 		{
-			CUICellItem* _chld				= i->PopChild(NULL);
-			new_owner->SetItem				(_chld, old_owner->GetDragItemPosition());
+			while(i->ChildsCount())
+			{
+				CUICellItem* _chld				= i->PopChild(NULL);
+				new_owner->SetItem				(_chld, old_owner->GetDragItemPosition());
+			}
+			new_owner->SetItem				(i,old_owner->GetDragItemPosition());
 		}
-		new_owner->SetItem				(i,old_owner->GetDragItemPosition());
 	}
 	DestroyDragItem						();
 }
@@ -203,9 +208,20 @@ void CUIDragDropListEx::OnItemDBClick(CUIWindow* w, void* pData)
 	OnItemSelected						(w, pData);
 	CUICellItem*		itm				= smart_cast<CUICellItem*>(w);
 
-	if(m_f_item_db_click && m_f_item_db_click(itm) ){
-		DestroyDragItem						();
-		return;
+	if (m_f_item_db_click)
+	{
+		if (Level().IR_GetKeyState(DIK_LCONTROL))
+		{
+			u32 size = itm->ChildsCount();
+			for (u32 j = 0; j < size; j++)
+				m_f_item_db_click(itm);
+		}
+
+		if (m_f_item_db_click(itm))
+		{
+			DestroyDragItem();
+			return;
+		}
 	}
 
 	CUIDragDropListEx*	old_owner		= itm->OwnerList();
