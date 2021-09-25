@@ -322,8 +322,7 @@ void  CWeaponMagazinedWGrenade::LaunchGrenade()
             }
             E->g_fireParams(this, p1, d);
         }
-        if (IsGameTypeSingle())
-            p1.set(get_LastFP2());
+        p1.set(get_LastFP2());
 
         Fmatrix							launch_matrix;
         launch_matrix.identity();
@@ -334,7 +333,7 @@ void  CWeaponMagazinedWGrenade::LaunchGrenade()
 
         launch_matrix.c.set(p1);
 
-        if (IsGameTypeSingle() && IsZoomed() && smart_cast<CActor*>(H_Parent()))
+        if (IsZoomed() && smart_cast<CActor*>(H_Parent()))
         {
             H_Parent()->setEnabled(FALSE);
             setEnabled(FALSE);

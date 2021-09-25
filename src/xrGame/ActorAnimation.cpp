@@ -20,6 +20,7 @@
 #include "artefact.h"
 #include "IKLimbsController.h"
 #include "player_hud.h"
+#include "WeaponKnife.h"
 
 static const float y_spin0_factor		= 0.0f;
 static const float y_spin1_factor		= 0.4f;

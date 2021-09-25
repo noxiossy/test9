@@ -277,54 +277,18 @@ void CGrenade::UpdateCL()
 {
 	inherited::UpdateCL			();
 	CExplosive::UpdateCL		();
-
-	if(!IsGameTypeSingle())	make_Interpolation();
 }
 
 
 bool CGrenade::Action(u16 cmd, u32 flags) 
 {
 	if(inherited::Action(cmd, flags)) return true;
-
-	switch(cmd) 
-	{
-	//переключение типа гранаты
-	case kWPN_NEXT:
-		{
-            if(flags&CMD_START) 
-			{
-				if(m_pInventory)
-				{
-					TIItemContainer::iterator it = m_pInventory->m_ruck.begin();
-					TIItemContainer::iterator it_e = m_pInventory->m_ruck.end();
-					for(;it!=it_e;++it) 
-					{
-						CGrenade *pGrenade = smart_cast<CGrenade*>(*it);
-						if(pGrenade && xr_strcmp(pGrenade->cNameSect(), cNameSect())) 
-						{
-							m_pInventory->Ruck			(this);
-							m_pInventory->SetActiveSlot	(NO_ACTIVE_SLOT);
-							m_pInventory->Slot			(pGrenade->BaseSlot(),pGrenade);
-							return						true;
-						}
-					}
-					return true;
-				}
-			}
-			return true;
-		};
-	}
 	return false;
 }
 
 
 bool CGrenade::NeedToDestroyObject()	const
 {
-	if ( IsGameTypeSingle()			) return false;
-	if ( Remote()					) return false;
-	if ( TimePassedAfterIndependant() > m_dwGrenadeRemoveTime)
-		return true;
-
 	return false;
 }
 

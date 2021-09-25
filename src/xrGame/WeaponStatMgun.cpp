@@ -298,6 +298,11 @@ void CWeaponStatMgun::SetParam			(int id, Fvector2 val)
 
 bool CWeaponStatMgun::attach_Actor		(CGameObject* actor)
 {
+	if (Owner())
+		return false;
+
+	actor->setVisible(0);
+
 	inheritedHolder::attach_Actor	(actor);
 	SetBoneCallbacks				();
 	FireEnd							();
@@ -306,7 +311,16 @@ bool CWeaponStatMgun::attach_Actor		(CGameObject* actor)
 
 void CWeaponStatMgun::detach_Actor		()
 {
+	Owner()->setVisible(1);
 	inheritedHolder::detach_Actor	();
 	ResetBoneCallbacks				();
 	FireEnd							();
+}
+
+Fvector CWeaponStatMgun::ExitPosition()
+{ 
+	Fvector pos; pos.set(0.f, 0.f, 0.f);
+	pos.sub(camera->Direction()).normalize();
+	pos.y = 0.f;
+	return Fvector(XFORM().c).add(pos);
 }

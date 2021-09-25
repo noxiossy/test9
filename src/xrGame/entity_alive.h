@@ -15,9 +15,8 @@ class CMaterialManager;
 class CVisualMemoryManager;
 class CBlend;
 class CEntityAlive : public CEntity {
-protected:
-	typedef	CEntity			inherited;
-private:	
+private:
+	typedef	CEntity			inherited;	
 	u32						m_used_time;
 public:
 	virtual CEntityAlive*				cast_entity_alive		()						{return this;}
@@ -61,6 +60,9 @@ public:
 	virtual void			HitImpulse				(float amount, Fvector& vWorldDir, Fvector& vLocalDir);
 	virtual	void			Hit						(SHit* pHDS);
 	virtual void			Die						(CObject* who);
+
+	virtual void			OnEvent(NET_Packet& P, u16 type);
+
 	virtual void			g_WeaponBones			(int &L, int &R1, int &R2)										= 0;
 			void			set_lock_corpse			(bool b_l_corpse);
 			bool			is_locked_corpse		();
@@ -94,10 +96,6 @@ public:
 	virtual ICollisionHitCallback			*get_collision_hit_callback	()						;
 	virtual void							set_collision_hit_callback	(ICollisionHitCallback *cc);
 protected:
-	DEFINE_VECTOR				(CWound*, WOUND_VECTOR, WOUND_VECTOR_IT);
-	WOUND_VECTOR				m_ParticleWounds;
-
-
 	virtual void				StartFireParticles(CWound* pWound);
 	virtual void				UpdateFireParticles();
 	virtual void				LoadFireParticles(LPCSTR section);
@@ -115,7 +113,6 @@ protected:
 public:	
 	static  void				UnloadBloodyWallmarks	();
 
-	void						ClearBloodWounds		() {m_BloodWounds.clear();};
 protected:
 	virtual void				PlaceBloodWallmark		(const Fvector& dir, const Fvector& start_pos, 
 														float trace_dist, float wallmark_size,
@@ -132,8 +129,6 @@ protected:
 	static FactoryPtr<IWallMarkArray>	*m_pBloodDropsVector;
 	//список ран с которых капает кровь
 	
-	DEFINE_VECTOR				(CWound*, WOUND_VECTOR, WOUND_VECTOR_IT);
-	WOUND_VECTOR				m_BloodWounds;
 	//размер раны, чтоб начала капать кровь
 	static float				m_fStartBloodWoundSize;
 	//размер раны, чтоб остановить кровь
@@ -141,7 +136,6 @@ protected:
 	static float				m_fBloodDropSize;
 
 	//обновление ран, и рисование отметок от капающей крови
-	virtual void				StartBloodDrops			(CWound* pWound);
 	virtual void				UpdateBloodDrops		();
 
 

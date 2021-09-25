@@ -16,9 +16,6 @@
 #include "ui/UIXmlInit.h"
 #include "ui/UIHelper.h"
 #include "ui/UIInventoryUtilities.h"
-#include "UIGameCustom.h"
-#include "ui/UIWindow.h"
-#include "ui/UIActorMenu.h"
 //////////////////////////////////////////////////////////////////////////
 
 CUIZoneMap::CUIZoneMap()
@@ -59,13 +56,11 @@ void CUIZoneMap::Init()
 	rel_pos.mul(m_background.GetWndSize());
 	m_clock_wnd->SetWndPos(rel_pos);
 
-	if (IsGameTypeSingle())
-	{
-		xml_init.InitStatic(uiXml, "minimap:static_counter", 0, &m_Counter);
-		m_background.AttachChild(&m_Counter);
-		xml_init.InitTextWnd(uiXml, "minimap:static_counter:text_static", 0, &m_Counter_text);
-		m_Counter.AttachChild(&m_Counter_text);
-	}
+	xml_init.InitStatic			(uiXml, "minimap:static_counter", 0, &m_Counter);
+	m_background.AttachChild	(&m_Counter);
+	xml_init.InitTextWnd		(uiXml, "minimap:static_counter:text_static", 0, &m_Counter_text);
+	m_Counter.AttachChild		(&m_Counter_text);
+
 
 	m_clipFrame.AttachChild(&m_center);
 	m_center.SetWndPos(Fvector2().set(m_clipFrame.GetWidth() / 2.0f, m_clipFrame.GetHeight() / 2.0f));
@@ -89,7 +84,7 @@ void CUIZoneMap::Update()
 	CActor* pActor = smart_cast<CActor*>( Level().CurrentViewEntity() );
 	if ( !pActor ) return;
 
-	if ( !( Device.dwFrame % 20 ) && IsGameTypeSingle() )
+	if (!( Device.dwFrame % 20 ))
 	{
 		string16	text_str;
 		xr_strcpy( text_str, sizeof(text_str), "" );
