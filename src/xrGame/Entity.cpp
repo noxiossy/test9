@@ -6,6 +6,7 @@
 #include "Entity.h"
 #include "actor.h"
 #include "xrserver_objects_alife_monsters.h"
+#include "entity.h"
 #include "level.h"
 #include "seniority_hierarchy_holder.h"
 #include "team_hierarchy_holder.h"
@@ -16,7 +17,6 @@
 #include "ai_space.h"
 #include "alife_simulator.h"
 #include "alife_time_manager.h"
-#include "script_callback_ex.h"
 
 #define BODY_REMOVE_TIME		600000
 
