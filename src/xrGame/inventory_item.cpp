@@ -606,7 +606,7 @@ void CInventoryItem::net_Export			(NET_Packet& P)
 	{
 		CGameObject *obj = smart_cast<CGameObject*>(this);
 		NET_Packet stpk;
-		//obj->u_EventGen(stpk, GE_SYNC_ALIFEITEM, obj->ID());
+		obj->u_EventGen(stpk, GE_SYNC_ALIFEITEM, obj->ID());
 		stpk.w_float(m_fCondition);
 		obj->u_EventSend(stpk, net_flags(FALSE));
 	}

@@ -613,33 +613,36 @@ void CWeaponMagazined::state_Fire(float dt)
 {
     if (iAmmoElapsed > 0)
     {
-        if (!H_Parent())
-		{
-			StopShooting();
-			return;
-		}
+        VERIFY(fOneShotTime > 0.f);
 
-        CInventoryOwner* io = smart_cast<CInventoryOwner*>(H_Parent());
-        if (!io->inventory().ActiveItem())
-        {
-			StopShooting();
-			return;
-        }
-
-		CEntity* E = smart_cast<CEntity*>(H_Parent());
-        if (!E->g_stateFire())
-		{
-            StopShooting();
-			return;
-		}
-
-		Fvector p1, d;
+        Fvector					p1, d;
         p1.set(get_LastFP());
         d.set(get_LastFD());
-		
-        
+
+        if (!H_Parent()) return;
+        if (smart_cast<CMPPlayersBag*>(H_Parent()) != NULL)
+        {
+            Msg("! WARNING: state_Fire of object [%d][%s] while parent is CMPPlayerBag...", ID(), cNameSect().c_str());
+            return;
+        }
+
+        CInventoryOwner* io = smart_cast<CInventoryOwner*>(H_Parent());
+        if (NULL == io->inventory().ActiveItem())
+        {
+            Log("current_state", GetState());
+            Log("next_state", GetNextState());
+            Log("item_sect", cNameSect().c_str());
+            Log("H_Parent", H_Parent()->cNameSect().c_str());
+			StopShooting();
+			return; //Alundaio: This is not supposed to happen but it does. GSC was aware but why no return here? Known to cause crash on game load if npc immediatly enters combat.
+        }
+
+        CEntity* E = smart_cast<CEntity*>(H_Parent());
         E->g_fireParams(this, p1, d);
-		
+
+        if (!E->g_stateFire())
+            StopShooting();
+
         if (m_iShotNum == 0)
         {
             m_vStartPos = p1;
