@@ -121,6 +121,8 @@ bool	CLevel::net_start_client3				()
 		// Load level
 		R_ASSERT2				(Load(level_id),"Loading failed.");
 		map_data.m_level_geom_crc32 = 0;
+		if (!IsGameTypeSingle())
+			CalculateLevelCrc32		();
 	}
 	return true;
 }
@@ -240,8 +242,15 @@ bool	CLevel::net_start_client6				()
 #ifdef DEBUG
 		Msg("--- net_start_client6");
 #endif // #ifdef DEBUG
+
 		if (game)
-			game->OnConnected();
+		{
+			game->OnConnected				();
+			if (game->Type() != eGameIDSingle)
+			{
+				m_file_transfer = xr_new<file_transfer::client_site>();
+			}
+		}
 
 //		g_pGamePersistent->LoadTitle		("st_client_synchronising");
 		g_pGamePersistent->LoadTitle		();

@@ -355,12 +355,11 @@ void CScriptGameObject::SetNpcPosition			(Fvector pos)
 void CScriptGameObject::SetActorDirection		(float dir)
 {
 	CActor* actor = smart_cast<CActor*>(&object());
-	if (actor)
-	{
-		actor->cam_Active()->Set(dir, 0, 0);
-		return;
-	}
-	object().XFORM().setXYZ(0, dir, 0);
+	if(actor){
+		actor->cam_Active()->Set(dir,0,0);
+//		actor->XFORM().setXYZ(0,dir,0);
+	}else
+		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"ScriptGameObject : attempt to call SetActorDirection method for non-actor object");
 }
 
 void CScriptGameObject::DisableHitMarks			(bool disable)

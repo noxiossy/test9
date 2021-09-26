@@ -15,15 +15,12 @@ player_hud* g_player_hud = NULL;
 Fvector _ancor_pos;
 Fvector _wpn_root_pos;
 
-Fvector m_hud_offset_pos = { 0.f, 0.f, 0.f }; //only in hud adj mode
-Fvector m_hand_offset_pos = { 0.f, 0.f, 0.f };
-
 float CalcMotionSpeed(const shared_str& anim_name)
 {
 
-	//if(!IsGameTypeSingle() && (anim_name=="anm_show" || anim_name=="anm_hide") )
-	//	return 2.0f;
-	//else		// LR_DEVS CHECK !!!
+	if(!IsGameTypeSingle() && (anim_name=="anm_show" || anim_name=="anm_hide") )
+		return 2.0f;
+	else
 		return 1.0f;
 }
 
@@ -64,19 +61,15 @@ void player_hud_motion_container::load(IKinematicsAnimated* model, const shared_
 			{
 				pm->m_base_name			= anm;
 				pm->m_additional_name	= anm;
-				pm->m_anim_speed = 1.f;
 			}else
 			{
-				R_ASSERT2(_GetItemCount(anm.c_str()) <= 3, anm.c_str());
+				R_ASSERT2(_GetItemCount(anm.c_str())==2, anm.c_str());
 				string512				str_item;
 				_GetItem(anm.c_str(),0,str_item);
 				pm->m_base_name			= str_item;
 
 				_GetItem(anm.c_str(),1,str_item);
-				pm->m_additional_name = (strlen(str_item) > 0) ? pm->m_additional_name = str_item : pm->m_base_name;
-
-				_GetItem(anm.c_str(), 2, str_item);
-				pm->m_anim_speed = strlen(str_item) > 0 ? atof(str_item) : 1.f;
+				pm->m_additional_name	= str_item;
 			}
 
 			//and load all motions for it
@@ -90,10 +83,10 @@ void player_hud_motion_container::load(IKinematicsAnimated* model, const shared_
 
 				motion_ID				= model->ID_Cycle_Safe(buff);
 				
-                //if (!motion_ID.valid() && i == 0)
-                //{
-                //   motion_ID = model->ID_Cycle_Safe("hand_idle_doun");
-                //}
+                if (!motion_ID.valid() && i == 0)
+                {
+                    motion_ID = model->ID_Cycle_Safe("hand_idle_doun");
+                }
 				if(motion_ID.valid())
 				{
 					pm->m_animations.resize			(pm->m_animations.size()+1);
@@ -111,8 +104,7 @@ void player_hud_motion_container::load(IKinematicsAnimated* model, const shared_
 
 Fvector& attachable_hud_item::hands_attach_pos()
 {
-	Fvector v; v.set(m_measures.m_hands_attach[0]).add(m_hand_offset_pos);
-	return v;
+	return m_measures.m_hands_attach[0];
 }
 
 Fvector& attachable_hud_item::hands_attach_rot()
@@ -122,9 +114,8 @@ Fvector& attachable_hud_item::hands_attach_rot()
 
 Fvector& attachable_hud_item::hands_offset_pos()
 {
-	u8 idx = m_parent_hud_item->GetCurrentHudOffsetIdx();
-	Fvector v; v.set(m_measures.m_hands_offset[0][idx]).add(m_hud_offset_pos);
-	return v;
+	u8 idx	= m_parent_hud_item->GetCurrentHudOffsetIdx();
+	return m_measures.m_hands_offset[0][idx];
 }
 
 Fvector& attachable_hud_item::hands_offset_rot()
@@ -347,7 +338,7 @@ void attachable_hud_item::load(const shared_str& sect_name)
 
 u32 attachable_hud_item::anim_play(const shared_str& anm_name_b, BOOL bMixIn, const CMotionDef*& md, u8& rnd_idx)
 {
-	//float speed				= CalcMotionSpeed(anm_name_b);
+	float speed				= CalcMotionSpeed(anm_name_b);
 
 	R_ASSERT				(strstr(anm_name_b.c_str(),"anm_")==anm_name_b.c_str());
 	string256				anim_name_r;
@@ -358,8 +349,6 @@ u32 attachable_hud_item::anim_play(const shared_str& anm_name_b, BOOL bMixIn, co
 	R_ASSERT2				(anm, make_string("model [%s] has no motion alias defined [%s]", m_sect_name.c_str(), anim_name_r).c_str());
 	VERIFY2					(anm->m_animations.size(), make_string("model [%s] has no motion defined in motion_alias [%s]", pSettings->r_string(m_sect_name, "item_visual"), anim_name_r).c_str());
 	
-	float speed = anm->m_anim_speed;
-
 	rnd_idx					= (u8)Random.randI(anm->m_animations.size()) ;
 	const motion_descr& M	= anm->m_animations[ rnd_idx ];
 
@@ -405,7 +394,7 @@ u32 attachable_hud_item::anim_play(const shared_str& anm_name_b, BOOL bMixIn, co
 	//R_ASSERT2		(parent_object, "object has no parent actor");
 	//CObject*		parent_object = static_cast_checked<CObject*>(&m_parent_hud_item->object());
 
-	if (parent_object.H_Parent() == Level().CurrentControlEntity())
+	if (IsGameTypeSingle() && parent_object.H_Parent() == Level().CurrentControlEntity())
 	{
 		CActor* current_actor	= static_cast_checked<CActor*>(Level().CurrentControlEntity());
 		VERIFY					(current_actor);
@@ -547,7 +536,7 @@ u32 player_hud::motion_length(const shared_str& anim_name, const shared_str& hud
 	float speed						= CalcMotionSpeed(anim_name);
 	attachable_hud_item* pi			= create_hud_item(hud_name);
 	player_hud_motion*	pm			= pi->m_hand_motions.find_motion(anim_name);
-	if (!pm)
+	if(!pm || !pm->m_animations.size())
 		return						100; // ms TEMPORARY
 	R_ASSERT2						(pm, 
 		make_string	("hudItem model [%s] has no motion with alias [%s]", hud_name.c_str(), anim_name.c_str() ).c_str() 

@@ -8,7 +8,6 @@
 
 CWound::CWound(u16 bone_num)
 {
-	m_sParticleName = "";
 	m_bToBeDestroy = false;
 
 	m_Wounds.resize	(ALife::eHitTypeMax);

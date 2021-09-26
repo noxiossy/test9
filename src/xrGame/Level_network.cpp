@@ -29,6 +29,7 @@ extern bool	g_b_ClearGameCaptions;
 
 void CLevel::remove_objects	()
 {
+	if (!IsGameTypeSingle()) Msg("CLevel::remove_objects - Start");
 	BOOL						b_stored = psDeviceFlags.test(rsDisableObjectsAsCrows);
 	
 	int loop = 5;
@@ -101,6 +102,7 @@ void CLevel::remove_objects	()
 
 //.	xr_delete									(m_seniority_hierarchy_holder);
 //.	m_seniority_hierarchy_holder				= xr_new<CSeniorityHierarchyHolder>();
+	if (!IsGameTypeSingle()) Msg("CLevel::remove_objects - End");
 }
 
 #ifdef DEBUG
@@ -163,42 +165,65 @@ void CLevel::net_Stop		()
 #endif // DEBUG
 }
 
-int g_objects_per_client_update = 5;
 
-void CLevel::ClientSend(bool bForce)
+void CLevel::ClientSend()
 {
-	static u32 cur_index = 0;
-
-	if (bForce)
-		cur_index = 0;
-
-	NET_Packet P;
-
-	u32 object_count = Objects.o_count();
-	u32 position;
-	for (u32 start = cur_index; start < (bForce ? object_count : cur_index + g_objects_per_client_update); start++)
+	//if (GameID() == eGameIDSingle || OnClient())
+	if (GameID() != eGameIDSingle && OnClient())
 	{
-		if (cur_index >= object_count)
-			cur_index = 0;
+		if ( !net_HasBandwidth() ) return;
+	};
 
-		CObject	*pO = Objects.o_get_by_iterator(cur_index);
-
-		cur_index++;
-
-		if (pO && !pO->getDestroy() && pO->net_Relevant())
+	NET_Packet				P;
+	u32						start	= 0;
+	//----------- for E3 -----------------------------
+//	if () 
+	{
+//		if (!(Game().local_player) || Game().local_player->testFlag(GAME_PLAYER_FLAG_VERY_VERY_DEAD)) return;
+		if (CurrentControlEntity()) 
 		{
-			P.w_begin(M_UPDATE);
+			CObject* pObj = CurrentControlEntity();
+			if (!pObj->getDestroy() && pObj->net_Relevant())
+			{				
+				P.w_begin		(M_CL_UPDATE);
+				
 
-			P.w_u16(u16(pO->ID()));
-			P.w_chunk_open8(position);
+				P.w_u16			(u16(pObj->ID()));
+				P.w_u32			(0);	//reserved place for client's ping
 
-			pO->net_Export(P);
+				pObj->net_Export			(P);
 
-			P.w_chunk_close8(position);
-			if (max_objects_size >= (NET_PacketSizeLimit - P.w_tell()))
-				continue;
-			Send(P, net_flags(FALSE));
-		}
+				if (P.B.count>9)				
+				{
+					if (!OnServer())
+						Send	(P, net_flags(FALSE));
+				}				
+			}			
+		}		
+	};
+	if (m_file_transfer)
+	{
+		m_file_transfer->update_transfer();
+		m_file_transfer->stop_obsolete_receivers();
+	}
+	if (OnClient()) 
+	{
+		Flush_Send_Buffer();
+		return;
+	}
+	//-------------------------------------------------
+	while (1)
+	{
+		P.w_begin						(M_UPDATE);
+		start	= Objects.net_Export	(&P, start, max_objects_size);
+
+		if (P.B.count>2)
+		{
+			Device.Statistic->TEST3.Begin();
+				Send	(P, net_flags(FALSE));
+			Device.Statistic->TEST3.End();
+		}else
+			break;
 	}
 }
 
@@ -235,26 +260,18 @@ u32	CLevel::Objects_net_Save	(NET_Packet* _Packet, u32 start, u32 max_object_siz
 
 void CLevel::ClientSave	()
 {
-	NET_Packet P;
-	u32 position;
-	for (u32 start = 0; start < Objects.o_count(); start++) 
-	{
-		CObject	*pO = Objects.o_get_by_iterator(start);
-		CGameObject *pGO = smart_cast<CGameObject*>(pO);
+	NET_Packet		P;
+	u32				start	= 0;
 
-		if (pGO && !pGO->getDestroy() && pGO->net_SaveRelevant())
-		{
-			P.w_begin(M_SAVE_PACKET);
+	for (;;) {
+		P.w_begin	(M_SAVE_PACKET);
+		
+		start		= Objects_net_Save(&P, start, max_objects_size_in_save);
 
-			P.w_u16(u16(pGO->ID()));
-			P.w_chunk_open16(position);
-
-			pGO->net_Save(P);
-			P.w_chunk_close16(position);
-			if (max_objects_size >= (NET_PacketSizeLimit - P.w_tell()))
-				continue;
-			Send(P, net_flags(FALSE));
-		}
+		if (P.B.count>2)
+			Send	(P, net_flags(FALSE));
+		else
+			break;
 	}
 }
 
@@ -278,6 +295,12 @@ void CLevel::Send		(NET_Packet& P, u32 dwFlags, u32 dwTimeout)
 		Server->OnMessageSync	(P,Game().local_svdpnid	);
 	}else											
 		IPureClient::Send	(P,dwFlags,dwTimeout	);
+
+	if (g_pGameLevel && Level().game && GameID() != eGameIDSingle && !g_SV_Disable_Auth_Check)		{
+		// anti-cheat
+		phTimefactor		= 1.f					;
+		psDeviceFlags.set	(rsConstantFPS,FALSE)	;	
+	}
 }
 
 void CLevel::net_Update	()
@@ -439,12 +462,32 @@ void CLevel::OnConnectResult(NET_Packet*	P)
 			}break;
 		case ecr_have_been_banned:
 			{
-
+				if (!xr_strlen(ResultStr))
+				{
+					MainMenu()->OnSessionTerminate(
+						CStringTable().translate("st_you_have_been_banned").c_str()
+					);
+				} else
+				{
+					MainMenu()->OnSessionTerminate(
+						CStringTable().translate(ResultStr).c_str()
+					);
+				}
 			}break;
 		case ecr_profile_error:
 			{
-				
-			}break;
+				if (!xr_strlen(ResultStr))
+				{
+					MainMenu()->OnSessionTerminate(
+						CStringTable().translate("st_profile_error").c_str()
+					);
+				} else
+				{
+					MainMenu()->OnSessionTerminate(
+						CStringTable().translate(ResultStr).c_str()
+					);
+				}
+			}
 		}
 	};	
 	m_sConnectResult			= ResultStr;

@@ -82,7 +82,7 @@ void CPhysicsShellHolder::net_Destroy()
 	xr_delete									(m_pPhysicsShell);
 }
 
-static enum EEnableState
+enum EEnableState
 {
 	stEnable			=0	,
 	stDisable				,
@@ -230,7 +230,10 @@ void CPhysicsShellHolder::activate_physic_shell()
 	}
 	smart_cast<IKinematics*>(Visual())->CalculateBones_Invalidate	();
 	smart_cast<IKinematics*>(Visual())->CalculateBones(TRUE);
-
+	if(!IsGameTypeSingle())
+	{
+		if(!smart_cast<CCustomRocket*>(this)&&!smart_cast<CGrenade*>(this)) PPhysicsShell()->SetIgnoreDynamic();
+	}
 //	XFORM().set					(l_p1);
 	correct_spawn_pos();
 
@@ -470,7 +473,12 @@ bool CPhysicsShellHolder::register_schedule	() const
 
 void CPhysicsShellHolder::on_physics_disable()
 {
-	return;
+	if (IsGameTypeSingle())
+		return;
+
+	/*NET_Packet			net_packet;
+	u_EventGen			(net_packet,GE_FREEZE_OBJECT,ID());
+	Level().Send		(net_packet,net_flags(TRUE,TRUE));*/
 }
 
 

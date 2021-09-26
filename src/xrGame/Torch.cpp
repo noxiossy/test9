@@ -49,12 +49,14 @@ CTorch::CTorch(void)
 	m_prev_hp.set				(0,0);
 	m_delta_h					= 0;
 	m_night_vision				= NULL;
-	m_torch_offset = TORCH_OFFSET;
-	m_omni_offset = OMNI_OFFSET;
-	m_torch_inertion_speed_max = TORCH_INERTION_SPEED_MAX;
-	m_torch_inertion_speed_min = TORCH_INERTION_SPEED_MIN;
 
-	m_light_section = "torch_definition";
+	// Disabling shift by x and z axes for 1st render, 
+	// because we don't have dynamic lighting in it. 
+	if( g_current_renderer == 1 )
+	{
+		TORCH_OFFSET.x = 0;
+		TORCH_OFFSET.z = 0;
+	}
 }
 
 CTorch::~CTorch() 
@@ -89,13 +91,6 @@ void CTorch::Load(LPCSTR section)
 		 m_sounds.LoadSound(section, "snd_turn_off", "sndTurnOff", false, SOUND_TYPE_ITEM_USING);
 
 	m_bNightVisionEnabled = !!pSettings->r_bool(section,"night_vision");
-
-
-	m_torch_offset = READ_IF_EXISTS(pSettings, r_fvector3, section, "torch_offset", TORCH_OFFSET);
-	m_omni_offset = READ_IF_EXISTS(pSettings, r_fvector3, section, "omni_offset", OMNI_OFFSET);
-	m_torch_inertion_speed_max = READ_IF_EXISTS(pSettings, r_float, section, "torch_inertion_speed_max", TORCH_INERTION_SPEED_MAX);
-	m_torch_inertion_speed_min = READ_IF_EXISTS(pSettings, r_float, section, "torch_inertion_speed_min", TORCH_INERTION_SPEED_MIN);
-
 }
 
 void CTorch::SwitchNightVision()
@@ -302,8 +297,6 @@ BOOL CTorch::net_Spawn(CSE_Abstract* DC)
 	light_render->set_volumetric_quality(READ_IF_EXISTS(pUserData, r_float, m_light_section, "volumetric_quality", 1.f));
 	light_render->set_volumetric_intensity(READ_IF_EXISTS(pUserData, r_float, m_light_section, "volumetric_intensity", 1.f));
 	light_render->set_volumetric_distance(READ_IF_EXISTS(pUserData, r_float, m_light_section, "volumetric_distance", 1.f));
-	light_render->set_type((IRender_Light::LT)(READ_IF_EXISTS(pUserData, r_u8, m_light_section, "type", 2)));
-	light_omni->set_type((IRender_Light::LT)(READ_IF_EXISTS(pUserData, r_u8, m_light_section, "omni_type", 1)));
 
 	//включить/выключить фонарик
 	Switch					(torch->m_active);
@@ -314,7 +307,7 @@ BOOL CTorch::net_Spawn(CSE_Abstract* DC)
 	//else
 	//	SwitchNightVision	(false, false);
 
-	m_delta_h = PI_DIV_2 - atan((range*0.5f) / _abs(m_torch_offset.x));
+	m_delta_h				= PI_DIV_2-atan((range*0.5f)/_abs(TORCH_OFFSET.x));
 
 	return					(TRUE);
 }
@@ -330,7 +323,7 @@ void CTorch::net_Destroy()
 void CTorch::OnH_A_Chield() 
 {
 	inherited::OnH_A_Chield			();
-	//m_focus.set						(Position());
+	m_focus.set						(Position());
 }
 
 void CTorch::OnH_B_Independent(bool just_before_destroy) 
@@ -357,7 +350,7 @@ void CTorch::UpdateCL()
 		CActor*			actor = smart_cast<CActor*>(H_Parent());
 		if (actor)		smart_cast<IKinematics*>(H_Parent()->Visual())->CalculateBones_Invalidate	();
 
-		if (H_Parent()->XFORM().c.distance_to_sqr(Device.vCameraPosition)<_sqr(OPTIMIZATION_DISTANCE)) {
+		if (H_Parent()->XFORM().c.distance_to_sqr(Device.vCameraPosition)<_sqr(OPTIMIZATION_DISTANCE) || GameID() != eGameIDSingle) {
 			// near camera
 			smart_cast<IKinematics*>(H_Parent()->Visual())->CalculateBones	();
 			M.mul_43				(XFORM(),BI.mTransform);
@@ -370,45 +363,58 @@ void CTorch::UpdateCL()
 
 		if (actor) 
 		{
-			m_prev_hp.x		= angle_inertion_var(m_prev_hp.x,-actor->cam_FirstEye()->yaw,m_torch_inertion_speed_min,m_torch_inertion_speed_max,TORCH_INERTION_CLAMP,Device.fTimeDelta);
-			m_prev_hp.y		= angle_inertion_var(m_prev_hp.y,-actor->cam_FirstEye()->pitch,m_torch_inertion_speed_min,m_torch_inertion_speed_max,TORCH_INERTION_CLAMP,Device.fTimeDelta);
+			m_prev_hp.x		= angle_inertion_var(m_prev_hp.x,-actor->cam_FirstEye()->yaw,TORCH_INERTION_SPEED_MIN,TORCH_INERTION_SPEED_MAX,TORCH_INERTION_CLAMP,Device.fTimeDelta);
+			m_prev_hp.y		= angle_inertion_var(m_prev_hp.y,-actor->cam_FirstEye()->pitch,TORCH_INERTION_SPEED_MIN,TORCH_INERTION_SPEED_MAX,TORCH_INERTION_CLAMP,Device.fTimeDelta);
 
 			Fvector			dir,right,up;	
 			dir.setHP		(m_prev_hp.x+m_delta_h,m_prev_hp.y);
 			Fvector::generate_orthonormal_basis_normalized(dir,up,right);
 
-			Fvector offset = M.c; 
-			offset.mad(M.i, m_torch_offset.x);
-			offset.mad(M.j, m_torch_offset.y);
-			offset.mad(M.k, m_torch_offset.z);
-			light_render->set_position	(offset);
 
-			offset = M.c; 
-			offset.mad(M.i,m_omni_offset.x);
-			offset.mad(M.j,m_omni_offset.y);
-			offset.mad(M.k,m_omni_offset.z);
-			light_omni->set_position(offset);
+			if (true)
+			{
+				Fvector offset				= M.c; 
+				offset.mad					(M.i,TORCH_OFFSET.x);
+				offset.mad					(M.j,TORCH_OFFSET.y);
+				offset.mad					(M.k,TORCH_OFFSET.z);
+				light_render->set_position	(offset);
 
-			glow_render->set_position(M.c);
+				if(true /*false*/)
+				{
+					offset						= M.c; 
+					offset.mad					(M.i,OMNI_OFFSET.x);
+					offset.mad					(M.j,OMNI_OFFSET.y);
+					offset.mad					(M.k,OMNI_OFFSET.z);
+					light_omni->set_position	(offset);
+				}
+			}//if (true)
+			glow_render->set_position	(M.c);
 
-			light_render->set_rotation(dir, right);
-			light_omni->set_rotation(dir, right);
-			glow_render->set_direction(dir);
+			if (true)
+			{
+				light_render->set_rotation	(dir, right);
+				
+				if(true /*false*/)
+				{
+					light_omni->set_rotation	(dir, right);
+				}
+			}//if (true)
+			glow_render->set_direction	(dir);
 
 		}// if(actor)
 		else 
 		{
 			if (can_use_dynamic_lights()) 
 			{
-				light_render->set_position(M.c);
-				light_render->set_rotation(M.k,M.i);
+				light_render->set_position	(M.c);
+				light_render->set_rotation	(M.k,M.i);
 
 				Fvector offset				= M.c; 
-				offset.mad(M.i, m_omni_offset.x);
-				offset.mad(M.j, m_omni_offset.y);
-				offset.mad(M.k, m_omni_offset.z);
-				light_omni->set_position(M.c);
-				light_omni->set_rotation(M.k,M.i);
+				offset.mad					(M.i,OMNI_OFFSET.x);
+				offset.mad					(M.j,OMNI_OFFSET.y);
+				offset.mad					(M.k,OMNI_OFFSET.z);
+				light_omni->set_position	(M.c);
+				light_omni->set_rotation	(M.k,M.i);
 			}//if (can_use_dynamic_lights()) 
 
 			glow_render->set_position	(M.c);

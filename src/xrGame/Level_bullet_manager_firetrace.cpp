@@ -15,6 +15,7 @@
 #include "Actor.h"
 #include "AI/Stalker/ai_stalker.h"
 #include "character_info.h"
+#include "game_cl_base_weapon_usage_statistic.h"
 #include "../xrcdb/xr_collide_defs.h"
 #include "../xrengine/xr_collide_form.h"
 #include "weapon.h"
@@ -253,7 +254,8 @@ void CBulletManager::DynamicObjectHit	(CBulletManager::_event& E)
 		}
 	}
 
-	E.Repeated = false;
+	if (g_clear) E.Repeated = false;
+	if (GameID() == eGameIDSingle) E.Repeated = false;
 	bool NeedShootmark = true;//!E.Repeated;
 	
 	if (smart_cast<CActor*>(E.R.O))
@@ -304,6 +306,19 @@ void CBulletManager::DynamicObjectHit	(CBulletManager::_event& E)
 	//îòïðàâèòü õèò ïîðàæåííîìó îáúåêòó
 	if (E.bullet.flags.allow_sendhit && !E.Repeated)
 	{
+		//-------------------------------------------------
+		bool AddStatistic = false;
+		if (GameID() != eGameIDSingle && E.bullet.flags.allow_sendhit && smart_cast<CActor*>(E.R.O)
+			&& Game().m_WeaponUsageStatistic->CollectData())
+		{
+			CActor* pActor = smart_cast<CActor*>(E.R.O);
+			if (pActor)// && pActor->g_Alive())
+			{
+				Game().m_WeaponUsageStatistic->OnBullet_Hit(&E.bullet, E.R.O->ID(), (s16)E.R.element, E.point);
+				AddStatistic = true;
+			};
+		};
+
 		SHit	Hit = SHit(	hit_param.power,
 							original_dir,
 							NULL,
@@ -314,7 +329,7 @@ void CBulletManager::DynamicObjectHit	(CBulletManager::_event& E)
 							E.bullet.armor_piercing,
 							E.bullet.flags.aim_bullet);
 
-		Hit.GenHeader(u16(GE_HIT)&0xffff, E.R.O->ID());
+		Hit.GenHeader(u16((AddStatistic)? GE_HIT_STATISTIC : GE_HIT)&0xffff, E.R.O->ID());
 		Hit.whoID			= E.bullet.parent_id;
 		Hit.weaponID		= E.bullet.weapon_id;
 		Hit.BulletID		= E.bullet.m_dwID;

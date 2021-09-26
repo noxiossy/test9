@@ -18,7 +18,6 @@ xr_token	difficulty_type_token						[ ]={
 
 game_cl_Single::game_cl_Single()
 {
-	m_type = eGameIDSingle;
 }
 
 CUIGameCustom* game_cl_Single::createGameUI()

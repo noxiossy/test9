@@ -83,31 +83,50 @@ void CLevel::g_cl_Spawn		(LPCSTR name, u8 rp, u16 flags, Fvector pos)
 
 void CLevel::g_sv_Spawn		(CSE_Abstract* E)
 {
+#ifdef DEBUG_MEMORY_MANAGER
+	u32							E_mem = 0;
+	if (g_bMEMO)	{
+		lua_gc					(ai().script_engine().lua(),LUA_GCCOLLECT,0);
+		lua_gc					(ai().script_engine().lua(),LUA_GCCOLLECT,0);
+		E_mem					= Memory.mem_usage();	
+		Memory.stat_calls		= 0;
+	}
+#endif // DEBUG_MEMORY_MANAGER
+	//-----------------------------------------------------------------
+//	CTimer		T(false);
+
+#ifdef DEBUG
+//	Msg					("* CLIENT: Spawn: %s, ID=%d", *E->s_name, E->ID);
+#endif
+
 	// Optimization for single-player only	- minimize traffic between client and server
-	psNET_Flags.set	(NETFLAG_MINIMIZEUPDATES,TRUE);
+	if	(GameID()	== eGameIDSingle)		psNET_Flags.set	(NETFLAG_MINIMIZEUPDATES,TRUE);
+	else								psNET_Flags.set	(NETFLAG_MINIMIZEUPDATES,FALSE);
 
 	// Client spawn
-	CObject* O = Objects.Create(*E->s_name);
-	if (!O)
-	{
-		Msg("! Failed to create entity '%s'", *E->s_name);
-		return;
-	}
+//	T.Start		();
+	CObject*	O		= Objects.Create	(*E->s_name);
+	// Msg				("--spawn--CREATE: %f ms",1000.f*T.GetAsync());
 
-	//Alundaio: Knowing last object to spawn can be very useful to debugging
-	if (Core.ParamFlags.test(Core.verboselog))
-		Msg("Try Spawning object Name:[%s] Section:[%s] ID:[%d] ParentID:[%d]", E->name_replace(), *E->s_name, E->ID,E->ID_Parent);
-
-	if (!O->net_Spawn(E))
+//	T.Start		();
+#ifdef DEBUG_MEMORY_MANAGER
+	mem_alloc_gather_stats		(false);
+#endif // DEBUG_MEMORY_MANAGER
+	if (0==O || (!O->net_Spawn	(E))) 
 	{
 		O->net_Destroy			( );
 		client_spawn_manager().clear(O->ID());
 		Objects.Destroy			(O);
 		Msg						("! Failed to spawn entity '%s'",*E->s_name);
-		return;
-	}
-
+#ifdef DEBUG_MEMORY_MANAGER
+		mem_alloc_gather_stats	(!!psAI_Flags.test(aiDebugOnFrameAllocs));
+#endif // DEBUG_MEMORY_MANAGER
+	} else {
+#ifdef DEBUG_MEMORY_MANAGER
+		mem_alloc_gather_stats	(!!psAI_Flags.test(aiDebugOnFrameAllocs));
+#endif // DEBUG_MEMORY_MANAGER
 		client_spawn_manager().callback(O);
+		//Msg			("--spawn--SPAWN: %f ms",1000.f*T.GetAsync());
 		
 		if ((E->s_flags.is(M_SPAWN_OBJECT_LOCAL)) && 
 			(E->s_flags.is(M_SPAWN_OBJECT_ASPLAYER)) )	
@@ -151,6 +170,7 @@ void CLevel::g_sv_Spawn		(CSE_Abstract* E)
 			cl_Process_Event(E->ID_Parent, GE_OWNERSHIP_TAKE, GEN);
 			//*/
 		}
+	}
 
 	/*if (E->s_flags.is(M_SPAWN_UPDATE)) {
 		NET_Packet				temp;
@@ -165,9 +185,14 @@ void CLevel::g_sv_Spawn		(CSE_Abstract* E)
 
 	//---------------------------------------------------------
 	Game().OnSpawn				(O);
-
-	if (Core.ParamFlags.test(Core.verboselog))
-		Msg("[%d] net_Spawn successful", E->ID);
+	//---------------------------------------------------------
+#ifdef DEBUG_MEMORY_MANAGER
+	if (g_bMEMO) {
+		lua_gc					(ai().script_engine().lua(),LUA_GCCOLLECT,0);
+		lua_gc					(ai().script_engine().lua(),LUA_GCCOLLECT,0);
+		Msg						("* %20s : %d bytes, %d ops", *E->s_name,Memory.mem_usage()-E_mem, Memory.stat_calls );
+	}
+#endif // DEBUG_MEMORY_MANAGER
 }
 
 CSE_Abstract *CLevel::spawn_item		(LPCSTR section, const Fvector &position, u32 level_vertex_id, u16 parent_id, bool return_item)

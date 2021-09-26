@@ -313,11 +313,7 @@ bool patrol_path_exists(LPCSTR patrol_path)
 
 LPCSTR get_name()
 {
-	if (Level().name().size())
-		return Level().name().c_str();
-
-	//Alun: This fixes level.name() being an empty string when checking it while server entities are being registered
-	return ai().game_graph().header().level(ai().level_graph().level_id()).name().c_str();
+	return		(*Level().name());
 }
 
 void prefetch_sound	(LPCSTR name)

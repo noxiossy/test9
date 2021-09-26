@@ -1468,7 +1468,7 @@ u8 CScriptGameObject::GetRestrictionType()
 	if (restr)
 		return restr->m_space_restrictor_type;
 
-	return u8(-1);
+	return (-1);
 }
 
 void CScriptGameObject::SetRestrictionType(u8 typ)

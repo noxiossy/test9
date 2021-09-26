@@ -13,7 +13,7 @@ class CWeaponStatMgun:	public CPhysicsShellHolder,
 						public CHolderCustom,
 						public CShootingObject
 {
-protected:
+private:
 	typedef CPhysicsShellHolder inheritedPH;
 	typedef CHolderCustom		inheritedHolder;
 	typedef CShootingObject		inheritedShooting;
@@ -103,7 +103,7 @@ public:
 	virtual void			detach_Actor		();
 	virtual bool			allowWeapon			()	const				{return false;};
 	virtual bool			HUDView				()	const				{return true;};
-	virtual Fvector			ExitPosition();
+	virtual Fvector			ExitPosition		()						{return Fvector().set(0.0f,0.0f,0.0f);};
 
 	virtual CCameraBase*	Camera				()						{return camera;};
 

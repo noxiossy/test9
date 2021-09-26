@@ -192,6 +192,12 @@ void CWeaponAmmo::UpdateCL()
 	VERIFY2								(_valid(renderable.xform),*cName());
 	inherited::UpdateCL	();
 	VERIFY2								(_valid(renderable.xform),*cName());
+	
+	if(!IsGameTypeSingle())
+		make_Interpolation	();
+
+	VERIFY2								(_valid(renderable.xform),*cName());
+
 }
 
 void CWeaponAmmo::net_Export(NET_Packet& P) 
@@ -227,14 +233,12 @@ CInventoryItem *CWeaponAmmo::can_make_killing	(const CInventory *inventory) cons
 }
 
 float CWeaponAmmo::Weight() const
-{	
-	if (m_boxSize > 0)
-	{
-		float res = inherited::Weight();
-		res *= (float)m_boxCurr / (float)m_boxSize;
-		return res;
-	}
-	return 0;	
+{
+	float res = inherited::Weight();
+
+	res *= (float)m_boxCurr/(float)m_boxSize;
+
+	return res;
 }
 
 u32 CWeaponAmmo::Cost() const
