@@ -1134,6 +1134,7 @@
     <ClCompile Include="xrGameSpy_GP.cpp" />
     <ClCompile Include="xrGameSpy_HTTP.cpp" />
     <ClCompile Include="xrGameSpy_Patching.cpp" />
+    <ClCompile Include="xrGameSpy_QR2.cpp" />
     <ClCompile Include="xrGameSpy_SAKE.cpp" />
     <ClCompile Include="xrGameSpy_ServerBrowser.cpp" />
   </ItemGroup>
@@ -1232,7 +1233,9 @@
     <ClInclude Include="xrGameSpy_Core.h" />
     <ClInclude Include="xrGameSpy_GP.h" />
     <ClInclude Include="xrGameSpy_HTTP.h" />
+    <ClInclude Include="xrGameSpy_MainDefs.h" />
     <ClInclude Include="xrGameSpy_Patching.h" />
+    <ClInclude Include="xrGameSpy_QR2.h" />
     <ClInclude Include="xrGameSpy_SAKE.h" />
     <ClInclude Include="xrGameSpy_ServerBrowser.h" />
   </ItemGroup>
