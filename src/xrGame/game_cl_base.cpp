@@ -10,7 +10,7 @@
 #include "UI/UIMessagesWindow.h"
 #include "UI/UIDialogWnd.h"
 #include "string_table.h"
-#include "game_cl_base_weapon_usage_statistic.h"
+//#include "game_cl_base_weapon_usage_statistic.h"
 #include "game_sv_mp_vote_flags.h"
 
 game_cl_GameState::game_cl_GameState()
@@ -109,7 +109,7 @@ void	game_cl_GameState::net_import_state	(NET_Packet& P)
 	P.r_u32			(m_start_time);
 	m_u16VotingEnabled = u16(P.r_u8());
 	m_bServerControlHits = !!P.r_u8();	
-	m_WeaponUsageStatistic->SetCollectData(!!P.r_u8());
+	//m_WeaponUsageStatistic->SetCollectData(!!P.r_u8());
 
 	// Players
 	u16	p_count;
