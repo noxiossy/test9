@@ -13,7 +13,7 @@ void CStateControllerTubeAbstract::execute()
 {
 	object->control().activate	(ControlCom::eComCustom1);
 	object->set_action			(ACT_STAND_IDLE);
-    object->path().set_use_covers			(true);
+      //  object->path().set_use_covers			(true);
 }
 
 #define SEE_ENEMY_DURATION 1000

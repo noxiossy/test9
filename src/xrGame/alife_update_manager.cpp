@@ -169,7 +169,7 @@ bool CALifeUpdateManager::change_level	(NET_Packet &net_packet)
 	// then change actor server entity 
 	// then call client net_Save 
 	// then restore actor server entity 
-	Level().ClientSend				(true);
+	Level().ClientSend				();
 
 	m_changing_level				= true;
 	

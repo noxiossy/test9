@@ -161,38 +161,26 @@ BOOL	CCar::net_Spawn				(CSE_Abstract* DC)
 #ifdef DEBUG
 	InitDebug();
 #endif
+	CSE_Abstract					*e = (CSE_Abstract*)(DC);
+	CSE_ALifeCar					*co=smart_cast<CSE_ALifeCar*>(e);
+	BOOL							R = inherited::net_Spawn(DC);
 
-	if (!inherited::net_Spawn(DC))
-		return (FALSE);
-
-	CSE_Abstract *e = (CSE_Abstract*)(DC);
-	CSE_ALifeCar *car = smart_cast<CSE_ALifeCar*>(e);
+	PKinematics(Visual())->CalculateBones_Invalidate();
+	PKinematics(Visual())->CalculateBones(TRUE);
 
 	CPHSkeleton::Spawn(e);
+	setEnabled						(TRUE);
+	setVisible						(TRUE);
+	PKinematics(Visual())->CalculateBones_Invalidate();
+	PKinematics(Visual())->CalculateBones(TRUE);
+	m_fSaveMaxRPM					= m_max_rpm;
+	SetfHealth						(co->health);
 
-	IKinematics* K = smart_cast<IKinematics*>(Visual());
-	IKinematicsAnimated	*A = smart_cast<IKinematicsAnimated*>(Visual());
-	if (A) {
-		if (car->startup_animation.size())
-			A->PlayCycle(*car->startup_animation);
-		K->CalculateBones(TRUE);
-	}
-
-	setEnabled(TRUE);
-	setVisible(TRUE);
-
-	m_fSaveMaxRPM = m_max_rpm;
-	SetfHealth(car->health);
-
-	if(!g_Alive())					
-		b_exploded=true;
-	else
-	{
-		b_exploded = false;
-		processing_activate();
-	}
+	if(!g_Alive())					b_exploded=true;
+	else							b_exploded=false;
 									
 	CDamagableItem::RestoreEffect();
+	
 	
 	CInifile* pUserData		= PKinematics(Visual())->LL_UserData(); 
 	if(pUserData->section_exist("destroyed"))
@@ -206,7 +194,8 @@ BOOL	CCar::net_Spawn				(CSE_Abstract* DC)
 		m_memory->reload	(pUserData->r_string("visual_memory_definition", "section"));
 	}
 
-	return							(CScriptEntity::net_Spawn(DC));
+	return							(CScriptEntity::net_Spawn(DC) && R);
+	
 }
 
 void CCar::ActorObstacleCallback					(bool& do_colide,bool bo1,dContact& c,SGameMtl* material_1,SGameMtl* material_2)	
@@ -232,7 +221,7 @@ void CCar::SpawnInitPhysics	(CSE_Abstract	*D)
 	SetDefaultNetState				(so);
 	CPHUpdateObject::Activate       ();
 
-	//m_pPhysicsShell->applyImpulse(Fvector().set(0.f, -1.f, 0.f), 0.1f);
+	m_pPhysicsShell->applyImpulse(Fvector().set(0,-1.f,0), 0.1);// hit on spawn
 }
 
 void	CCar::net_Destroy()
@@ -480,19 +469,20 @@ void CCar::UpdateCL				( )
 
  void CCar::VisualUpdate(float fov)
 {
+	m_pPhysicsShell->InterpolateGlobalTransform(&XFORM());
 
-	if (m_pPhysicsShell)
-	{
-		m_pPhysicsShell->InterpolateGlobalTransform(&XFORM());
-		IKinematics* K = smart_cast<IKinematics*>(Visual());
-		K->CalculateBones();
-	}
+	Fvector lin_vel;
+	m_pPhysicsShell->get_LinearVel(lin_vel);
+	// Sound
+	Fvector		C,V;
+	Center		(C);
+	V.set		(lin_vel);
 
 	m_car_sound->Update();
 	if(Owner())
 	{
 		
-		if (m_pPhysicsShell && m_pPhysicsShell->isEnabled())
+		if(m_pPhysicsShell->isEnabled())
 		{
 			Owner()->XFORM().mul_43	(XFORM(),m_sits_transforms[0]);
 		}
@@ -889,11 +879,8 @@ void CCar::ParseDefinitions()
 
 void CCar::CreateSkeleton(CSE_Abstract	*po)
 {
-	if (m_pPhysicsShell)
-		return;
 
-	if (!Visual()) 
-		return;
+	if (!Visual()) return;
 	IRenderVisual *pVis = Visual();
 	IKinematics* pK = smart_cast<IKinematics*>(pVis);
 	IKinematicsAnimated* pKA = smart_cast<IKinematicsAnimated*>(pVis);
@@ -903,11 +890,21 @@ void CCar::CreateSkeleton(CSE_Abstract	*po)
 		pK->CalculateBones	(TRUE);
 	}
 	phys_shell_verify_object_model ( *this );
-	m_pPhysicsShell = P_build_Shell(this, false, &bone_map);
-	BONE_P_PAIR_IT i = bone_map.begin(), e = bone_map.end();
-	if (i != e)
-		m_pPhysicsShell->SetPrefereExactIntegration();
+	//Alundaio: p_build_shell
+	#pragma todo(" replace below by P_build_Shell or call inherited")
+	m_pPhysicsShell		= P_create_Shell();
+	m_pPhysicsShell->build_FromKinematics(pK,&bone_map);
+	m_pPhysicsShell->set_PhysicsRefObject(this);
+	m_pPhysicsShell->mXFORM.set(XFORM());
+	m_pPhysicsShell->Activate(true);
+	m_pPhysicsShell->SetAirResistance(0.f,0.f);
+	m_pPhysicsShell->SetPrefereExactIntegration();
 
+	m_pPhysicsShell->Enable();
+
+    //m_pPhysicsShell = P_build_Shell(this, false, &bone_map);
+    //-Alundaio replase below with P_build_Shell ???
+	
 	ApplySpawnIniToPhysicShell(&po->spawn_ini(),m_pPhysicsShell,false);
 	ApplySpawnIniToPhysicShell(pK->LL_UserData(),m_pPhysicsShell,false);
 }
@@ -925,7 +922,7 @@ void CCar::Init()
 
 	if(ini->section_exist("air_resistance"))
 	{
-		m_pPhysicsShell->SetAirResistance(default_k_l*ini->r_float("air_resistance", "linear_factor"), default_k_w*ini->r_float("air_resistance", "angular_factor"));
+		PPhysicsShell()->SetAirResistance(default_k_l*ini->r_float("air_resistance","linear_factor"),default_k_w*ini->r_float("air_resistance","angular_factor"));
 	}
 	if(ini->line_exist("car_definition","steer"))
 	{
@@ -1419,7 +1416,7 @@ void CCar::PhTune(float step)
 	
 
 
-	for (u16 i = m_pPhysicsShell->get_ElementsNumber(); i != 0; i--)
+	for(u16 i=PPhysicsShell()->get_ElementsNumber();i!=0;i--)	
 	{
 		CPhysicsElement* e=PPhysicsShell()->get_ElementByStoreOrder(i-1);
 		if(e->isActive()&&e->isEnabled())

@@ -114,8 +114,20 @@ void CArtefact::net_Destroy()
 void CArtefact::OnH_A_Chield() 
 {
 	inherited::OnH_A_Chield		();
+
 	StopLights();
-	SwitchAfParticles(false);
+	if (IsGameTypeSingle())
+	{
+		SwitchAfParticles(false);
+	}
+	else
+	{
+		IKinematics* K	= smart_cast<IKinematics*>(H_Parent()->Visual());
+		if (K)
+			m_CarringBoneID			= K->LL_BoneID("bip01_head");
+		else
+			m_CarringBoneID = u16(-1);
+	}
 	if(m_detectorObj)
 	{
 		m_detectorObj->m_currPatrolPath = NULL;
@@ -600,7 +612,11 @@ void CArtefact::OnActiveItem ()
 
 void CArtefact::OnHiddenItem ()
 {
-	SwitchState(eHiding);
+	if(IsGameTypeSingle())
+		SwitchState(eHiding);
+	else
+		SwitchState(eHidden);
+
 	inherited::OnHiddenItem		();
 	SetState					(eHidden);
 	SetNextState				(eHidden);
