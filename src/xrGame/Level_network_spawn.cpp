@@ -92,27 +92,26 @@ void CLevel::g_sv_Spawn		(CSE_Abstract* E)
 		Memory.stat_calls		= 0;
 	}
 #endif // DEBUG_MEMORY_MANAGER
-	//-----------------------------------------------------------------
-//	CTimer		T(false);
-
-#ifdef DEBUG
-//	Msg					("* CLIENT: Spawn: %s, ID=%d", *E->s_name, E->ID);
-#endif
 
 	// Optimization for single-player only	- minimize traffic between client and server
-	if	(GameID()	== eGameIDSingle)		psNET_Flags.set	(NETFLAG_MINIMIZEUPDATES,TRUE);
-	else								psNET_Flags.set	(NETFLAG_MINIMIZEUPDATES,FALSE);
+	psNET_Flags.set	(NETFLAG_MINIMIZEUPDATES,TRUE);
 
 	// Client spawn
-//	T.Start		();
-	CObject*	O		= Objects.Create	(*E->s_name);
-	// Msg				("--spawn--CREATE: %f ms",1000.f*T.GetAsync());
+	CObject* O = Objects.Create(*E->s_name);
+	if (!O)
+	{
+		Msg("! Failed to create entity '%s'", *E->s_name);
+		return;
+	}
 
-//	T.Start		();
+	//Alundaio: Knowing last object to spawn can be very useful to debugging
+	if (Core.ParamFlags.test(Core.verboselog))
+		Msg("Try Spawning object Name:[%s] Section:[%s] ID:[%d] ParentID:[%d]", E->name_replace(), *E->s_name, E->ID,E->ID_Parent);
+
 #ifdef DEBUG_MEMORY_MANAGER
 	mem_alloc_gather_stats		(false);
 #endif // DEBUG_MEMORY_MANAGER
-	if (0==O || (!O->net_Spawn	(E))) 
+	if (!O->net_Spawn(E))
 	{
 		O->net_Destroy			( );
 		client_spawn_manager().clear(O->ID());
@@ -126,7 +125,6 @@ void CLevel::g_sv_Spawn		(CSE_Abstract* E)
 		mem_alloc_gather_stats	(!!psAI_Flags.test(aiDebugOnFrameAllocs));
 #endif // DEBUG_MEMORY_MANAGER
 		client_spawn_manager().callback(O);
-		//Msg			("--spawn--SPAWN: %f ms",1000.f*T.GetAsync());
 		
 		if ((E->s_flags.is(M_SPAWN_OBJECT_LOCAL)) && 
 			(E->s_flags.is(M_SPAWN_OBJECT_ASPLAYER)) )	
@@ -185,7 +183,10 @@ void CLevel::g_sv_Spawn		(CSE_Abstract* E)
 
 	//---------------------------------------------------------
 	Game().OnSpawn				(O);
-	//---------------------------------------------------------
+
+	if (Core.ParamFlags.test(Core.verboselog))
+		Msg("[%d] net_Spawn successful", E->ID);
+
 #ifdef DEBUG_MEMORY_MANAGER
 	if (g_bMEMO) {
 		lua_gc					(ai().script_engine().lua(),LUA_GCCOLLECT,0);

@@ -44,17 +44,10 @@ void CUIActorMenu::SetActor(CInventoryOwner* io)
 	m_last_time			= Device.dwTimeGlobal;
 	m_pActorInvOwner	= io;
 	
-	if ( IsGameTypeSingle() )
-	{
-		if ( io )
-			m_ActorCharacterInfo->InitCharacter	(m_pActorInvOwner->object_id());
-		else
-			m_ActorCharacterInfo->ClearInfo();
-	}
+	if ( io )
+		m_ActorCharacterInfo->InitCharacter	(m_pActorInvOwner->object_id());
 	else
-	{
-		UpdateActorMP();
-	}
+		m_ActorCharacterInfo->ClearInfo();
 }
 
 void CUIActorMenu::SetPartner(CInventoryOwner* io)
@@ -246,7 +239,8 @@ void CUIActorMenu::Update()
 	}
 	
 	inherited::Update();
-	m_ItemInfo->Update();
+	if (m_ItemInfo->CurrentItem())
+		m_ItemInfo->Update();
 	m_hint_wnd->Update();
 }
 
@@ -372,7 +366,7 @@ void CUIActorMenu::SetCurrentItem(CUICellItem* itm)
 
 void CUIActorMenu::InfoCurItem( CUICellItem* cell_item )
 {
-	if ( !cell_item )
+	if ( !cell_item || !cell_item->m_pData )
 	{
 		m_ItemInfo->InitItem( NULL );
 		return;

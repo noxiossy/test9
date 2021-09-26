@@ -96,14 +96,7 @@ void CWeaponKnife::OnStateSwitch	(u32 S)
 			//fHitPower		= fHitPower_1;
 			if (ParentIsActor())
 			{
-				if (GameID() == eGameIDSingle)
-				{
-					fCurrentHit			= fvHitPower_1[g_SingleGameDifficulty];
-				}
-				else
-				{
-					fCurrentHit			= fvHitPower_1[egdMaster];
-				}
+				fCurrentHit			= fvHitPower_1[g_SingleGameDifficulty];
 			}
 			else
 			{
@@ -120,14 +113,7 @@ void CWeaponKnife::OnStateSwitch	(u32 S)
 			//fHitPower		= fHitPower_2;
 			if (ParentIsActor())
 			{
-				if (GameID() == eGameIDSingle)
-				{
-					fCurrentHit			= fvHitPower_2[g_SingleGameDifficulty];
-				}
-				else
-				{
-					fCurrentHit			= fvHitPower_2[egdMaster];
-				}
+				fCurrentHit			= fvHitPower_2[g_SingleGameDifficulty];
 			}
 			else
 			{
@@ -689,12 +675,12 @@ void CWeaponKnife::make_hit_sort_vectors(Fvector & basis_hit_specific, float & m
 	{
 		//basis_hit_specific1.set(-1.f, 0.f, 0.f);
 		basis_hit_specific.set(0.f, 1.f, 0.f);
-		max_dist = 0.2;
+		max_dist = 0.2f;
 	} else // if (m_eHitType == m_eHitType_2)
 	{
 		//basis_hit_specific1.set(0.f, -1.f, 0.f);
 		basis_hit_specific.set(1.f, 0.f, 0.f);
-		max_dist = 0.1;
+		max_dist = 0.1f;
 	}
 }
 

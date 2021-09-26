@@ -16,7 +16,7 @@ bool CCar::DoorHit(float P,s16 element,ALife::EHitType hit_type)
 	if(hit_type==ALife::eHitTypeStrike && P > 20.f)
 	{
 		xr_map<u16,SDoor>::iterator	   i=m_doors.begin(),e=m_doors.end();
-		//for(;e!=i;++i)i->second.Open();
+		for(;e!=i;++i)i->second.Open();
 	}
 	xr_map   <u16,SDoor>::iterator i=m_doors.find(element);
 	if(i!=m_doors.end())
@@ -482,7 +482,7 @@ bool CCar::SDoor::CanExit(const Fvector& pos,const Fvector& dir)
 
 void CCar::SDoor::GetExitPosition(Fvector& pos)
 {
-//	if(!joint) 
+	if(!joint) 
 	{
 		IKinematics* K=PKinematics(pcar->Visual());
 		//CBoneInstance bi=K->LL_GetBoneInstance(bone_id);
@@ -509,7 +509,7 @@ void CCar::SDoor::GetExitPosition(Fvector& pos)
 		pos.add(add1);
 		return;
 	}
-/*	float lo_ext,hi_ext;
+	float lo_ext,hi_ext;
 	Fvector door_axis,door_pos,door_dir,closed_door_dir,add;
 	joint->GetAxisDirDynamic(0,door_axis);
 	joint->GetAnchorDynamic(door_pos);
@@ -541,7 +541,7 @@ void CCar::SDoor::GetExitPosition(Fvector& pos)
 	add.normalize();
 	if(hi_ext>-lo_ext)add.mul(hi_ext);
 	else			  add.mul(lo_ext);
-	pos.add(add);*/
+	pos.add(add);
 }
 
 

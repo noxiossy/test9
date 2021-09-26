@@ -20,6 +20,7 @@
 #include "artefact.h"
 #include "IKLimbsController.h"
 #include "player_hud.h"
+#include "WeaponKnife.h"
 
 static const float y_spin0_factor		= 0.0f;
 static const float y_spin1_factor		= 0.4f;
@@ -387,7 +388,6 @@ void CActor::g_SetAnimation( u32 mstate_rl )
 	{
 		g_SetSprintAnimation			(mstate_rl,M_head,M_torso,M_legs);
 		moving_idx						= STorsoWpn::eSprint;
-		M_torso = ST->m_torso[4].moving[moving_idx]; //Alundaio: Fix torso animations for no weapon
 	}
 
 	if (this == Level().CurrentViewEntity())
@@ -416,9 +416,6 @@ void CActor::g_SetAnimation( u32 mstate_rl )
 	{
 		CInventoryItem* _i = inventory().ActiveItem();
 		CHudItem		*H = smart_cast<CHudItem*>(_i);
-		CWeapon			*W = smart_cast<CWeapon*>(_i);
-		CMissile		*M = smart_cast<CMissile*>(_i);
-		CArtefact		*A = smart_cast<CArtefact*>(_i);
 					
 		if (H) {
 			VERIFY(H->animation_slot() <= _total_anim_slots_);
@@ -437,19 +434,33 @@ void CActor::g_SetAnimation( u32 mstate_rl )
 			{
 				if (!m_bAnimTorsoPlayed) 
 				{
+					CWeapon			*W = smart_cast<CWeapon*>(_i);
+					CMissile		*M = smart_cast<CMissile*>(_i);
+					CArtefact		*A = smart_cast<CArtefact*>(_i);
+		
 					if (W) 
 					{
-						bool K	=inventory().GetActiveSlot() == KNIFE_SLOT;
 						bool R3 = W->IsTriStateReload();
 						
-						if(K)
+						if (smart_cast<CWeaponKnife*>(W))
 						{
 							switch (W->GetState())
 							{
 							case CWeapon::eIdle:		M_torso	= TW->moving[moving_idx];		break;
 							
-							case CWeapon::eFire:		M_torso = TW->attack_zoom;				break;
-							case CWeapon::eFire2:		M_torso = TW->fire_idle;				break;
+							case CWeapon::eFire:	
+								if(is_standing)
+														M_torso = M_legs = M_head = TW->all_attack_0;
+								else
+														M_torso	= TW->attack_zoom;
+								break;
+
+							case CWeapon::eFire2:
+								if(is_standing)
+														M_torso = M_legs = M_head = TW->all_attack_1;
+								else
+														M_torso	= TW->fire_idle;
+								break;
 
 							case CWeapon::eReload:		M_torso	= TW->reload;					break;
 							case CWeapon::eShowing:		M_torso	= TW->draw;						break;
@@ -484,6 +495,9 @@ void CActor::g_SetAnimation( u32 mstate_rl )
 							default				 :  M_torso	= TW->moving[moving_idx];	break;
 							}
 						}
+
+						if (!M_torso)
+							M_torso = ST->m_torso[4].moving[moving_idx]; //Alundaio: Fix torso animations for binoc
 					}
 					else if (M) 
 					{
@@ -514,11 +528,10 @@ void CActor::g_SetAnimation( u32 mstate_rl )
 				}
 			}
 		}
+		else if (!m_bAnimTorsoPlayed)
+			M_torso = ST->m_torso[4].moving[moving_idx]; //Alundaio: Fix torso animations for no weapon
 	}
 	MotionID		mid = smart_cast<IKinematicsAnimated*>(Visual())->ID_Cycle("norm_idle_0");
-
-	if (!inventory().ActiveItem())
-			M_torso = ST->m_torso[6].moving[moving_idx];
 
 	if (!M_legs)
 	{

@@ -4,7 +4,7 @@
 #include "actorEffector.h"
 #include "inventory.h"
 #include "level.h"
-#include "sleepeffector.h"
+
 #include "game_base_space.h"
 #include "autosave_manager.h"
 #include "xrserver.h"
@@ -27,9 +27,7 @@
 
 BOOL	GodMode	()	
 { 
-	if (GameID() == eGameIDSingle) 
-		return psActorFlags.test(AF_GODMODE|AF_GODMODE_RT); 
-	return FALSE;	
+	return psActorFlags.test(AF_GODMODE|AF_GODMODE_RT); 
 }
 
 CActorCondition::CActorCondition(CActor *object) :
@@ -185,12 +183,10 @@ void CActorCondition::UpdateCondition()
 
 		m_fAlcohol		+= m_fV_Alcohol*m_fDeltaTime;
 		clamp			(m_fAlcohol,			0.0f,		1.0f);
-		if(IsGameTypeSingle())
-		{
-			CEffectorCam* ce = Actor()->Cameras().GetCamEffector((ECamEffectorType)effAlcohol);
-			if(ce)
-				RemoveEffector(m_object,effAlcohol);
-		}
+
+		CEffectorCam* ce = Actor()->Cameras().GetCamEffector((ECamEffectorType)effAlcohol);
+		if(ce)
+			RemoveEffector(m_object,effAlcohol);
 	}
 
 	if (GodMode())				return;
@@ -211,27 +207,22 @@ void CActorCondition::UpdateCondition()
 		ConditionStand( cur_weight / base_weight );
 	}
 	
-	if ( IsGameTypeSingle() )
+	float k_max_power = 1.0f;
+	if( true )
 	{
-		float k_max_power = 1.0f;
-		if( true )
-		{
-			k_max_power = 1.0f + _min(cur_weight, base_weight) / base_weight
-				+ _max(0.0f, (cur_weight - base_weight) / 10.0f);
-		}
-		else
-		{
-			k_max_power = 1.0f;
-		}
-		SetMaxPower		(GetMaxPower() - m_fPowerLeakSpeed * m_fDeltaTime * k_max_power);
+		k_max_power = 1.0f + _min(cur_weight, base_weight) / base_weight
+			+ _max(0.0f, (cur_weight - base_weight) / 10.0f);
 	}
+	else
+	{
+		k_max_power = 1.0f;
+	}
+	SetMaxPower		(GetMaxPower() - m_fPowerLeakSpeed * m_fDeltaTime * k_max_power);
 
 
 	m_fAlcohol		+= m_fV_Alcohol*m_fDeltaTime;
 	clamp			(m_fAlcohol,			0.0f,		1.0f);
 
-	if ( IsGameTypeSingle() )
-	{	
 		CEffectorCam* ce = Actor()->Cameras().GetCamEffector((ECamEffectorType)effAlcohol);
 		if	((m_fAlcohol>0.0001f) ){
 			if(!ce){
@@ -268,17 +259,15 @@ void CActorCondition::UpdateCondition()
 		}
 //-		if(fis_zero(GetPsyHealth()))
 //-			SetHealth( 0.0f );
-	};
 
 	UpdateSatiety();
 	UpdateBoosters();
 
 	inherited::UpdateCondition();
 
-	if( IsGameTypeSingle() )
-		UpdateTutorialThresholds();
+	UpdateTutorialThresholds();
 
-	if(GetHealth()<0.05f && m_death_effector==NULL && IsGameTypeSingle())
+	if(GetHealth()<0.05f && m_death_effector==NULL)
 	{
 		if(pSettings->section_exist("actor_death_effector"))
 			m_death_effector = xr_new<CActorDeathEffector>(this, "actor_death_effector");
@@ -301,7 +290,7 @@ void CActorCondition::UpdateBoosters()
 		BOOSTER_MAP::iterator it = m_booster_influences.find((EBoostParams)i);
 		if(it!=m_booster_influences.end())
 		{
-			it->second.fBoostTime -= m_fDeltaTime/(IsGameTypeSingle()?Level().GetGameTimeFactor():1.0f);
+			it->second.fBoostTime -= m_fDeltaTime/(Level().GetGameTimeFactor());
 			if(it->second.fBoostTime<=0.0f)
 			{
 				DisableBoostParameters(it->second);
@@ -431,12 +420,6 @@ void CActorCondition::UpdateRadiation()
 
 void CActorCondition::UpdateSatiety()
 {
- 	if (!IsGameTypeSingle()) 
-	{
-		m_fDeltaPower += m_fV_SatietyPower * m_fDeltaTime;
- 		return;
-	}
-
 	if(m_fSatiety>0)
 	{
 		m_fSatiety -= m_fV_Satiety*m_fDeltaTime;
@@ -465,6 +448,8 @@ void CActorCondition::PowerHit(float power, bool apply_outfit)
 //weight - "удельный" вес от 0..1
 void CActorCondition::ConditionJump(float weight)
 {
+	if (GodMode())
+		return;
 	float power			=	m_fJumpPower;
 	power				+=	m_fJumpWeightPower*weight*(weight>1.f?m_fOverweightJumpK:1.f);
 	m_fPower			-=	HitPowerEffect(power);
@@ -500,7 +485,7 @@ bool CActorCondition::IsCantWalk() const
 
 bool CActorCondition::IsCantWalkWeight()
 {
-	if(IsGameTypeSingle() && !GodMode())
+	if(!GodMode())
 	{
 		float max_w	= m_object->MaxWalkWeight();
 
@@ -732,7 +717,7 @@ void CActorCondition::BoostChemicalBurnProtection(const float value)
 
 void CActorCondition::UpdateTutorialThresholds()
 {
-	string256						cb_name;
+/* 	string256						cb_name;
 	static float _cPowerThr			= pSettings->r_float("tutorial_conditions_thresholds","power");
 	static float _cPowerMaxThr		= pSettings->r_float("tutorial_conditions_thresholds","max_power");
 	static float _cBleeding			= pSettings->r_float("tutorial_conditions_thresholds","bleeding");
@@ -799,7 +784,7 @@ void CActorCondition::UpdateTutorialThresholds()
 		luabind::functor<LPCSTR>			fl;
 		R_ASSERT							(ai().script_engine().functor<LPCSTR>(cb_name,fl));
 		fl									();
-	}
+	} */
 }
 
 bool CActorCondition::DisableSprint(SHit* pHDS)

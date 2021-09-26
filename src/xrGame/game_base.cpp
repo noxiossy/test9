@@ -9,10 +9,9 @@ u64		g_qwStartGameTime		= 12*60*60*1000;
 float	g_fTimeFactor			= pSettings->r_float("alife","time_factor");
 u64		g_qwEStartGameTime		= 12*60*60*1000;
 
-EGameIDs ParseStringToGameType(LPCSTR str);
-
 game_PlayerState::game_PlayerState(NET_Packet* account_info)
 {
+	GameID				= 0;
 	skin				= 0;
 	m_online_time		= 0;
 	team				= 0;
@@ -194,7 +193,7 @@ game_TeamState::game_TeamState()
 
 game_GameState::game_GameState()
 {
-	m_type						= EGameIDs(u32(0));
+	m_type						= eGameIDSingle;// EGameIDs(u32(0));
 	m_phase						= GAME_PHASE_NONE;
 	m_round						= -1;
 	m_round_start_time_str[0]	= 0;
@@ -210,33 +209,7 @@ game_GameState::game_GameState()
 
 CLASS_ID game_GameState::getCLASS_ID(LPCSTR game_type_name, bool isServer)
 {
-	EGameIDs gameID = ParseStringToGameType(game_type_name);
-	switch(gameID)
-	{
-	case eGameIDSingle:
-		return			(isServer)?TEXT2CLSID("SV_SINGL"):TEXT2CLSID("CL_SINGL");
-		break;
-
-	case eGameIDDeathmatch:
-		return			(isServer)?TEXT2CLSID("SV_DM"):TEXT2CLSID("CL_DM");
-		break;
-
-	case eGameIDTeamDeathmatch:
-		return			(isServer)?TEXT2CLSID("SV_TDM"):TEXT2CLSID("CL_TDM");
-		break;
-
-	case eGameIDArtefactHunt:
-		return			(isServer)?TEXT2CLSID("SV_AHUNT"):TEXT2CLSID("CL_AHUNT");
-		break;
-
-	case eGameIDCaptureTheArtefact:
-		return			(isServer)?TEXT2CLSID("SV_CTA"):TEXT2CLSID("CL_CTA");
-		break;
-
-	default:
-		return			(TEXT2CLSID(""));
-		break;
-	}
+	return (isServer)?TEXT2CLSID("SV_SINGL"):TEXT2CLSID("CL_SINGL");
 }
 
 void game_GameState::switch_Phase		(u32 new_phase)

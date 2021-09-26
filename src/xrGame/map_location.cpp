@@ -61,8 +61,6 @@ CMapLocation::CMapLocation(LPCSTR type, u16 object_id)
 	m_cached.m_Position.set	(10000,10000);
 	m_cached.m_updatedFrame = u32(-1);
 	m_cached.m_graphID		= GameGraph::_GRAPH_ID(-1);
-	if(!IsGameTypeSingle())
-		m_cached.m_LevelName = Level().name();
 }
 
 CMapLocation::~CMapLocation()
@@ -523,8 +521,6 @@ void CMapLocation::UpdateSpotPointer(CUICustomMap* map, CMapSpotPointer* sp )
 		Fvector ttt;
 		ttt.set		(tt.x, 0.0f, tt.y);
 
-		if (IsGameTypeSingle())
-		{
 			float dist_to_target = Level().CurrentEntity()->Position().distance_to(ttt);
 			CGameTask*	task = Level().GameTaskManager().HasGameTask(this, true);
 			if ( task )
@@ -546,7 +542,6 @@ void CMapLocation::UpdateSpotPointer(CUICustomMap* map, CMapSpotPointer* sp )
 				a=100;
 
 			sp->SetTextureColor( subst_alpha(clr,a));
-		}
 	}
 }
 

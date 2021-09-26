@@ -176,7 +176,9 @@ protected:
 	//для подсчета состояния открытых ран,
 	//запоминается кость куда был нанесен хит
 	//и скорость потери крови из раны
+public:
 	DEFINE_VECTOR(CWound*, WOUND_VECTOR, WOUND_VECTOR_IT);
+protected:
 	WOUND_VECTOR			m_WoundVector;
 	//очистка массива ран
 	

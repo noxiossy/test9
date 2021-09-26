@@ -29,7 +29,7 @@
 #include "../CustomOutfit.h"
 #include "../ActorHelmet.h"
 #include "../UICursor.h"
-#include "../MPPlayersBag.h"
+
 #include "../player_hud.h"
 #include "../CustomDetector.h"
 #include "../PDA.h"
@@ -128,8 +128,6 @@ void CUIActorMenu::SendEvent_Item_Eat(PIItem pItem, u16 recipient)
 void CUIActorMenu::SendEvent_Item_Drop(PIItem pItem, u16 recipient)
 {
 	R_ASSERT(pItem->parent_id()==recipient);
-	if (!IsGameTypeSingle())
-		pItem->DenyTrade();
 	//pItem->SetDropManual			(TRUE);
 	NET_Packet					P;
 	pItem->object().u_EventGen	(P,GE_OWNERSHIP_REJECT,pItem->parent_id());
@@ -334,9 +332,6 @@ void CUIActorMenu::OnInventoryAction(PIItem pItem, u16 action_type)
 					CUIDragDropListEx* curr = all_lists[i];
 					if(RemoveItemFromList(curr, pItem))
 					{
-#ifndef MASTER_GOLD
-						Msg("all ok. item [%d] removed from list", pItem->object_id());
-#endif // #ifndef MASTER_GOLD
 						break;
 					}
 					++i;
@@ -391,11 +386,12 @@ void CUIActorMenu::InitCellForSlot( u16 slot_idx )
 	//VERIFY( KNIFE_SLOT <= slot_idx && slot_idx <= LAST_SLOT );
 	PIItem item	= m_pActorInvOwner->inventory().ItemFromSlot(slot_idx);
 	if ( !item )
-	{
 		return;
-	}
 
-	CUIDragDropListEx* curr_list	= GetSlotList( slot_idx );
+	CUIDragDropListEx* curr_list = GetSlotList( slot_idx );
+	if (!curr_list)
+		return;
+
 	CUICellItem* cell_item			= create_cell_item( item );
 	curr_list->SetItem( cell_item );
 	if ( m_currMenuMode == mmTrade && m_pPartnerInvOwner )
@@ -467,10 +463,6 @@ void CUIActorMenu::InitInventoryContents(CUIDragDropListEx* pBagList)
 	ite = ruck_list.end();
 	for ( ; itb != ite; ++itb )
 	{
-		CMPPlayersBag* bag = smart_cast<CMPPlayersBag*>( &(*itb)->object() );
-		if ( bag )
-			continue;
-
 		CUICellItem* itm = create_cell_item( *itb );
 		curr_list->SetItem(itm);
 		if (m_currMenuMode == mmTrade && m_pPartnerInvOwner)
@@ -502,10 +494,6 @@ bool CUIActorMenu::TryActiveSlot(CUICellItem* itm)
 		}
 		SendEvent_ActivateSlot( slot, m_pActorInvOwner->object_id() );
 		return true;
-	}
-	if ( slot == DETECTOR_SLOT )
-	{
-
 	}
 	return false;
 }
@@ -585,6 +573,9 @@ bool CUIActorMenu::ToSlot(CUICellItem* itm, bool force_place, u16 slot_id)
 			old_owner->SetItem(child);
 		}
 
+		if (!new_owner->CanSetItem(i))
+			return ToSlot(i, true, slot_id);
+		
 		new_owner->SetItem					(i);
 
 		SendEvent_Item2Slot					(iitem, m_pActorInvOwner->object_id(), slot_id);
@@ -870,14 +861,18 @@ bool CUIActorMenu::ToQuickSlot(CUICellItem* itm)
 	if(!eat_item)
 		return false;
 
+	//Update: Should not be necessary now
 	//Alundaio: Fix deep recursion if placing icon greater then col/row set in actor_menu.xml
-	Ivector2 iWH = iitem->GetInvGridRect().rb;
+/* 	Ivector2 iWH = iitem->GetInvGridRect().rb;
 	if (iWH.x > 1 || iWH.y > 1)
-		return false;
+		return false; */
 	//Alundaio: END
 		
 	u8 slot_idx = u8(m_pQuickSlot->PickCell(GetUICursor().GetCursorPosition()).x);
 	if(slot_idx==255)
+		return false;
+	
+	if (!m_pQuickSlot->CanSetItem(itm))
 		return false;
 
 	m_pQuickSlot->SetItem(create_cell_item(iitem), GetUICursor().GetCursorPosition());
@@ -1068,7 +1063,7 @@ void CUIActorMenu::PropertiesBoxForWeapon( CUICellItem* cell_item, PIItem item, 
 		{
 		}
 	}
-	if ( smart_cast<CWeaponMagazined*>(pWeapon) && IsGameTypeSingle() )
+	if ( smart_cast<CWeaponMagazined*>(pWeapon) )
 	{
 		bool b = ( pWeapon->GetAmmoElapsed() !=0 );
 		if ( !b )

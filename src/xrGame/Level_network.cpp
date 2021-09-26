@@ -29,7 +29,6 @@ extern bool	g_b_ClearGameCaptions;
 
 void CLevel::remove_objects	()
 {
-	if (!IsGameTypeSingle()) Msg("CLevel::remove_objects - Start");
 	BOOL						b_stored = psDeviceFlags.test(rsDisableObjectsAsCrows);
 	
 	int loop = 5;
@@ -102,7 +101,6 @@ void CLevel::remove_objects	()
 
 //.	xr_delete									(m_seniority_hierarchy_holder);
 //.	m_seniority_hierarchy_holder				= xr_new<CSeniorityHierarchyHolder>();
-	if (!IsGameTypeSingle()) Msg("CLevel::remove_objects - End");
 }
 
 #ifdef DEBUG
@@ -168,18 +166,8 @@ void CLevel::net_Stop		()
 
 void CLevel::ClientSend()
 {
-	//if (GameID() == eGameIDSingle || OnClient())
-	if (GameID() != eGameIDSingle && OnClient())
-	{
-		if ( !net_HasBandwidth() ) return;
-	};
-
 	NET_Packet				P;
 	u32						start	= 0;
-	//----------- for E3 -----------------------------
-//	if () 
-	{
-//		if (!(Game().local_player) || Game().local_player->testFlag(GAME_PLAYER_FLAG_VERY_VERY_DEAD)) return;
 		if (CurrentControlEntity()) 
 		{
 			CObject* pObj = CurrentControlEntity();
@@ -201,11 +189,6 @@ void CLevel::ClientSend()
 			}			
 		}		
 	};
-	if (m_file_transfer)
-	{
-		m_file_transfer->update_transfer();
-		m_file_transfer->stop_obsolete_receivers();
-	}
 	if (OnClient()) 
 	{
 		Flush_Send_Buffer();
@@ -295,12 +278,6 @@ void CLevel::Send		(NET_Packet& P, u32 dwFlags, u32 dwTimeout)
 		Server->OnMessageSync	(P,Game().local_svdpnid	);
 	}else											
 		IPureClient::Send	(P,dwFlags,dwTimeout	);
-
-	if (g_pGameLevel && Level().game && GameID() != eGameIDSingle && !g_SV_Disable_Auth_Check)		{
-		// anti-cheat
-		phTimefactor		= 1.f					;
-		psDeviceFlags.set	(rsConstantFPS,FALSE)	;	
-	}
 }
 
 void CLevel::net_Update	()
@@ -462,32 +439,12 @@ void CLevel::OnConnectResult(NET_Packet*	P)
 			}break;
 		case ecr_have_been_banned:
 			{
-				if (!xr_strlen(ResultStr))
-				{
-					MainMenu()->OnSessionTerminate(
-						CStringTable().translate("st_you_have_been_banned").c_str()
-					);
-				} else
-				{
-					MainMenu()->OnSessionTerminate(
-						CStringTable().translate(ResultStr).c_str()
-					);
-				}
+
 			}break;
 		case ecr_profile_error:
 			{
-				if (!xr_strlen(ResultStr))
-				{
-					MainMenu()->OnSessionTerminate(
-						CStringTable().translate("st_profile_error").c_str()
-					);
-				} else
-				{
-					MainMenu()->OnSessionTerminate(
-						CStringTable().translate(ResultStr).c_str()
-					);
-				}
-			}
+				
+			}break;
 		}
 	};	
 	m_sConnectResult			= ResultStr;

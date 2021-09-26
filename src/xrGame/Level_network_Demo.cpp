@@ -152,21 +152,8 @@ void CLevel::SaveDemoHeader(shared_str const & server_options)
 
 void CLevel::SaveDemoInfo()
 {
-	game_cl_mp* tmp_game = smart_cast<game_cl_mp*>(&Game());
-	if (!tmp_game)
-		return;
+	return;
 	
-	R_ASSERT(m_writer);
-	
-	u32 old_pos = m_writer->tell();
-	m_writer->seek(m_demo_info_file_pos);
-	if (!m_demo_info)
-	{
-		m_demo_info = xr_new<demo_info>();
-	}
-	m_demo_info->load_from_game();
-	m_demo_info->write_to_file(m_writer);
-	m_writer->seek(old_pos);
 }
 
 void CLevel::SavePacket(NET_Packet& packet)

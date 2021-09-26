@@ -15,12 +15,15 @@ player_hud* g_player_hud = NULL;
 Fvector _ancor_pos;
 Fvector _wpn_root_pos;
 
+Fvector m_hud_offset_pos = { 0.f, 0.f, 0.f }; //only in hud adj mode
+Fvector m_hand_offset_pos = { 0.f, 0.f, 0.f };
+
 float CalcMotionSpeed(const shared_str& anim_name)
 {
 
-	if(!IsGameTypeSingle() && (anim_name=="anm_show" || anim_name=="anm_hide") )
-		return 2.0f;
-	else
+	//if(!IsGameTypeSingle() && (anim_name=="anm_show" || anim_name=="anm_hide") )
+	//	return 2.0f;
+	//else		// LR_DEVS CHECK !!!
 		return 1.0f;
 }
 
@@ -83,10 +86,10 @@ void player_hud_motion_container::load(IKinematicsAnimated* model, const shared_
 
 				motion_ID				= model->ID_Cycle_Safe(buff);
 				
-                if (!motion_ID.valid() && i == 0)
-                {
-                    motion_ID = model->ID_Cycle_Safe("hand_idle_doun");
-                }
+                //if (!motion_ID.valid() && i == 0)
+                //{
+                //   motion_ID = model->ID_Cycle_Safe("hand_idle_doun");
+                //}
 				if(motion_ID.valid())
 				{
 					pm->m_animations.resize			(pm->m_animations.size()+1);
@@ -104,7 +107,8 @@ void player_hud_motion_container::load(IKinematicsAnimated* model, const shared_
 
 Fvector& attachable_hud_item::hands_attach_pos()
 {
-	return m_measures.m_hands_attach[0];
+	Fvector v; v.set(m_measures.m_hands_attach[0]).add(m_hand_offset_pos);
+	return v;
 }
 
 Fvector& attachable_hud_item::hands_attach_rot()
@@ -114,8 +118,9 @@ Fvector& attachable_hud_item::hands_attach_rot()
 
 Fvector& attachable_hud_item::hands_offset_pos()
 {
-	u8 idx	= m_parent_hud_item->GetCurrentHudOffsetIdx();
-	return m_measures.m_hands_offset[0][idx];
+	u8 idx = m_parent_hud_item->GetCurrentHudOffsetIdx();
+	Fvector v; v.set(m_measures.m_hands_offset[0][idx]).add(m_hud_offset_pos);
+	return v;
 }
 
 Fvector& attachable_hud_item::hands_offset_rot()
@@ -394,7 +399,7 @@ u32 attachable_hud_item::anim_play(const shared_str& anm_name_b, BOOL bMixIn, co
 	//R_ASSERT2		(parent_object, "object has no parent actor");
 	//CObject*		parent_object = static_cast_checked<CObject*>(&m_parent_hud_item->object());
 
-	if (IsGameTypeSingle() && parent_object.H_Parent() == Level().CurrentControlEntity())
+	if (parent_object.H_Parent() == Level().CurrentControlEntity())
 	{
 		CActor* current_actor	= static_cast_checked<CActor*>(Level().CurrentControlEntity());
 		VERIFY					(current_actor);
