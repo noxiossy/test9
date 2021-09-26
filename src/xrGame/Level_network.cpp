@@ -188,7 +188,7 @@ void CLevel::ClientSend()
 				}				
 			}			
 		}		
-	};
+
 	if (OnClient()) 
 	{
 		Flush_Send_Buffer();
