@@ -17,7 +17,6 @@
 #include "clsid_game.h"
 #include "actor.h"
 #include "weapon.h"
-#include "game_cl_base_weapon_usage_statistic.h"
 
 #include "../xrEngine/IGame_Persistent.h"
 #include "ui/UIActorMenu.h"
@@ -811,206 +810,30 @@ void game_cl_CaptureTheArtefact::UpdateMapLocations()
 void game_cl_CaptureTheArtefact::OnSpawn(CObject* pObj)
 {
 	inherited::OnSpawn(pObj);
-	
-	CArtefact *pArtefact = smart_cast<CArtefact*>(pObj);
-	if (pArtefact)
-	{
-		Level().MapManager().AddMapLocation(ARTEFACT_NEUTRAL, pObj->ID())->EnablePointer();
-		/*if (OnServer()) // huck :( - server logic must be ONLY ON SERVER !!!
-		{
-			if (GetGreenArtefactID() == pArtefact->ID())
-			{
-				pArtefact->MoveTo(GetGreenArtefactRPoint());
-			} else if (GetBlueArtefactID() == pArtefact->ID())
-			{
-				pArtefact->MoveTo(GetBlueArtefactRPoint());
-			} else
-			{
-				VERIFY2(false, "unknown artefact in game");
-			}
-		}*/
-		return;
-	}
-	CActor *pActor = smart_cast<CActor*>(pObj);
-	if (pActor && local_player)
-	{
-		game_PlayerState *ps = GetPlayerByGameID(pActor->ID());
-		if (!ps)
-			return;
-		
-		if (m_reward_generator)
-		{
-			m_reward_generator->init_bone_groups(pActor);
-			m_reward_generator->OnPlayerSpawned(ps);
-		}
-
-		//VERIFY(ps);
-		if ((ps->team == local_player->team) && (ps != local_player))
-		{
-			Level().MapManager().AddMapLocation(FRIEND_LOCATION, pObj->ID());
-		}
-		if (ps == local_player)
-		{
-			buy_amount = 0;
-			if (m_game_ui)
-			{
-				m_game_ui->HideBuyMenu();
-			}
-		}
-	}
-	if (smart_cast<CWeapon*>(pObj))
-	{
-		if (pObj->H_Parent())
-		{
-			game_PlayerState *ps = GetPlayerByGameID(pObj->H_Parent()->ID());
-			if (ps)
-			{
-				m_WeaponUsageStatistic->OnWeaponBought(ps, pObj->cNameSect().c_str());
-			}
-		}
-	}
 }
 
 void game_cl_CaptureTheArtefact::SetInvinciblePlayer(u16 const gameId, bool const invincible)
 {
-	CObject* pObject	= Level().Objects.net_Find	(gameId);
-	
-	if (!pObject)
-		return;
-
-	if (!smart_cast<CActor*>(pObject))
-		return;
-
-	CActor* pActor		= static_cast<CActor*>		(pObject);
-	VERIFY(pActor);
-	/*if (invincible)
-		Msg("---Player %d is invincible now...", gameId);
-	else
-		Msg("---Player %d is not invincible now...", gameId);*/
-
-	pActor->conditions().SetCanBeHarmedState		(!invincible);
+	return;
 }
 
 void game_cl_CaptureTheArtefact::OnPlayerFlagsChanged(game_PlayerState* ps)
 {
-	inherited::OnPlayerFlagsChanged	(ps);
-	if (!ps)
-		return;
-	
-	if (local_player == ps)
-	{
-		if (!m_player_on_base && ps->testFlag(GAME_PLAYER_FLAG_ONBASE))
-		{
-			OnPlayerEnterBase();
-			m_player_on_base = true;
-		}
-		if (m_player_on_base && !ps->testFlag(GAME_PLAYER_FLAG_ONBASE))
-		{
-			OnPlayerLeaveBase();
-			m_player_on_base = false;
-		}
-		if (ps->testFlag(GAME_PLAYER_FLAG_VERY_VERY_DEAD))
-		{
-			m_captions_manager.CanCallBuy(true);
-			if ( m_game_ui )
-			{
-				m_game_ui->HideActorMenu();
-				if (m_game_ui->GetBuyWnd())
-					m_game_ui->HideBuyMenu();
-			}
-		} else
-		{
-			if (m_game_ui && m_game_ui->IsBuySpawnShown())
-			{
-				m_game_ui->HideBuySpawn();
-			}
-		}
-	}
-	SetInvinciblePlayer(ps->GameID, ps->testFlag(GAME_PLAYER_FLAG_INVINCIBLE));
+	return;
 }
 
 void game_cl_CaptureTheArtefact::OnNewPlayerConnected(ClientID const & newClient)
 {
-	if (m_game_ui)
-	{
-		m_game_ui->UpdatePlayer(newClient);
-	}
+	return;
 }
 
 bool game_cl_CaptureTheArtefact::OnKeyboardPress(int key)
 {
-	if(inherited::OnKeyboardPress(key))	return true;
-
-	if (Level().IsDemoPlay() && (key != kSCORES) && (key != kCROUCH))
-		return false;
-
-	if ((Phase() == GAME_PHASE_INPROGRESS) && 
-		(m_game_ui) && 
-		(local_player && !local_player->IsSkip())
-		)
-	{
-		switch (key)
-		{
-			case kSCORES:
-				{
-					m_game_ui->ShowTeamPanels(true);
-					return true;
-				}break;
-			case kSKIN:
-				{
-					if (CanCallSkinMenu())
-					{
-						VERIFY(local_player);
-						m_game_ui->ShowSkinMenu(local_player->skin);
-					}
-				}break;
-			case kTEAM:
-				{
-					if (CanCallTeamSelectMenu())
-					{
-						m_game_ui->ShowTeamSelectMenu();
-					}
-				}break;
-			case kINVENTORY:
-				{
-					if ( m_game_ui->GetActorMenu().IsShown() )
-					{
-						m_game_ui->HideActorMenu();
-					}
-					else
-					{
-						if (CanCallInventoryMenu())
-						{
-							m_game_ui->ShowActorMenu();
-						}
-					}
-					return true;
-				}break;
-			case kBUY:
-				{
-					if (CanCallBuyMenu())
-					{
-						m_game_ui->ShowBuyMenu();
-					}
-
-				}break;
-		};
-	}
 	return false;
 }
 
 bool game_cl_CaptureTheArtefact::OnKeyboardRelease(int key)
 {
-	if(inherited::OnKeyboardRelease(key))	return true;
-
-	if (kSCORES == key )
-	{
-		if (m_game_ui && (Phase() == GAME_PHASE_INPROGRESS))
-		{
-			m_game_ui->ShowTeamPanels(false);
-		};
-		return true;
-	};
 	return false;
 }
 
