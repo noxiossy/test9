@@ -21,7 +21,6 @@
 #include "ui/UIActorMenu.h"
 #include "weapon.h"
 
-#include "game_cl_base_weapon_usage_statistic.h"
 #include "reward_event_generator.h"
 
 #include "game_cl_deathmatch_snd_messages.h"
@@ -1009,17 +1008,6 @@ void game_cl_Deathmatch::OnSpawn(CObject* pObj)
 			m_reward_generator->init_bone_groups(pActor);
 		}
 	};
-	if (smart_cast<CWeapon*>(pObj))
-	{
-		if (pObj->H_Parent())
-		{
-			game_PlayerState *ps = GetPlayerByGameID(pObj->H_Parent()->ID());
-			if (ps)
-			{
-				m_WeaponUsageStatistic->OnWeaponBought(ps, pObj->cNameSect().c_str());
-			}
-		}
-	}
 }
 
 void game_cl_Deathmatch::LoadSndMessages()
