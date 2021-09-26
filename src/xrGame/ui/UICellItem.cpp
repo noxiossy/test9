@@ -208,8 +208,6 @@ void CUICellItem::SetOwnerList(CUIDragDropListEx* p)
 
 void CUICellItem::UpdateConditionProgressBar()
 {
-	if (!m_pData)
-		return;
 
 	if(m_pParentList && m_pParentList->GetConditionProgBarVisibility())
 	{

@@ -68,10 +68,8 @@ CScriptGameObject* ActorMenuGetPartner_script(CUIActorMenu* menu)
 {
 	CInventoryOwner* io = menu->GetPartner();
 	if (io)
-	{
-		CGameObject* GO = smart_cast<CGameObject*>(io);
-		return GO->lua_game_object();
-	}
+		return io->cast_game_object()->lua_game_object();
+	
 	return (0);
 }
 
@@ -79,10 +77,8 @@ CScriptGameObject* ActorMenuGetInvbox_script(CUIActorMenu* menu)
 {
 	CInventoryBox* inv_box = menu->GetInvBox();
 	if (inv_box)
-	{
-		CGameObject* GO = smart_cast<CGameObject*>(inv_box);
-		return GO->lua_game_object();
-	}
+		return inv_box->cast_game_object()->lua_game_object();
+	
 	return (0);
 }
 
