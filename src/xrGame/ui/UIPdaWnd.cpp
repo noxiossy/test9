@@ -28,7 +28,6 @@
 #include "UILogsWnd.h"
 
 #include "UIScriptWnd.h"
-#include "script_engine.h"
 
 #define PDA_XML		"pda.xml"
 

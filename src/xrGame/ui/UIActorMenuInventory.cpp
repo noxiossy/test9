@@ -29,13 +29,12 @@
 #include "../CustomOutfit.h"
 #include "../ActorHelmet.h"
 #include "../UICursor.h"
-
+#include "../MPPlayersBag.h"
 #include "../player_hud.h"
 #include "../CustomDetector.h"
 #include "../PDA.h"
 
 #include "../actor_defs.h"
-#include "script_engine.h"
 
 using namespace luabind; //Alundaio
 

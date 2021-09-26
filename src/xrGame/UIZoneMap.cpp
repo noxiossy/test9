@@ -71,7 +71,7 @@ void CUIZoneMap::Init()
 
 void CUIZoneMap::Render			()
 {
-	if ( !visible /*|| CurrentGameUI()->GetActorMenu().IsShown()*/ )
+	if ( !visible || CurrentGameUI()->GetActorMenu().IsShown() )
 		return;
 
 	m_clipFrame.Draw	();
