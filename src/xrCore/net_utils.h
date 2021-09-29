@@ -216,11 +216,11 @@ public:
         CopyMemory(p, &B.data[r_pos], count);
         r_pos += count;
 		//Alun: To find the cause
-		if (r_pos > B.count)
-		{
-			LogStackTrace("---------r_pos > B.count-------");
-			Msg("count=%d r_pos=%d B.count=%d", count, r_pos, B.count);
-		}
+		//if (r_pos > B.count)
+		//{
+		//	LogStackTrace("---------r_pos > B.count-------");
+		//	Msg("count=%d r_pos=%d B.count=%d", count, r_pos, B.count);
+		//}
         VERIFY(r_pos <= B.count);
     }
     BOOL r_eof();
