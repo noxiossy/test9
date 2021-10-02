@@ -20,7 +20,7 @@ bool CLevel::Load_GameSpecific_Before()
 	g_pGamePersistent->LoadTitle		();
 	string_path							fn_game;
 	
-	if (GamePersistent().GameType() == eGameIDSingle && !ai().get_alife() && FS.exist(fn_game,"$level$","level.ai") && !net_Hosts.empty())
+	if (!ai().get_alife() && FS.exist(fn_game,"$level$","level.ai"))
 		ai().load						(net_SessionName());
 
 	if ( !ai().get_alife() && ai().get_game_graph() && FS.exist(fn_game, "$level$", "level.game")) {
@@ -110,6 +110,8 @@ bool CLevel::Load_GameSpecific_After()
 			Sounds_Random_Enabled	= FALSE;
 		}
 
+	g_pGamePersistent->Environment().SetGameTime(GetEnvironmentGameDayTimeSec(), game->GetEnvironmentGameTimeFactor());
+
 		if (g_pGamePersistent->pEnvironment)	// LR_DEVS CHECK
 			g_pGamePersistent->pEnvironment->Invalidate();
 
@@ -146,10 +148,6 @@ bool CLevel::Load_GameSpecific_After()
 		else
 			ai().script_engine().add_script_process(ScriptEngine::eScriptProcessorLevel,xr_new<CScriptProcess>("level",""));
 	}
-		
-	BlockCheatLoad();
-
-	g_pGamePersistent->Environment().SetGameTime	(GetEnvironmentGameDayTimeSec(),game->GetEnvironmentGameTimeFactor());
 
 	return TRUE;
 }
@@ -241,7 +239,4 @@ void CLevel::Load_GameSpecific_CFORM	( CDB::TRI* tris, u32 count )
 
 void CLevel::BlockCheatLoad()
 {
-#ifndef	DEBUG
-	if( game && (GameID() != eGameIDSingle) ) phTimefactor=1.f;
-#endif
 }
