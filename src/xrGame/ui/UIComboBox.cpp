@@ -81,6 +81,10 @@ CUIListBoxItem* CUIComboBox::AddItem_(LPCSTR str, int _data)
 	return				itm;
 }
 
+void CUIComboBox::SetFont(CGameFont* F)
+{
+	m_text->SetFont(F);
+}
 
 void CUIComboBox::OnListItemSelect()
 {
