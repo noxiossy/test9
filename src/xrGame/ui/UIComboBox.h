@@ -66,7 +66,7 @@ protected:
 
 
 	CUI_IB_FrameLineWnd	m_frameLine;
-	CUITextWnd			m_text;
+	CUIStatic			m_text;
 	CUIFrameWindow		m_list_frame;
 
 	u32					m_textColor[2];
