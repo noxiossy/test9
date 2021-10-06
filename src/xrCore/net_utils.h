@@ -217,11 +217,11 @@ public:
         r_pos += count;
 		
 		//Alun: To find the cause
-		if (Core.ParamFlags.test(Core.verboselog) && (r_pos > B.count))
+		/*if (Core.ParamFlags.test(Core.verboselog) && (r_pos > B.count))
 		{
 			LogStackTrace("---------r_pos > B.count-------");
 			Msg("count=%d r_pos=%d B.count=%d", count, r_pos, B.count);
-		}
+		}*/
 		//}
         VERIFY(r_pos <= B.count);
     }
