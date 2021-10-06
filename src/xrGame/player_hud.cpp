@@ -86,10 +86,10 @@ void player_hud_motion_container::load(IKinematicsAnimated* model, const shared_
 
 				motion_ID				= model->ID_Cycle_Safe(buff);
 				
-                //if (!motion_ID.valid() && i == 0)
-                //{
-                //   motion_ID = model->ID_Cycle_Safe("hand_idle_doun");
-                //}
+                if (!motion_ID.valid() && i == 0)
+                {
+                    motion_ID = model->ID_Cycle_Safe("hand_idle_doun");
+                }
 				if(motion_ID.valid())
 				{
 					pm->m_animations.resize			(pm->m_animations.size()+1);

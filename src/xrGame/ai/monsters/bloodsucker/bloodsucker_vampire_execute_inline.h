@@ -246,7 +246,7 @@ void CStateBloodsuckerVampireExecuteAbstract::look_head()
 {
 	IKinematics *pK = smart_cast<IKinematics*>(object->Visual());
 	Fmatrix bone_transform;
-	bone_transform = pK->LL_GetTransform(pK->LL_BoneID("bip01_head"));	
+	bone_transform = pK->LL_GetTransform(pK->LL_BoneID("bip01_neck"));	
 
 	Fmatrix global_transform;
 	global_transform.mul_43(object->XFORM(),bone_transform);

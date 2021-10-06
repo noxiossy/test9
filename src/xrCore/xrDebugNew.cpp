@@ -478,7 +478,7 @@ void SetupExceptionHandler(const bool& dedicated)
 	SetErrorMode(prevMode|SEM_NOGPFAULTERRORBOX);
     BT_InstallSehFilter();
 #if 1//ndef USE_OWN_ERROR_MESSAGE_WINDOW
-    if (!dedicated && !strstr(GetCommandLine(), "-silent_error_mode"))
+    if (!strstr(GetCommandLine(), "-silent_error_mode"))
         BT_SetActivityType(BTA_SHOWUI);
     else
         BT_SetActivityType(BTA_SAVEREPORT);

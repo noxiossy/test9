@@ -861,11 +861,10 @@ bool CUIActorMenu::ToQuickSlot(CUICellItem* itm)
 	if(!eat_item)
 		return false;
 
-	//Update: Should not be necessary now
 	//Alundaio: Fix deep recursion if placing icon greater then col/row set in actor_menu.xml
-/* 	Ivector2 iWH = iitem->GetInvGridRect().rb;
+	Ivector2 iWH = iitem->GetInvGridRect().rb;
 	if (iWH.x > 1 || iWH.y > 1)
-		return false; */
+		return false;
 	//Alundaio: END
 		
 	u8 slot_idx = u8(m_pQuickSlot->PickCell(GetUICursor().GetCursorPosition()).x);

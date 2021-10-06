@@ -150,7 +150,8 @@ void CUIWpnParams::SetInfo( CInventoryItem* slot_wpn, CInventoryItem& cur_wpn )
 	m_progressHandling.SetTwoPos( cur_hand,   slot_hand );
 	m_progressRPM.SetTwoPos(      cur_rpm,    slot_rpm );
 
-	xr_vector<shared_str> ammo_types;
+	{
+		xr_vector<shared_str> ammo_types;
 
 		CWeapon* weapon = cur_wpn.cast_weapon();
 		if(!weapon)
@@ -214,6 +215,7 @@ void CUIWpnParams::SetInfo( CInventoryItem* slot_wpn, CInventoryItem& cur_wpn )
 		m_stAmmoType2.SetStretchTexture(true);
 		m_stAmmoType2.SetWndSize(Fvector2().set((tex_rect.x2-tex_rect.x1)*UI().get_current_kx(), tex_rect.y2-tex_rect.y1));
 	}
+}
 
 bool CUIWpnParams::Check(const shared_str& wpn_section)
 {

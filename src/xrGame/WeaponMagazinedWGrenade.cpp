@@ -634,7 +634,7 @@ void CWeaponMagazinedWGrenade::PlayAnimIdle()
 		if (IsZoomed())
 		{
 			if (m_bGrenadeMode)
-				PlayHUDMotion("anm_idle_g_aim", FALSE, NULL, GetState());
+                PlayHUDMotion("anm_idle_g_aim", /*FALSE*/TRUE, NULL, GetState()); //AVO: fix fast anim switch
 			else
 				PlayHUDMotion("anm_idle_w_gl_aim", TRUE, NULL, GetState());
 		}
@@ -668,7 +668,7 @@ void CWeaponMagazinedWGrenade::PlayAnimIdle()
 			{
 				if (act_state == 0)
 				{
-					PlayHUDMotion("anm_idle_g", FALSE, NULL, GetState());
+                    PlayHUDMotion("anm_idle_g", /*FALSE*/TRUE, NULL, GetState()); //AVO: fix fast anim switch
 				}
 				else if (act_state == 1)
 				{
@@ -690,7 +690,7 @@ void CWeaponMagazinedWGrenade::PlayAnimIdle()
 			{
 				if (act_state == 0)
 				{
-					PlayHUDMotion("anm_idle_w_gl", FALSE, NULL, GetState());
+                    PlayHUDMotion("anm_idle_w_gl", /*FALSE*/TRUE, NULL, GetState()); //AVO: fix fast anim switch
 				}
 				else if (act_state == 1)
 				{

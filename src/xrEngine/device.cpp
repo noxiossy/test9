@@ -43,7 +43,6 @@ BOOL g_bLoaded = FALSE;
 
 BOOL CRenderDevice::Begin()
 {
-#ifndef DEDICATED_SERVER
     switch (m_pRender->GetDeviceState())
     {
     case IRenderDeviceRender::dsOK:
@@ -68,7 +67,7 @@ BOOL CRenderDevice::Begin()
 
     FPU::m24r();
     g_bRendering = TRUE;
-#endif
+	
     return TRUE;
 }
 
@@ -213,11 +212,11 @@ void CRenderDevice::on_idle()
 	// FPS Lock
 	u32 menuFPSlimit = 60, pauseFPSlimit = 60; //constexpr 
 	u32 curFPSLimit = IsMainMenuActive() ? menuFPSlimit : Device.Paused() ? pauseFPSlimit : g_dwFPSlimit;
-	if (g_dwFPSlimit > 0)
+	if (curFPSLimit > 0)
 	{
 		static DWORD dwLastFrameTime = 0;
 		DWORD dwCurrentTime = timeGetTime();
-		if (dwCurrentTime - dwLastFrameTime < 1000 / (g_dwFPSlimit + 1))
+		if (dwCurrentTime - dwLastFrameTime < 1000 / (curFPSLimit + 1))
 			return;
 		dwLastFrameTime = dwCurrentTime;
 	}
@@ -510,12 +509,10 @@ void CRenderDevice::OnWM_Activate(WPARAM wParam, LPARAM lParam)
             Device.seqAppActivate.Process(rp_AppActivate);
             app_inactive_time += TimerMM.GetElapsed_ms() - app_inactive_time_start;
 
-#ifndef DEDICATED_SERVER
 # ifdef INGAME_EDITOR
             if (!editor())
 # endif // #ifdef INGAME_EDITOR
                 ShowCursor(FALSE);
-#endif // #ifndef DEDICATED_SERVER
         }
         else
         {
