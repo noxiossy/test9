@@ -6,7 +6,7 @@
 #include "../../xrEngine/xrImage_Resampler.h"
 
 #if defined(USE_DX10) || defined(USE_DX11)
-#include "d3dx10tex.h"
+#include <d3dx/d3dx10tex.h>
 #endif	//	USE_DX10
 
 #define	GAMESAVE_SIZE	128
@@ -249,7 +249,7 @@ void CRender::ScreenshotImpl	(ScreenshotMode mode, LPCSTR name, CMemoryWriter* m
 	if (FAILED(hr))
 		goto _end_;
 
-	{// Image processing (gamma-correct)
+	// Image processing (gamma-correct)
 	u32* pPixel		= (u32*)D.pBits;
 	u32* pEnd		= pPixel+(Device.dwWidth*Device.dwHeight);
 	//	IGOR: Remove inverse color correction and kill alpha
@@ -280,7 +280,6 @@ void CRender::ScreenshotImpl	(ScreenshotMode mode, LPCSTR name, CMemoryWriter* m
 			color_get_G(p),
 			color_get_B(p)
 		);
-	}
 	}
 
 	hr					= pFB->UnlockRect();
