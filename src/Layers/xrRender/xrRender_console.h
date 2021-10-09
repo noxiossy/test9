@@ -16,7 +16,7 @@ extern ECORE_API	xr_token	qssao_mode_token[];
 
 extern ECORE_API	u32			ps_r_sun_quality;	//	=	0;
 extern ECORE_API	xr_token	qsun_quality_token[];
-/*
+
 extern ECORE_API	u32			ps_r3_msaa;	//	=	0;
 extern ECORE_API	xr_token	qmsaa_token[];
 
@@ -25,7 +25,7 @@ extern ECORE_API	xr_token	qmsaa__atest_token[];
 
 extern ECORE_API	u32			ps_r3_minmax_sm;//	=	0;
 extern ECORE_API	xr_token	qminmax_sm_token[];
-*/
+
 //extern ENGINE_API	int			ps_r__Supersample;
 extern ECORE_API	int			ps_r__LightSleepFrames;
 
@@ -58,17 +58,16 @@ enum
 };
 
 extern ECORE_API Flags32 ps_r__common_flags;
-/*
+
 // R1
 extern ECORE_API	float		ps_r1_ssaLOD_A;
 extern ECORE_API	float		ps_r1_ssaLOD_B;
 extern ECORE_API	float		ps_r1_tf_Mipbias;
 extern ECORE_API	float		ps_r1_lmodel_lerp;
 extern ECORE_API	float		ps_r1_dlights_clip;
-*/
 extern ECORE_API	float		ps_r1_pps_u;
 extern ECORE_API	float		ps_r1_pps_v;
-/*
+
 // R1-specific
 extern ECORE_API	int			ps_r1_GlowsPerFrame;	// r1-only
 extern ECORE_API	Flags32		ps_r1_flags;			// r1-only
@@ -80,7 +79,7 @@ enum
 {
 	R1FLAG_DLIGHTS				= (1<<0),
 };
-*/
+
 // R2
 extern ECORE_API	float		ps_r2_ssaLOD_A;
 extern ECORE_API	float		ps_r2_ssaLOD_B;
@@ -139,11 +138,10 @@ extern ECORE_API int			ps_r2_wait_sleep;
 extern ECORE_API Fvector3		ps_r2_dof;
 extern ECORE_API float			ps_r2_dof_sky;				//	distance to sky
 extern ECORE_API float			ps_r2_dof_kernel_size;		//	7.0f
-/*
+
 extern ECORE_API float			ps_r3_dyn_wet_surf_near;	// 10.0f
 extern ECORE_API float			ps_r3_dyn_wet_surf_far;		// 30.0f
 extern ECORE_API int			ps_r3_dyn_wet_surf_sm_res;	// 256
-*/
 extern u32 						r2_SmapSize;
 extern ECORE_API float			ps_r2_ss_sunshafts_length;
 extern ECORE_API float			ps_r2_ss_sunshafts_radius;
@@ -185,7 +183,7 @@ enum
 
 	R2FLAG_DETAIL_BUMP			= (1<<25),
 
-/*	R3FLAG_DYN_WET_SURF			= (1<<26),
+	R3FLAG_DYN_WET_SURF			= (1<<26),
 	R3FLAG_VOLUMETRIC_SMOKE		= (1<<27),
 
 	//R3FLAG_MSAA					= (1<<28),
@@ -193,7 +191,7 @@ enum
 	R3FLAG_MSAA_OPT				= (1<<29),
 	R3FLAG_GBUFFER_OPT			= (1<<30),
 	R3FLAG_USE_DX10_1			= (1<<31),
-	//R3FLAG_MSAA_ALPHATEST		= (1<<31),*/
+	//R3FLAG_MSAA_ALPHATEST		= (1<<31),
 };
 
 enum
@@ -208,7 +206,7 @@ enum
 	R_FLAGEXT_HOM_DEPTH_DRAW		= (1<<7),
 	R2FLAGEXT_SUN_ZCULLING			= (1<<8),
 	R2FLAGEXT_SUN_OLD				= (1<<9),
-	R2FLAGEXT_SHADER_CACHE 			= (1<<10),
+	R2FLAGEXT_SHADER_CACHE 			= 1 << 10,
 };
 
 extern ECORE_API int ps_r2_fxaa;
