@@ -19,7 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{893887A1-3ABF-40A0-B931-CD0867010785}</ProjectGuid>
+    <ProjectGuid>{15CBFEFF-7965-41F5-B4E2-21E8795C9159}</ProjectGuid>
     <RootNamespace>libogg</RootNamespace>
     <Keyword>Win32Proj</Keyword>
     <WindowsTargetPlatformVersion>10</WindowsTargetPlatformVersion>

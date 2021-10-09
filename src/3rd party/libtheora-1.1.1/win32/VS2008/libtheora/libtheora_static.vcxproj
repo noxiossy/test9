@@ -35,7 +35,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{0BDF3377-F84E-4B42-A605-B45AAA244CB6}</ProjectGuid>
+    <ProjectGuid>{653F3841-3F26-49B9-AFCF-091DB4B67031}</ProjectGuid>
     <RootNamespace>libtheora</RootNamespace>
     <Keyword>Win32Proj</Keyword>
     <WindowsTargetPlatformVersion>10</WindowsTargetPlatformVersion>
