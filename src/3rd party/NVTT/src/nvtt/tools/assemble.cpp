@@ -21,16 +21,17 @@
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 // OTHER DEALINGS IN THE SOFTWARE.
 
-#include <nvcore/StrLib.h>
-#include <nvcore/StdStream.h>
-
-#include <nvmath/Color.h>
-
-#include <nvimage/Image.h>
-#include <nvimage/ImageIO.h>
-#include <nvimage/DirectDrawSurface.h>
-
 #include "cmdline.h"
+
+#include "nvimage/Image.h"
+#include "nvimage/ImageIO.h"
+#include "nvimage/DirectDrawSurface.h"
+
+#include "nvmath/Color.h"
+
+#include "nvcore/Array.inl"
+#include "nvcore/StrLib.h"
+#include "nvcore/StdStream.h"
 
 // @@ Add decent error messages.
 // @@ Add option to resize images.
@@ -58,18 +59,18 @@ int main(int argc, char *argv[])
 			assembleVolume = false;
 			assembleTextureArray = false;
 		}
-		/*if (strcmp("-volume", argv[i]) == 0)
+		else if (strcmp("-volume", argv[i]) == 0)
 		{
 			assembleCubeMap = false;
 			assembleVolume = true;
 			assembleTextureArray = false;
 		}
-		if (strcmp("-array", argv[i]) == 0)
+		else if (strcmp("-array", argv[i]) == 0)
 		{
 			assembleCubeMap = false;
 			assembleVolume = false;
 			assembleTextureArray = true;
-		}*/
+		}
 		else if (strcmp("-o", argv[i]) == 0)
 		{
 			i++;
@@ -82,6 +83,10 @@ int main(int argc, char *argv[])
 		{
 			files.append(argv[i]);
 		}
+		else
+		{
+			printf("Warning: unrecognized option \"%s\"\n", argv[i]);
+		}
 	}
 	
 	if (files.count() == 0)
@@ -91,7 +96,7 @@ int main(int argc, char *argv[])
 		return 1;
 	}
 	
-	if (nv::strCaseCmp(output.extension(), ".dds") != 0)
+	if (nv::strCaseDiff(output.extension(), ".dds") != 0)
 	{
 		//output.stripExtension();
 		output.append(".dds");
@@ -114,7 +119,7 @@ int main(int argc, char *argv[])
 
 	for (uint i = 0; i < imageCount; i++)
 	{
-		if (!images[i].load(files[i]))
+		if (!images[i].load(files[i].str()))
 		{
 			printf("*** error loading file\n");
 			return 1;
@@ -137,8 +142,7 @@ int main(int argc, char *argv[])
 		}
 	}
 	
-	
-	nv::StdOutputStream stream(output);
+	nv::StdOutputStream stream(output.str());
 	if (stream.isError()) {
 		printf("Error opening '%s' for writting\n", output.str());
 		return 1;
@@ -160,12 +164,16 @@ int main(int argc, char *argv[])
 	}
 	else if (assembleTextureArray)
 	{
-		//header.setTextureArray(imageCount);
+		header.setTextureArray(imageCount);
 	}
 
 	// @@ It always outputs 32 bpp.
-	header.setPitch(4 * w);
-	header.setPixelFormat(32, 0xFF0000, 0xFF00, 0xFF, hasAlpha ? 0xFF000000 : 0);
+	if (!assembleTextureArray) {
+		header.setPitch(4 * w);
+		header.setPixelFormat(32, 0xFF0000, 0xFF00, 0xFF, hasAlpha ? 0xFF000000 : 0);
+	} else {
+		header.setDX10Format(hasAlpha ? nv::DXGI_FORMAT_B8G8R8A8_UNORM : nv::DXGI_FORMAT_B8G8R8X8_UNORM);
+	}
 
 	stream << header;
 

@@ -23,7 +23,7 @@
 	
    -------------------------------------------------------------------------- */
    
-#include <squish.h>
+#include "squish.h"
 #include "colourset.h"
 #include "maths.h"
 #include "rangefit.h"
@@ -85,8 +85,7 @@ void Compress( u8 const* rgba, void* block, int flags )
 	else
 	{
 		// default to a cluster fit
-		ClusterFit fit;
-		fit.SetColourSet( &colours, flags );
+		ClusterFit fit( &colours, flags );
 		fit.Compress( colourBlock );
 	}
 	

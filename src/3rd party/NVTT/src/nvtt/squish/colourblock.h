@@ -23,15 +23,14 @@
 	
    -------------------------------------------------------------------------- */
    
-#ifndef SQUISH_COLOURBLOCK_H
-#define SQUISH_COLOURBLOCK_H
+#ifndef NV_SQUISH_COLOURBLOCK_H
+#define NV_SQUISH_COLOURBLOCK_H
 
 #include "squish.h"
 #include "maths.h"
 
-namespace squish {
+namespace nvsquish {
 
-void WriteColourBlock( int a, int b, u8* indices, void* block );
 void WriteColourBlock3( Vec3::Arg start, Vec3::Arg end, u8 const* indices, void* block );
 void WriteColourBlock4( Vec3::Arg start, Vec3::Arg end, u8 const* indices, void* block );
 //void WriteColourBlock3( Vec3::Arg start, Vec3::Arg end, uint indices, void* block );
