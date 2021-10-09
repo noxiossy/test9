@@ -23,22 +23,14 @@
 	
    -------------------------------------------------------------------------- */
    
-#ifndef NV_SQUISH_MATHS_H
-#define NV_SQUISH_MATHS_H
-
-#if NV_USE_ALTIVEC
-#undef vector
-#endif
+#ifndef SQUISH_MATHS_H
+#define SQUISH_MATHS_H
 
 #include <cmath>
 #include <algorithm>
 #include "config.h"
 
-#if NV_USE_ALTIVEC
-#define vector __vector
-#endif
-
-namespace nvsquish {
+namespace squish {
 
 class Vec3
 {
@@ -242,6 +234,6 @@ private:
 Sym3x3 ComputeWeightedCovariance( int n, Vec3 const* points, float const* weights, Vec3::Arg metric );
 Vec3 ComputePrincipleComponent( Sym3x3 const& matrix );
 
-} // namespace nvsquish
+} // namespace squish
 
 #endif // ndef SQUISH_MATHS_H

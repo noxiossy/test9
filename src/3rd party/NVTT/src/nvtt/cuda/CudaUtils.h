@@ -1,5 +1,4 @@
-// Copyright (c) 2009-2011 Ignacio Castano <castano@gmail.com>
-// Copyright (c) 2007-2009 NVIDIA Corporation -- Ignacio Castano <icastano@nvidia.com>
+// Copyright NVIDIA Corporation 2007 -- Ignacio Castano <icastano@nvidia.com>
 // 
 // Permission is hereby granted, free of charge, to any person
 // obtaining a copy of this software and associated documentation
@@ -33,8 +32,10 @@ namespace nv
 		bool isHardwarePresent();
 		int deviceCount();
 		int getFastestDevice();
-		bool setDevice(int i);
-		void exit();
+		bool isValidDevice(int i);
+
+		bool initDevice(int * device_ptr);
+		void exitDevice();
 	};
 	
 } // nv namespace

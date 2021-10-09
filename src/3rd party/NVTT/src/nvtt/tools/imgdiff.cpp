@@ -21,20 +21,23 @@
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 // OTHER DEALINGS IN THE SOFTWARE.
 
-#include "cmdline.h"
+#include <nvcore/StrLib.h>
+#include <nvcore/StdStream.h>
+#include <nvcore/Containers.h>
 
-#include "nvtt/nvtt.h"
+#include <nvimage/Image.h>
+#include <nvimage/DirectDrawSurface.h>
 
-#include "nvcore/StrLib.h"
-#include "nvmath/nvmath.h"
+#include <nvmath/Color.h>
+#include <nvmath/Vector.h>
 
-#include <string.h> // strstr
 #include <math.h>
 
-/*
+#include "cmdline.h"
+
 static bool loadImage(nv::Image & image, const char * fileName)
 {
-	if (nv::strCaseDiff(nv::Path::extension(fileName), ".dds") == 0)
+	if (nv::strCaseCmp(nv::Path::extension(fileName), ".dds") == 0)
 	{
 		nv::DirectDrawSurface dds(fileName);
 		if (!dds.isValid())
@@ -58,6 +61,7 @@ static bool loadImage(nv::Image & image, const char * fileName)
 	return true;
 }
 
+// @@ Compute per-tile errors.
 struct Error
 {
 	Error()
@@ -68,12 +72,11 @@ struct Error
 		mse = 0.0f;
 	}
 
-    // @@ This has poor precision...
-	void addSample(double e)
+	void addSample(float e)
 	{
 		samples++;
-		mabse += fabs(e);
-		maxabse = nv::max(maxabse, fabs(e));
+		mabse += fabsf(e);
+		maxabse = nv::max(maxabse, fabsf(e));
 		mse += e * e;
 	}
 
@@ -81,25 +84,24 @@ struct Error
 	{
 		mabse /= samples;
 		mse /= samples;
-		rmse = sqrt(mse);
-		psnr = (rmse == 0) ? 999.0 : 20.0 * log10(255.0 / rmse);
+		rmse = sqrtf(mse);
+		psnr = (rmse == 0) ? 999.0f : 20.0f * log10(255.0f / rmse);
 	}
 
 	void print()
 	{
 		printf("  Mean absolute error: %f\n", mabse);
 		printf("  Max absolute error: %f\n", maxabse);
-        printf("  Mean squared error: %f\n", mse);
 		printf("  Root mean squared error: %f\n", rmse);
 		printf("  Peak signal to noise ratio in dB: %f\n", psnr);
 	}
 
 	int samples;
-	double mabse;
-	double maxabse;
-	double mse;
-	double rmse;
-	double psnr;
+	float mabse;
+	float maxabse;
+	float mse;
+	float rmse;
+	float psnr;
 };
 
 struct NormalError
@@ -121,7 +123,7 @@ struct NormalError
 		vc = nv::normalize(2.0f * (vc / 255.0f) - 1.0f);
 
 		ade += acosf(nv::clamp(dot(vo, vc), -1.0f, 1.0f));
-		mse += lengthSquared((vo - vc) * (255 / 2.0f));
+		mse += length_squared((vo - vc) * (255 / 2.0f));
 		
 		samples++;
 	}
@@ -151,13 +153,6 @@ struct NormalError
 	float psnr;
 };
 
-static float luma(const nv::Color32 & c) {
-    return 0.299f * float(c.r) + 0.587f * float(c.g) + 0.114f * float(c.b);
-    //return 0.25f * float(c.r) + 0.5f * float(c.g) + 0.25f * float(c.b);
-    //return 0.333f * float(c.r) + 0.334f * float(c.g) + 0.333f * float(c.b);
-    //return 0.1f * float(c.r) + 0.8f * float(c.g) + 0.1f * float(c.g);
-}
-*/
 
 int main(int argc, char *argv[])
 {
@@ -166,7 +161,6 @@ int main(int argc, char *argv[])
 
 	bool compareNormal = false;
 	bool compareAlpha = false;
-    bool rangescale = false;
 
 	nv::Path input0;
 	nv::Path input1;
@@ -176,18 +170,15 @@ int main(int argc, char *argv[])
 	for (int i = 1; i < argc; i++)
 	{
 		// Input options.
-        if (nv::strEqual("-normal", argv[i]))
+		if (strcmp("-normal", argv[i]) == 0)
 		{
 			compareNormal = true;
 		}
-		else if (nv::strEqual("-alpha", argv[i]))
+		if (strcmp("-alpha", argv[i]) == 0)
 		{
 			compareAlpha = true;
 		}
-		else if (nv::strEqual("-rangescale", argv[i]))
-		{
-			rangescale = true;
-		}
+
 		else if (argv[i][0] != '-')
 		{
 			input0 = argv[i];
@@ -198,10 +189,6 @@ int main(int argc, char *argv[])
 
 			break;
 		}
-		else
-		{
-			printf("Warning: unrecognized option \"%s\"\n", argv[i]);
-		}
 	}
 
 	if (input0.isNull() || input1.isNull())
@@ -211,108 +198,15 @@ int main(int argc, char *argv[])
 		printf("usage: nvimgdiff [options] original_file updated_file [output]\n\n");
 		
 		printf("Diff options:\n");
-		printf("  -normal       Compare images as if they were normal maps.\n");
-		printf("  -alpha        Compare alpha weighted images.\n");
-        printf("  -rangescale   Scale second image based on range of first one.\n");
+		printf("  -normal \tCompare images as if they were normal maps.\n");
+		printf("  -alpha  \tCompare alpha weighted images.\n");
 
 		return 1;
 	}
 
-    nvtt::Surface image0, image1;
-
-    if (!image0.load(input0.str())) {
-        printf("Error loading %s.", input0.str());
-        return 1;
-    }
-    if (!image1.load(input1.str())) {
-        printf("Error loading %s.", input1.str());
-        return 1;
-    }
-
-    if (compareNormal) {
-        image0.setNormalMap(true);
-        image1.setNormalMap(true);
-    }
-    if (compareAlpha) {
-        image0.setAlphaMode(nvtt::AlphaMode_Transparency);
-    }
-
-    // Do some transforms based on the naming convention of the file.
-    if (strstr(input1.str(), "rgbm")) {
-
-        //image0.toGamma(2);
-
-        image1.fromRGBM(1.0f, 0.25f);
-        image1.toLinear(2);
-
-        image1.copyChannel(image0, 3);          // Copy alpha channel from source.
-        image1.setAlphaMode(nvtt::AlphaMode_Transparency);
-
-        rangescale = true;
-    }
-
-    if (strstr(input1.str(), "bc6")) {
-        // @@ Do any transform that we may have done before compression.
-
-        image1.copyChannel(image0, 3);          // Copy alpha channel from source.
-        image1.setAlphaMode(nvtt::AlphaMode_Transparency);
-    }
-
-
-    // Scale second image to range of the first one.
-    if (rangescale) {
-        float min_color[3], max_color[3];
-        image0.range(0, &min_color[0], &max_color[0]);
-        image0.range(1, &min_color[1], &max_color[1]);
-        image0.range(2, &min_color[2], &max_color[2]);
-        float color_range = nv::max3(max_color[0], max_color[1], max_color[2]);
-
-        const float max_color_range = 16.0f;
-        if (color_range > max_color_range) color_range = max_color_range;
-
-#if 0
-        for (int i = 0; i < 3; i++) {
-            image0.scaleBias(i, 1.0f / color_range, 0.0f);
-        }
-        image0.toneMap(nvtt::ToneMapper_Linear, NULL); // Clamp without changing the hue.
-#else
-        for (int i = 0; i < 3; i++) {
-            image1.scaleBias(i, color_range, 0.0f);
-        }
-#endif
-    }
-    
-    float rmse = nvtt::rmsError(image0, image1);
-    //float rmsa = nvtt::rmsAlphaError(image0, image1);
-
-    // In The Witness:
-    // exposure = key_value / luminance
-    // key_value = 0.22
-    // min_luminance = 0.1 -> exposure = 2.2
-    // max_luminance = 1.0 -> exposure = 0.22
-
-    float rmse0 = nvtt::rmsToneMappedError(image0, image1, 2.2f);
-    float rmse1 = nvtt::rmsToneMappedError(image0, image1, 1.0f);
-    float rmse2 = nvtt::rmsToneMappedError(image0, image1, 0.22f);
-
-    printf("RMSE = %.5f %.5f %.5f -> %.5f | %.5f\n", rmse0, rmse1, rmse2, (rmse0 + rmse1 + rmse2)/3, rmse);
-
-
-    //printf("MSE = %f\n", rmse * rmse);
-    //printf("RMSE = %f\n", rmse);
-    //printf("PSNR = %f\n", (rmse == 0) ? 999.0 : 20.0 * log10(255.0 / rmse));
-
-    if (compareNormal) {
-        // @@ Does this assume normal maps are packed or unpacked?
-        float ae = nvtt::angularError(image0, image1);
-        printf("AE = %f\n", ae);
-    }
-
-
-#if 0
 	nv::Image image0, image1;
-	if (!loadImage(image0, input0.str())) return 0;
-	if (!loadImage(image1, input1.str())) return 0;
+	if (!loadImage(image0, input0)) return 0;
+	if (!loadImage(image1, input1)) return 0;
 
 	const uint w0 = image0.width();
 	const uint h0 = image0.height();
@@ -326,7 +220,6 @@ int main(int argc, char *argv[])
 	Error error_g;
 	Error error_b;
 	Error error_a;
-    Error error_luma;
 	Error error_total;
 	NormalError error_normal;
 
@@ -337,31 +230,32 @@ int main(int argc, char *argv[])
 			const nv::Color32 c0(image0.pixel(e, i));
 			const nv::Color32 c1(image1.pixel(e, i));
 
-			double r = float(c0.r - c1.r);
-			double g = float(c0.g - c1.g);
-			double b = float(c0.b - c1.b);
-			double a = float(c0.a - c1.a);
+			float r = float(c0.r - c1.r);
+			float g = float(c0.g - c1.g);
+			float b = float(c0.b - c1.b);
+			float a = float(c0.a - c1.a);
 
 			error_r.addSample(r);
 			error_g.addSample(g);
 			error_b.addSample(b);
 			error_a.addSample(a);
-
-            double l0 = luma(c0);
-            double l1 = luma(c1);
-
-            error_luma.addSample(l0 - l1);
-
-            double d = sqrt(r*r + g*g + b*b);
-
-			if (compareAlpha) {
-                d *= c0.a / 255.0;
+			
+			if (compareNormal)
+			{
+				error_normal.addSample(c0, c1);
 			}
 
-            error_total.addSample(d);
-
-			if (compareNormal) {
-				error_normal.addSample(c0, c1);
+			if (compareAlpha)
+			{
+				error_total.addSample(r * c0.a / 255.0f);
+				error_total.addSample(g * c0.a / 255.0f);
+				error_total.addSample(b * c0.a / 255.0f);
+			}
+			else
+			{
+				error_total.addSample(r);
+				error_total.addSample(g);
+				error_total.addSample(b);
 			}
 		}
 	}
@@ -370,7 +264,6 @@ int main(int argc, char *argv[])
 	error_g.done();
 	error_b.done();
 	error_a.done();
-    error_luma.done();
 	error_total.done();
 	error_normal.done();
 	
@@ -384,9 +277,6 @@ int main(int argc, char *argv[])
 	printf("Color:\n");
 	error_total.print();
 
-	printf("Luma:\n");
-	error_luma.print();
-
 	if (compareNormal)
 	{
 		printf("Normal:\n");
@@ -399,7 +289,6 @@ int main(int argc, char *argv[])
 		error_a.print();
 	}
 
-#endif
 	// @@ Write image difference.
 	
 	return 0;

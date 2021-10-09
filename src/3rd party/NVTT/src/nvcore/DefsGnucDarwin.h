@@ -2,8 +2,7 @@
 #error "Do not include this file directly."
 #endif
 
-#include <stdint.h> // uint8_t, int8_t, ... uintptr_t
-#include <stddef.h> // operator new, size_t, NULL
+#include <stdint.h> // uint8_t, int8_t, ...
 
 // Function linkage
 #define DLL_IMPORT
@@ -25,9 +24,8 @@
 #endif
 
 #define NV_FASTCALL		__attribute__((fastcall))
-#define NV_FORCEINLINE	__attribute__((always_inline)) inline
+#define NV_FORCEINLINE	__attribute__((always_inline))
 #define NV_DEPRECATED   __attribute__((deprecated))
-#define NV_THREAD_LOCAL //ACS: there's no "__thread" or equivalent on iOS/OSX
 
 #if __GNUC__ > 2
 #define NV_PURE     __attribute__((pure))
@@ -36,8 +34,6 @@
 #define NV_PURE
 #define NV_CONST
 #endif
-
-#define NV_NOINLINE __attribute__((noinline))
 
 // Define __FUNC__ properly.
 #if __STDC_VERSION__ < 199901L
@@ -51,3 +47,20 @@
 #endif
 
 #define restrict    __restrict__
+
+
+// Type definitions
+typedef uint8_t     uint8;
+typedef int8_t      int8;
+
+typedef uint16_t    uint16;
+typedef int16_t     int16;
+
+typedef uint32_t    uint32;
+typedef int32_t     int32;
+
+typedef uint64_t    uint64;
+typedef int64_t     int64;
+
+// Aliases
+typedef uint32      uint;

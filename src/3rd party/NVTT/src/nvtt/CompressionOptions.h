@@ -1,5 +1,4 @@
-// Copyright (c) 2009-2011 Ignacio Castano <castano@gmail.com>
-// Copyright (c) 2007-2009 NVIDIA Corporation -- Ignacio Castano <icastano@nvidia.com>
+// Copyright NVIDIA Corporation 2007 -- Ignacio Castano <icastano@nvidia.com>
 // 
 // Permission is hereby granted, free of charge, to any person
 // obtaining a copy of this software and associated documentation
@@ -25,54 +24,36 @@
 #ifndef NV_TT_COMPRESSIONOPTIONS_H
 #define NV_TT_COMPRESSIONOPTIONS_H
 
+#include <nvcore/StrLib.h>
+#include <nvmath/Vector.h>
 #include "nvtt.h"
-#include "nvmath/Vector.h"
-#include "nvcore/StrLib.h"
 
 namespace nvtt
 {
 
-    struct CompressionOptions::Private
-    {
-        Format format;
+	struct CompressionOptions::Private
+	{
+		Format format;
+		
+		Quality quality;
+		
+		nv::Vector4 colorWeight;
+		
+		// Pixel format description.
+		uint bitcount;
+		uint rmask;
+		uint gmask;
+		uint bmask;
+		uint amask;
+		
+		nv::String externalCompressor;
 
-        Quality quality;
-
-        nv::Vector4 colorWeight;
-
-        // Pixel format description.
-        uint bitcount;
-        uint rmask;
-        uint gmask;
-        uint bmask;
-        uint amask;
-        uint8 rsize;
-        uint8 gsize;
-        uint8 bsize;
-        uint8 asize;
-
-        PixelType pixelType;
-        uint pitchAlignment;
-
-        nv::String externalCompressor;
-
-        // Quantization.
-        bool enableColorDithering;
-        bool enableAlphaDithering;
-        bool binaryAlpha;
-        int alphaThreshold;			// reference value used for binary alpha quantization.
-
-        Decoder decoder;
-
-        uint getBitCount() const
-        {
-            if (format == Format_RGBA) {
-                if (bitcount != 0) return bitcount;
-                else return rsize + gsize + bsize + asize;
-            }
-            return 0;
-        }
-    };
+		// Quantization.
+		bool enableColorDithering;
+		bool enableAlphaDithering;
+		bool binaryAlpha;
+		int alphaThreshold;			// reference value used for binary alpha quantization.
+	};
 
 } // nvtt namespace
 

@@ -1,5 +1,4 @@
-// Copyright (c) 2009-2011 Ignacio Castano <castano@gmail.com>
-// Copyright (c) 2007-2009 NVIDIA Corporation -- Ignacio Castano <icastano@nvidia.com>
+// Copyright NVIDIA Corporation 2007 -- Ignacio Castano <icastano@nvidia.com>
 // 
 // Permission is hereby granted, free of charge, to any person
 // obtaining a copy of this software and associated documentation
@@ -29,149 +28,75 @@ using namespace nvtt;
 
 OutputOptions::OutputOptions() : m(*new OutputOptions::Private())
 {
-    reset();
+	reset();
 }
 
 OutputOptions::~OutputOptions()
 {
-    // Cleanup output handler.
-    setOutputHandler(NULL);
-
-    delete &m;
+	delete &m;
 }
 
 /// Set default output options.
 void OutputOptions::reset()
 {
-    m.fileName.reset();
-    m.fileHandle = NULL;
-
-    m.outputHandler = NULL;
-    m.errorHandler = NULL;
-
-    m.outputHeader = true;
-    m.container = Container_DDS;
-    m.version = 0;
-    m.srgb = false;
-    m.deleteOutputHandler = false;
+	m.fileName.reset();
+	m.outputHandler = NULL;
+	m.errorHandler = NULL;
+	m.outputHeader = true;
 }
 
 
 /// Set output file name.
 void OutputOptions::setFileName(const char * fileName)
 {
-    if (m.deleteOutputHandler)
-    {
-        delete m.outputHandler;
-    }
-
-    m.fileName = fileName;
-    m.fileHandle = NULL;
-    m.outputHandler = NULL;
-    m.deleteOutputHandler = false;
-
-    DefaultOutputHandler * oh = new DefaultOutputHandler(fileName);
-    if (oh->stream.isError()) {
-        delete oh;
-    }
-    else {
-        m.deleteOutputHandler = true;
-        m.outputHandler = oh;
-    }
+	m.fileName = fileName;
+	m.outputHandler = NULL;
 }
-
-/// Set output file handle.
-void OutputOptions::setFileHandle(void * fp)
-{
-    if (m.deleteOutputHandler) {
-        delete m.outputHandler;
-    }
-
-    m.fileName.reset();
-    m.fileHandle = (FILE *)fp;
-    m.outputHandler = NULL;
-    m.deleteOutputHandler = false;
-
-    DefaultOutputHandler * oh = new DefaultOutputHandler(m.fileHandle);
-    if (oh->stream.isError()) {
-        delete oh;
-    }
-    else {
-        m.deleteOutputHandler = true;
-        m.outputHandler = oh;
-    }
-}
-
 
 /// Set output handler.
 void OutputOptions::setOutputHandler(OutputHandler * outputHandler)
 {
-    if (m.deleteOutputHandler) {
-        delete m.outputHandler;
-    }
-
-    m.fileName.reset();
-    m.fileHandle = NULL;
-    m.outputHandler = outputHandler;
-    m.deleteOutputHandler = false;
+	m.fileName.reset();
+	m.outputHandler = outputHandler;
 }
 
 /// Set error handler.
 void OutputOptions::setErrorHandler(ErrorHandler * errorHandler)
 {
-    m.errorHandler = errorHandler;
+	m.errorHandler = errorHandler;
 }
 
 /// Set output header.
 void OutputOptions::setOutputHeader(bool outputHeader)
 {
-    m.outputHeader = outputHeader;
+	m.outputHeader = outputHeader;
 }
 
-/// Set container.
-void OutputOptions::setContainer(Container container)
+
+bool OutputOptions::Private::openFile() const
 {
-    m.container = container;
+	if (!fileName.isNull())
+	{
+		nvCheck(outputHandler == NULL);
+		
+		DefaultOutputHandler * oh = new DefaultOutputHandler(fileName.str());
+		if (oh->stream.isError())
+		{
+			return false;
+		}
+		
+		outputHandler = oh;
+	}
+	
+	return true;
 }
 
-/// Set user version.
-void OutputOptions::setUserVersion(int version)
+void OutputOptions::Private::closeFile() const
 {
-    m.version = version;
+	if (!fileName.isNull())
+	{
+		delete outputHandler;
+		outputHandler = NULL;
+	}
 }
 
-/// Set SRGB flag.
-void OutputOptions::setSrgbFlag(bool b)
-{
-    m.srgb = b;
-}
-
-bool OutputOptions::Private::hasValidOutputHandler() const
-{
-    if (!fileName.isNull() || fileHandle != NULL)
-    {
-        return outputHandler != NULL;
-    }
-
-    return true;
-}
-
-void OutputOptions::Private::beginImage(int size, int width, int height, int depth, int face, int miplevel) const
-{
-    if (outputHandler != NULL) outputHandler->beginImage(size, width, height, depth, face, miplevel);
-}
-
-bool OutputOptions::Private::writeData(const void * data, int size) const
-{
-    return outputHandler == NULL || outputHandler->writeData(data, size);
-}
-
-void OutputOptions::Private::endImage() const
-{
-    if (outputHandler != NULL) outputHandler->endImage();
-}
-
-void OutputOptions::Private::error(Error e) const
-{
-    if (errorHandler != NULL) errorHandler->error(e);
-}

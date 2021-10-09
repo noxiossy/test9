@@ -1,8 +1,6 @@
 // This code is in the public domain -- castanyo@yahoo.es
 
-#include "SphericalHarmonic.h"
-
-#include "Vector.h"
+#include <nvmath/SphericalHarmonic.h>
 
 using namespace nv;
 
@@ -13,10 +11,8 @@ namespace
 	// Basic integer factorial.
 	inline static int factorial( int v )
 	{
-		const static int fac_table[] = { 1, 1, 2, 6, 24, 120, 720, 5040, 40320, 362880, 3628800, 39916800 };
-
-		if(v <= 11){
-			return fac_table[v];
+		if (v == 0) {
+			return 1;
 		}
 	
 		int result = v;
@@ -84,7 +80,7 @@ namespace
 	
 	template <int l, int m> float legendre(float x);
 	
-	template <> float legendre<0, 0>(float ) {
+	template <> float legendre<0, 0>(float x) {
 		return 1;
 	}
 	
@@ -175,7 +171,7 @@ float nv::legendrePolynomial(int l, int m, float x)
  * @param theta is the altitude, in the range [0, PI]
  * @param phi is the azimuth, in the range [0, 2*PI]
  */
-float nv::shBasis( int l, int m, float theta, float phi )
+float nv::y( int l, int m, float theta, float phi )
 {
 	if( m == 0 ) {
 		// K(l, 0) = sqrt((2*l+1)/(4*PI))
@@ -197,11 +193,11 @@ float nv::shBasis( int l, int m, float theta, float phi )
  * y = sin(theta)*sin(phi)
  * z = cos(theta)
  */
-float nv::shBasis( int l, int m, Vector3::Arg v )
+float nv::y( int l, int m, Vector3::Arg v )
 {
-	float theta = acosf(v.z);
-	float phi = atan2f(v.y, v.x);
-	return shBasis( l, m, theta, phi );
+	float theta = acosf(v.z());
+	float phi = atan2f(v.y(), v.x());
+	return y( l, m, theta, phi );
 }
 
 
@@ -212,7 +208,7 @@ float nv::shBasis( int l, int m, Vector3::Arg v )
  * @param theta is the altitude, in the range [0, PI/2]
  * @param phi is the azimuth, in the range [0, 2*PI]
  */
-float nv::hshBasis( int l, int m, float theta, float phi )
+float nv::hy( int l, int m, float theta, float phi )
 {
 	if( m == 0 ) {
 		// HK(l, 0) = sqrt((2*l+1)/(2*PI))
@@ -234,11 +230,11 @@ float nv::hshBasis( int l, int m, float theta, float phi )
  * y = sin(theta)*sin(phi)
  * z = cos(theta)
  */
-float nv::hshBasis( int l, int m, Vector3::Arg v )
+float nv::hy( int l, int m, Vector3::Arg v )
 {
-	float theta = acosf(v.z);
-	float phi = atan2f(v.y, v.x);
-	return hshBasis( l, m, theta, phi );
+	float theta = acosf(v.z());
+	float phi = atan2f(v.y(), v.x());
+	return y( l, m, theta, phi );
 }
 
 

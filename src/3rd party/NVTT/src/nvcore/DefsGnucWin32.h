@@ -2,8 +2,6 @@
 #error "Do not include this file directly."
 #endif
 
-//#include <cstddef> // size_t, NULL
-
 // Function linkage
 #define DLL_IMPORT	__declspec(dllimport)
 #define DLL_EXPORT	__declspec(dllexport)
@@ -30,8 +28,6 @@
 #define NV_CONST
 #endif
 
-#define NV_NOINLINE __attribute__((noinline))
-
 // Define __FUNC__ properly.
 #if __STDC_VERSION__ < 199901L
 #	if __GNUC__ >= 2
@@ -45,7 +41,7 @@
 
 #define restrict	__restrict__
 
-/*
+
 // Type definitions
 typedef unsigned char		uint8;
 typedef signed char			int8;
@@ -61,5 +57,3 @@ typedef signed long long	int64;
 
 // Aliases
 typedef uint32				uint;
-*/
-
