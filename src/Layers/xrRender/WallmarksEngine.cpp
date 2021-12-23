@@ -380,16 +380,25 @@ void CWallmarksEngine::Render()
 					}
 					static_wm_render	(W,w_verts);
 				}
-				W->ttl	-= 0.1f*Device.fTimeDelta;	// visible wallmarks fade much slower
-			} else {
-				W->ttl	-= Device.fTimeDelta;
 			}
-			if (W->ttl<=EPS){	
-				static_wm_destroy	(W);
-				*w_it				= slot->static_items.back();
-				slot->static_items.pop_back();
-			}else{
+
+			// don't need to check wallmarks with infinite lifetime
+			if (W->TimeEnd() == -1.f)
+			{
 				w_it++;
+				continue;
+			}
+
+			float w = W->TimeEnd() == -1.f ? 0.f : (RDEVICE.fTimeGlobal - W->TimeStart()) / W->TimeEnd();
+			if (w < 1.f)
+			{
+				w_it++;
+			}
+			else
+			{
+				static_wm_destroy(W);
+				*w_it = slot->static_items.back();
+				slot->static_items.pop_back();
 			}
 		}
 		// Flush stream
@@ -412,9 +421,6 @@ void CWallmarksEngine::Render()
 			}
 #endif
 
-			float dst	= Device.vCameraPosition.distance_to_sqr(W->m_Bounds.P);
-			float ssa	= W->m_Bounds.R * W->m_Bounds.R / dst;
-			if (ssa>=ssaCLIP){
 				Device.Statistic->RenderDUMP_WMD_Count++;
 				u32 w_count		= u32(w_verts-w_start);
 				if ((w_count+W->VCount())>=(MAX_TRIS*3)){
