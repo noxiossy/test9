@@ -1387,10 +1387,6 @@ void CWeaponMagazined::PlayAnimSwitchTorch()
 		
 		// Ïðîèãðûâàåì õóäîâóþ àíèìàöèþ
 		PlayHUDMotion("anm_torch_switch", true, this, GetState());
-		
-		luabind::functor<void> functor;
-		ai().script_engine().functor("rietmon_callbacks.torch_switch",functor);
-		functor(1);
 	}
 	else
 	{

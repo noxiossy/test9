@@ -23,10 +23,10 @@ static const float sink_offset = -(max_distance - source_offset);
 static const float drop_length = 5.f;
 static const float drop_width = 0.30f;
 static const float drop_angle = 3.0f;
-static const float drop_max_angle = deg2rad(89.f);
-static const float drop_max_wind_vel = 100.0f;
+static const float drop_max_angle = deg2rad(10.f);
+static const float drop_max_wind_vel = 20.0f;
 static const float drop_speed_min = 40.f;
-static const float drop_speed_max = 85.f;
+static const float drop_speed_max = 80.f;
 
 const int max_particles = 1000;
 const int particles_cache = 400;
@@ -41,6 +41,7 @@ CEffect_Rain::CEffect_Rain()
     state = stIdle;
 
     snd_Ambient.create("ambient\\rain", st_Effect, sg_Undefined);
+	rain_volume = 0.0f;
 
     // Moced to p_Render constructor
     /*
@@ -60,6 +61,7 @@ CEffect_Rain::CEffect_Rain()
 CEffect_Rain::~CEffect_Rain()
 {
     snd_Ambient.destroy();
+	rain_volume = 0.0f;
 
     // Cleanup
     p_destroy();
@@ -72,7 +74,7 @@ void CEffect_Rain::Born(Item& dest, float radius)
 {
     Fvector axis;
     axis.set(0, -1, 0);
-    float gust = g_pGamePersistent->Environment().wind_strength_factor;
+	float gust = g_pGamePersistent->Environment().wind_strength_factor / 10.f;
     float k = g_pGamePersistent->Environment().CurrentEnv->wind_velocity*gust / drop_max_wind_vel;
     clamp(k, 0.f, 1.f);
     float pitch = drop_max_angle*k - PI_DIV_2;
@@ -159,24 +161,17 @@ void CEffect_Rain::OnFrame()
     switch (state)
     {
     case stIdle:
-		if (factor < EPS_L) {
-			if (snd_Ambient._feedback())
-				snd_Ambient.stop();
-			return;
-		}
-		if (snd_Ambient._feedback()) {
-			snd_Ambient.stop();
-			return;
-		}
+		if (factor < EPS_L) return;
+		state = stWorking;
         snd_Ambient.play(0, sm_Looped);
         snd_Ambient.set_position(Fvector().set(0, 0, 0));
         snd_Ambient.set_range(source_offset, source_offset*2.f);
-		state = stWorking;
         break;
     case stWorking:
 		if (factor < EPS_L) {
 			snd_Ambient.stop();
 			state = stIdle;
+			rain_volume = 0.0f;
             return;
         }
         break;
@@ -188,8 +183,10 @@ void CEffect_Rain::OnFrame()
         // Fvector sndP;
         // sndP.mad (Device.vCameraPosition,Fvector().set(0,1,0),source_offset);
         // snd_Ambient.set_position(sndP);
-        snd_Ambient.set_volume(_max(0.1f, factor) * hemi_factor);
-    }
+		rain_volume = factor * hemi_factor;
+		clamp(rain_volume, .1f, 1.f);
+		snd_Ambient.set_volume(rain_volume);
+	}
 }
 
 //#include "xr_input.h"

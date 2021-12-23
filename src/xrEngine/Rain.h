@@ -69,6 +69,7 @@ private:
     // Sounds
 public:
     ref_sound snd_Ambient;
+	float rain_volume;
 private:
     // Utilities
     void p_create();
@@ -91,7 +92,15 @@ public:
 
     void Render();
     void OnFrame();
-	void InvalidateState()		{ state = stIdle; } //LR_DEV CHECK!!!
+
+	void InvalidateState()
+	{
+		if (state != stIdle) snd_Ambient.stop();
+		rain_volume = 0.0f;
+		state = stIdle;
+	}
+
+	float GetRainVolume() { return rain_volume; }
 };
 
 #endif //RainH

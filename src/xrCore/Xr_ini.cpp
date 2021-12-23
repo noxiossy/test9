@@ -498,8 +498,9 @@ BOOL CInifile::section_exist(const shared_str& S)const { return section_exist(*S
 //--------------------------------------------------------------------------------------
 CInifile::Sect& CInifile::r_section(LPCSTR S)const
 {
-	if (!S)
-		LogStackTrace("CInifile::r_section | section is nil!");
+	R_ASSERT(S && strlen(S),
+	         "Empty section (null\\'') passed into CInifile::r_section(). See info above ^, check your configs and 'call stack'.")
+	; //--#SM+#--
 
     char section[256];
     xr_strcpy(section, sizeof(section), S);
@@ -527,6 +528,10 @@ CInifile::Sect& CInifile::r_section(LPCSTR S)const
 
 LPCSTR CInifile::r_string(LPCSTR S, LPCSTR L)const
 {
+	if (!S || !L || !strlen(S) || !strlen(L)) //--#SM+#-- [fix for one of "xrDebug - Invalid handler" error log]
+	{
+		Msg("!![ERROR] CInifile::r_string: S = [%s], L = [%s]", S, L);
+	}
     Sect const& I = r_section(S);
     SectCIt A = std::lower_bound(I.Data.begin(), I.Data.end(), L, item_pred);
     if (A != I.Data.end() && xr_strcmp(*A->first, L) == 0) return *A->second;

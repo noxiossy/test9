@@ -420,6 +420,8 @@ void CDetailManager::Render	()
 u32 reset_frame = 0;
 void __stdcall	CDetailManager::MT_CALC		()
 {
+	if (!this || !MT.IsValid()) return; // DIIIRTY HACK !!!
+
 #ifndef _EDITOR
 	if (reset_frame == Device.dwFrame) return;
 	if (!RImplementation.Details) return;	// possibly deleted

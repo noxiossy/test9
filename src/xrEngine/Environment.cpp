@@ -295,11 +295,11 @@ void CEnvironment::SetWeather(shared_str name, bool forced)
             Msg("! Invalid weather name: %s", name.c_str());
             return;
         }
-        R_ASSERT3(it != WeatherCycles.end(), "Invalid weather name.", *name);
+		// R_ASSERT3(it != WeatherCycles.end(), "Invalid weather name.", *name);
         CurrentCycleName = it->first;
         if (forced) { Invalidate(); }
-		if (!bWFX){
-			PrevWeatherName = ( forced || CurrentWeatherName.size() == 0 ) ? it->first : CurrentWeatherName;
+		if (!bWFX)
+		{
             CurrentWeather = &it->second;
             CurrentWeatherName = it->first;
         }
@@ -311,7 +311,7 @@ void CEnvironment::SetWeather(shared_str name, bool forced)
     else
     {
 #ifndef _EDITOR
-        FATAL("! Empty weather name");
+		Msg("! Empty weather name");
 #endif
     }
 }
@@ -514,6 +514,7 @@ void CEnvironment::lerp(float& current_weight)
         mpower += EM.sum(*mit, view);
 
     // final lerp
+	if (!m_paused)
     CurrentEnv->lerp(this, *Current[0], *Current[1], current_weight, EM, mpower);
 }
 
