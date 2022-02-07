@@ -19,7 +19,7 @@ struct		RPoint
 	bool	bBlocked;
 	u16		BlockedByID;
 	u32		BlockTime;
-	RPoint(){ P.set(.0f, 0.f, .0f); A.set(.0f, 0.f, .0f); TimeToUnfreeze = 0; bBlocked = false; BlockedByID = (u16)(-1); BlockTime = 0; }
+	RPoint(){P.set(.0f,0.f,.0f);A.set(.0f,0.f,.0f); TimeToUnfreeze = 0; bBlocked = false;}
 	bool	operator ==		(const u16& ID)	const			{ return (bBlocked && BlockedByID == ID);		}
 };
 
@@ -86,7 +86,7 @@ struct game_PlayerState
 			bool	testFlag				(u16 f) const;
 			void	setFlag					(u16 f);
 			void	resetFlag				(u16 f);
-			LPCSTR	getName					() const {return "xraylr";}
+			LPCSTR	getName					() const {return m_account.name().c_str();}
 			//void	setName					(LPCSTR s){xr_strcpy(name,s);}
 			void	SetGameID				(u16 NewID);
 			bool	HasOldID				(u16 ID);
