@@ -7,7 +7,6 @@
 #include "UIMessageBoxEx.h"
 #include "UIMessageBox.h"
 #include "TeamInfo.h"
-#include "../MainMenu.h"
 #include "../login_manager.h"
 #include "../GameSpy/GameSpy_Full.h"
 #include "../GameSpy/GameSpy_Browser.h"
@@ -18,40 +17,6 @@ CGameSpy_Browser* g_gs_browser = NULL;
 
 CServerList::CServerList()
 {
-	m_GSBrowser	= MainMenu()->GetGS()->GetGameSpyBrowser();
-	browser().Init(this);
-
-	for (int i = 0; i<LST_COLUMN_COUNT; i++)
-		AttachChild(&m_header_frames[i]);
-
-	for (int i = 0; i<LST_COLUMN_COUNT; i++)
-		AttachChild(&m_header[i]);
-
-	for (int i = 0; i<4; i++)
-		AttachChild(&m_header2[i]);
-
-	AttachChild(&m_edit_gs_filter);
-
-
-	for (int i = 0; i<3; i++)
-	{
-		m_list[i].Show(true);
-		AttachChild					(&m_frame[i]);
-		AttachChild					(&m_list[i]);
-	}
-
-	m_bShowServerInfo				= false;
-	m_bAnimation					= false;
-
-	m_sort_func						= "none";
-	m_message_box					= xr_new<CUIMessageBoxEx>();
-	m_message_box->InitMessageBox	("message_box_password");
-	m_message_box->SetMessageTarget	(this);
-	
-	m_b_local						= false;
-
-	m_last_retreived_index			= u32(-1);
-	m_need_refresh_fr				= u32(-1);
 }
 
 CServerList::~CServerList()
@@ -457,60 +422,6 @@ void CServerList::InitFromXml(CUIXml& xml_doc, LPCSTR path)
 
 void CServerList::ConnectToSelected()
 {
-	gamespy_gp::login_manager const * lmngr = MainMenu()->GetLoginMngr();
-	R_ASSERT(lmngr);
-	gamespy_gp::profile const * tmp_profile = lmngr->get_current_profile(); 
-	R_ASSERT2(tmp_profile, "need first to log in");
-	if (tmp_profile->online())
-	{
-		if (!MainMenu()->ValidateCDKey())
-			return;
-
-		if (!xr_strcmp(tmp_profile->unique_nick(), "@unregistered"))
-		{
-			if (m_connect_cb)
-				m_connect_cb(ece_unique_nick_not_registred, "mp_gp_unique_nick_not_registred");
-			return;
-		}
-		if (!xr_strcmp(tmp_profile->unique_nick(), "@expired"))
-		{
-			if (m_connect_cb)
-				m_connect_cb(ece_unique_nick_expired, "mp_gp_unique_nick_has_expired");
-			return;
-		}
-	}
-
-
-	CUIListItemServer* item = smart_cast<CUIListItemServer*>(m_list[LST_SERVER].GetSelectedItem());
-	if(!item)
-		return;
-	if (!browser().CheckDirectConnection(item->GetInfo()->info.Index))
-	{
-		Msg("! Direct connection to this server is not available -> its behind firewall");
-		return;
-	}
-
-	if (xr_strcmp(item->GetInfo()->info.version, MainMenu()->GetGSVer()))
-	{
-		MainMenu()->SetErrorDialog(CMainMenu::ErrDifferentVersion);
-		return;
-	}
-
-
-	if (item->GetInfo()->info.icons.pass || item->GetInfo()->info.icons.user_pass)
-	{
-		m_message_box->m_pMessageBox->SetUserPasswordMode	(item->GetInfo()->info.icons.user_pass);
-		m_message_box->m_pMessageBox->SetPasswordMode		(item->GetInfo()->info.icons.pass);
-		m_message_box->ShowDialog(true);
-	}
-	else
-	{
-		xr_string command;
-
-		item->CreateConsoleCommand(command, m_playerName.c_str(), "", "" );
-
-		Console->Execute(command.c_str());
-	}
 }
 
 void CServerList::InitHeader()
