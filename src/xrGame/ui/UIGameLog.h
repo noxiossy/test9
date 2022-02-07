@@ -1,4 +1,4 @@
-//=============================================================================
+﻿//=============================================================================
 //  Filename:   UIGameLog.h
 //	Created by Vitaly 'Mad Max' Maximov, mad-max@gsc-game.kiev.ua
 //	Copyright 2005. GSC Game World

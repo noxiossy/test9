@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "../LuaJIT-1.1.8/etc/lua.hpp"
 

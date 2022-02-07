@@ -1,4 +1,4 @@
-// Shader.h: interface for the CShader class.
+﻿// Shader.h: interface for the CShader class.
 //
 //////////////////////////////////////////////////////////////////////
 

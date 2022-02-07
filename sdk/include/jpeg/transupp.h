@@ -1,4 +1,4 @@
-/*
+﻿/*
  * transupp.h
  *
  * Copyright (C) 1997, Thomas G. Lane.

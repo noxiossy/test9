@@ -1,4 +1,4 @@
-#ifndef FILETRANSFER_COMMON
+﻿#ifndef FILETRANSFER_COMMON
 #define FILETRANSFER_COMMON
 
 namespace file_transfer

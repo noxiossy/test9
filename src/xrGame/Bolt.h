@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "missile.h"
 #include "../xrphysics/DamageSource.h"
 class CBolt :

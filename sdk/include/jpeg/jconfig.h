@@ -1,4 +1,4 @@
-/* jconfig.h.  Generated automatically by configure.  */
+﻿/* jconfig.h.  Generated automatically by configure.  */
 /* jconfig.cfg --- source file edited by configure script */
 /* see jconfig.doc for explanations */
 

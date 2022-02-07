@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "soundrender.h"
 #include "soundrender_core.h"
 #include "xr_streamsnd.h"

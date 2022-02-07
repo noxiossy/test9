@@ -1,4 +1,4 @@
-#ifndef	dx10ConstantBuffer_included
+﻿#ifndef	dx10ConstantBuffer_included
 #define	dx10ConstantBuffer_included
 #pragma once
 

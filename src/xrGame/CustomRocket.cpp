@@ -1,6 +1,6 @@
-//////////////////////////////////////////////////////////////////////
-// CustomRocket.cpp:	ðàêåòà, êîòîðîé ñòðåëÿåò RocketLauncher 
-//						(óìååò ëåòåòü, ñâåòèòüñÿ è îòûãðûâàòü ïàðòèêëû)
+﻿//////////////////////////////////////////////////////////////////////
+// CustomRocket.cpp:	ракета, которой стреляет RocketLauncher 
+//						(умеет лететь, светиться и отыгрывать партиклы)
 //////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
@@ -342,7 +342,7 @@ void CCustomRocket::PlayContact()
 
 	m_eState = eCollide;
 
-	//äåêòèâèðîâàòü ôèçè÷åñêóþ îáîëî÷êó,÷òîá ðàêåòà íå ëåòåëà äàëüøå
+	//дективировать физическую оболочку,чтоб ракета не летела дальше
 	if(m_pPhysicsShell)
 	{
 		m_pPhysicsShell->set_LinearVel(zero_vel);
@@ -402,9 +402,9 @@ void CCustomRocket::UpdateCL()
 	{
 	case eInactive:
 		break;
-	//ñîñòîÿíèÿ eEngine è eFlying îòëè÷àþòñÿ, òåì
-	//÷òî âûçûâàåòñÿ UpdateEngine ó eEngine, îñòàëüíûå
-	//ôóíêöèè îáùèå
+	//состояния eEngine и eFlying отличаются, тем
+	//что вызывается UpdateEngine у eEngine, остальные
+	//функции общие
 	case eEngine:
 		UpdateEngine();
 	case eFlying:
@@ -511,7 +511,7 @@ void CCustomRocket::StartLights()
 {
 	if(!m_bLightsEnabled) return;
 
-	//âêëþ÷èòü ñâåòîâóþ ïîäñâåòêó îò äâèãàòåëÿ
+	//включить световую подсветку от двигателя
 	m_pTrailLight->set_color(m_TrailLightColor.r, 
 							 m_TrailLightColor.g, 
 							 m_TrailLightColor.b);

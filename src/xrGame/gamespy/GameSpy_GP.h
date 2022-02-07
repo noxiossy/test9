@@ -1,4 +1,4 @@
-#ifndef GAMESPY_GP_H
+﻿#ifndef GAMESPY_GP_H
 #define GAMESPY_GP_H
 
 #include "GameSpy_FuncDefs.h"

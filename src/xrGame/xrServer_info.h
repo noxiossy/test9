@@ -1,4 +1,4 @@
-#ifndef SERVER_INFO_UPLOADER
+﻿#ifndef SERVER_INFO_UPLOADER
 #define SERVER_INFO_UPLOADER
 
 #include <boost/noncopyable.hpp>

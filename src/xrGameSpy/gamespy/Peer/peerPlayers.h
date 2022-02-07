@@ -1,4 +1,4 @@
-/*
+﻿/*
 GameSpy Peer SDK 
 Dan "Mr. Pants" Schoenblum
 dan@gamespy.com

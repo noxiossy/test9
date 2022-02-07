@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 const		u32					occq_size			= 2*768; //256	;	// queue for occlusion queries
 

@@ -1,4 +1,4 @@
-#ifndef PH_VALIDE_VALUES
+﻿#ifndef PH_VALIDE_VALUES
 #define PH_VALIDE_VALUES
 
 #include "mathutilsode.h"

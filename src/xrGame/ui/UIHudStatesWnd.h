@@ -1,10 +1,9 @@
-#pragma once
+﻿#pragma once
 
 #include "UIWindow.h"
 #include "..\..\xrServerEntities\alife_space.h"
 #include "..\..\xrServerEntities\inventory_space.h"
 #include "..\actor_defs.h"
-#include "UICharacterInfo.h"
 
 class CUIStatic;
 class CUITextWnd;
@@ -22,8 +21,6 @@ private:
 	typedef CUIWindow						inherited;
 //-	typedef ALife::EInfluenceType	EIndicatorType;
 
-	//CUIStatic*			m_actor_icon;
-	//CUICharacterInfo 		m_actor_info_hud;
 	CUIStatic*			m_back;
 //	CUIStatic*			m_back_v;
 //	CUIStatic*			m_back_over_arrow;

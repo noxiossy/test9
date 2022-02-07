@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "../../xrServerEntities/script_export_space.h"
 #include "UIOptionsItem.h"
 #include "UICustomEdit.h"

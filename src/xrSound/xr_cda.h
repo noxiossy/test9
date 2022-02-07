@@ -1,4 +1,4 @@
-#ifndef __XR_CDAUDIO_H__
+﻿#ifndef __XR_CDAUDIO_H__
 #define __XR_CDAUDIO_H__
 
 typedef enum CDA_STATE{

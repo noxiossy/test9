@@ -1,4 +1,4 @@
-#ifndef _TTAPI_H_INCLUDED_
+﻿#ifndef _TTAPI_H_INCLUDED_
 #define _TTAPI_H_INCLUDED_
 
 #include <windows.h>

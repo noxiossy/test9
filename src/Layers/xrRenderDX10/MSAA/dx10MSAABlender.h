@@ -1,4 +1,4 @@
-#ifndef	dx10MSAABlender_included
+﻿#ifndef	dx10MSAABlender_included
 #define	dx10MSAABlender_included
 
 class CBlender_msaa	: public IBlender  

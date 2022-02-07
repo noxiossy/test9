@@ -1,4 +1,4 @@
-#ifndef __FRECT
+﻿#ifndef __FRECT
 #define __FRECT
 
 template <class T>

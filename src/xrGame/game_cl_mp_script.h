@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "game_cl_mp.h"
 #include "script_export_space.h"

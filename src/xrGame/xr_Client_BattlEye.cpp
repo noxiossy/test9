@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 
 #include "xr_Client_BattlEye.h"
 #include "xrMessages.h"

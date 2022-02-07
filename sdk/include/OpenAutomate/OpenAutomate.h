@@ -1,10 +1,10 @@
-/*******************************************************************************
+ï»¿/*******************************************************************************
  * NVIDIA Corporation 
  * Software License Agreement - OpenAutomate SDK 
  * 
  * IMPORTANT - READ BEFORE COPYING, INSTALLING OR USING
  * Do not use or load the OpenAutomate SDK and any associated materials
- * provided by NVIDIA on NVIDIA’s website (collectively, the "Software")
+ * provided by NVIDIA on NVIDIAâ€™s website (collectively, the "Software")
  * until You have carefully read the following terms and conditions. By
  * loading or using the Software, You agree to fully comply with the terms
  * and conditions of this Software License Agreement ("Agreement") by and
@@ -43,7 +43,7 @@
  * pursuant to the terms and conditions of this Agreement.  Subject to the
  * terms of this Agreement, NVIDIA grants to You a nonexclusive,
  * transferable, worldwide, revocable, limited, royalty-free, fully paid-up
- * license under NVIDIA’s copyrights to 
+ * license under NVIDIAâ€™s copyrights to 
  * 
  * (a) install, deploy, use, have used execute, reproduce, display,
  * perform, run, modify the source code of the Software, or to prepare and
@@ -83,11 +83,11 @@
  * 
  * (y) if NVIDIA objects to Your improper use of the "OpenAutomate
  * Compatible" name and trademark, You will take all reasonable steps
- * necessary to resolve NVIDIA’s objections. NVIDIA may reasonably monitor
+ * necessary to resolve NVIDIAâ€™s objections. NVIDIA may reasonably monitor
  * the quality of Your application software bearing the "OpenAutomate
  * Compatible" name or trademark pursuant to this Agreement; and
  * 
- * (z) any goodwill attached to NVIDIA’s trademarks, service marks, or
+ * (z) any goodwill attached to NVIDIAâ€™s trademarks, service marks, or
  * trade names belong to NVIDIA and this Agreement does not grant You any
  * right to use them.
  * 
@@ -146,7 +146,7 @@
  * 
  * All rights, title and interest in the Derivative Works of the Software
  * remain with You subject to the underlying license from NVIDIA to the
- * Software.  In Your sole discretion, You may grant NVIDIA, upon NVIDIA’s
+ * Software.  In Your sole discretion, You may grant NVIDIA, upon NVIDIAâ€™s
  * request for such a license described herein, an irrevocable, perpetual,
  * nonexclusive, worldwide, royalty-free paid-up license to make, have
  * made, use, have used, sell, license, distribute, sublicense or otherwise
@@ -175,8 +175,8 @@
  * identified or corrected.
  * 
  * SECTION 5 - LIMITATION OF LIABILITY.
- * EXCEPT WITH RESPECT TO THE MISUSE OF THE OTHER PARTY’S INTELLECTUAL
- * PROPERTY OR DISCLOSURE OF THE OTHER PARTY’S CONFIDENTIAL INFORMATION IN
+ * EXCEPT WITH RESPECT TO THE MISUSE OF THE OTHER PARTYâ€™S INTELLECTUAL
+ * PROPERTY OR DISCLOSURE OF THE OTHER PARTYâ€™S CONFIDENTIAL INFORMATION IN
  * BREACH OF THIS AGREEMENT, IN NO EVENT SHALL NVIDIA, SUBSIDIARIES,
  * LICENSORS, OR ITS SUPPLIERS BE LIABLE FOR ANY DAMAGES WHATSOEVER
  * (INCLUDING, WITHOUT LIMITATION,  INDIRECT, LOST PROFITS, CONSEQUENTIAL,
@@ -186,7 +186,7 @@
  * LIMITATION OF LIABILITY FOR IMPLIED WARRANTIES OR CONSEQUENTIAL OR
  * INCIDENTAL DAMAGES, SO THE ABOVE LIMITATION MAY NOT APPLY TO YOU. YOU
  * MAY ALSO HAVE OTHER LEGAL RIGHTS THAT VARY FROM JURISDICTION TO
- * JURISDICTION.  NOTWITHSTANDING THE FOREGOING, NVIDIA’S AGGREGATE
+ * JURISDICTION.  NOTWITHSTANDING THE FOREGOING, NVIDIAâ€™S AGGREGATE
  * LIABILITY ARISING OUT OF THIS AGREEMENT SHALL NOT EXCEED ONE HUNDRED
  * UNITED STATES DOLLARS (USD$100).
  * 
@@ -248,12 +248,12 @@
  * and remain in full force and effect.
  * 
  * SECTION 8.5 - NO ASSIGNMENT. 
- * This Agreement and Licensee’s rights and obligations herein, may not be
+ * This Agreement and Licenseeâ€™s rights and obligations herein, may not be
  * assigned, subcontracted, delegated, or otherwise transferred by Licensee
- * without NVIDIA’s prior written consent, and any attempted assignment,
+ * without NVIDIAâ€™s prior written consent, and any attempted assignment,
  * subcontract, delegation, or transfer in violation of the foregoing will
  * be null and void.  The terms of this Agreement shall be binding upon
- * Licensee’s assignees.
+ * Licenseeâ€™s assignees.
  * 
  * SECTION 8.6 - GOVERNMENT RESTRICTED RIGHTS. 
  * The parties acknowledge that the Software is subject to U.S. export
@@ -276,7 +276,7 @@
  * therein. 
  * 
  * SECTION 8.7 - INDEPENDENT CONTRACTORS.
- * Licensee’s relationship to NVIDIA is that of an independent contractor,
+ * Licenseeâ€™s relationship to NVIDIA is that of an independent contractor,
  * and neither party is an agent or partner of the other.  Licensee will
  * not have, and will not represent to any third party that it has, any
  * authority to act on behalf of NVIDIA.

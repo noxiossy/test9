@@ -1,4 +1,4 @@
-// File:		UIMessagesWindow.h
+﻿// File:		UIMessagesWindow.h
 // Description:	Window with MP chat and Game Log ( with PDA messages in single and Kill Messages in MP)
 // Created:		22.04.2005
 // Author:		Serge Vynnychenko
@@ -55,6 +55,7 @@ void CUIMessagesWindow::PendingMode(bool const is_pending_mode)
 #define CHAT_LOG_LIST_PENDING "chat_log_list_pending"
 void CUIMessagesWindow::Init(float x, float y, float width, float height)
 {
+
 	CUIXml									xml;
 	xml.Load								(CONFIG_PATH, UI_PATH, "messages_window.xml");
 	m_pGameLog								= xr_new<CUIGameLog>();

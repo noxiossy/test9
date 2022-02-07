@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "r3.h"
 
 int CRender::translateSector(IRender_Sector* pSector)

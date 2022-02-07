@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "xrMessages.h"
 #include "xrGameSpyServer.h"
 #include "../xrEngine/igame_persistent.h"
@@ -168,17 +168,8 @@ u32				xrGameSpyServer::OnMessage(NET_Packet& P, ClientID sender)			// Non-Zero 
 	case M_GAMESPY_CDKEY_VALIDATION_CHALLENGE_RESPOND:
 		{
             string128 ResponseStr = "";
-            u32 bytesRemain = P.r_elapsed();
-            if (bytesRemain == 0 || bytesRemain > sizeof(ResponseStr))
-            {
-                xr_string clientIp = CL->m_cAddress.to_string();
-                Msg("! WARNING: Validation challenge respond from client [%s] is %s. DoS attack?",
-                    clientIp.c_str(), bytesRemain == 0 ? "empty" : "too long");
-                DisconnectClient(CL, "");
-                // XXX nitrocaster: block IP address after X such attempts
-                return 0;
-            }
-            P.r_stringZ(ResponseStr);
+			P.r_stringZ(ResponseStr);
+			
 			if (!CL->m_bCDKeyAuth)
 			{
 #ifndef MASTER_GOLD

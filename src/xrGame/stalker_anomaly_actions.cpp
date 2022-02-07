@@ -1,4 +1,4 @@
-////////////////////////////////////////////////////////////////////////////
+﻿////////////////////////////////////////////////////////////////////////////
 //	Module 		: stalker_anomaly_actions.cpp
 //	Created 	: 25.03.2004
 //  Modified 	: 26.03.2004
@@ -53,7 +53,7 @@ void CStalkerActionGetOutOfAnomaly::initialize	()
 	object().movement().set_detail_path_type		(DetailPathManager::eDetailPathTypeSmooth);
 	object().movement().set_body_state			(eBodyStateStand);
 	object().movement().set_movement_type			(eMovementTypeWalk);
-	object().movement().set_mental_state			(eMentalStateDanger);
+	//object().movement().set_mental_state			(eMentalStateDanger);
 	object().sight().setup				(SightManager::eSightTypeCurrentDirection);
 	if	(	object().memory().enemy().selected() && 
 			object().inventory().ActiveItem() && 
@@ -84,7 +84,7 @@ void CStalkerActionGetOutOfAnomaly::execute	()
 	object().movement().set_detail_path_type		(DetailPathManager::eDetailPathTypeSmooth);
 	object().movement().set_body_state			(eBodyStateStand);
 	object().movement().set_movement_type			(eMovementTypeWalk);
-	object().movement().set_mental_state			(eMentalStateDanger);
+	//object().movement().set_mental_state			(eMentalStateDanger);
 //
 
 	m_temp0.clear						();
@@ -160,5 +160,5 @@ void CStalkerActionDetectAnomaly::execute	()
 		return;
 	}
 	
-	object().CObjectHandler::set_goal	(eObjectActionFire1,object().inventory().ItemFromSlot(BOLT_SLOT));
+	//object().CObjectHandler::set_goal	(eObjectActionFire1,object().inventory().ItemFromSlot(BOLT_SLOT));
 }

@@ -1,4 +1,4 @@
-#include "LibStr.h"
+﻿#include "LibStr.h"
 #include "LibMath.h"
 #include "LibTab.h"
 //#include "keyboard.h"

@@ -1,4 +1,4 @@
-#pragma once
+п»ї#pragma once
 
 // Singleton template definition 
 template <class T> class CSingleton {
@@ -108,7 +108,7 @@ public:
 	const SHARED_TYPE		*get_sd			() const	{return _sd;}
 	
 	
-	// управление загрузкой данных при компонентном подходе (загрузка данных вручную)
+	// СѓРїСЂР°РІР»РµРЅРёРµ Р·Р°РіСЂСѓР·РєРѕР№ РґР°РЅРЅС‹С… РїСЂРё РєРѕРјРїРѕРЅРµРЅС‚РЅРѕРј РїРѕРґС…РѕРґРµ (Р·Р°РіСЂСѓР·РєР° РґР°РЅРЅС‹С… РІСЂСѓС‡РЅСѓСЋ)
 	bool start_load_shared	 (KEY_TYPE key){ 
 		_sd = pSharedObj->get_shared(key);
 		if (get_sd()->IsLoaded()) return false;

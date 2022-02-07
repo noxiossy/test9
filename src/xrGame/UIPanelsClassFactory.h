@@ -1,4 +1,4 @@
-#ifndef UIPANELSCLASSFACTORY
+﻿#ifndef UIPANELSCLASSFACTORY
 #define UIPANELSCLASSFACTORY
 
 #include "UITeamState.h"

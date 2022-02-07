@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "igame_level.h"
 
 #include "xr_object.h"
@@ -12,7 +12,6 @@
 #include "x_ray.h"
 #include "GameFont.h"
 
-#include "mp_logging.h"
 #include "xr_collide_form.h"
 
 #pragma warning(push)
@@ -441,9 +440,6 @@ void CObject::setDestroy(BOOL _destroy)
         if (debug_destroy)
             Msg("cl setDestroy [%d][%d]", ID(), Device.dwFrame);
 #endif
-#ifdef MP_LOGGING
-        Msg("cl setDestroy [%d][%d]", ID(), Device.dwFrame);
-#endif //#ifdef MP_LOGGING
     }
     else
         VERIFY(!g_pGameLevel->Objects.registered_object_to_destroy(this));

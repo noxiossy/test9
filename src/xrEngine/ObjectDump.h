@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #ifdef DEBUG
 
 ENGINE_API std::string dbg_object_base_dump_string(const CObject* obj);

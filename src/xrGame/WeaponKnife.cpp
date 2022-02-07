@@ -1,4 +1,4 @@
-#include "stdafx.h"
+ï»¿#include "stdafx.h"
 
 #include "WeaponKnife.h"
 #include "Entity.h"
@@ -14,7 +14,6 @@
 #include "../xrEngine/SkeletonMotions.h"
 #include "player_hud.h"
 #include "ActorEffector.h"
-#include <iterator>
 
 #define KNIFE_MATERIAL_NAME "objects\\knife"
 
@@ -72,9 +71,9 @@ void CWeaponKnife::Load	(LPCSTR section)
 	knife_material_idx =  GMLib.GetMaterialIdx(KNIFE_MATERIAL_NAME);
 }
 
-void CWeaponKnife::OnStateSwitch	(u32 S)
+void CWeaponKnife::OnStateSwitch	(u32 S, u32 oldState)
 {
-	inherited::OnStateSwitch(S);
+	inherited::OnStateSwitch(S, oldState);
 	switch (S)
 	{
 	case eIdle:
@@ -84,7 +83,10 @@ void CWeaponKnife::OnStateSwitch	(u32 S)
 		switch2_Showing	();
 		break;
 	case eHiding:
-		switch2_Hiding	();
+		if (oldState != eHiding)
+		{
+			switch2_Hiding();
+		}
 		break;
 	case eHidden:
 		switch2_Hidden	();
@@ -179,8 +181,8 @@ void CWeaponKnife::MakeShot(Fvector const & pos, Fvector const & dir, float cons
 	cartridge.param_s.fWallmarkSize	= fWallmarkSize;
 	cartridge.bullet_material_idx	= knife_material_idx;
 
-	while(m_magazine.size() < 2)	m_magazine.push_back(cartridge);
-	iAmmoElapsed					= m_magazine.size();
+	/*while(m_magazine.size() < 2)*/	m_magazine.push_back(cartridge);
+	m_ammoElapsed.type1					= m_magazine.size();
 	bool SendHit					= SendHitAllowed(H_Parent());
 
 	PlaySound						("sndShot",pos);
@@ -337,38 +339,38 @@ void CWeaponKnife::LoadFireParams(LPCSTR section)
 	s_sHitPower_2			= pSettings->r_string_wb	(section, "hit_power_2" );
 	s_sHitPowerCritical_2	= pSettings->r_string_wb	(section, "hit_power_critical_2" );
 	
-	fvHitPower_2[egdMaster]			= (float)atof(_GetItem(*s_sHitPower_2,0,buffer));//ïåðâûé ïàðàìåòð - ýòî õèò äëÿ óðîâíÿ èãðû ìàñòåð
-	fvHitPowerCritical_2[egdMaster]	= (float)atof(_GetItem(*s_sHitPowerCritical_2,0,buffer));//ïåðâûé ïàðàìåòð - ýòî õèò äëÿ óðîâíÿ èãðû ìàñòåð
+	fvHitPower_2[egdMaster]			= (float)atof(_GetItem(*s_sHitPower_2,0,buffer));//Ð¿ÐµÑ€Ð²Ñ‹Ð¹ Ð¿Ð°Ñ€Ð°Ð¼ÐµÑ‚Ñ€ - ÑÑ‚Ð¾ Ñ…Ð¸Ñ‚ Ð´Ð»Ñ ÑƒÑ€Ð¾Ð²Ð½Ñ Ð¸Ð³Ñ€Ñ‹ Ð¼Ð°ÑÑ‚ÐµÑ€
+	fvHitPowerCritical_2[egdMaster]	= (float)atof(_GetItem(*s_sHitPowerCritical_2,0,buffer));//Ð¿ÐµÑ€Ð²Ñ‹Ð¹ Ð¿Ð°Ñ€Ð°Ð¼ÐµÑ‚Ñ€ - ÑÑ‚Ð¾ Ñ…Ð¸Ñ‚ Ð´Ð»Ñ ÑƒÑ€Ð¾Ð²Ð½Ñ Ð¸Ð³Ñ€Ñ‹ Ð¼Ð°ÑÑ‚ÐµÑ€
 
-	fvHitPower_2[egdNovice] = fvHitPower_2[egdStalker] = fvHitPower_2[egdVeteran] = fvHitPower_2[egdMaster];//èçíà÷àëüíî ïàðàìåòðû äëÿ äðóãèõ óðîâíåé ñëîæíîñòè òàêèå æå
-	fvHitPowerCritical_2[egdNovice] = fvHitPowerCritical_2[egdStalker] = fvHitPowerCritical_2[egdVeteran] = fvHitPowerCritical_2[egdMaster];//èçíà÷àëüíî ïàðàìåòðû äëÿ äðóãèõ óðîâíåé ñëîæíîñòè òàêèå æå
+	fvHitPower_2[egdNovice] = fvHitPower_2[egdStalker] = fvHitPower_2[egdVeteran] = fvHitPower_2[egdMaster];//Ð¸Ð·Ð½Ð°Ñ‡Ð°Ð»ÑŒÐ½Ð¾ Ð¿Ð°Ñ€Ð°Ð¼ÐµÑ‚Ñ€Ñ‹ Ð´Ð»Ñ Ð´Ñ€ÑƒÐ³Ð¸Ñ… ÑƒÑ€Ð¾Ð²Ð½ÐµÐ¹ ÑÐ»Ð¾Ð¶Ð½Ð¾ÑÑ‚Ð¸ Ñ‚Ð°ÐºÐ¸Ðµ Ð¶Ðµ
+	fvHitPowerCritical_2[egdNovice] = fvHitPowerCritical_2[egdStalker] = fvHitPowerCritical_2[egdVeteran] = fvHitPowerCritical_2[egdMaster];//Ð¸Ð·Ð½Ð°Ñ‡Ð°Ð»ÑŒÐ½Ð¾ Ð¿Ð°Ñ€Ð°Ð¼ÐµÑ‚Ñ€Ñ‹ Ð´Ð»Ñ Ð´Ñ€ÑƒÐ³Ð¸Ñ… ÑƒÑ€Ð¾Ð²Ð½ÐµÐ¹ ÑÐ»Ð¾Ð¶Ð½Ð¾ÑÑ‚Ð¸ Ñ‚Ð°ÐºÐ¸Ðµ Ð¶Ðµ
 
-	int num_game_diff_param=_GetItemCount(*s_sHitPower_2);//óçíà¸ì êîëëè÷åñòâî ïàðàìåòðîâ äëÿ õèòîâ
-	if (num_game_diff_param>1)//åñëè çàäàí âòîðîé ïàðàìåòð õèòà
+	int num_game_diff_param=_GetItemCount(*s_sHitPower_2);//ÑƒÐ·Ð½Ð°Ñ‘Ð¼ ÐºÐ¾Ð»Ð»Ð¸Ñ‡ÐµÑÑ‚Ð²Ð¾ Ð¿Ð°Ñ€Ð°Ð¼ÐµÑ‚Ñ€Ð¾Ð² Ð´Ð»Ñ Ñ…Ð¸Ñ‚Ð¾Ð²
+	if (num_game_diff_param>1)//ÐµÑÐ»Ð¸ Ð·Ð°Ð´Ð°Ð½ Ð²Ñ‚Ð¾Ñ€Ð¾Ð¹ Ð¿Ð°Ñ€Ð°Ð¼ÐµÑ‚Ñ€ Ñ…Ð¸Ñ‚Ð°
 	{
-		fvHitPower_2[egdVeteran] = (float)atof(_GetItem(*s_sHitPower_2,1,buffer));//òî âû÷èòûâàåì åãî äëÿ óðîâíÿ âåòåðàíà
+		fvHitPower_2[egdVeteran] = (float)atof(_GetItem(*s_sHitPower_2,1,buffer));//Ñ‚Ð¾ Ð²Ñ‹Ñ‡Ð¸Ñ‚Ñ‹Ð²Ð°ÐµÐ¼ ÐµÐ³Ð¾ Ð´Ð»Ñ ÑƒÑ€Ð¾Ð²Ð½Ñ Ð²ÐµÑ‚ÐµÑ€Ð°Ð½Ð°
 	}
-	if (num_game_diff_param>2)//åñëè çàäàí òðåòèé ïàðàìåòð õèòà
+	if (num_game_diff_param>2)//ÐµÑÐ»Ð¸ Ð·Ð°Ð´Ð°Ð½ Ñ‚Ñ€ÐµÑ‚Ð¸Ð¹ Ð¿Ð°Ñ€Ð°Ð¼ÐµÑ‚Ñ€ Ñ…Ð¸Ñ‚Ð°
 	{
-		fvHitPower_2[egdStalker] = (float)atof(_GetItem(*s_sHitPower_2,2,buffer));//òî âû÷èòûâàåì åãî äëÿ óðîâíÿ ñòàëêåðà
+		fvHitPower_2[egdStalker] = (float)atof(_GetItem(*s_sHitPower_2,2,buffer));//Ñ‚Ð¾ Ð²Ñ‹Ñ‡Ð¸Ñ‚Ñ‹Ð²Ð°ÐµÐ¼ ÐµÐ³Ð¾ Ð´Ð»Ñ ÑƒÑ€Ð¾Ð²Ð½Ñ ÑÑ‚Ð°Ð»ÐºÐµÑ€Ð°
 	}
-	if (num_game_diff_param>3)//åñëè çàäàí ÷åòâ¸ðòûé ïàðàìåòð õèòà
+	if (num_game_diff_param>3)//ÐµÑÐ»Ð¸ Ð·Ð°Ð´Ð°Ð½ Ñ‡ÐµÑ‚Ð²Ñ‘Ñ€Ñ‚Ñ‹Ð¹ Ð¿Ð°Ñ€Ð°Ð¼ÐµÑ‚Ñ€ Ñ…Ð¸Ñ‚Ð°
 	{
-		fvHitPower_2[egdNovice]  = (float)atof(_GetItem(*s_sHitPower_2,3,buffer));//òî âû÷èòûâàåì åãî äëÿ óðîâíÿ íîâè÷êà
+		fvHitPower_2[egdNovice]  = (float)atof(_GetItem(*s_sHitPower_2,3,buffer));//Ñ‚Ð¾ Ð²Ñ‹Ñ‡Ð¸Ñ‚Ñ‹Ð²Ð°ÐµÐ¼ ÐµÐ³Ð¾ Ð´Ð»Ñ ÑƒÑ€Ð¾Ð²Ð½Ñ Ð½Ð¾Ð²Ð¸Ñ‡ÐºÐ°
 	}
 
-	num_game_diff_param=_GetItemCount(*s_sHitPowerCritical_2);//óçíà¸ì êîëëè÷åñòâî ïàðàìåòðîâ
-	if (num_game_diff_param>1)//åñëè çàäàí âòîðîé ïàðàìåòð õèòà
+	num_game_diff_param=_GetItemCount(*s_sHitPowerCritical_2);//ÑƒÐ·Ð½Ð°Ñ‘Ð¼ ÐºÐ¾Ð»Ð»Ð¸Ñ‡ÐµÑÑ‚Ð²Ð¾ Ð¿Ð°Ñ€Ð°Ð¼ÐµÑ‚Ñ€Ð¾Ð²
+	if (num_game_diff_param>1)//ÐµÑÐ»Ð¸ Ð·Ð°Ð´Ð°Ð½ Ð²Ñ‚Ð¾Ñ€Ð¾Ð¹ Ð¿Ð°Ñ€Ð°Ð¼ÐµÑ‚Ñ€ Ñ…Ð¸Ñ‚Ð°
 	{
-		fvHitPowerCritical_2[egdVeteran] = (float)atof(_GetItem(*s_sHitPowerCritical_2,1,buffer));//òî âû÷èòûâàåì åãî äëÿ óðîâíÿ âåòåðàíà
+		fvHitPowerCritical_2[egdVeteran] = (float)atof(_GetItem(*s_sHitPowerCritical_2,1,buffer));//Ñ‚Ð¾ Ð²Ñ‹Ñ‡Ð¸Ñ‚Ñ‹Ð²Ð°ÐµÐ¼ ÐµÐ³Ð¾ Ð´Ð»Ñ ÑƒÑ€Ð¾Ð²Ð½Ñ Ð²ÐµÑ‚ÐµÑ€Ð°Ð½Ð°
 	}
-	if (num_game_diff_param>2)//åñëè çàäàí òðåòèé ïàðàìåòð õèòà
+	if (num_game_diff_param>2)//ÐµÑÐ»Ð¸ Ð·Ð°Ð´Ð°Ð½ Ñ‚Ñ€ÐµÑ‚Ð¸Ð¹ Ð¿Ð°Ñ€Ð°Ð¼ÐµÑ‚Ñ€ Ñ…Ð¸Ñ‚Ð°
 	{
-		fvHitPowerCritical_2[egdStalker] = (float)atof(_GetItem(*s_sHitPowerCritical_2,2,buffer));//òî âû÷èòûâàåì åãî äëÿ óðîâíÿ ñòàëêåðà
+		fvHitPowerCritical_2[egdStalker] = (float)atof(_GetItem(*s_sHitPowerCritical_2,2,buffer));//Ñ‚Ð¾ Ð²Ñ‹Ñ‡Ð¸Ñ‚Ñ‹Ð²Ð°ÐµÐ¼ ÐµÐ³Ð¾ Ð´Ð»Ñ ÑƒÑ€Ð¾Ð²Ð½Ñ ÑÑ‚Ð°Ð»ÐºÐµÑ€Ð°
 	}
-	if (num_game_diff_param>3)//åñëè çàäàí ÷åòâ¸ðòûé ïàðàìåòð õèòà
+	if (num_game_diff_param>3)//ÐµÑÐ»Ð¸ Ð·Ð°Ð´Ð°Ð½ Ñ‡ÐµÑ‚Ð²Ñ‘Ñ€Ñ‚Ñ‹Ð¹ Ð¿Ð°Ñ€Ð°Ð¼ÐµÑ‚Ñ€ Ñ…Ð¸Ñ‚Ð°
 	{
-		fvHitPowerCritical_2[egdNovice]  = (float)atof(_GetItem(*s_sHitPowerCritical_2,3,buffer));//òî âû÷èòûâàåì åãî äëÿ óðîâíÿ íîâè÷êà
+		fvHitPowerCritical_2[egdNovice]  = (float)atof(_GetItem(*s_sHitPowerCritical_2,3,buffer));//Ñ‚Ð¾ Ð²Ñ‹Ñ‡Ð¸Ñ‚Ñ‹Ð²Ð°ÐµÐ¼ ÐµÐ³Ð¾ Ð´Ð»Ñ ÑƒÑ€Ð¾Ð²Ð½Ñ Ð½Ð¾Ð²Ð¸Ñ‡ÐºÐ°
 	}
 
 	fHitImpulse_2		= pSettings->r_float	(section, "hit_impulse_2" );

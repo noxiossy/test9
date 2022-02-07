@@ -1,4 +1,4 @@
-#ifndef BOUNDER33_H
+﻿#ifndef BOUNDER33_H
 class Lcp33
 {
 static	const	int			MSIZE=3;

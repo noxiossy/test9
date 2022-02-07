@@ -1,4 +1,4 @@
-// Effector.cpp: implementation of the CEffector class.
+﻿// Effector.cpp: implementation of the CEffector class.
 //
 //////////////////////////////////////////////////////////////////////
 

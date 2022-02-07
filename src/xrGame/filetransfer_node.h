@@ -1,4 +1,4 @@
-#ifndef FILETRANSFER_NODE
+﻿#ifndef FILETRANSFER_NODE
 #define FILETRANSFER_NODE
 
 #include "filetransfer_common.h"

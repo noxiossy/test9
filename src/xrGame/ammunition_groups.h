@@ -1,4 +1,4 @@
-#ifndef AMMUNITION_GROUPS_INCLUDED
+﻿#ifndef AMMUNITION_GROUPS_INCLUDED
 #define AMMUNITION_GROUPS_INCLUDED
 
 #include "../xrServerEntities/associative_vector.h"

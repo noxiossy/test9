@@ -1,4 +1,4 @@
-// chattyDoc.cpp : implementation of the CChattyDoc class
+﻿// chattyDoc.cpp : implementation of the CChattyDoc class
 //
 
 #include "stdafx.h"

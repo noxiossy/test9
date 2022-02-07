@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 class IPhysicsShellHolder;
 XRPHYSICS_API void ActivateShapeExplosive				( IPhysicsShellHolder* self_obj, const Fvector &size, Fvector &out_size, Fvector &in_out_pos);
 XRPHYSICS_API void ActivateShapePhysShellHolder			(IPhysicsShellHolder *obj, const Fmatrix &in_xform, const Fvector &in_size, Fvector &in_pos, Fvector &out_pos );

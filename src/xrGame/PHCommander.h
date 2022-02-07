@@ -1,4 +1,4 @@
-#ifndef PH_COMMANDER_H
+﻿#ifndef PH_COMMANDER_H
 #define PH_COMMANDER_H
 class CPHReqBase;
 class CPHReqComparerV;

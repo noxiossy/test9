@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "property_string_values_value_base.hpp"
 

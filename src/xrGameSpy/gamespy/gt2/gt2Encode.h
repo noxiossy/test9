@@ -1,4 +1,4 @@
-//TODO: Address Byte order & Byte alignment issues
+﻿//TODO: Address Byte order & Byte alignment issues
 #ifndef _GT_ENCODE_H
 #define _GT_ENCODE_H
 

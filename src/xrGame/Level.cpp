@@ -1,4 +1,4 @@
-#include "pch_script.h"
+﻿#include "pch_script.h"
 #include "xrEngine/FDemoRecord.h"
 #include "xrEngine/FDemoPlay.h"
 #include "xrEngine/Environment.h"
@@ -57,6 +57,7 @@
 #include "PHDebug.h"
 #include "debug_text_tree.h"
 #endif
+
 //AVO: used by SPAWN_ANTIFREEZE (by alpet)
 #ifdef SPAWN_ANTIFREEZE
 ENGINE_API BOOL	g_bootComplete;
@@ -109,12 +110,14 @@ IPureClient(Device.GetTimerGlobal())
     eEnvironment = Engine.Event.Handler_Attach("LEVEL:Environment", this);
     eEntitySpawn = Engine.Event.Handler_Attach("LEVEL:spawn", this);
     m_pBulletManager = xr_new<CBulletManager>();
+
     {
         m_map_manager = xr_new<CMapManager>();
         m_game_task_manager = xr_new<CGameTaskManager>();
     }
     m_dwDeltaUpdate = u32(fixed_step * 1000);
     m_seniority_hierarchy_holder = xr_new<CSeniorityHierarchyHolder>();
+
     {
         m_level_sound_manager = xr_new<CLevelSoundManager>();
         m_space_restriction_manager = xr_new<CSpaceRestrictionManager>();
@@ -174,6 +177,7 @@ CLevel::~CLevel()
 #ifdef DEBUG
     xr_delete(m_debug_renderer);
 #endif
+
     ai().script_engine().remove_script_process(ScriptEngine::eScriptProcessorLevel);
     xr_delete(game);
     xr_delete(game_events);
@@ -376,18 +380,18 @@ void CLevel::ProcessGameEvents()
             game_events->get(ID, dest, type, P);
             //AVO: spawn antifreeze implementation by alpet
 #ifdef SPAWN_ANTIFREEZE
-            // íå îòïðàâëÿòü ñîáûòèÿ íå çàñïàâíåííûì îáúåêòàì
+            // не отправлять события не заспавненным объектам
             if (g_bootComplete && M_EVENT == ID && PostponedSpawn(dest))
             {
                 spawn_events->insert(P);
                 continue;
             }
-            if (g_bootComplete && M_SPAWN == ID && Device.frame_elapsed() > work_limit) // alpet: ïîçâîëèò ïëàâíåå âûâîäèòü îáúåêòû â îíëàéí, áåç çàìåòíûõ ôðèçîâ
+            if (g_bootComplete && M_SPAWN == ID && Device.frame_elapsed() > work_limit) // alpet: позволит плавнее выводить объекты в онлайн, без заметных фризов
             {
                 u16 parent_id;
                 GetSpawnInfo(P, parent_id);
                 //-------------------------------------------------				
-                if (parent_id < 0xffff) // îòêëàäûâàòü ñïàâí òîëüêî îáúåêòîâ â êîíòåéíåðû
+                if (parent_id < 0xffff) // откладывать спавн только объектов в контейнеры
                 {
                     if (!spawn_events->available(svT))
                         Msg("* ProcessGameEvents, spawn event postponed. Events rest = %d", game_events->queue.size());
@@ -505,7 +509,8 @@ void CLevel::OnFrame()
 #endif
     Fvector	temp_vector;
     m_feel_deny.feel_touch_update(temp_vector, 0.f);
-    psDeviceFlags.set(rsDisableObjectsAsCrows, false);
+
+        psDeviceFlags.set(rsDisableObjectsAsCrows, false);
     // commit events from bullet manager from prev-frame
     Device.Statistic->TEST0.Begin();
     BulletManager().CommitEvents();

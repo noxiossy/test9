@@ -1,4 +1,4 @@
-#ifndef ACTOR_MP_SERVER_H
+﻿#ifndef ACTOR_MP_SERVER_H
 #define ACTOR_MP_SERVER_H
 
 #include "xrServer_Objects_ALife_Monsters.h"

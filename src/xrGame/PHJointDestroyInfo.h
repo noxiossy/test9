@@ -1,4 +1,4 @@
-#ifndef PHJOINT_DESTROY_INFO_H
+﻿#ifndef PHJOINT_DESTROY_INFO_H
 #define PHJOINT_DESTROY_INFO_H
 
 #include "ode_include.h"

@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "customdetector.h"
 #include "ui/ArtefactDetectorUI.h"
 #include "hudmanager.h"
@@ -120,9 +120,9 @@ void CCustomDetector::ToggleDetector(bool bFastMode)
 
 }
 
-void CCustomDetector::OnStateSwitch(u32 S)
+void CCustomDetector::OnStateSwitch(u32 S, u32 oldState)
 {
-	inherited::OnStateSwitch(S);
+	inherited::OnStateSwitch(S, oldState);
 
 	switch(S)
 	{
@@ -137,10 +137,13 @@ void CCustomDetector::OnStateSwitch(u32 S)
 		}break;
 	case eHiding:
 		{
-			Light_Destroy();
-			m_sounds.PlaySound			("sndHide", Fvector().set(0,0,0), this, true, false);
-			PlayHUDMotion				(m_bFastAnimMode?"anm_hide_fast":"anm_hide", FALSE/*TRUE*/, this, GetState());
-			SetPending					(TRUE);
+			if (oldState != eHiding)
+			{
+				Light_Destroy();
+				m_sounds.PlaySound("sndHide", Fvector().set(0, 0, 0), this, true, false);
+				PlayHUDMotion(m_bFastAnimMode ? "anm_hide_fast" : "anm_hide", FALSE/*TRUE*/, this, GetState());
+				SetPending(TRUE);
+			}
 		}break;
 	case eIdle:
 		{
@@ -191,7 +194,8 @@ CCustomDetector::CCustomDetector()
 	m_ui				= NULL;
 	m_bFastAnimMode		= false;
 	m_bNeedActivation	= false;
-	light_render					= 0;
+	m_bWorking			= false;
+	light_render		= 0;
 }
 
 CCustomDetector::~CCustomDetector() 
@@ -414,6 +418,13 @@ void CCustomDetector::OnH_B_Independent(bool just_before_destroy)
 	Light_Start	();
 	
 	m_artefacts.clear			();
+
+	if (GetState() != eHidden)
+	{
+		// Detaching hud item and animation stop in OnH_A_Independent
+		TurnDetectorInternal(false);
+		SwitchState(eHidden);
+	}
 }
 
 
@@ -424,7 +435,7 @@ void CCustomDetector::OnMoveToRuck(const SInvItemPlace& prev)
 	{
 		SwitchState					(eHidden);
 		g_player_hud->detach_item	(this);
-			Light_Destroy();
+		Light_Destroy();
 	}
 	TurnDetectorInternal			(false);
 	StopCurrentAnimWithoutCallback	();

@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "hud_item_object.h"
 
 CHudItemObject::CHudItemObject			()
@@ -34,9 +34,9 @@ void CHudItemObject::SwitchState		(u32 S)
 	CHudItem::SwitchState		(S);
 }
 
-void CHudItemObject::OnStateSwitch		(u32 S)
+void CHudItemObject::OnStateSwitch		(u32 S, u32 oldState)
 {
-	CHudItem::OnStateSwitch		(S);
+	CHudItem::OnStateSwitch		(S, oldState);
 }
 
 void CHudItemObject::OnMoveToRuck(const SInvItemPlace& prev)

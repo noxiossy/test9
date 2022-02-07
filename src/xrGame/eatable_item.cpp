@@ -1,4 +1,4 @@
-////////////////////////////////////////////////////////////////////////////
+ï»¿////////////////////////////////////////////////////////////////////////////
 //	Module 		: eatable_item.cpp
 //	Created 	: 24.03.2003
 //  Modified 	: 29.01.2004
@@ -91,7 +91,7 @@ bool CEatableItem::Useful() const
 {
 	if(!inherited::Useful()) return false;
 
-	//ïðîâåðèòü íå âñå ëè åùå ñúåäåíî
+	//Ð¿Ñ€Ð¾Ð²ÐµÑ€Ð¸Ñ‚ÑŒ Ð½Ðµ Ð²ÑÐµ Ð»Ð¸ ÐµÑ‰Ðµ ÑÑŠÐµÐ´ÐµÐ½Ð¾
 	if ( m_iRemainingUses == 0 && CanDelete() ) return false;
 
 	return true;
@@ -139,6 +139,14 @@ bool CEatableItem::UseBy (CEntityAlive* entity_alive)
 		}
 	}
 
+	if (!IsGameTypeSingle() && OnServer())
+	{
+		NET_Packet				tmp_packet;
+		CGameObject::u_EventGen	(tmp_packet, GEG_PLAYER_USE_BOOSTER, entity_alive->ID());
+		tmp_packet.w_u16		(object_id());
+		Level().Send			(tmp_packet);
+	}
+	
 	// If uses 255, then skip the decrement for infinite usages
 	if (m_iRemainingUses != (-1)) {
 		if (m_iRemainingUses > 0)

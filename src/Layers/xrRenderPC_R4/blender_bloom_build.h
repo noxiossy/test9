@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 class CBlender_bloom_build : public IBlender  
 {

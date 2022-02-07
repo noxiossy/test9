@@ -1,4 +1,4 @@
-#ifndef __XR_STREAM_SOUND_H__
+п»ї#ifndef __XR_STREAM_SOUND_H__
 #define __XR_STREAM_SOUND_H__
 
 #include <msacm.h>
@@ -51,7 +51,7 @@ private:
 	unsigned char			*WaveSource,*WaveDest;
 
     u32						writepos;
-	BOOL					isPresentData; // признак окончания буфера
+	BOOL					isPresentData; // РїСЂРёР·РЅР°Рє РѕРєРѕРЅС‡Р°РЅРёСЏ Р±СѓС„РµСЂР°
 	u32						dwDecPos;
 	IReader*				hf;
 	int					    DataPos;

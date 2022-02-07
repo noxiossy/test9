@@ -1,4 +1,4 @@
-#ifndef _PURE_H_AAA_
+﻿#ifndef _PURE_H_AAA_
 #define _PURE_H_AAA_
 
 // messages

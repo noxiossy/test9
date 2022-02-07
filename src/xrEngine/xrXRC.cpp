@@ -1,4 +1,4 @@
-// xrXRC.cpp: implementation of the xrXRC class.
+﻿// xrXRC.cpp: implementation of the xrXRC class.
 //
 //////////////////////////////////////////////////////////////////////
 

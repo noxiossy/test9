@@ -1,4 +1,4 @@
-#pragma	 once
+﻿#pragma	 once
 #ifndef PH_CAPTURE_H
 #define PH_CAPTURE_H
 

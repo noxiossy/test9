@@ -1,4 +1,4 @@
-#ifndef DOUBLE_BUFFER_H
+﻿#ifndef DOUBLE_BUFFER_H
 #define DOUBLE_BUFFER_H
 
 #include "SpuFakeDma.h"

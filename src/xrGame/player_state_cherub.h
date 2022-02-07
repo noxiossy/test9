@@ -1,4 +1,4 @@
-#ifndef PLAYER_STATE_CHERUB_INCLUDED
+﻿#ifndef PLAYER_STATE_CHERUB_INCLUDED
 #define PLAYER_STATE_CHERUB_INCLUDED
 
 #include "player_state_param.h"

@@ -1,4 +1,4 @@
-#ifndef	RenderDetailModel_included
+﻿#ifndef	RenderDetailModel_included
 #define	RenderDetailModel_included
 #pragma once
 

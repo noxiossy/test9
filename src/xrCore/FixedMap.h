@@ -1,4 +1,4 @@
-#ifndef _FIXEDMAP_H
+﻿#ifndef _FIXEDMAP_H
 #define _FIXEDMAP_H
 #pragma once
 

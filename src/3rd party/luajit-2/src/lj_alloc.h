@@ -1,4 +1,4 @@
-/*
+﻿/*
 ** Bundled memory allocator.
 ** Donated to the public domain.
 */

@@ -1,4 +1,4 @@
-#ifndef __XR_INPUT__
+п»ї#ifndef __XR_INPUT__
 #define __XR_INPUT__
 
 #define DIRECTINPUT_VERSION 0x0800
@@ -7,7 +7,7 @@
 class ENGINE_API IInputReceiver;
 
 //\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
-//описание класса
+//РѕРїРёСЃР°РЅРёРµ РєР»Р°СЃСЃР°
 const int mouse_device_key = 1;
 const int keyboard_device_key = 2;
 const int all_device_key = mouse_device_key | keyboard_device_key;
@@ -98,8 +98,8 @@ public:
 
     void feedback(u16 s1, u16 s2, float time);
 	
-	// Возвращает символ по коду клавиши. Учитывается переключение языка, зажатый shift и caps lock
-	// В случае неудачи функция возвращает 0.
+	// Р’РѕР·РІСЂР°С‰Р°РµС‚ СЃРёРјРІРѕР» РїРѕ РєРѕРґСѓ РєР»Р°РІРёС€Рё. РЈС‡РёС‚С‹РІР°РµС‚СЃСЏ РїРµСЂРµРєР»СЋС‡РµРЅРёРµ СЏР·С‹РєР°, Р·Р°Р¶Р°С‚С‹Р№ shift Рё caps lock
+	// Р’ СЃР»СѓС‡Р°Рµ РЅРµСѓРґР°С‡Рё С„СѓРЅРєС†РёСЏ РІРѕР·РІСЂР°С‰Р°РµС‚ 0.
 	char DikToChar(int dik);
 };
 

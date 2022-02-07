@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #pragma hdrstop
 
 void __stdcall xrMemFill32_x86(LPVOID dest, u32 value, u32 count)
@@ -64,7 +64,7 @@ void __stdcall xrMemFill32_MMX(LPVOID dest, u32 value, u32 count)
         JNZ         $qloop2_fc; // until no more QWORDs left to copy
     $filldword2_fc:
         TEST        ECX, 1; // DWORD left to fill ?
-        JZ          $filldone2_fc; // nope,we �re done
+        JZ          $filldone2_fc; // nope,we ’re done
         MOVD        [EDI], MM0; // store last DWORD to dst
     $filldone2_fc:
         EMMS; // clear MMX state

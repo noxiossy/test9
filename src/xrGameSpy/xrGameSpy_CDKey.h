@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "xrGameSpy_MainDefs.h"
 #include "GameSpy/qr2/qr2.h"
 #include "GameSpy/gcdkey/gcdkeys.h"

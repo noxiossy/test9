@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "dx10StateManager.h"
 
 #include "../dx10StateUtils.h"

@@ -1,4 +1,4 @@
-#ifndef __CAMERA_FE_H__
+﻿#ifndef __CAMERA_FE_H__
 #define __CAMERA_FE_H__
 
 #include "../xrEngine/CameraBase.h"

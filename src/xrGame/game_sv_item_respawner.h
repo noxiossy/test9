@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "game_base.h"
 #include "xrServer_Object_Base.h"
 #include "associative_vector.h"

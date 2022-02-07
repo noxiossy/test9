@@ -1,11 +1,11 @@
-#pragma once
+﻿#pragma once
 
 #include "pure_relcase.h"
 
 class ENGINE_API CObject;
 namespace Feel
 {
-class ENGINE_API Touch : private pure_relcase
+class ENGINE_API Touch : public pure_relcase
 {
 public:
     struct DenyTouch

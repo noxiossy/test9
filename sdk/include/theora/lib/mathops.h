@@ -1,4 +1,4 @@
-#if !defined(_mathops_H)
+﻿#if !defined(_mathops_H)
 # define _mathops_H (1)
 # include <ogg/ogg.h>
 

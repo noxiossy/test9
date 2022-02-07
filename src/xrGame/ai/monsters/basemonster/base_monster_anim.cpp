@@ -1,4 +1,4 @@
-////////////////////////////////////////////////////////////////////////////
+п»ї////////////////////////////////////////////////////////////////////////////
 //	Module 		: base_monster_anim.cpp
 //	Created 	: 22.05.2003
 //  Modified 	: 23.09.2003
@@ -13,7 +13,7 @@
 #include "../../../ai_monster_space.h"
 #include "../control_animation_base.h"
 
-// Установка анимации
+// РЈСЃС‚Р°РЅРѕРІРєР° Р°РЅРёРјР°С†РёРё
 void CBaseMonster::SelectAnimation(const Fvector &/**_view/**/, const Fvector &/**_move/**/, float /**speed/**/)
 {
 	control().animation().update_frame();

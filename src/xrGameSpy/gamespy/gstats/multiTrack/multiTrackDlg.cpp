@@ -1,4 +1,4 @@
-// multiTrackDlg.cpp : implementation file
+﻿// multiTrackDlg.cpp : implementation file
 //
 
 #include "stdafx.h"

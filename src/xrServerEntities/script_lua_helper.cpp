@@ -1,4 +1,4 @@
-#include "pch_script.h"
+﻿#include "pch_script.h"
 #include "script_lua_helper.h"
 #include "script_debugger.h"
 

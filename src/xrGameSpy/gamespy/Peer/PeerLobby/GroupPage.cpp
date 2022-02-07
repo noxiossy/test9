@@ -1,4 +1,4 @@
-// GroupPage.cpp : implementation file
+﻿// GroupPage.cpp : implementation file
 //
 
 #include "stdafx.h"

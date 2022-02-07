@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "Level.h"
 #include "UIGameDM.h"
 #include "xrServer.h"
@@ -73,17 +73,6 @@ void CLevel::StartPlayDemo()
 	m_starting_spawns_dtime	= 0;
 	Msg("! ------------- Demo Started ------------");
 	CatchStartingSpawns	();
-
-	//if using some filter ...
-#ifdef MP_LOGGING
-	message_filter* tmp_msg_filter = GetMessageFilter();
-	if (tmp_msg_filter)
-	{
-		string_path demo_msg_path;
-		FS.update_path(demo_msg_path, "$logs$", "dbg_msg.log");
-		tmp_msg_filter->dbg_set_message_log_file(demo_msg_path);
-	}
-#endif //#ifdef MP_LOGGING
 }
 
 void CLevel::RestartPlayDemo()
@@ -273,48 +262,6 @@ demoplay_control* CLevel::GetDemoPlayControl()
 	m_demoplay_control = xr_new<demoplay_control>();
 	return m_demoplay_control;
 }
-/*
-void CLevel::SetDemoPlayPos(float const pos)
-{
-	if (!IsDemoPlayStarted())
-	{
-		Msg("! ERROR: demo play not started");
-		return;
-	}
-	if (pos > 1.f)
-	{
-		Msg("! ERROR: incorect demo play position");
-		return;
-	}
-	float cur_pos = GetDemoPlayPos();
-	if (cur_pos >= pos)
-	{
-		Msg("! demo play position must be greater than current position");
-		return;
-	}
-	
-	u32 old_file_pos = m_reader->tell();
-
-	u32				file_pos = u32(float(m_reader->length()) * pos);
-	if (file_pos <= old_file_pos)
-	{
-		Msg("! demo play position already at the current point");
-		return;
-	}
-
-	DemoPacket		tmp_hdr;
-	u32				time_shift = 0;
-	
-	while (m_reader->tell() < file_pos)
-	{
-		m_reader->r		(&tmp_hdr, sizeof(DemoPacket));
-		m_reader->seek	(m_reader->tell() + tmp_hdr.m_packet_size);
-		time_shift		+= tmp_hdr.m_time_global_delta;
-	}
-	m_StartGlobalTime	-= time_shift;
-	m_rewind			= TRUE;
-	m_reader->seek		(old_file_pos);
-}*/
 
 float CLevel::GetDemoPlaySpeed() const
 {

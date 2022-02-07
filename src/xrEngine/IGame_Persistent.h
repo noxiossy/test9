@@ -1,4 +1,4 @@
-#ifndef IGame_PersistentH
+﻿#ifndef IGame_PersistentH
 #define IGame_PersistentH
 #pragma once
 
@@ -83,7 +83,7 @@ public:
     virtual void OnAppDeactivate();
     virtual void _BCL OnFrame();
 
-    // âûçûâàåòñÿ òîëüêî êîãäà èçìåíÿåòñÿ òèï èãðû
+    // вызывается только когда изменяется тип игры
     virtual void OnGameStart();
     virtual void OnGameEnd();
 

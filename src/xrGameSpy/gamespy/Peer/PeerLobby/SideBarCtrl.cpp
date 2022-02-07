@@ -1,4 +1,4 @@
-// SideBarCtrl.cpp : implementation file
+﻿// SideBarCtrl.cpp : implementation file
 //
 
 #include "stdafx.h"

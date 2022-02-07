@@ -1,4 +1,4 @@
-// trackDlg.h : header file
+﻿// trackDlg.h : header file
 //
 
 #if !defined(AFX_TRACKDLG_H__E16D2398_5E86_47A2_80DA_8F843E24C4A6__INCLUDED_)

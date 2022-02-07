@@ -1,4 +1,4 @@
-// Gamespy Technology
+﻿// Gamespy Technology
 // NOTE:  this code has been provided by Sony for usage in Speex SPURS Manager
 
 /*

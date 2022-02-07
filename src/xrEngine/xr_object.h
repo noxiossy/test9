@@ -1,4 +1,4 @@
-#ifndef __XR_OBJECT_H__
+﻿#ifndef __XR_OBJECT_H__
 #define __XR_OBJECT_H__
 
 #include "../xrcdb/ispatial.h"

@@ -1,4 +1,4 @@
-// XR_IOConsole.h: interface for the CConsole class.
+﻿// XR_IOConsole.h: interface for the CConsole class.
 //
 //////////////////////////////////////////////////////////////////////
 #ifndef XR_IOCONSOLE_H_INCLUDED
@@ -80,8 +80,8 @@ public:
 protected:
     int scroll_delta;
 
-    CGameFont* pFont;
-    CGameFont* pFont2;
+	CGameFont*		pFont = nullptr;
+	CGameFont*		pFont2 = nullptr;
 
     FactoryPtr<IUIShader>* m_hShader_back;
 
@@ -137,7 +137,7 @@ public:
     Fvector* GetFVectorPtr(LPCSTR cmd) const;
     IConsole_Command* GetCommand(LPCSTR cmd) const;
 protected:
-    text_editor::line_editor* m_editor;
+	text_editor::line_editor*			m_editor = nullptr;
     text_editor::line_edit_control& ec();
 
     BENCH_SEC_SCRAMBLEMEMBER2

@@ -1,4 +1,4 @@
-#ifndef WallMarkArray_included
+﻿#ifndef WallMarkArray_included
 #define WallMarkArray_included
 #pragma once
 

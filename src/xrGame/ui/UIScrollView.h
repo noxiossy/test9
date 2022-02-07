@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "UIScrollBar.h"
 #include "UIWindow.h"
 #include "UIWndCallback.h"

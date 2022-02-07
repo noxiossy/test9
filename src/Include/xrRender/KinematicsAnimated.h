@@ -1,4 +1,4 @@
-#ifndef	KinematicsAnimated_included
+﻿#ifndef	KinematicsAnimated_included
 #define	KinematicsAnimated_included
 #pragma once
 

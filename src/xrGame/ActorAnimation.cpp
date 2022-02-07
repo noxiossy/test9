@@ -1,4 +1,4 @@
-#include "stdafx.h"
+п»ї#include "stdafx.h"
 #include "Actor.h"
 #include "ActorAnimation.h"
 #include "actor_anim_defs.h"
@@ -297,6 +297,7 @@ void CActor::g_SetSprintAnimation( u32 mstate_rl,MotionID &head,MotionID &torso,
 	
 	bool jump = (mstate_rl&mcFall)		||
 				(mstate_rl&mcLanding)	||
+				//(mstate_rl&mcLanding)	||
 				(mstate_rl&mcLanding2)	||
 				(mstate_rl&mcJump)		;
 	
@@ -349,6 +350,8 @@ void CActor::g_SetAnimation( u32 mstate_rl )
 	else							
 		ST 		= &m_anims->m_normal;
 
+	//STorsoWpn* __TW = &ST->m_torso[4]; //Alundaio: Animation Set knife/grenade running animation without weapon by XEM #100
+
 	bool bAccelerated = isActorAccelerated(mstate_rl, IsZoomAimingMode());
 	if ( bAccelerated )
 	{
@@ -363,12 +366,12 @@ void CActor::g_SetAnimation( u32 mstate_rl )
 		else
 			moving_idx				= STorsoWpn::eWalk;
 	}
-	// анимации
+	// Р°РЅРёРјР°С†РёРё
 	MotionID 						M_legs;
 	MotionID 						M_torso;
 	MotionID 						M_head;
 
-	//если мы просто стоим на месте
+	//РµСЃР»Рё РјС‹ РїСЂРѕСЃС‚Рѕ СЃС‚РѕРёРј РЅР° РјРµСЃС‚Рµ
 	bool is_standing = false;
 
 	// Legs
@@ -553,7 +556,7 @@ void CActor::g_SetAnimation( u32 mstate_rl )
 			M_torso = ST->m_torso_idle;
 	}
 	
-	// есть анимация для всего - запустим / иначе запустим анимацию по частям
+	// РµСЃС‚СЊ Р°РЅРёРјР°С†РёСЏ РґР»СЏ РІСЃРµРіРѕ - Р·Р°РїСѓСЃС‚РёРј / РёРЅР°С‡Рµ Р·Р°РїСѓСЃС‚РёРј Р°РЅРёРјР°С†РёСЋ РїРѕ С‡Р°СЃС‚СЏРј
 	if (m_current_torso!=M_torso)
 	{
 		if (m_bAnimTorsoPlayed)		

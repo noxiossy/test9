@@ -1,4 +1,4 @@
-/******
+﻿/******
 nonport.h
 GameSpy Common Code
   

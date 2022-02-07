@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "step_manager_defs.h"
 
 class CEntityAlive;

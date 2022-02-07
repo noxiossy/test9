@@ -1,4 +1,4 @@
-// PeerTestDlg.h : header file
+﻿// PeerTestDlg.h : header file
 //
 
 #if !defined(AFX_PEERTESTDLG_H__3043C7C9_6FE5_433F_83A6_8186F9E145A8__INCLUDED_)

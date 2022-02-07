@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "contextmenu.h"
 #include "../xrEngine/gamefont.h"
   

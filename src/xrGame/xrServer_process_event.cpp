@@ -1,4 +1,4 @@
-#include "stdafx.h"
+ï»¿#include "stdafx.h"
 #include "xrServer.h"
 #include "game_sv_single.h"
 #include "alife_simulator.h"
@@ -111,8 +111,8 @@ void xrServer::Process_event	(NET_Packet& P, ClientID sender)
 		{
 			u16					id_entity;
 			P.r_u16				(id_entity);
-			CSE_Abstract*		e_parent	= receiver;	// êòî çàáèðàåò (äëÿ ñâîèõ íóæä)
-			CSE_Abstract*		e_entity	= game->get_entity_from_eid	(id_entity);	// êòî îòäàåò
+			CSE_Abstract*		e_parent	= receiver;	// ÐºÑ‚Ð¾ Ð·Ð°Ð±Ð¸Ñ€Ð°ÐµÑ‚ (Ð´Ð»Ñ ÑÐ²Ð¾Ð¸Ñ… Ð½ÑƒÐ¶Ð´)
+			CSE_Abstract*		e_entity	= game->get_entity_from_eid	(id_entity);	// ÐºÑ‚Ð¾ Ð¾Ñ‚Ð´Ð°ÐµÑ‚
 			if (!e_entity)		break;
 			if (0xffff != e_entity->ID_Parent)	break;						// this item already taken
 			xrClientData*		c_parent	= e_parent->owner;
@@ -142,7 +142,7 @@ void xrServer::Process_event	(NET_Packet& P, ClientID sender)
 		u16							id_src;
 		P.r_u16						(id_src);
 		
-		CSE_Abstract				*e_dest = receiver;	// êòî óìåð
+		CSE_Abstract				*e_dest = receiver;	// ÐºÑ‚Ð¾ ÑƒÐ¼ÐµÑ€
 		// this is possible when hit event is sent before destroy event
 		if (!e_dest)
 			break;
@@ -172,12 +172,12 @@ void xrServer::Process_event	(NET_Packet& P, ClientID sender)
 			xrClientData *l_pC	= ID_to_client(sender);
 			VERIFY				(game && l_pC);
 
-			CSE_Abstract*		e_dest		= receiver;	// êòî óìåð
+			CSE_Abstract*		e_dest		= receiver;	// ÐºÑ‚Ð¾ ÑƒÐ¼ÐµÑ€
 			// this is possible when hit event is sent before destroy event
 			if (!e_dest)
 				break;
 
-			CSE_Abstract*		e_src		= game->get_entity_from_eid	(id_src	);	// êòî óáèë
+			CSE_Abstract*		e_src		= game->get_entity_from_eid	(id_src	);	// ÐºÑ‚Ð¾ ÑƒÐ±Ð¸Ð»
 			if (!e_src) {
 				xrClientData*	C = (xrClientData*)	game->get_client(id_src);
 				if (C) e_src = C->owner;
@@ -192,7 +192,7 @@ void xrServer::Process_event	(NET_Packet& P, ClientID sender)
 
 			game->on_death		(e_dest,e_src);
 
-			xrClientData*		c_src		= e_src->owner;				// êëèåíò, ÷åé þíèò óáèë
+			xrClientData*		c_src		= e_src->owner;				// ÐºÐ»Ð¸ÐµÐ½Ñ‚, Ñ‡ÐµÐ¹ ÑŽÐ½Ð¸Ñ‚ ÑƒÐ±Ð¸Ð»
 
 			if (c_src->owner->ID == id_src) {
 				// Main unit
@@ -223,6 +223,21 @@ void xrServer::Process_event	(NET_Packet& P, ClientID sender)
 	case GE_ADDON_DETACH:
 		{
 			SendBroadcast	(BroadcastCID, P, net_flags(TRUE, TRUE));
+		}break;
+	case GE_WEAPON_SYNCRONIZE:
+		{
+			CSE_ALifeItemWeapon* pW = smart_cast<CSE_ALifeItemWeapon*>(receiver);
+			if (pW)
+			{
+				pW->a_current_addon.data = P.r_u16();
+				pW->ammo_type.data = P.r_u8();
+				pW->a_elapsed.data = P.r_u16();
+				CSE_ALifeItemWeaponMagazinedWGL* pWGL = smart_cast<CSE_ALifeItemWeaponMagazinedWGL*>(pW);
+				if (pWGL)
+					pWGL->m_bGrenadeMode = !!P.r_u8();
+				else
+					P.r_u8();
+			}
 		}break;
 	case GE_CHANGE_POS:
 		{			
@@ -323,6 +338,12 @@ void xrServer::Process_event	(NET_Packet& P, ClientID sender)
 			CSE_ALifeTraderAbstract*	pTa = smart_cast<CSE_ALifeTraderAbstract*>(e_dest);
 			pTa->m_dwMoney				= P.r_u32();
 						
+		}break;
+	case GE_SYNC_ALIFEITEM:
+		{
+			CSE_ALifeItem* item = smart_cast<CSE_ALifeItem*>(receiver);
+			if (item)
+				item->m_fCondition = P.r_float();
 		}break;
 	case GE_FREEZE_OBJECT:
 		break;

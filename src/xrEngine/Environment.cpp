@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #pragma hdrstop
 
 #ifndef _EDITOR
@@ -298,8 +298,8 @@ void CEnvironment::SetWeather(shared_str name, bool forced)
 		// R_ASSERT3(it != WeatherCycles.end(), "Invalid weather name.", *name);
         CurrentCycleName = it->first;
         if (forced) { Invalidate(); }
-		if (!bWFX)
-		{
+        if (!bWFX)
+        {
             CurrentWeather = &it->second;
             CurrentWeatherName = it->first;
         }

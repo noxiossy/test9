@@ -1,4 +1,4 @@
-#include "pch_script.h"
+п»ї#include "pch_script.h"
 #include "PhraseScript.h"
 #include "script_engine.h"
 #include "ai_space.h"
@@ -11,7 +11,7 @@
 #include "actor.h"
 
 
-//загрузка из XML файла
+//Р·Р°РіСЂСѓР·РєР° РёР· XML С„Р°Р№Р»Р°
 void CDialogScriptHelper::Load		(CUIXml* uiXml, XML_NODE* phrase_node)
 {
 	LoadSequence(uiXml,phrase_node, "precondition",		m_Preconditions);

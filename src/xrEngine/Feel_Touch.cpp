@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "igame_level.h"
 #include "feel_touch.h"
 #include "xr_object.h"
@@ -57,7 +57,7 @@ void Touch::feel_touch_update(Fvector& C, float R)
             {
                 // check for deny
                 BOOL bDeny = FALSE;
-                for (dit = 0; dit < feel_touch_disable.size(); dit++)
+                for (u32 dit = 0; dit < feel_touch_disable.size(); dit++)
                     if (O == feel_touch_disable[dit].O) { bDeny = TRUE; break; }
 
                 // _new _

@@ -1,4 +1,4 @@
-#ifndef __PS2PAD_H__
+﻿#ifndef __PS2PAD_H__
 #define __PS2PAD_H__
 
 #include "../../../nonport.h"

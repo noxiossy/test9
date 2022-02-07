@@ -1,4 +1,4 @@
-#include "stdafx.h"
+п»ї#include "stdafx.h"
 #pragma hdrstop
 
 #include "xr_input.h"
@@ -319,7 +319,7 @@ bool CInput::get_dik_name(int dik, LPSTR dest_str, int dest_sz)
 
 BOOL CInput::iGetAsyncKeyState(int dik)
 {
-	//KRodin: да-да, я знаю, что этот код ужасен.
+	//KRodin: РґР°-РґР°, СЏ Р·РЅР°СЋ, С‡С‚Рѕ СЌС‚РѕС‚ РєРѕРґ СѓР¶Р°СЃРµРЅ.
 	switch (dik)
 	{
 	case DIK_LMENU:    return GetAsyncKeyState(VK_LMENU) & 0x8000;
@@ -341,7 +341,7 @@ void CInput::MouseUpdate()
 {
 #	pragma push_macro("FIELD_OFFSET")
 #	undef FIELD_OFFSET
-#	define FIELD_OFFSET offsetof // Фиксим warning C4644 - просто переводим макрос из винсдк на использование стандартного оффсетофа.
+#	define FIELD_OFFSET offsetof // Р¤РёРєСЃРёРј warning C4644 - РїСЂРѕСЃС‚Рѕ РїРµСЂРµРІРѕРґРёРј РјР°РєСЂРѕСЃ РёР· РІРёРЅСЃРґРє РЅР° РёСЃРїРѕР»СЊР·РѕРІР°РЅРёРµ СЃС‚Р°РЅРґР°СЂС‚РЅРѕРіРѕ РѕС„С„СЃРµС‚РѕС„Р°.
 
     HRESULT hr;
     DWORD dwElements = MOUSEBUFFERSIZE;
@@ -672,7 +672,7 @@ char CInput::DikToChar(int dik)
 {
 	switch (dik)
 	{
-	// Эти клавиши через ToAscii не обработать, поэтому пропишем явно
+	// Р­С‚Рё РєР»Р°РІРёС€Рё С‡РµСЂРµР· ToAscii РЅРµ РѕР±СЂР°Р±РѕС‚Р°С‚СЊ, РїРѕСЌС‚РѕРјСѓ РїСЂРѕРїРёС€РµРј СЏРІРЅРѕ
 	case DIK_NUMPAD0: return '0';
 	case DIK_NUMPAD1: return '1';
 	case DIK_NUMPAD2: return '2';

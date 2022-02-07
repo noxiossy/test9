@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "psy_dog_state_psy_attack_hide.h"
 

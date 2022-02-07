@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "../xrCore/intrusive_ptr.h"
 

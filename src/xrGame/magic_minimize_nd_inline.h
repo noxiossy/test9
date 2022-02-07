@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #define TEMPLATE_SPECIALIZATION	template <int m_iDimensions>
 #define _MinimizeND				MinimizeND<m_iDimensions>

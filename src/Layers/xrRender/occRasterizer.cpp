@@ -1,4 +1,4 @@
-// occRasterizer.cpp: implementation of the occRasterizer class.
+﻿// occRasterizer.cpp: implementation of the occRasterizer class.
 //
 //////////////////////////////////////////////////////////////////////
 

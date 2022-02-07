@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #ifdef XR_NETSERVER_EXPORTS
 	#define XRNETSERVER_API __declspec(dllexport)
 #else

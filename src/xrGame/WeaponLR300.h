@@ -1,4 +1,4 @@
-#ifndef __XR_WEAPON_LR300_H__
+﻿#ifndef __XR_WEAPON_LR300_H__
 #define __XR_WEAPON_LR300_H__
 #pragma once
 

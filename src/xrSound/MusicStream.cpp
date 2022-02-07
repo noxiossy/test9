@@ -1,4 +1,4 @@
-// MusicStream.cpp: implementation of the CMusicStream class.
+﻿// MusicStream.cpp: implementation of the CMusicStream class.
 //
 //////////////////////////////////////////////////////////////////////
 

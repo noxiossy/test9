@@ -1,4 +1,4 @@
-// xrD3D9-Null.cpp : Defines the entry point for the DLL application.
+﻿// xrD3D9-Null.cpp : Defines the entry point for the DLL application.
 //
 
 #include "stdafx.h"

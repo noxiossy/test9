@@ -1,4 +1,4 @@
-#ifndef CYCLE_CONST_STORAGE_H
+﻿#ifndef CYCLE_CONST_STORAGE_H
 #define CYCLE_CONST_STORAGE_H
 
 template<class T,int size> 

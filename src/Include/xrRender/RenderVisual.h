@@ -1,4 +1,4 @@
-#ifndef	RenderVisual_included
+﻿#ifndef	RenderVisual_included
 #define	RenderVisual_included
 #pragma once
 

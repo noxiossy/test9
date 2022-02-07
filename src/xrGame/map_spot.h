@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "ui/UIStatic.h"
 #include "alife_space.h"

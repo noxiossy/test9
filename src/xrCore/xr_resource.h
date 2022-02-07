@@ -1,4 +1,4 @@
-#ifndef xr_resourceH
+﻿#ifndef xr_resourceH
 #define xr_resourceH
 #pragma once
 

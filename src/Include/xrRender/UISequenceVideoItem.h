@@ -1,4 +1,4 @@
-#ifndef	UISequenceVideoItem_included
+﻿#ifndef	UISequenceVideoItem_included
 #define	UISequenceVideoItem_included
 #pragma once
 

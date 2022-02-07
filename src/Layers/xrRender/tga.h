@@ -1,4 +1,4 @@
-// file: targasaver.h
+﻿// file: targasaver.h
 
 #ifndef _INCDEF_TARGASAVER_H_
 #define _INCDEF_TARGASAVER_H_
@@ -31,10 +31,10 @@ public:
 	int format;
 	int scanlenght;
 	int width,height;
-	void* data{};
+	void *data{};
 public:
-	TGAdesc() = default;
-	~TGAdesc() = default;
+	TGAdesc()	= default;
+	~TGAdesc()	= default;
 
 	void maketga( IWriter &fs );
 //	void maketga( int hf );

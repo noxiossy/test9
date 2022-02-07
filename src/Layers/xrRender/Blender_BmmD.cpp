@@ -1,4 +1,4 @@
-// BlenderDefault.cpp: implementation of the CBlender_BmmD class.
+﻿// BlenderDefault.cpp: implementation of the CBlender_BmmD class.
 //
 //////////////////////////////////////////////////////////////////////
 

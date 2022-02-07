@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "PHSimpleCharacter.h"
 class CPHAICharacter : public CPHSimpleCharacter
 {

@@ -1,4 +1,4 @@
-#ifndef	StatGraphRender_included
+﻿#ifndef	StatGraphRender_included
 #define	StatGraphRender_included
 #pragma once
 

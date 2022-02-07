@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "level_bullet_manager.h"
 #include "game_base_kill_type.h"
 

@@ -1,4 +1,4 @@
-#ifndef PHDISABLING_H
+﻿#ifndef PHDISABLING_H
 #define PHDISABLING_H
 
 #include "DisablingParams.h"

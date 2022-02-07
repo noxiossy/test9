@@ -1,4 +1,4 @@
-/*
+﻿/*
  * $Id:$
  * Solaris version
  * by Wolfram Gloger 2004

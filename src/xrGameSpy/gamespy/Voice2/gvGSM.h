@@ -1,4 +1,4 @@
-/*
+﻿/*
 GameSpy Voice2 SDK
 Dan "Mr. Pants" Schoenblum
 dan@gamespy.com

@@ -1,4 +1,4 @@
-#ifndef PLAYER_STATE_REMEMBRANCE
+﻿#ifndef PLAYER_STATE_REMEMBRANCE
 #define PLAYER_STATE_REMEMBRANCE
 
 #include "player_state_param.h"

@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "../BaseMonster/base_monster.h"
 #include "../telekinesis.h"
 #include "../anim_triple.h"

@@ -1,4 +1,4 @@
-#if !defined(_huffenc_H)
+﻿#if !defined(_huffenc_H)
 # define _huffenc_H (1)
 # include "huffman.h"
 

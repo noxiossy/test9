@@ -1,4 +1,4 @@
-#include "StdAfx.h"
+﻿#include "StdAfx.h"
 #include "UIPanelsClassFactory.h"
 #include "game_base.h"
 #include "UITeamPanels.h"

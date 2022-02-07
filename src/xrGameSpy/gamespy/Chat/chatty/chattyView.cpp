@@ -1,4 +1,4 @@
-// chattyView.cpp : implementation of the CChattyView class
+﻿// chattyView.cpp : implementation of the CChattyView class
 //
 
 #include "stdafx.h"

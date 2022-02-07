@@ -1,4 +1,4 @@
-#ifndef dxEnvironmentRender_included
+﻿#ifndef dxEnvironmentRender_included
 #define dxEnvironmentRender_included
 #pragma once
 

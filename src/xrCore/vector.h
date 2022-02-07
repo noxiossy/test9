@@ -1,4 +1,4 @@
-#ifndef _vector_included
+﻿#ifndef _vector_included
 #define _vector_included
 
 // Undef some macros

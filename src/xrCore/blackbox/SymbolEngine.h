@@ -1,4 +1,4 @@
-/*----------------------------------------------------------------------
+ï»¿/*----------------------------------------------------------------------
 "Debugging Applications" (Microsoft Press)
 Copyright (c) 1997-2000 John Robbins -- All rights reserved.
 ------------------------------------------------------------------------
@@ -6,7 +6,7 @@ This class is a paper-thin layer around the DBGHELP.DLL symbol engine.
 
 This class wraps only those functions that take the unique
 HANDLE value. Other DBGHELP.DLL symbol engine functions are global in
-scope, so I didn’t wrap them with this class.
+scope, so I didnâ€™t wrap them with this class.
 
 ------------------------------------------------------------------------
 Compilation Defines:
@@ -41,7 +41,7 @@ USE_BUGSLAYERUTIL - If defined, the class will have another
 // that have size fields came from fellow MSJ columnist, Paul DiLascia.
 // Thanks, Paul!
 
-// I didn’t wrap IMAGEHLP_SYMBOL because that is a variable-size
+// I didnâ€™t wrap IMAGEHLP_SYMBOL because that is a variable-size
 // structure.
 
 // The IMAGEHLP_MODULE wrapper class
@@ -74,7 +74,7 @@ public      :
     // To use this class, call the SymInitialize member function to
     // initialize the symbol engine and then use the other member
     // functions in place of their corresponding DBGHELP.DLL functions.
-    CSymbolEngine ( void )
+    CSymbolEngine ( void ) : m_hProcess(NULL)
     {
     }
 
@@ -158,13 +158,13 @@ public      :
         }
 
         // Got the version size, now get the version information.
-        LPVOID lpData = (LPVOID)new TCHAR [ dwVerSize ] ;
+        TCHAR* lpData = new TCHAR[dwVerSize];
         if ( FALSE == GetFileVersionInfo ( szImageHlp       ,
                                            dwVerInfoHandle  ,
                                            dwVerSize        ,
                                            lpData            ) )
         {
-            delete [] lpData ;
+            delete[] lpData;
             return ( FALSE ) ;
         }
 
@@ -290,7 +290,7 @@ public      :
     }
 
     BOOL SymGetSymFromAddr ( IN  DWORD               dwAddr          ,
-                             OUT PDWORD              pdwDisplacement ,
+                             OUT PDWORD_PTR          pdwDisplacement ,
                              OUT PIMAGEHLP_SYMBOL    Symbol           )
     {
         return ( ::SymGetSymFromAddr ( m_hProcess       ,
@@ -337,7 +337,7 @@ public      :
 #else
         // The problem is that the symbol engine finds only those source
         // line addresses (after the first lookup) that fall exactly on
-        // a zero displacement. I’ll walk backward 100 bytes to
+        // a zero displacement. Iâ€™ll walk backward 100 bytes to
         // find the line and return the proper displacement.
         DWORD dwTempDis = 0 ;
         while ( FALSE == ::SymGetLineFromAddr ( m_hProcess          ,
@@ -426,7 +426,12 @@ public      :
     {
         return ( ::SymRegisterCallback ( m_hProcess         ,
                                          CallbackFunction   ,
-                                         UserContext         ) ) ;
+#ifdef _M_X64
+										 (ULONG64)UserContext
+#else
+										UserContext
+#endif
+		));
     }
 
 
@@ -435,7 +440,7 @@ public      :
 ----------------------------------------------------------------------*/
 protected   :
     // The unique value that will be used for this instance of the
-    // symbol engine. This value doesn’t have to be an actual
+    // symbol engine. This value doesnâ€™t have to be an actual
     // process value, just a unique value.
     HANDLE      m_hProcess      ;
 

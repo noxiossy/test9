@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "magic_minimize_1d.h"
 

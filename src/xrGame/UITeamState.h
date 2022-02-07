@@ -1,4 +1,4 @@
-#ifndef UITEAMSTATE
+﻿#ifndef UITEAMSTATE
 #define UITEAMSTATE
 
 #include "ui/UIWindow.h"

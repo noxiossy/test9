@@ -1,4 +1,4 @@
-// Voice2BuddyMFCDlg.cpp : implementation file
+﻿// Voice2BuddyMFCDlg.cpp : implementation file
 //
 
 #include "stdafx.h"

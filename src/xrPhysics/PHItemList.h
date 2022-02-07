@@ -1,4 +1,4 @@
-#ifndef PH_ITEM_LIST_H
+﻿#ifndef PH_ITEM_LIST_H
 #define PH_ITEM_LIST_H
 /*
 #define DECLARE_PHLIST_ITEM(class_name)			public:\
@@ -31,8 +31,7 @@ template<class T>
 	
 		public:
 		
-		class iterator;
-		typedef  class iterator
+		class iterator
 			{
 				
 						T		*my_ptr;

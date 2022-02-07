@@ -1,4 +1,4 @@
-////////////////////////////////////////////////////////////////////////////
+п»ї////////////////////////////////////////////////////////////////////////////
 //	Module 		: UIInventoryUpgradeWnd.cpp
 //	Created 	: 06.10.2007
 //  Modified 	: 13.03.2009
@@ -107,7 +107,7 @@ void CUIInventoryUpgradeWnd::InitInventory( CInventoryItem* item, bool can_upgra
 {
 	m_inv_item = item;
 	bool is_shader = false;
-	// Загружаем картинку
+	// Р—Р°РіСЂСѓР¶Р°РµРј РєР°СЂС‚РёРЅРєСѓ
 	if(smart_cast<CWeapon*>(item))
 	{
 		is_shader = true;

@@ -1,4 +1,4 @@
-#ifndef	StatsRender_included
+﻿#ifndef	StatsRender_included
 #define	StatsRender_included
 #pragma once
 

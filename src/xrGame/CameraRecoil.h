@@ -1,4 +1,4 @@
-////////////////////////////////////////////////////////////////////////////
+п»ї////////////////////////////////////////////////////////////////////////////
 //	Module 		: CameraRecoil.h
 //	Created 	: 26.05.2008
 //	Author		: Evgeniy Sokolov
@@ -8,7 +8,7 @@
 #ifndef CAMERA_RECOIL_H_INCLUDED
 #define CAMERA_RECOIL_H_INCLUDED
 
-//отдача при стрельбе 
+//РѕС‚РґР°С‡Р° РїСЂРё СЃС‚СЂРµР»СЊР±Рµ 
 struct CameraRecoil
 {
 	float		RelaxSpeed;

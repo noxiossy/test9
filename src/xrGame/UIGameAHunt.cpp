@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "UIGameAHunt.h"
 
 #include "team_base_zone.h"

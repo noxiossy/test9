@@ -1,4 +1,4 @@
-#ifndef _FIXEDSET_H
+﻿#ifndef _FIXEDSET_H
 #define _FIXEDSET_H
 #pragma once
 

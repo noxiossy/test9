@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 template<typename _Object>
 class CStateMonsterPanicRun : public CState<_Object> {

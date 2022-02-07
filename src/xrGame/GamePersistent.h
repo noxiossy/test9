@@ -1,4 +1,4 @@
-#ifndef GamePersistentH
+﻿#ifndef GamePersistentH
 #define GamePersistentH
 #pragma once
 

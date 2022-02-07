@@ -1,4 +1,4 @@
-// File:		UILines.cpp
+﻿// File:		UILines.cpp
 // Description:	Multi-line Text Control
 // Created:		12.03.2005
 // Author:		Serge Vynnycheko

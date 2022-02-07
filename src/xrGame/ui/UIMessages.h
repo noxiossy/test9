@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 //////////////////////////////////////////////////////////////////////////
 
@@ -81,7 +81,6 @@ enum EUIMessages
 	TALK_DIALOG_TRADE_BUTTON_CLICKED,
 	TALK_DIALOG_UPGRADE_BUTTON_CLICKED,
 	TALK_DIALOG_QUESTION_CLICKED,
-	//TRADE_WND_CLOSED,
 
 	// CUIPdaContactsWnd
 	PDA_TASK_SET_TARGET_MAP,

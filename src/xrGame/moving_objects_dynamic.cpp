@@ -1,4 +1,4 @@
-
+﻿
 //	Module 		: moving_objects_dynamic.cpp
 //	Created 	: 27.03.2007
 //  Modified 	: 14.05.2007

@@ -1,4 +1,4 @@
-/*$ preserve start $*/
+﻿/*$ preserve start $*/
 
 /* ============================================================================================ */
 /* FMOD Ex - Main C/C++ event/data driven system header file.                                   */

@@ -1,4 +1,4 @@
-#ifndef BLENDER_EDITOR_WIRE_H
+﻿#ifndef BLENDER_EDITOR_WIRE_H
 #define BLENDER_EDITOR_WIRE_H
 #pragma once
 

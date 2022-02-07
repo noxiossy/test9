@@ -1,4 +1,4 @@
-#include "stdafx.h"
+ï»¿#include "stdafx.h"
 #include "psy_dog.h"
 #include "psy_dog_state_manager.h"
 #include "../../../actor.h"
@@ -25,7 +25,7 @@ void CStateManagerPsyDog::execute()
 // 		
 // 		select_state(eStateAttack_Psy); 
 // 	
-// 		// âûïîëíèòü òåêóùåå ñîñòîÿíèå
+// 		// Ğ²Ñ‹Ğ¿Ğ¾Ğ»Ğ½Ğ¸Ñ‚ÑŒ Ñ‚ĞµĞºÑƒÑ‰ĞµĞµ ÑĞ¾ÑÑ‚Ğ¾ÑĞ½Ğ¸Ğµ
 // 		get_state_current()->execute();
 // 
 // 		prev_substate = current_substate;

@@ -1,4 +1,4 @@
-#ifndef __C__
+﻿#ifndef __C__
 #define __C__
 
 // maps unsigned 8 bits/channel to D3DCOLOR

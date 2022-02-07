@@ -1,4 +1,4 @@
-#ifndef xrPoolH
+﻿#ifndef xrPoolH
 #define xrPoolH
 //#pragma once
 

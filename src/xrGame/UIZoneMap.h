@@ -1,9 +1,10 @@
-#pragma once
+﻿#pragma once
 
 
 #include "ui/UIStatic.h"
 
 class CActor;
+//class CUIMiniMap;
 class CUICustomMap;
 
 
@@ -13,6 +14,7 @@ public:
 	bool						visible;
 
 private:
+	//CUIMiniMap*					m_activeMap;
 	CUICustomMap*					m_activeMap;
 
 	CUIStatic					m_background;

@@ -1,4 +1,4 @@
-// This file is a modified version of Python 2.2/2.2.1 Python.h. As
+﻿// This file is a modified version of Python 2.2/2.2.1 Python.h. As
 // such it is:
 //
 //    Copyright (c) 2001, 2002 Python Software Foundation; All Rights

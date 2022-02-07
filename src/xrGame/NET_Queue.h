@@ -1,9 +1,8 @@
-#pragma once
+﻿#pragma once
 
 #include "xrMessages.h"
 
 extern BOOL		g_bCheckTime;
-extern int		g_dwEventDelay;
 
 class	NET_Event
 {
@@ -27,8 +26,7 @@ public:
 			}break;
 		case M_EVENT:
 			{
-				P.r_u32			(timestamp	);
-				timestamp += u32(g_dwEventDelay);				
+				P.r_u32			(timestamp	);			
 				P.r_u16			(type		);
 				P.r_u16			(destination);
 			}break;
@@ -51,7 +49,7 @@ public:
 			P.r				(&*data.begin(),size);
 		}
 	}
-	void				export		(NET_Packet& P)
+	void				export_to		(NET_Packet& P)
 	{
 		u16	ID			=	M_EVENT;
 		P.w_begin		(ID			);

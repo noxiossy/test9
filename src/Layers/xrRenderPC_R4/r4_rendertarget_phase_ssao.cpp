@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 
 void set_viewport(ID3DDeviceContext *dev, float w, float h)
 {

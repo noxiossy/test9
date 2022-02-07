@@ -1,4 +1,4 @@
-/* ACC --- Automatic Compiler Configuration
+﻿/* ACC --- Automatic Compiler Configuration
 
    This file is part of the LZO real-time data compression library.
 

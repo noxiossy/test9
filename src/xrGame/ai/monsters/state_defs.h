@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 enum EMonsterState {
 	eGlobalState					= u32(1) << 15,

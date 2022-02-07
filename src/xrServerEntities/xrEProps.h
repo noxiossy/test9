@@ -1,4 +1,4 @@
-#ifndef xrEPropsH
+﻿#ifndef xrEPropsH
 #define xrEPropsH
 
 #ifdef XR_EPROPS_EXPORTS

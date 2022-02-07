@@ -1,4 +1,4 @@
-#ifndef LZO_COMPRESSOR_INCLUDED
+﻿#ifndef LZO_COMPRESSOR_INCLUDED
 #define LZO_COMPRESSOR_INCLUDED
 
 #include "rt_lzo1x.h"

@@ -1,4 +1,4 @@
-/*
+﻿/*
  *
  * Copyright (c) 1998-2000
  * Dr John Maddock

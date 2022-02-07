@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "../xrEngine/effectorPP.h"
 #include "../xrEngine/cameramanager.h"
 

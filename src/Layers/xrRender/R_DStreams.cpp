@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #pragma hdrstop
 
 #include "ResourceManager.h"
@@ -9,7 +9,7 @@
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
 
-int		rsDVB_Size = 16384; // 8192; //4096; //512+1024;
+int		rsDVB_Size			= 16384;
 int		rsDIB_Size			= 512;
 
 void _VertexStream::Create	()

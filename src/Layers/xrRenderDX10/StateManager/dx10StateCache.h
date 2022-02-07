@@ -1,4 +1,4 @@
-#ifndef	dx10StateCache_included
+﻿#ifndef	dx10StateCache_included
 #define	dx10StateCache_included
 #pragma once
 

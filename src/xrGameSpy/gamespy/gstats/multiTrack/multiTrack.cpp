@@ -1,4 +1,4 @@
-// multiTrack.cpp : Defines the class behaviors for the application.
+﻿// multiTrack.cpp : Defines the class behaviors for the application.
 //
 
 #include "stdafx.h"

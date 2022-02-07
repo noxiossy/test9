@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 IC	CMonsterSquadManager &monster_squad()
 {

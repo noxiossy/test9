@@ -1,4 +1,4 @@
-// xrServer.cpp: implementation of the xrServer class.
+﻿// xrServer.cpp: implementation of the xrServer class.
 //
 //////////////////////////////////////////////////////////////////////
 

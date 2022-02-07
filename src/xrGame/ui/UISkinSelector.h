@@ -1,4 +1,4 @@
-#ifndef UI_SKIN_SELECTOR_H_
+﻿#ifndef UI_SKIN_SELECTOR_H_
 #define UI_SKIN_SELECTOR_H_
 
 #include "UIDialogWnd.h"

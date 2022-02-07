@@ -1,4 +1,4 @@
-// PHDynamicData.h: interface for the PHDynamicData class.
+﻿// PHDynamicData.h: interface for the PHDynamicData class.
 //
 //////////////////////////////////////////////////////////////////////
 

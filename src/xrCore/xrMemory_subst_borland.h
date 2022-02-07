@@ -1,4 +1,4 @@
-// new(0)
+﻿// new(0)
 template <class T>
 IC T* xr_new()
 {

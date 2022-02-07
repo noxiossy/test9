@@ -1,4 +1,4 @@
-// File:		UILine.h
+﻿// File:		UILine.h
 // Description:	Single text line
 // Created:		11.03.2005
 // Author:		Serge Vynnycheko

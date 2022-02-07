@@ -1,4 +1,4 @@
-// stdafx.cpp : source file that includes just the standard includes
+﻿// stdafx.cpp : source file that includes just the standard includes
 //	BlackBox.pch will be the pre-compiled header
 //	stdafx.obj will contain the pre-compiled type information
 
@@ -13,7 +13,7 @@ namespace BlackBox {
 bool isspace( int ch )
 {
 	return ((ch == 0x09) || (ch == 0x0A) || (ch == 0x0B) || 
-		(ch == 0x0B) || (ch == 0x0C) || (ch == 0x0D) || (ch == 0x20)) ? true : false;
+		 (ch == 0x0C) || (ch == 0x0D) || (ch == 0x20)) ? true : false;
 }
 
 bool isdigit( int ch ) 

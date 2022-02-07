@@ -1,4 +1,4 @@
-/*
+﻿/*
 GameSpy Chat SDK 
 Dan "Mr. Pants" Schoenblum
 dan@gamespy.com

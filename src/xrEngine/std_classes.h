@@ -1,4 +1,4 @@
-#ifndef _STD_CLSID_
+﻿#ifndef _STD_CLSID_
 #define _STD_CLSID_
 
 //***** Standart extension classes

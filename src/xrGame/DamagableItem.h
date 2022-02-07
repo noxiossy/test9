@@ -1,4 +1,4 @@
-class CDamagableItem
+﻿class CDamagableItem
 {
 
 protected:

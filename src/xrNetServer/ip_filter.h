@@ -1,4 +1,4 @@
-#ifndef NET_SERVER_IP_FILTER
+﻿#ifndef NET_SERVER_IP_FILTER
 #define NET_SERVER_IP_FILTER
 
 struct subnet_item

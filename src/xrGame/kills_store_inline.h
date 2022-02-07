@@ -1,4 +1,4 @@
-namespace award_system
+﻿namespace award_system
 {
 
 template<typename Predicate>

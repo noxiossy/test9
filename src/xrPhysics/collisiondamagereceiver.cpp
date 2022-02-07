@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 
 #include "icollisiondamagereceiver.h"
 #include "iphysicsshellholder.h"

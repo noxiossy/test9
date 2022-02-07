@@ -1,4 +1,4 @@
-#ifndef	_CONVERT_H_
+﻿#ifndef	_CONVERT_H_
 #define	_CONVERT_H_
 IC D3DXVECTOR3& cv_vector ( D3DXVECTOR3	&l, const Fvector& r  )
 {

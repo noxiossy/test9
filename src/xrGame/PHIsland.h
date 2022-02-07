@@ -1,4 +1,4 @@
-#ifndef	PH_ISLAND_H
+﻿#ifndef	PH_ISLAND_H
 #define PH_ISLAND_H
 
 #pragma warning(disable:4995)

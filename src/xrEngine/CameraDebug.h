@@ -1,4 +1,4 @@
-// CameraDebug.h: interface for the CCameraDebug class.
+﻿// CameraDebug.h: interface for the CCameraDebug class.
 //
 //////////////////////////////////////////////////////////////////////
 

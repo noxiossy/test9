@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "../action_planner.h"
 #include "../property_evaluator_const.h"
 

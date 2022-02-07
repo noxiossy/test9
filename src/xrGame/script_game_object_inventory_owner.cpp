@@ -1,6 +1,7 @@
-////////////////////////////////////////////////////////////////////////////
-// script_game_object_inventory_owner.сpp :	функции для inventory owner
+п»ї////////////////////////////////////////////////////////////////////////////
+// script_game_object_inventory_owner.СЃpp :	С„СѓРЅРєС†РёРё РґР»СЏ inventory owner
 //////////////////////////////////////////////////////////////////////////
+
 #include "pch_script.h"
 #include "script_game_object.h"
 #include "script_game_object_impl.h"
@@ -52,15 +53,12 @@
 #include "inventory_upgrade_manager.h"
 #include "inventory_upgrade_root.h"
 #include "inventory_item.h"
+
 #include "inventory_item_impl.h"
 #include "inventory_item.h"
 #include "inventory.h"
 #include "xrserver_objects_alife_items.h"
 #include "./xrServerEntities/inventory_space.h"
-#include "ai_space.h"
-#include "script_engine.h"
-
-using namespace luabind;
 //-Alundaio
 
 bool CScriptGameObject::GiveInfoPortion(LPCSTR info_id)
@@ -382,7 +380,7 @@ void CScriptGameObject::MakeItemActive(CScriptGameObject* pItem)
     CGameObject::u_EventSend(P);
 }
 
-//передаче вещи из своего инвентаря в инвентарь партнера
+//РїРµСЂРµРґР°С‡Рµ РІРµС‰Рё РёР· СЃРІРѕРµРіРѕ РёРЅРІРµРЅС‚Р°СЂСЏ РІ РёРЅРІРµРЅС‚Р°СЂСЊ РїР°СЂС‚РЅРµСЂР°
 void CScriptGameObject::TransferItem(CScriptGameObject* pItem, CScriptGameObject* pForWho)
 {
     if (!pItem || !pForWho)
@@ -399,13 +397,13 @@ void CScriptGameObject::TransferItem(CScriptGameObject* pItem, CScriptGameObject
         return;
     }
 
-    // выбросить у себя
+    // РІС‹Р±СЂРѕСЃРёС‚СЊ Сѓ СЃРµР±СЏ
     NET_Packet						P;
     CGameObject::u_EventGen(P, GE_TRADE_SELL, object().ID());
     P.w_u16(pIItem->object().ID());
     CGameObject::u_EventSend(P);
 
-    // отдать партнеру
+    // РѕС‚РґР°С‚СЊ РїР°СЂС‚РЅРµСЂСѓ
     CGameObject::u_EventGen(P, GE_TRADE_BUY, pForWho->object().ID());
     P.w_u16(pIItem->object().ID());
     CGameObject::u_EventSend(P);
@@ -720,15 +718,13 @@ void CScriptGameObject::SetCharacterCommunity(LPCSTR comm, int squad, int group)
     }
     CHARACTER_COMMUNITY	community;
     community.set(comm);
-    if (community.index() >= 0)
-    {
-        pInventoryOwner->SetCommunity(community.index());
-        entity->ChangeTeam(community.team(), squad, group);
-    }
-    else
-    {
-        ai().script_engine().script_log(ScriptStorage::eLuaMessageTypeInfo, "SetCharacterCommunity can't set %s for %s", comm, Name());
-    }
+	if (community.index() >= 0)
+	{
+		pInventoryOwner->SetCommunity(community.index());
+		entity->ChangeTeam(community.team(), squad, group);
+	}
+	else
+		ai().script_engine().script_log(ScriptStorage::eLuaMessageTypeInfo, "SetCharacterCommunity can't set %s for %s", comm, Name());
 }
 
 LPCSTR CScriptGameObject::sound_voice_prefix() const
@@ -767,7 +763,7 @@ void  CScriptGameObject::SwitchToTrade()
 {
     CActor* pActor = smart_cast<CActor*>(&object());	if (!pActor) return;
 
-    //только если находимся в режиме single
+    //С‚РѕР»СЊРєРѕ РµСЃР»Рё РЅР°С…РѕРґРёРјСЃСЏ РІ СЂРµР¶РёРјРµ single
     CUIGameSP* pGameSP = smart_cast<CUIGameSP*>(CurrentGameUI());
     if (!pGameSP) return;
 
@@ -781,7 +777,7 @@ void  CScriptGameObject::SwitchToUpgrade()
 {
     CActor* pActor = smart_cast<CActor*>(&object());	if (!pActor) return;
 
-    //только если находимся в режиме single
+    //С‚РѕР»СЊРєРѕ РµСЃР»Рё РЅР°С…РѕРґРёРјСЃСЏ РІ СЂРµР¶РёРјРµ single
     CUIGameSP* pGameSP = smart_cast<CUIGameSP*>(CurrentGameUI());
     if (!pGameSP) return;
 
@@ -794,7 +790,6 @@ void  CScriptGameObject::SwitchToUpgrade()
 void  CScriptGameObject::SwitchToTalk()
 {
     R_ASSERT("switch_to_talk called ;)");
-	//GetMessageTarget()->SendMessage(this, TRADE_WND_CLOSED);
 }
 
 void CScriptGameObject::AllowBreakTalkDialog(bool b)
@@ -1163,8 +1158,9 @@ CScriptGameObject *CScriptGameObject::active_detector() const
     if (result)
     {
         CCustomDetector *detector = smart_cast<CCustomDetector*>(result);
-        VERIFY(detector);
-        return			(detector->IsWorking() ? result->object().lua_game_object() : 0);
+		if (!detector)
+			return (0);
+        return (detector->IsWorking() ? result->object().lua_game_object() : 0);
     }
     return (0);
 }
@@ -1590,53 +1586,65 @@ bool CScriptGameObject::death_sound_enabled() const
 
 void CScriptGameObject::register_door()
 {
-    VERIFY2(!m_door, make_string("object %s has been registered as a door already", m_game_object->cName().c_str()));
-    m_door = ai().doors().register_door(*smart_cast<CPhysicObject*>(m_game_object));
+    //VERIFY2(!m_door, make_string("object %s has been registered as a door already", m_game_object->cName().c_str()));
+	if (!m_door)
+		m_door = ai().doors().register_door(*smart_cast<CPhysicObject*>(m_game_object));
     //	Msg									( "registering door 0x%-08x", m_door );
 }
 
 void CScriptGameObject::unregister_door()
 {
-    VERIFY2(m_door, make_string("object %s is not a door", m_game_object->cName().c_str()));
+    //VERIFY2(m_door, make_string("object %s is not a door", m_game_object->cName().c_str()));
     //	Msg									( "UNregistering door 0x%-08x", m_door );
-    ai().doors().unregister_door(m_door);
-    m_door = 0;
+	if (m_door)
+	{
+		ai().doors().unregister_door(m_door);
+		m_door = 0;
+	}
 }
 
 void CScriptGameObject::on_door_is_open()
 {
-    VERIFY2(m_door, make_string("object %s hasn't been registered as a door already", m_game_object->cName().c_str()));
-    ai().doors().on_door_is_open(m_door);
+   // VERIFY2(m_door, make_string("object %s hasn't been registered as a door already", m_game_object->cName().c_str()));
+	if (m_door)
+		ai().doors().on_door_is_open(m_door);
 }
 
 void CScriptGameObject::on_door_is_closed()
 {
-    VERIFY2(m_door, make_string("object %s hasn't been registered as a door already", m_game_object->cName().c_str()));
-    ai().doors().on_door_is_closed(m_door);
+	//VERIFY2(m_door, make_string("object %s hasn't been registered as a door already", m_game_object->cName().c_str()));
+	if (m_door)
+		ai().doors().on_door_is_closed(m_door);
 }
 
 bool CScriptGameObject::is_door_locked_for_npc() const
 {
-    VERIFY2(m_door, make_string("object %s hasn't been registered as a door already", m_game_object->cName().c_str()));
-    return								ai().doors().is_door_locked(m_door);
+    //VERIFY2(m_door, make_string("object %s hasn't been registered as a door already", m_game_object->cName().c_str()));
+	if (!m_door)
+		return false;
+    return ai().doors().is_door_locked(m_door);
 }
 
 void CScriptGameObject::lock_door_for_npc()
 {
-    VERIFY2(m_door, make_string("object %s hasn't been registered as a door already", m_game_object->cName().c_str()));
-    ai().doors().lock_door(m_door);
+	//VERIFY2(m_door, make_string("object %s hasn't been registered as a door already", m_game_object->cName().c_str()));
+	if (m_door)
+		ai().doors().lock_door(m_door);
 }
 
 void CScriptGameObject::unlock_door_for_npc()
 {
-    VERIFY2(m_door, make_string("object %s hasn't been registered as a door already", m_game_object->cName().c_str()));
-    ai().doors().unlock_door(m_door);
+    //VERIFY2(m_door, make_string("object %s hasn't been registered as a door already", m_game_object->cName().c_str()));
+	if (m_door)
+		ai().doors().unlock_door(m_door);
 }
 
 bool CScriptGameObject::is_door_blocked_by_npc() const
 {
-    VERIFY2(m_door, make_string("object %s hasn't been registered as a door already", m_game_object->cName().c_str()));
-    return								ai().doors().is_door_blocked(m_door);
+    //VERIFY2(m_door, make_string("object %s hasn't been registered as a door already", m_game_object->cName().c_str()));
+	if (!m_door)
+		return false;
+    return ai().doors().is_door_blocked(m_door);
 }
 
 //Alundaio: Methods for exporting the ability to detach/attach addons for magazined weapons
@@ -1721,8 +1729,6 @@ void CScriptGameObject::IterateInstalledUpgrades(luabind::functor<void> functor)
 	}
 }
 
-
-
 CScriptGameObject *CScriptGameObject::ItemOnBelt	(u32 item_id) const
 {
 	CInventoryOwner	*inventory_owner = smart_cast<CInventoryOwner*>(&object());
@@ -1788,7 +1794,7 @@ void CScriptGameObject::SetActorMaxWeight(float max_weight)
 	}
 	pActor->inventory().SetMaxWeight(max_weight);
 }
-// получить и задать максимальный вес при котором можно ходить
+// РїРѕР»СѓС‡РёС‚СЊ Рё Р·Р°РґР°С‚СЊ РјР°РєСЃРёРјР°Р»СЊРЅС‹Р№ РІРµСЃ РїСЂРё РєРѕС‚РѕСЂРѕРј РјРѕР¶РЅРѕ С…РѕРґРёС‚СЊ
 float CScriptGameObject::GetActorMaxWalkWeight() const
 {
 	CActor* pActor = smart_cast<CActor*>(&object());
@@ -1808,7 +1814,7 @@ void CScriptGameObject::SetActorMaxWalkWeight(float max_walk_weight)
 	pActor->conditions().m_MaxWalkWeight = max_walk_weight;
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
-// получить и задать доп. вес для костюма
+// РїРѕР»СѓС‡РёС‚СЊ Рё Р·Р°РґР°С‚СЊ РґРѕРї. РІРµСЃ РґР»СЏ РєРѕСЃС‚СЋРјР°
 float CScriptGameObject::GetAdditionalMaxWeight() const
 {
 	CCustomOutfit* outfit = smart_cast<CCustomOutfit*>(&object());
@@ -1846,7 +1852,7 @@ void CScriptGameObject::SetAdditionalMaxWalkWeight(float add_max_walk_weight)
 	outfit->m_additional_weight = add_max_walk_weight;
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
-// получить суммарный вес инвентаря
+// РїРѕР»СѓС‡РёС‚СЊ СЃСѓРјРјР°СЂРЅС‹Р№ РІРµСЃ РёРЅРІРµРЅС‚Р°СЂСЏ
 float CScriptGameObject::GetTotalWeight() const
 {
 	CInventoryOwner	*inventory_owner = smart_cast<CInventoryOwner*>(&object());
@@ -1856,7 +1862,7 @@ float CScriptGameObject::GetTotalWeight() const
 	}
 	return				(inventory_owner->inventory().TotalWeight());
 }
-// получить вес предмета
+// РїРѕР»СѓС‡РёС‚СЊ РІРµСЃ РїСЂРµРґРјРµС‚Р°
 float CScriptGameObject::Weight() const
 {
 	CInventoryItem		*inventory_item = smart_cast<CInventoryItem*>(&object());

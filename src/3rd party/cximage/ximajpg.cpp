@@ -1,4 +1,4 @@
-/*
+﻿/*
  * File:	ximajpg.cpp
  * Purpose:	Platform Independent JPEG Image Class Loader and Writer
  * 07/Aug/2001 Davide Pizzolato - www.xdp.it
@@ -11,7 +11,7 @@
 
 #define XMD_H
 #define HAVE_BOOLEAN
-#include "../../../sdk/include/jpeg/jmorecfg.h"
+#include <jpeg/jmorecfg.h>
 #undef HAVE_BOOLEAN
 #undef XMD_H
 

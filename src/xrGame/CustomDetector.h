@@ -1,4 +1,4 @@
-#pragma once
+п»ї#pragma once
 #include "inventory_item_object.h"
 #include "../xrEngine/feel_touch.h"
 #include "hudsound.h"
@@ -21,12 +21,12 @@ struct ITEM_TYPE
 	shared_str			nightvision_particle;
 };
 
-//описание зоны, обнаруженной детектором
+//РѕРїРёСЃР°РЅРёРµ Р·РѕРЅС‹, РѕР±РЅР°СЂСѓР¶РµРЅРЅРѕР№ РґРµС‚РµРєС‚РѕСЂРѕРј
 struct ITEM_INFO
 {
 	ITEM_TYPE*						curr_ref;
 	float							snd_time;
-	//текущая частота работы датчика
+	//С‚РµРєСѓС‰Р°СЏ С‡Р°СЃС‚РѕС‚Р° СЂР°Р±РѕС‚С‹ РґР°С‚С‡РёРєР°
 	float							cur_period;
 	//particle for night-vision mode
 	CParticlesObject*				pParticle;
@@ -142,7 +142,7 @@ public:
 
 	virtual void	OnActiveItem		();
 	virtual void	OnHiddenItem		();
-	virtual void	OnStateSwitch		(u32 S);
+	virtual void	OnStateSwitch		(u32 S, u32 oldState);
 	virtual void	OnAnimationEnd		(u32 state);
 	virtual	void	UpdateXForm			();
 

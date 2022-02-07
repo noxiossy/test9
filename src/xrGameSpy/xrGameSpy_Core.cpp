@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "xrGameSpy_Core.h"
 
 void xrGS_gsCoreInitialize()

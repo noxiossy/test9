@@ -1,4 +1,4 @@
-#ifndef D_TRI_COLLIDER_COMMON
+﻿#ifndef D_TRI_COLLIDER_COMMON
 #define D_TRI_COLLIDER_COMMON
 
 

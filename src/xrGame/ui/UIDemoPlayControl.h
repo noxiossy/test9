@@ -1,4 +1,4 @@
-#ifndef UIDEMOPLAY_CONTROL
+﻿#ifndef UIDEMOPLAY_CONTROL
 #define UIDEMOPLAY_CONTROL
 
 #include "UIDialogWnd.h"

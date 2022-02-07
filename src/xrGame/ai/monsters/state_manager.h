@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "state_defs.h"
 #include "control_com_defs.h"
 

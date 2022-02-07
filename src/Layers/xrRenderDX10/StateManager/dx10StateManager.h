@@ -1,4 +1,4 @@
-#ifndef	dx10StateManager_included
+﻿#ifndef	dx10StateManager_included
 #define	dx10StateManager_included
 #pragma once
 

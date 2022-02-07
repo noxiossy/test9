@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "../../actor_input_handler.h"
 

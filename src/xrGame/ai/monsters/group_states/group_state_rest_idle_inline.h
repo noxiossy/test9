@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "../states/state_move_to_point.h"
 #include "../states/state_look_point.h"

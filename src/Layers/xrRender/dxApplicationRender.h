@@ -1,4 +1,4 @@
-#ifndef dxApplicationRender_included
+﻿#ifndef dxApplicationRender_included
 #define dxApplicationRender_included
 #pragma once
 

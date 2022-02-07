@@ -1,4 +1,4 @@
-#ifndef ELEVATOR_STAETE
+﻿#ifndef ELEVATOR_STAETE
 #define ELEVATOR_STAETE
 class CPHCharacter;
 struct dContact;

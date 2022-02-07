@@ -1,4 +1,4 @@
-// SetTopicDlg.cpp : implementation file
+﻿// SetTopicDlg.cpp : implementation file
 //
 
 #include "stdafx.h"

@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 // Main blenders for level
 #define		B_DEFAULT		MK_CLSID('L','M',' ',' ',' ',' ',' ',' ')

@@ -1,4 +1,4 @@
-#ifndef _BACKUP_H_
+﻿#ifndef _BACKUP_H_
 #define _BACKUP_H_
 
 void BackupInit(void);

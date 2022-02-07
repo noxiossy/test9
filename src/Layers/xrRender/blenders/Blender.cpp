@@ -1,4 +1,4 @@
-// Blender.cpp: implementation of the IBlender class.
+﻿// Blender.cpp: implementation of the IBlender class.
 //
 //////////////////////////////////////////////////////////////////////
 

@@ -1,4 +1,4 @@
-#ifndef SCREENSHOT_WRITER_INCLUDED
+﻿#ifndef SCREENSHOT_WRITER_INCLUDED
 #define SCREENSHOT_WRITER_INCLUDED
 
 #include "xr_dsa_signer.h"

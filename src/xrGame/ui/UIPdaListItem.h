@@ -1,4 +1,4 @@
-#pragma once
+п»ї#pragma once
 #include "UIWindow.h"
 
 class CUIFrameWindow;
@@ -17,6 +17,6 @@ public:
 	
 	void*					m_data;
 protected:
-	//информация о персонаже
+	//РёРЅС„РѕСЂРјР°С†РёСЏ Рѕ РїРµСЂСЃРѕРЅР°Р¶Рµ
 	CUICharacterInfo*		UIInfo;
 };

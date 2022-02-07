@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "GameSpy_FuncDefs.h"
 #define	GAMESPY_MAXCHALLANGESIZE	32

@@ -1,4 +1,4 @@
-#ifndef UIGAMEMP_H
+﻿#ifndef UIGAMEMP_H
 #define UIGAMEMP_H
 
 #include "UIGameCustom.h"

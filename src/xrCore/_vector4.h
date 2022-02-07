@@ -1,4 +1,4 @@
-#ifndef _VECTOR4_H
+﻿#ifndef _VECTOR4_H
 #define _VECTOR4_H
 #pragma once
 

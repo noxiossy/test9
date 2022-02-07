@@ -1,4 +1,4 @@
-// Voice2BuddyMFCDlg.h : header file
+﻿// Voice2BuddyMFCDlg.h : header file
 //
 
 #if !defined(AFX_VOICE2BUDDYMFCDLG_H__F4BA3DE6_2C65_4B7D_A1BC_A9C3BAF53DEE__INCLUDED_)

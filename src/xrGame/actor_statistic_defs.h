@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "alife_abstract_registry.h"
 
 extern xr_token actor_stats_token[];

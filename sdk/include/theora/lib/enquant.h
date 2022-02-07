@@ -1,4 +1,4 @@
-#if !defined(_enquant_H)
+﻿#if !defined(_enquant_H)
 # define _enquant_H (1)
 # include "quant.h"
 

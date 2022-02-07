@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "customzone.h"
 #include "script_export_space.h"
 

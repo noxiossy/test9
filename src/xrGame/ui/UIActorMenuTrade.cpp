@@ -1,4 +1,4 @@
-//#include "stdafx.h"
+﻿//#include "stdafx.h"
 #include "pch_script.h"
 #include "UIActorMenu.h"
 #include "UI3tButton.h"
@@ -155,18 +155,14 @@ void CUIActorMenu::DeInitTradeMode()
 
 	if(!CurrentGameUI())
 		return;
-	//òîëüêî åñëè íàõîäèìñÿ â ðåæèìå single
+	//только если находимся в режиме single
 	CUIGameSP* pGameSP = smart_cast<CUIGameSP*>(CurrentGameUI());
 	if(!pGameSP) return;
-
-	//pGameSP->TalkMenu->ShowDialog(true);
 
 	if(pGameSP->TalkMenu->IsShown())
 	{
 		pGameSP->TalkMenu->NeedUpdateQuestions();
 	}
-
-	//pGameSP->TalkMenu->Show(true);
 }
 
 bool CUIActorMenu::ToActorTrade(CUICellItem* itm, bool b_use_cursor_pos)

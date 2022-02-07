@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "UIProgressBar.h"
 #include "UIProgressShape.h"
 

@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "../xrEngine/CameraManager.h"
 #include "../xrEngine/effector.h"

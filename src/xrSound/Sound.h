@@ -1,4 +1,4 @@
-#ifndef SoundH
+﻿#ifndef SoundH
 #define SoundH
 #pragma once
 

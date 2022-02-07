@@ -1,4 +1,4 @@
-#ifndef _TextureDescrManager_included_
+﻿#ifndef _TextureDescrManager_included_
 #define _TextureDescrManager_included_
 
 #pragma once

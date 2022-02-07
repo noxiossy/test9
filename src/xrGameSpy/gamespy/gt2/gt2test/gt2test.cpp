@@ -1,4 +1,4 @@
-// gt2test.cpp : Defines the class behaviors for the application.
+﻿// gt2test.cpp : Defines the class behaviors for the application.
 //
 
 #include "stdafx.h"

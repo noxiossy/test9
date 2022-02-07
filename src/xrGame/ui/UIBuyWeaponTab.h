@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "UITabControl.h"
 #include "UIStatic.h"

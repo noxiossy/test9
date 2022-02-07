@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "NET_AuthCheck.h"
 
 void XRNETSERVER_API fill_auth_check_params(xr_auth_strings_t & ignore,

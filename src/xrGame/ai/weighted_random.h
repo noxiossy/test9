@@ -1,4 +1,4 @@
-#ifndef WEIGHTED_RANDOM
+﻿#ifndef WEIGHTED_RANDOM
 #define WEIGHTED_RANDOM
 
 struct weighted_random

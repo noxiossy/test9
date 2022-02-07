@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "physicsexternalcommon.h"
 #include "iphysics_scripted.h"
 class CPhysicsShell;

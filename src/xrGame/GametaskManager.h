@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "GameTaskDefs.h"
 #include "object_interfaces.h"

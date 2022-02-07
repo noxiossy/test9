@@ -1,4 +1,4 @@
-//#include "stdafx.h"
+п»ї//#include "stdafx.h"
 #include "pch_script.h"
 #include "UIActorMenu.h"
 #include "UIInventoryUpgradeWnd.h"
@@ -51,7 +51,7 @@ void CUIActorMenu::DeInitUpgradeMode()
 
 	if(!CurrentGameUI())
 		return;
-	//только если находимся в режиме single
+	//С‚РѕР»СЊРєРѕ РµСЃР»Рё РЅР°С…РѕРґРёРјСЃСЏ РІ СЂРµР¶РёРјРµ single
 	CUIGameSP* pGameSP = smart_cast<CUIGameSP*>(CurrentGameUI());
 	if(!pGameSP) return;
 

@@ -1,4 +1,4 @@
-#include "pch_script.h"
+﻿#include "pch_script.h"
 #include "UIGame_custom_script.h"
 #include "xrServer_script_macroses.h"
 #include "ui/UIMultiTextStatic.h"

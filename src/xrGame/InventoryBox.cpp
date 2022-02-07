@@ -1,4 +1,4 @@
-#include "pch_script.h"
+﻿#include "pch_script.h"
 #include "InventoryBox.h"
 #include "level.h"
 #include "actor.h"
@@ -92,7 +92,7 @@ BOOL CInventoryBox::net_Spawn(CSE_Abstract* DC)
 	set_tip_text			("inventory_box_use");
 	
 	CSE_ALifeInventoryBox*	pSE_box = smart_cast<CSE_ALifeInventoryBox*>(DC);
-	if (pSE_box)
+	if ( /*IsGameTypeSingle() &&*/ pSE_box )
 	{
 		m_can_take = pSE_box->m_can_take;
 		m_closed   = pSE_box->m_closed;

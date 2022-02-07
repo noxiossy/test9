@@ -1,4 +1,4 @@
-#include "StdAfx.h"
+﻿#include "StdAfx.h"
 #include "UIPlayerItem.h"
 #include "UITeamState.h"
 #include "UITeamPanels.h"

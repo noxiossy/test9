@@ -1,4 +1,4 @@
-// LightPPA.cpp: implementation of the CLightPPA class.
+﻿// LightPPA.cpp: implementation of the CLightPPA class.
 //
 //////////////////////////////////////////////////////////////////////
 

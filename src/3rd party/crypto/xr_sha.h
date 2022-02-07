@@ -1,4 +1,4 @@
-#ifndef XR_SHA_INCLUDED
+﻿#ifndef XR_SHA_INCLUDED
 #define XR_SHA_INCLUDED
 
 #include "crypto_api_def.h"

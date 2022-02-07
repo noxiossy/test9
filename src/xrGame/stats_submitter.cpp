@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "stats_submitter.h"
 #include "gamespy/GameSpy_Full.h"
 #include "login_manager.h"

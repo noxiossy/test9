@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 IC void CBaseMonster::set_custom_panic_threshold(float value)
 {

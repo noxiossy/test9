@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "KillMessageStruct.h"
 #include "UIStatic.h"

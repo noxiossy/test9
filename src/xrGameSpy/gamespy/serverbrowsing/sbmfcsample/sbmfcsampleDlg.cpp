@@ -1,4 +1,4 @@
-// sbmfcsampleDlg.cpp : implementation file
+﻿// sbmfcsampleDlg.cpp : implementation file
 //
 
 #include "stdafx.h"

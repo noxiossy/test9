@@ -1,4 +1,4 @@
-#ifndef		D_TRI_BOX_H
+﻿#ifndef		D_TRI_BOX_H
 #define		D_TRI_BOX_H
 
 #include "TriPrimitiveCollideClassDef.h"

@@ -1,4 +1,4 @@
-#ifndef dx10r_constants_cacheH
+﻿#ifndef dx10r_constants_cacheH
 #define dx10r_constants_cacheH
 #pragma once
 

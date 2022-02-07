@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "CustomDetector.h"
 #include "level.h"
 

@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 struct hit_animation_global_params
 {

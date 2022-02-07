@@ -1,4 +1,4 @@
-
+﻿
 #pragma once
 
 #define TEMPLATE_SPECIALIZATION template <\

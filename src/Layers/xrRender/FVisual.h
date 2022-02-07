@@ -1,4 +1,4 @@
-// FVisual.h: interface for the FVisual class.
+﻿// FVisual.h: interface for the FVisual class.
 //
 //////////////////////////////////////////////////////////////////////
 #ifndef FVisualH

@@ -1,4 +1,4 @@
-// sbmfcsampleDlg.h : header file
+﻿// sbmfcsampleDlg.h : header file
 //
 
 #if !defined(AFX_SBMFCSAMPLEDLG_H__8B726D03_AF99_4938_A63C_18525912E55D__INCLUDED_)

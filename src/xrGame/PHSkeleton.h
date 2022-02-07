@@ -1,4 +1,4 @@
-#ifndef PH_SKELETON_H
+﻿#ifndef PH_SKELETON_H
 #define PH_SKELETON_H
 
 #include "../xrphysics/PHDefs.h"

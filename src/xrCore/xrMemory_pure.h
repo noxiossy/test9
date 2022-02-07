@@ -1,4 +1,4 @@
-#ifndef XRMEMORY_PURE_H
+﻿#ifndef XRMEMORY_PURE_H
 #define XRMEMORY_PURE_H
 
 #ifdef XRCORE_STATIC

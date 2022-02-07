@@ -1,35 +1,14 @@
-#pragma once
+﻿#pragma once
 
 class CUIWindow;
 class CUIDialogWnd;
 class CUICursor;
 class CUIMessageBoxEx;
-class CGameSpy_HTTP;
-class CGameSpy_Full;
-
-class demo_info_loader;
-
 #include "../xrEngine/IInputReceiver.h"
 #include "../xrEngine/IGame_Persistent.h"
 #include "UIDialogHolder.h"
 #include "ui/UIWndCallback.h"
 #include "ui_base.h"
-#include "DemoInfo.h"
-
-namespace gamespy_gp
-{
-
-class account_manager;
-class login_manager;
-
-} //namespace gamespy_gp
-namespace gamespy_profile
-{
-	class profile_store;
-	class stats_submitter;
-} //namespace gamespy_profile
-
-class atlas_submit_queue;
 
 struct  Patch_Dawnload_Progress{
 	bool		IsInProgress;
@@ -73,14 +52,6 @@ class CMainMenu :
 
 	xr_vector<CUIWindow*>				m_pp_draw_wnds;
 
-	CGameSpy_Full*						m_pGameSpyFull;
-	gamespy_gp::account_manager*		m_account_mngr;
-	gamespy_gp::login_manager*			m_login_mngr;
-	gamespy_profile::profile_store*		m_profile_store;
-	gamespy_profile::stats_submitter*	m_stats_submitter;
-	atlas_submit_queue*					m_atlas_submit_queue;
-
-	demo_info_loader*					m_demo_info_loader;
 public:
 	enum	EErrorDlg 
 	{
@@ -109,13 +80,6 @@ public:
 	Patch_Dawnload_Progress		m_sPDProgress;
 	Patch_Dawnload_Progress*	GetPatchProgress	() {return &m_sPDProgress;}
 	void						CancelDownload		();
-	
-	CGameSpy_Full*						GetGS			()	{return m_pGameSpyFull;};
-	gamespy_gp::account_manager*		GetAccountMngr	()	{ return m_account_mngr; };
-	gamespy_gp::login_manager*			GetLoginMngr	()	{ return m_login_mngr; };
-	gamespy_profile::profile_store*		GetProfileStore	()	{ return m_profile_store; };
-	gamespy_profile::stats_submitter*	GetStatsSubmitter()	{ return m_stats_submitter; };
-	atlas_submit_queue*					GetSubmitQueue	()	{ return m_atlas_submit_queue; };
 protected:
 	EErrorDlg		m_NeedErrDialog;	
 	u32				m_start_time;
@@ -199,8 +163,7 @@ public:
 
 	LPCSTR			GetPlayerName					();
 	LPCSTR			GetCDKeyFromRegistry			();
-	
-	demo_info const *	GetDemoInfo					(LPCSTR file_name);
+
 };
 
 extern CMainMenu*	MainMenu();

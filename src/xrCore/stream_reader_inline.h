@@ -1,4 +1,4 @@
-#ifndef STREAM_READER_INLINE_H
+﻿#ifndef STREAM_READER_INLINE_H
 #define STREAM_READER_INLINE_H
 
 IC CStreamReader::CStreamReader()

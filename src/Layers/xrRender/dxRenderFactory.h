@@ -1,4 +1,4 @@
-#ifndef dxRenderFactory_included
+﻿#ifndef dxRenderFactory_included
 #define dxRenderFactory_included
 #pragma once
 

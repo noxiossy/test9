@@ -1,4 +1,4 @@
-// LocatorAPI.h: interface for the CLocatorAPI class.
+﻿// LocatorAPI.h: interface for the CLocatorAPI class.
 //
 //////////////////////////////////////////////////////////////////////
 

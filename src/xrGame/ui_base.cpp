@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "ui_base.h"
 #include "GamePersistent.h"
 #include "UICursor.h"

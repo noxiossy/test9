@@ -1,4 +1,4 @@
-// SkeletonX.cpp: implementation of the CSkeletonX class.
+﻿// SkeletonX.cpp: implementation of the CSkeletonX class.
 //
 //////////////////////////////////////////////////////////////////////
 
@@ -6,7 +6,7 @@
 
 
 #pragma warning(disable:4995)
-#include <d3dx9.h>
+#include <d3dx/d3dx9.h>
 #pragma warning(default:4995)
 
 #ifndef _EDITOR
@@ -521,7 +521,6 @@ void CSkeletonX::_FillVerticesSoft1W(const Fmatrix& view, CSkeletonWallmark& wm,
 		}
 	}
 }
-
 void CSkeletonX::_FillVerticesSoft2W(const Fmatrix& view, CSkeletonWallmark& wm, const Fvector& normal, float size, u16* indices, CBoneData::FacesVec& faces)
 {
 	VERIFY				(*Vertices2W);
@@ -562,7 +561,6 @@ void CSkeletonX::_FillVerticesSoft2W(const Fmatrix& view, CSkeletonWallmark& wm,
 		}
 	}
 }
-
 void CSkeletonX::_FillVerticesSoft3W(const Fmatrix& view, CSkeletonWallmark& wm, const Fvector& normal, float size, u16* indices, CBoneData::FacesVec& faces)
 {
     VERIFY(*Vertices3W);
@@ -634,11 +632,11 @@ void CSkeletonX::_FillVerticesSoft4W(const Fmatrix& view, CSkeletonWallmark& wm,
 		if (CDB::TestSphereTri(wm.ContactPoint(), size, p))
 		{
 			Fvector				UV;
-			for (u32 k = 0; k<3; k++) {
-				Fvector2& uv = F.uv[k];
-				view.transform_tiny(UV, p[k]);
-				uv.x = (1 + UV.x)*.5f;
-				uv.y = (1 - UV.y)*.5f;
+			for (u32 k=0; k<3; k++){
+				Fvector2& uv	= F.uv[k];
+				view.transform_tiny(UV,p[k]);
+				uv.x			= (1+UV.x)*.5f;
+				uv.y			= (1-UV.y)*.5f;
 			}
 			wm.m_Faces.push_back(F);
 		}

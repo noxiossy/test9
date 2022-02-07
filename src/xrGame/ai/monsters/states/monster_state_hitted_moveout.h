@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "../../../detail_path_manager.h"
 

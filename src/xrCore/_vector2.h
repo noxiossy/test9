@@ -1,4 +1,4 @@
-#ifndef __V2D__
+﻿#ifndef __V2D__
 #define __V2D__
 
 template <class T>

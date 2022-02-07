@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 IC void	CMonsterMorale::set_despondent()
 {

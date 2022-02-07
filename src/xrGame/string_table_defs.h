@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 typedef shared_str	STRING_ID;
 //. typedef int			STRING_INDEX;

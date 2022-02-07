@@ -1,4 +1,4 @@
-#include "LibStr.h"
+﻿#include "LibStr.h"
 
 #include <cctype>
 #include <stdlib.h>

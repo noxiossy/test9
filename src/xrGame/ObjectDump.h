@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #ifdef DEBUG
 std::string get_string( bool v );
 std::string get_string( const Fvector& v );

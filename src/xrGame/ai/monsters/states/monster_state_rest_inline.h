@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "monster_state_rest_sleep.h"
 #include "monster_state_rest_walk_graph.h"

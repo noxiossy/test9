@@ -1,4 +1,4 @@
-// occRasterizer.h: interface for the occRasterizer class.
+﻿// occRasterizer.h: interface for the occRasterizer class.
 //////////////////////////////////////////////////////////////////////
 #pragma once
 

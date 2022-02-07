@@ -1,4 +1,4 @@
-// TextureManager.h: interface for the CTextureManager class.
+﻿// TextureManager.h: interface for the CTextureManager class.
 //
 //////////////////////////////////////////////////////////////////////
 

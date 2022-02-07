@@ -1,4 +1,4 @@
-// ChildFrm.cpp : implementation of the CChildFrame class
+﻿// ChildFrm.cpp : implementation of the CChildFrame class
 //
 
 #include "stdafx.h"

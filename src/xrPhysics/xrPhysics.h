@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #ifdef XRPHYSICS_EXPORTS
 #define XRPHYSICS_API __declspec(dllexport)

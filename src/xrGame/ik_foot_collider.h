@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "ik_collide_data.h"
 class	CGameObject;
 

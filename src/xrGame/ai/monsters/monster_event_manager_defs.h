@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 enum EEventType {
 	eventAnimationStart = u32(0),

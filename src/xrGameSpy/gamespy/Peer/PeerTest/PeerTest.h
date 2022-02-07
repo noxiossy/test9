@@ -1,4 +1,4 @@
-// PeerTest.h : main header file for the PEERTEST application
+﻿// PeerTest.h : main header file for the PEERTEST application
 //
 
 #if !defined(AFX_PEERTEST_H__2F625A3C_93C3_4689_9749_3B9FCBE53594__INCLUDED_)

@@ -1,4 +1,4 @@
-#ifndef xrMemory_POOLh
+﻿#ifndef xrMemory_POOLh
 #define xrMemory_POOLh
 #pragma once
 

@@ -1,4 +1,4 @@
-////////////////////////////////////////////////////////////////////////////
+﻿////////////////////////////////////////////////////////////////////////////
 //	Module 		: ai_stalker_debug.cpp
 //	Created 	: 05.07.2005
 //  Modified 	: 05.07.2005
@@ -134,7 +134,7 @@ void restore_actor()
 	CHudItem* pHudItem = smart_cast<CHudItem*>(g_debug_actor->inventory().ActiveItem());
 	if (pHudItem) 
 	{
-		pHudItem->OnStateSwitch(pHudItem->GetState());
+		pHudItem->OnStateSwitch(pHudItem->GetState(), pHudItem->GetState());
 	}
 }
 

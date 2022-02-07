@@ -1,4 +1,4 @@
-// FHierrarhyVisual.cpp: implementation of the FHierrarhyVisual class.
+﻿// FHierrarhyVisual.cpp: implementation of the FHierrarhyVisual class.
 //
 //////////////////////////////////////////////////////////////////////
 

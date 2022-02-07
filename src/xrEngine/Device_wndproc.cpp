@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 
 bool CRenderDevice::on_message(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam, LRESULT& result)
 {
@@ -60,9 +60,9 @@ bool CRenderDevice::on_message(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lPara
         return (true);
     }
     case WM_HOTKEY: // prevent 'ding' sounds caused by Alt+key combinations
-	case WM_SYSCHAR:
-		result = 0;
-		return true;
+    case WM_SYSCHAR:
+        result = 0;
+        return true;
     }
 
     return (false);

@@ -120,6 +120,9 @@ namespace luabind
 			lua_State* L = m_self.state();
 			m_self.get(L);
 			assert(!lua_isnil(L, -1));
+			if (lua_isnil(L, -1))
+				return proxy_type(NULL, args);
+
 			detail::do_call_member_selection(L, name);
 
 			// push the self reference as the first parameter

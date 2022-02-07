@@ -1,4 +1,4 @@
-//--------------------------- QR2 callbacks ---------------------------------------
+﻿//--------------------------- QR2 callbacks ---------------------------------------
 // Called when a server key needs to be reported
 void __cdecl callback_serverkey(int keyid, qr2_buffer_t outbuf, void *userdata);
 // Called when a player key needs to be reported

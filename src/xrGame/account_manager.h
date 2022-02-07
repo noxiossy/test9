@@ -1,4 +1,4 @@
-#ifndef ACCOUNT_MANAGER
+﻿#ifndef ACCOUNT_MANAGER
 #define ACCOUNT_MANAGER
 
 #include <boost/noncopyable.hpp>

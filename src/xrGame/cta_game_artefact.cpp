@@ -1,4 +1,4 @@
-////////////////////////////////////////////////////////////////////////////////
+﻿////////////////////////////////////////////////////////////////////////////////
 //	Module		:	cta_game_artefact.cpp
 //	Created		:	19.12.2007
 //	Modified	:	19.12.2007
@@ -57,9 +57,9 @@ bool CtaGameArtefact::Action(s32 cmd, u32 flags)
 	return inherited::Action((u16)cmd, flags);
 }
 
-void CtaGameArtefact::OnStateSwitch(u32 S)
+void CtaGameArtefact::OnStateSwitch(u32 S, u32 oldState)
 {
-	inherited::OnStateSwitch(S);
+	inherited::OnStateSwitch(S, oldState);
 	/*// just temporary (before we get huds for artefact activation)
 	if (S == eActivating)
 	{

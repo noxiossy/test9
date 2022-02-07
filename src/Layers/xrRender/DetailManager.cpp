@@ -1,4 +1,4 @@
-// DetailManager.cpp: implementation of the CDetailManager class.
+﻿// DetailManager.cpp: implementation of the CDetailManager class.
 //
 //////////////////////////////////////////////////////////////////////
 
@@ -255,7 +255,6 @@ void CDetailManager::Unload		()
 }
 
 extern ECORE_API float r_ssaDISCARD;
-extern BOOL ps_no_scale_on_fade;
 
 void CDetailManager::UpdateVisibleM()
 {
@@ -268,7 +267,12 @@ void CDetailManager::UpdateVisibleM()
 
 	CFrustum View;
 	View.CreateFromMatrix(RDEVICE.mFullTransform_saved, FRUSTUM_P_LRTB + FRUSTUM_P_FAR);
-		
+			
+ 	CFrustum	View_old;
+ 	Fmatrix		Viewm_old = RDEVICE.mFullTransform;
+ 	View_old.CreateFromMatrix		(Viewm_old, FRUSTUM_P_LRTB + FRUSTUM_P_FAR);
+	
+
 	float fade_limit = dm_fade;
 	fade_limit = fade_limit * fade_limit;
 	float fade_start = 1.f;
@@ -350,8 +354,8 @@ void CDetailManager::UpdateVisibleM()
 							if (el == nullptr) continue;
 
 							SlotItem& Item			= *el;
-							float   scale = ps_no_scale_on_fade ? (Item.scale_calculated = Item.scale) : (Item.scale_calculated = Item.scale*alpha_i);
-							float	ssa = ps_no_scale_on_fade ? scale : scale*scale*Rq_drcp;
+							float   scale			= Item.scale_calculated	= Item.scale*alpha_i;
+							float	ssa				= scale*scale*Rq_drcp;
 							if (ssa < r_ssaDISCARD)
 							{
 								continue;
@@ -420,8 +424,6 @@ void CDetailManager::Render	()
 u32 reset_frame = 0;
 void __stdcall	CDetailManager::MT_CALC		()
 {
-	if (!this || !MT.IsValid()) return; // DIIIRTY HACK !!!
-
 #ifndef _EDITOR
 	if (reset_frame == Device.dwFrame) return;
 	if (!RImplementation.Details) return;	// possibly deleted
@@ -431,8 +433,7 @@ void __stdcall	CDetailManager::MT_CALC		()
 #endif    
 
 	MT.Enter					();
-	if (m_frame_calc!=RDEVICE.dwFrame)	
-		if ((m_frame_rendered+1)==RDEVICE.dwFrame) //already rendered
+		if (m_frame_calc != RDEVICE.dwFrame && (m_frame_rendered + 1) == RDEVICE.dwFrame)
 		{
 			Fvector		EYE				= RDEVICE.vCameraPosition_saved;
 

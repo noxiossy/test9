@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 
 extern float object_damage_factor;

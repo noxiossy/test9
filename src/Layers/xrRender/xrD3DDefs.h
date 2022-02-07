@@ -1,4 +1,4 @@
-#ifndef	xrD3DDefs_included
+﻿#ifndef	xrD3DDefs_included
 #define	xrD3DDefs_included
 #pragma once
 

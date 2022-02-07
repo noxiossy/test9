@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "../xrRender/DetailManager.h"
 
 #include "../../xrEngine/igame_persistent.h"
@@ -226,9 +226,7 @@ void CDetailManager::hw_Render_dump(const Fvector4 &consts, const Fvector4 &wave
 				}
 
 			}
-			// Grass Shadows when r2_sun_detail on
-			// Grass Shadows when r2_sun_detail on
-			if (!ps_r2_ls_flags.test(R2FLAG_SUN_DETAILS) || ((RImplementation.PHASE_SMAP == RImplementation.phase) || (RImplementation.PHASE_NORMAL == RImplementation.phase) && (!RImplementation.is_sun())))
+			// Clean up
 			vis.clear_not_free			();
 		}
 		vOffset		+=	hw_BatchSize * Object.number_vertices;

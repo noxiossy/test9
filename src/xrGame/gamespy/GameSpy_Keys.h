@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #define MAX_REGISTERED_KEYS 254
 #define NUM_RESERVED_KEYS 50

@@ -1,4 +1,4 @@
-#ifndef SPECTATOR_CAMERA_FIRST_EYE
+﻿#ifndef SPECTATOR_CAMERA_FIRST_EYE
 #define SPECTATOR_CAMERA_FIRST_EYE
 
 #include "../xrcore/ftimer.h"

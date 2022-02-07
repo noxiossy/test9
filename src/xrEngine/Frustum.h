@@ -1,4 +1,4 @@
-// Frustum.h: interface for the CFrustum class.
+﻿// Frustum.h: interface for the CFrustum class.
 //
 //////////////////////////////////////////////////////////////////////
 

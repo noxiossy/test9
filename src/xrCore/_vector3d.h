@@ -1,4 +1,4 @@
-#ifndef __V3D__
+﻿#ifndef __V3D__
 #define __V3D__
 
 // Inline call

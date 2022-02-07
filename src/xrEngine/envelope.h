@@ -1,4 +1,4 @@
-#ifndef EnvelopeH
+﻿#ifndef EnvelopeH
 #define EnvelopeH
 
 // refs

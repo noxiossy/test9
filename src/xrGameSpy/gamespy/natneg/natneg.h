@@ -1,4 +1,4 @@
-
+﻿
 /******
 GameSpy NAT Negotiation SDK
   

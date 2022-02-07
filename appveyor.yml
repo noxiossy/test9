@@ -1,5 +1,5 @@
-version: 1.0-{build}
-image: Visual Studio 2013
+version: xray_lrc_{build}
+image: Visual Studio 2019
 configuration: Release
 platform: Win32
 shallow_clone: true
@@ -11,7 +11,7 @@ before_build:
 
     echo %CONFIGURATION%
 
-    echo direx_%APPVEYOR_REPO_TAG_NAME%_%PLATFORM%.7z
+    echo %APPVEYOR_REPO_TAG_NAME%.7z
 build:
   project: ./src/engine.sln
   verbosity: minimal
@@ -29,29 +29,27 @@ after_build:
 
     echo ===================== engine files =====================
 
-    md dist\engine
-
-    copy opt\start_%COR_PLAT%.bat dist\engine
-
     md dist\engine\bin
 
     copy src\intermediate\%PLATFORM%-%CONFIGURATION%\*.exe dist\engine\bin\
 
     copy src\intermediate\%PLATFORM%-%CONFIGURATION%\*.dll dist\engine\bin\
+    
+    copy sdk\binaries\%COR_PLAT%\lua51.dll dist\engine\bin\
 
-    echo appveyor PushArtifact direx_%APPVEYOR_REPO_TAG_NAME%.7z release
+    echo appveyor PushArtifact %APPVEYOR_REPO_TAG_NAME%.7z release
 
     cd dist\engine
 
-    7z a ..\..\direx_%APPVEYOR_REPO_TAG_NAME%.7z
+    7z a ..\..\%APPVEYOR_REPO_TAG_NAME%.7z
 
     cd ..\..
 
-    echo appveyor PushArtifact direx_%APPVEYOR_REPO_TAG_NAME%.7z release
+    echo appveyor PushArtifact %APPVEYOR_REPO_TAG_NAME%.7z release
 
-    copy direx_%APPVEYOR_REPO_TAG_NAME%.7z direx_%APPVEYOR_VERSION%.7z
+    copy %APPVEYOR_REPO_TAG_NAME%.7z %APPVEYOR_VERSION%.7z
 
-    appveyor PushArtifact direx_%APPVEYOR_VERSION%.7z
+    appveyor PushArtifact %APPVEYOR_VERSION%.7z
 artifacts:
-- path: .\direx_$(appveyor_repo_tag_name).7z
+- path: .\$(appveyor_repo_tag_name).7z
   name: release

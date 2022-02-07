@@ -1,4 +1,4 @@
-// SendRawDlg.cpp : implementation file
+﻿// SendRawDlg.cpp : implementation file
 //
 
 #include "stdafx.h"

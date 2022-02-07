@@ -1,4 +1,4 @@
-// WallmarksEngine.cpp: implementation of the CWallmarksEngine class.
+﻿// WallmarksEngine.cpp: implementation of the CWallmarksEngine class.
 //
 //////////////////////////////////////////////////////////////////////
 
@@ -382,7 +382,6 @@ void CWallmarksEngine::Render()
 				}
 			}
 
-			// don't need to check wallmarks with infinite lifetime
 			if (W->TimeEnd() == -1.f)
 			{
 				w_it++;
@@ -396,8 +395,8 @@ void CWallmarksEngine::Render()
 			}
 			else
 			{
-				static_wm_destroy(W);
-				*w_it = slot->static_items.back();
+				static_wm_destroy	(W);
+				*w_it				= slot->static_items.back();
 				slot->static_items.pop_back();
 			}
 		}

@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "chimera_state_threaten_steal.h"
 #include "chimera_state_threaten_walk.h"

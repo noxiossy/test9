@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 struct	r_aabb_ssa	{
 	u8	ssa	[6]		;

@@ -1,4 +1,4 @@
-#ifndef PLAYER_SPOT_PARAMS_INCLUDED
+﻿#ifndef PLAYER_SPOT_PARAMS_INCLUDED
 #define PLAYER_SPOT_PARAMS_INCLUDED
 
 #include "player_state_param.h"

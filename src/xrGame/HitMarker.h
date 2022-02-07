@@ -1,4 +1,4 @@
-#ifndef __XR_HITMARKER_H__
+﻿#ifndef __XR_HITMARKER_H__
 #define __XR_HITMARKER_H__
 #pragma once
 

@@ -1,4 +1,4 @@
-#ifndef noiseH
+﻿#ifndef noiseH
 #define noiseH
 
 float	noise3(const Fvector& vec);

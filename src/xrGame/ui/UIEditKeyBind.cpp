@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 
 #include "UIEditKeyBind.h"
 #include "../xr_level_controller.h"

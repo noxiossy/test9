@@ -1,4 +1,4 @@
-////////////////////////////////////////////////////////////////////////////
+ï»¿////////////////////////////////////////////////////////////////////////////
 //	Module 		: FractionState.cpp
 //	Created 	: 22.01.2008
 //  Modified 	: 23.01.2008
@@ -79,9 +79,9 @@ void FractionState::update_info()
 	CActor* pActor = smart_cast<CActor*>( Level().CurrentEntity() );
 	if ( pActor )
 	{
-		CHARACTER_COMMUNITY char_ñmm;
-		char_ñmm.set( m_id );
-		m_actor_goodwill = RELATION_REGISTRY().GetCommunityGoodwill( char_ñmm.index(), pActor->object_id() );
+		CHARACTER_COMMUNITY char_cmm;
+		char_cmm.set( m_id );
+		m_actor_goodwill = RELATION_REGISTRY().GetCommunityGoodwill( char_cmm.index(), pActor->object_id() );
 	}
 
 	luabind::functor<void>	m_functor;

@@ -1,4 +1,4 @@
-////////////////////////////////////////////////////////////////////////////
+﻿////////////////////////////////////////////////////////////////////////////
 //	Module 		: stalker_animation_manager_update.cpp
 //	Created 	: 25.02.2003
 //  Modified 	: 13.12.2006
@@ -14,7 +14,7 @@
 #include "profiler.h"
 #include "stalker_movement_manager_smart_cover.h"
 
-void CStalkerAnimationManager::play_delayed_callbacks	()
+void CStalkerAnimationManager::play_delayed_callbacks()
 {
     if (m_call_script_callback)
     {

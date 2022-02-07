@@ -1,4 +1,4 @@
-#ifndef XRCORE_PLATFORM_H
+﻿#ifndef XRCORE_PLATFORM_H
 #define XRCORE_PLATFORM_H
 #pragma once
 
@@ -13,7 +13,7 @@
 
 // windows.h
 #ifndef _WIN32_WINNT
-# define _WIN32_WINNT 0x0501
+# define _WIN32_WINNT 0x0600
 #endif
 
 #ifdef __BORLANDC__
@@ -29,19 +29,21 @@
 #define NOKEYSTATES
 #define NODRAWTEXT
 #define NOMEMMGR
-#define NOMETAFILE
+//#define NOMETAFILE
 #define NOSERVICE
 #define NOCOMM
 #define NOHELP
 #define NOPROFILER
 #define NOMCX
-#define NOMINMAX
+//#define NOMINMAX
 #define DOSWIN32
 #define _WIN32_DCOM
 
 #pragma warning(push)
 #pragma warning(disable:4005)
 #include <windows.h>
+#include <atlstr.h>
+#include <atlimage.h>
 #ifndef __BORLANDC__
 #include <windowsx.h>
 #endif

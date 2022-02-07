@@ -1,4 +1,4 @@
-#include "pch_script.h"
+﻿#include "pch_script.h"
 #include "actor.h"
 #include "hudmanager.h"
 #include "Actor_Flags.h"
@@ -670,10 +670,13 @@ BOOL CActor::net_Spawn		(CSE_Abstract* DC)
 	m_bWasHitted = false;
 	m_dwILastUpdateTime		= 0;
 
-	Level().MapManager().AddMapLocation("actor_location", ID());
-	Level().MapManager().AddMapLocation("actor_location_p", ID());
+	{
 
-	m_statistic_manager = xr_new<CActorStatisticMgr>();
+		Level().MapManager().AddMapLocation("actor_location", ID());
+		Level().MapManager().AddMapLocation("actor_location_p", ID());
+
+		m_statistic_manager = xr_new<CActorStatisticMgr>();
+	}
 
 
 	spatial.type |=STYPE_REACTTOSOUND;

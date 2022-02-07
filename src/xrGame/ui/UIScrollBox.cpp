@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "uiscrollbox.h"
 #include "../uicursor.h"
 

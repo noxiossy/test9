@@ -1,4 +1,4 @@
-#ifndef ConsoleRender_included
+﻿#ifndef ConsoleRender_included
 #define ConsoleRender_included
 #pragma once
 

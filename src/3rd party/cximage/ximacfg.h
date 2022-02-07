@@ -1,4 +1,4 @@
-#if !defined(__ximaCFG_h)
+﻿#if !defined(__ximaCFG_h)
 #define __ximaCFG_h
 
 extern "C" void*	cxalloc(size_t size);

@@ -1,4 +1,4 @@
-#include "stdafx.h"
+п»ї#include "stdafx.h"
 #include "HUDManager.h"
 #include "hudtarget.h"
 #include "actor.h"
@@ -244,7 +244,7 @@ void   CHUDManager::RenderActiveItemUI()
 }
 
 extern ENGINE_API BOOL bShowPauseString;
-//отрисовка элементов интерфейса
+//РѕС‚СЂРёСЃРѕРІРєР° СЌР»РµРјРµРЅС‚РѕРІ РёРЅС‚РµСЂС„РµР№СЃР°
 void  CHUDManager::RenderUI()
 {
     if (!psHUD_Flags.is(HUD_DRAW_RT2))

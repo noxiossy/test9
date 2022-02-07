@@ -1,15 +1,14 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #pragma hdrstop
 
 #pragma warning(disable:4995)
-#include <d3dx9.h>
+#include <d3dx/d3dx9.h>
 #ifndef _EDITOR
-#pragma comment( lib, "d3dx9.lib"		)
 #include "../../xrEngine/render.h"
 #endif
 #pragma warning(default:4995)
 
-#include <D3DX10Core.h>
+#include <d3dx/D3DX10Core.h>
 
 #include "../xrRender/ResourceManager.h"
 #include "../xrRender/tss.h"
@@ -58,8 +57,8 @@ void fix_texture_name(LPSTR fn);
 template <class T>
 BOOL	reclaim		(xr_vector<T*>& vec, const T* ptr)
 {
-	xr_vector<T*>::iterator it	= vec.begin	();
-	xr_vector<T*>::iterator end	= vec.end	();
+	typename xr_vector<T*>::iterator it	= vec.begin	();
+	typename xr_vector<T*>::iterator end	= vec.end	();
 	for (; it!=end; it++)
 		if (*it == ptr)	{ vec.erase	(it); return TRUE; }
 		return FALSE;

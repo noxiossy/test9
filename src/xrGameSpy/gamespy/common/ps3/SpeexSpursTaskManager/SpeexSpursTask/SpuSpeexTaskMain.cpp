@@ -1,4 +1,4 @@
-// Copyright 2007 GameSpy Industries, Inc
+﻿// Copyright 2007 GameSpy Industries, Inc
 // 
 // Speex SPURS Task 
 // Encode supported

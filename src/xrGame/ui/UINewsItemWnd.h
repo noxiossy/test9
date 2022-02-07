@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "UIWindow.h"
 #include "xrUIXmlParser.h"

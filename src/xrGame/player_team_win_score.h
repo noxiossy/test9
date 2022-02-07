@@ -1,4 +1,4 @@
-#ifndef PLAYER_TEAM_WIN_SCORE_INCLUDED
+﻿#ifndef PLAYER_TEAM_WIN_SCORE_INCLUDED
 #define PLAYER_TEAM_WIN_SCORE_INCLUDED
 
 #include "player_state_param.h"

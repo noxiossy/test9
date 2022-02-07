@@ -1,4 +1,4 @@
-#ifndef DetailModelH
+﻿#ifndef DetailModelH
 #define DetailModelH
 #pragma once
 

@@ -1,4 +1,4 @@
-#ifndef LocatorAPI_NotificationsH
+﻿#ifndef LocatorAPI_NotificationsH
 #define LocatorAPI_NotificationsH
 #pragma once
 

@@ -1,4 +1,4 @@
-// -- cool defines --------------------------------------------------
+﻿// -- cool defines --------------------------------------------------
 #define _MANOWAR_SUPER_PROGRAMMER_
 #define _TOP_SECRET_
 #define _COOL_

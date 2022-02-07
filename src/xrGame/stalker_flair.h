@@ -1,4 +1,4 @@
-#ifndef STALKER_FLAIR_INCLUDED
+﻿#ifndef STALKER_FLAIR_INCLUDED
 #define STALKER_FLAIR_INCLUDED
 
 #include "player_state_param.h"

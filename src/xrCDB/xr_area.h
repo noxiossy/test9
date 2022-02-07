@@ -1,4 +1,4 @@
-#ifndef __XR_AREA_H__
+﻿#ifndef __XR_AREA_H__
 #define __XR_AREA_H__
 
 //#include "xr_collide_form.h"

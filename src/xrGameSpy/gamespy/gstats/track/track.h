@@ -1,4 +1,4 @@
-// track.h : main header file for the TRACK application
+﻿// track.h : main header file for the TRACK application
 //
 
 #if !defined(AFX_TRACK_H__0DF04935_1FD6_4741_AEC5_5A40455C0C7F__INCLUDED_)

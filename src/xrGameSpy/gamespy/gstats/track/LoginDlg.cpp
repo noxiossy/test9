@@ -1,4 +1,4 @@
-// LoginDlg.cpp : implementation file
+﻿// LoginDlg.cpp : implementation file
 //
 
 #include "stdafx.h"

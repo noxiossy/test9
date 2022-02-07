@@ -1,4 +1,4 @@
-// PeerLobby.h : main header file for the PEERLOBBY application
+﻿// PeerLobby.h : main header file for the PEERLOBBY application
 //
 
 #if !defined(AFX_PEERLOBBY_H__A167413C_51DD_4C60_BA40_97CCA3876DDB__INCLUDED_)

@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "UIPdaWnd.h"
 #include "../Pda.h"
 
@@ -79,6 +79,8 @@ void CUIPdaWnd::Init()
 	pUITaskWnd					= xr_new<CUITaskWnd>();
 	pUITaskWnd->hint_wnd		= m_hint_wnd;
 	pUITaskWnd->Init			();
+
+//-		pUIFactionWarWnd->Init			();
 
 	pUIRankingWnd					= xr_new<CUIRankingWnd>();
 	pUIRankingWnd->Init				();

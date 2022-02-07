@@ -1,4 +1,4 @@
-#ifndef sh_atomicH
+﻿#ifndef sh_atomicH
 #define sh_atomicH
 #pragma once
 #include "../../xrCore/xr_resource.h"

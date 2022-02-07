@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "IKLimb.h"
 
 #include <boost/noncopyable.hpp>

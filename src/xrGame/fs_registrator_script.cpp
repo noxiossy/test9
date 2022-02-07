@@ -1,4 +1,4 @@
-#include "pch_script.h"
+﻿#include "pch_script.h"
 #include "fs_registrator.h"
 #include "../xrcore/LocatorApi.h"
 

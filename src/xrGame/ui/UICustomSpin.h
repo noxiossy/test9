@@ -1,4 +1,4 @@
-// file:		CCustomSpin.h
+﻿// file:		CCustomSpin.h
 // description:	base class for CSpinNum & CSpinText
 // created:		15.06.2005
 // author:		Serge Vynnychenko

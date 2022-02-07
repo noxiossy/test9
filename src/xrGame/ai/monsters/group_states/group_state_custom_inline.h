@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "../states/state_custom_action.h"
 

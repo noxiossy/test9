@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "../states/monster_state_rest_sleep.h"
 #include "../states/state_move_to_restrictor.h"

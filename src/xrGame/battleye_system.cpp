@@ -1,4 +1,4 @@
-// battleye_system.cpp
+﻿// battleye_system.cpp
 // BattlEyeSystem class implementation
 
 #include "stdafx.h"

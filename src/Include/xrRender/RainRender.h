@@ -1,4 +1,4 @@
-#ifndef RainRender_included
+﻿#ifndef RainRender_included
 #define RainRender_included
 #pragma once
 

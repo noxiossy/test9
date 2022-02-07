@@ -1,5 +1,5 @@
-// EffectorZoomInertion.cpp: инерция(покачивания) оружия в режиме
-//							 приближения
+п»ї// EffectorZoomInertion.cpp: РёРЅРµСЂС†РёСЏ(РїРѕРєР°С‡РёРІР°РЅРёСЏ) РѕСЂСѓР¶РёСЏ РІ СЂРµР¶РёРјРµ
+//							 РїСЂРёР±Р»РёР¶РµРЅРёСЏ
 //////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
@@ -72,8 +72,8 @@ void CEffectorZoomInertion::SetParams	(float disp)
 	if(m_fFloatSpeed<m_fSpeedMin) 
 		m_fFloatSpeed = m_fSpeedMin;
 
-	//для того, чтоб сразу прошел пересчет направления
-	//движения прицела
+	//РґР»СЏ С‚РѕРіРѕ, С‡С‚РѕР± СЃСЂР°Р·Сѓ РїСЂРѕС€РµР» РїРµСЂРµСЃС‡РµС‚ РЅР°РїСЂР°РІР»РµРЅРёСЏ
+	//РґРІРёР¶РµРЅРёСЏ РїСЂРёС†РµР»Р°
 	if(!fis_zero(old_disp-m_fDispRadius,EPS))
 		m_fEpsilon = 2*m_fDispRadius;
 }
@@ -94,7 +94,7 @@ BOOL CEffectorZoomInertion::ProcessCam(SCamEffectorInfo& info)
 {
 	bool camera_moved = false;
 
-	//определяем двигал ли прицелом актер
+	//РѕРїСЂРµРґРµР»СЏРµРј РґРІРёРіР°Р» Р»Рё РїСЂРёС†РµР»РѕРј Р°РєС‚РµСЂ
 	if(!info.d.similar(m_vOldCameraDir, m_fCameraMoveEpsilon))
 		camera_moved = true;
 

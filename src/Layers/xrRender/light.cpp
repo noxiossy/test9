@@ -1,4 +1,4 @@
-#include "StdAfx.h"
+ï»¿#include "StdAfx.h"
 #include "light.h"
 
 static const float	SQRT2		=	1.4142135623730950488016887242097f;
@@ -28,7 +28,7 @@ light::light		(void)	: ISpatial(g_SpatialSpace)
 	frame_render	= 0;
 
 #if (RENDER==R_R2) || (RENDER==R_R3) || (RENDER==R_R4)
-	virtual_size = .1f; // Ray Twitty (aka Shadows): ïî óìîë÷àíèþ íàäî 0.1, ÷òîáû íå ïðèøëîñü âûçûâàòü äëÿ êàæäîãî ëàéòà óñòàíîâêó âèðòóàëüíîãî ðàçìåðà
+	virtual_size = .1f; // Ray Twitty (aka Shadows): Ð¿Ð¾ ÑƒÐ¼Ð¾Ð»Ñ‡Ð°Ð½Ð¸ÑŽ Ð½Ð°Ð´Ð¾ 0.1, Ñ‡Ñ‚Ð¾Ð±Ñ‹ Ð½Ðµ Ð¿Ñ€Ð¸ÑˆÐ»Ð¾ÑÑŒ Ð²Ñ‹Ð·Ñ‹Ð²Ð°Ñ‚ÑŒ Ð´Ð»Ñ ÐºÐ°Ð¶Ð´Ð¾Ð³Ð¾ Ð»Ð°Ð¹Ñ‚Ð° ÑƒÑÑ‚Ð°Ð½Ð¾Ð²ÐºÑƒ Ð²Ð¸Ñ€Ñ‚ÑƒÐ°Ð»ÑŒÐ½Ð¾Ð³Ð¾ Ñ€Ð°Ð·Ð¼ÐµÑ€Ð°
 	ZeroMemory		(omnipart,sizeof(omnipart));
 	s_spot			= NULL;
 	s_point			= NULL;
@@ -288,7 +288,7 @@ void	light::xform_calc			()
 static	Fvector cmNorm[6]	= {{0.f,1.f,0.f}, {0.f,1.f,0.f}, {0.f,0.f,-1.f},{0.f,0.f,1.f}, {0.f,1.f,0.f}, {0.f,1.f,0.f}};
 static	Fvector cmDir[6]	= {{1.f,0.f,0.f}, {-1.f,0.f,0.f},{0.f,1.f,0.f}, {0.f,-1.f,0.f},{0.f,0.f,1.f}, {0.f,0.f,-1.f}};
 
-void	light::export		(light_Package& package)
+void	light::export_to		(light_Package& package)
 {
 	if (flags.bShadow)			{
 		switch (flags.type)	{
@@ -307,7 +307,7 @@ void	light::export		(light_Package& package)
 						L->set_cone			(PI_DIV_2);
 						L->set_range		(range);
 
-						L->set_virtual_size(virtual_size);
+						L->set_virtual_size	(virtual_size);
 						L->set_color		(color);
 						L->spatial.sector	= spatial.sector;	//. dangerous?
 						L->s_spot			= s_spot	;

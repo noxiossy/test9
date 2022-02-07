@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "../monster_state_manager.h"
 
 class CChimera;

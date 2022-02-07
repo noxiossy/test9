@@ -1,4 +1,4 @@
-#ifndef	dx10SamplerStateCache_included
+﻿#ifndef	dx10SamplerStateCache_included
 #define	dx10SamplerStateCache_included
 #pragma once
 

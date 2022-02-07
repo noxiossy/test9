@@ -1,4 +1,4 @@
-// Blender_default_aref.cpp: implementation of the CBlender_default_aref class.
+﻿// Blender_default_aref.cpp: implementation of the CBlender_default_aref class.
 //
 //////////////////////////////////////////////////////////////////////
 

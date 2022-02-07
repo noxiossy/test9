@@ -1,4 +1,4 @@
-// TalkDlg.cpp : implementation file
+﻿// TalkDlg.cpp : implementation file
 //
 
 #include "stdafx.h"

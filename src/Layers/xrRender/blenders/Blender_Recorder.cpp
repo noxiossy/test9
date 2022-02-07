@@ -1,4 +1,4 @@
-// Blender_Recorder.cpp: implementation of the CBlender_Compile class.
+﻿// Blender_Recorder.cpp: implementation of the CBlender_Compile class.
 //
 //////////////////////////////////////////////////////////////////////
 

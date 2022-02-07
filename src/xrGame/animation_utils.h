@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 class CBoneInstance;
 class IKinematics;
 struct anim_bone_fix

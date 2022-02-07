@@ -1,4 +1,4 @@
-#ifndef __X_RAY_H__
+﻿#ifndef __X_RAY_H__
 #define __X_RAY_H__
 
 // refs

@@ -1,4 +1,4 @@
-// Portal.h: interface for the CPortal class.
+﻿// Portal.h: interface for the CPortal class.
 //
 //////////////////////////////////////////////////////////////////////
 

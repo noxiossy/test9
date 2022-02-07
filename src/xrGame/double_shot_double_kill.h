@@ -1,4 +1,4 @@
-#ifndef DOUBLE_SHOT_DOUBLE_KILL_INCLUDED
+﻿#ifndef DOUBLE_SHOT_DOUBLE_KILL_INCLUDED
 #define DOUBLE_SHOT_DOUBLE_KILL_INCLUDED
 
 #include "player_state_param.h"

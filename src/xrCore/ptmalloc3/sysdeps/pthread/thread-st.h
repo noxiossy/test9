@@ -1,4 +1,4 @@
-/*
+﻿/*
  * $Id: thread-st.h$
  * pthread version
  * by Wolfram Gloger 2004

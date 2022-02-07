@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 
 // monster base sound types

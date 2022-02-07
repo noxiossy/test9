@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "../../xrEngine/igame_persistent.h"
 #include "../../xrEngine/environment.h"
 
@@ -1085,7 +1085,7 @@ void CRenderTarget::accum_direct_volumetric	(u32 sub_phase, const u32 Offset, co
 
 	if (!need_to_render_sunshafts())
 		return;
-
+	
 	//	Test. draw only for near part
 //	if (sub_phase!=SE_SUN_N/EAR) return;
 //	if (sub_phase!=SE_SUN_FAR) return;

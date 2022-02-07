@@ -1,4 +1,4 @@
-#ifndef ObjectSpaceRender_included
+﻿#ifndef ObjectSpaceRender_included
 #define ObjectSpaceRender_included
 #pragma once
 

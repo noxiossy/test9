@@ -1,4 +1,4 @@
-// Do NOT build this file seperately. It is included in dTriList.cpp automatically.
+﻿// Do NOT build this file seperately. It is included in dTriList.cpp automatically.
 
 
 #include "../../xrEngine/cl_intersect.h"

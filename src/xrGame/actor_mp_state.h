@@ -1,4 +1,4 @@
-#ifndef ACTOR_MP_STATE_H
+﻿#ifndef ACTOR_MP_STATE_H
 #define ACTOR_MP_STATE_H
 
 //#define USE_DIFFERENCES

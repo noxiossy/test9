@@ -1,4 +1,4 @@
-#ifndef SCREENSHOTS_COMMON_INCLUDED
+﻿#ifndef SCREENSHOTS_COMMON_INCLUDED
 #define SCREENSHOTS_COMMON_INCLUDED
 
 #include "../3rd party/crypto/crypto.h"

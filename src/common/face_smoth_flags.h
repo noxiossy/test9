@@ -1,4 +1,4 @@
-#ifndef	_FACE_SMOTH_FLAGS_H_
+﻿#ifndef	_FACE_SMOTH_FLAGS_H_
 #define	_FACE_SMOTH_FLAGS_H_
 enum
 {

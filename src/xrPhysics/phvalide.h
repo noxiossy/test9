@@ -1,4 +1,4 @@
-#pragma	once
+﻿#pragma	once
 
 
 XRPHYSICS_API bool			valid_pos( const Fvector &P );

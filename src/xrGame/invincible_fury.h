@@ -1,4 +1,4 @@
-#ifndef INVINCIBLE_FURY_INCLUDED
+﻿#ifndef INVINCIBLE_FURY_INCLUDED
 #define INVINCIBLE_FURY_INCLUDED
 
 #include "obsolete_queue.h"

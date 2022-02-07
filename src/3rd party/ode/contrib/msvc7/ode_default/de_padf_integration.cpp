@@ -1,4 +1,4 @@
-#include <ode/common.h>
+﻿#include <ode/common.h>
 
 void emptyAddForces(dxJoint *joint)
 {

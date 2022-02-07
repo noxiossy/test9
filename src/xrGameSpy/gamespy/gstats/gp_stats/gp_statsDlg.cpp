@@ -1,4 +1,4 @@
-// gp_statsDlg.cpp : implementation file
+﻿// gp_statsDlg.cpp : implementation file
 //
 
 #include "stdafx.h"

@@ -1,4 +1,4 @@
-#ifndef LOGIN_MANAGER
+﻿#ifndef LOGIN_MANAGER
 #define LOGIN_MANAGER
 
 

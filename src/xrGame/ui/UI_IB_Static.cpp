@@ -1,4 +1,4 @@
-// File:		UI_IB_Static.h
+﻿// File:		UI_IB_Static.h
 // Description:	Inheritance of UIInteractiveBackground template class with some
 //				CUIStatic features
 // Created:		09.02.2005

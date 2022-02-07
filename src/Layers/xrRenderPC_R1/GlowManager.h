@@ -1,4 +1,4 @@
-// GlowManager.h: interface for the CGlowManager class.
+﻿// GlowManager.h: interface for the CGlowManager class.
 //
 //////////////////////////////////////////////////////////////////////
 

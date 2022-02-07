@@ -1,4 +1,4 @@
-// gt2testDlg.h : header file
+﻿// gt2testDlg.h : header file
 //
 
 #if !defined(AFX_GT2TESTDLG_H__0E64F324_FFA4_4A94_A87D_75652134DC2D__INCLUDED_)

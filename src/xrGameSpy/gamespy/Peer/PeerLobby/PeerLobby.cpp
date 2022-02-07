@@ -1,4 +1,4 @@
-// PeerLobby.cpp : Defines the class behaviors for the application.
+﻿// PeerLobby.cpp : Defines the class behaviors for the application.
 //
 
 #include "stdafx.h"

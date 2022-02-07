@@ -1,4 +1,4 @@
-#ifndef SINGLETON_INCLUDED
+﻿#ifndef SINGLETON_INCLUDED
 #define SINGLETON_INCLUDED
 
 template <class C>

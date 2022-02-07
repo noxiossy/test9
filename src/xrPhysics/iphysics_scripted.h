@@ -1,4 +1,4 @@
-#ifndef	_IPHYSICS_SCRIPTED_
+﻿#ifndef	_IPHYSICS_SCRIPTED_
 #define	_IPHYSICS_SCRIPTED_
 
 #pragma once

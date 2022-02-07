@@ -1,4 +1,4 @@
-#ifndef DefinesH
+﻿#ifndef DefinesH
 #define DefinesH
 
 #ifdef DEBUG

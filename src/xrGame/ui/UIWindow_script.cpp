@@ -1,4 +1,4 @@
-#include "pch_script.h"
+п»ї#include "pch_script.h"
 #include "UIWindow.h"
 #include "UIFrameWindow.h"
 #include "UIFrameLineWnd.h"
@@ -24,7 +24,7 @@ CGameFont* GetFontMedium()
 {return mngr().pFontMedium;}
 CGameFont* GetFontDI()
 {return mngr().pFontDI;}
-//шрифты для интерфейса
+//С€СЂРёС„С‚С‹ РґР»СЏ РёРЅС‚РµСЂС„РµР№СЃР°
 CGameFont* GetFontGraffiti19Russian()
 {return mngr().pFontGraffiti19Russian;}
 CGameFont* GetFontGraffiti22Russian()
@@ -189,8 +189,6 @@ void CUIWindow::script_register(lua_State *L)
 				value("WINDOW_KEY_RELEASED",			int(WINDOW_KEY_RELEASED)),
 				value("WINDOW_KEYBOARD_CAPTURE_LOST",	int(WINDOW_KEYBOARD_CAPTURE_LOST)),
 
-				// CUITradeWnd
-				//value("TRADE_WND_CLOSED", int(TRADE_WND_CLOSED)),
 
 	// CUIButton
 				value("BUTTON_CLICKED",					int(BUTTON_CLICKED)),

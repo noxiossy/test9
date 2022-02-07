@@ -1,4 +1,4 @@
-#ifndef _CHATCRYPT_H_
+﻿#ifndef _CHATCRYPT_H_
 #define _CHATCRYPT_H_
 #ifdef __cplusplus
 extern "C" {

@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "uizonemap.h"
 
 #include "InfoPortion.h"
@@ -34,42 +34,75 @@ CUIZoneMap::~CUIZoneMap()
 void CUIZoneMap::Init()
 {
 	CUIXml uiXml;
-	uiXml.Load(CONFIG_PATH, UI_PATH, "zone_map.xml");
+	uiXml.Load						(CONFIG_PATH, UI_PATH, "zone_map.xml");
 
-	CUIXmlInit					xml_init;
-	xml_init.InitStatic(uiXml, "minimap:background", 0, &m_background);
-	xml_init.InitWindow(uiXml, "minimap:level_frame", 0, &m_clipFrame);
-	xml_init.InitStatic(uiXml, "minimap:center", 0, &m_center);
+	CUIXmlInit						xml_init;
+	xml_init.InitStatic				(uiXml, "minimap:background",	0, &m_background);
+	xml_init.InitWindow				(uiXml, "minimap:level_frame",	0, &m_clipFrame);
+	xml_init.InitStatic				(uiXml, "minimap:center",		0, &m_center);
+	
+	m_clock_wnd						= UIHelper::CreateStatic(uiXml, "minimap:clock_wnd", &m_background);
 
-	m_clock_wnd = UIHelper::CreateStatic(uiXml, "minimap:clock_wnd", &m_background);
+	m_activeMap						= xr_new<CUIMiniMap>();
+	m_clipFrame.AttachChild			(m_activeMap);
+	m_activeMap->SetAutoDelete		(true);
 
-	m_activeMap = xr_new<CUIMiniMap>();
-	m_clipFrame.AttachChild(m_activeMap);
-	m_activeMap->SetAutoDelete(true);
+	m_activeMap->EnableHeading		(true);  
+	xml_init.InitStatic				(uiXml, "minimap:compass", 0, &m_compass);
+	m_background.AttachChild		(&m_compass);
 
-	m_activeMap->EnableHeading(true);
-	xml_init.InitStatic(uiXml, "minimap:compass", 0, &m_compass);
-	m_background.AttachChild(&m_compass);
+	m_clipFrame.AttachChild			(&m_center);
+	m_Counter_text.SetText( "" );
+	visible = true;
 
-	Fvector2 rel_pos = m_compass.GetWndPos();
-	rel_pos.mul(m_background.GetWndSize());
-	m_compass.SetWndPos(rel_pos);
+// SQUARE
+	m_center.SetWndPos(Fvector2().set(m_clipFrame.GetWidth() / 2.0f, m_clipFrame.GetHeight() / 2.0f));
+/*
+	Fvector2 sz_k				= m_clipFrame.GetWndSize();
+	Fvector2 sz					= sz_k;
+	{
+		float k = UI().get_current_kx();
 
-	rel_pos = m_clock_wnd->GetWndPos();
-	rel_pos.mul(m_background.GetWndSize());
-	m_clock_wnd->SetWndPos(rel_pos);
+		sz.y					*= UI_BASE_HEIGHT*k;
+		sz.x					= sz.y / k;
+
+		m_clipFrame.SetWndSize	(sz);
+		
+		Fvector2 p				= m_clipFrame.GetWndPos();
+		p.mul					(UI_BASE_HEIGHT);
+		m_clipFrame.SetWndPos	(p);
+		
+		m_background.SetHeight	(m_background.GetHeight() * UI_BASE_HEIGHT);
+		m_background.SetWidth	(m_background.GetHeight() * k);
+	}
+
+	Fvector2				map_center;
+	m_clipFrame.GetWndRect().getcenter(map_center);
+	m_background.SetWndPos	(map_center);
+
+	Fvector2 cp;
+	cp.x = m_clipFrame.GetWidth()/2.0f;
+	cp.y = m_clipFrame.GetHeight()/2.0f;
+	m_center.SetWndPos		(cp);
+*/
+	Fvector2 rel_pos		= m_compass.GetWndPos();
+	rel_pos.mul				(m_background.GetWndSize());
+	m_compass.SetWndPos		(rel_pos);
+
+	rel_pos					= m_clock_wnd->GetWndPos();
+	rel_pos.mul				(m_background.GetWndSize());
+	m_clock_wnd->SetWndPos	(rel_pos);
 
 	xml_init.InitStatic			(uiXml, "minimap:static_counter", 0, &m_Counter);
 	m_background.AttachChild	(&m_Counter);
 	xml_init.InitTextWnd		(uiXml, "minimap:static_counter:text_static", 0, &m_Counter_text);
 	m_Counter.AttachChild		(&m_Counter_text);
 
-
-	m_clipFrame.AttachChild(&m_center);
-	m_center.SetWndPos(Fvector2().set(m_clipFrame.GetWidth() / 2.0f, m_clipFrame.GetHeight() / 2.0f));
-
-	m_Counter_text.SetText("");
-	visible = true;
+/*
+	rel_pos						= m_Counter.GetWndPos();
+	rel_pos.mul					(m_background.GetWndSize());
+	m_Counter.SetWndPos			(rel_pos);
+*/
 }
 
 void CUIZoneMap::Render			()
@@ -87,7 +120,7 @@ void CUIZoneMap::Update()
 	CActor* pActor = smart_cast<CActor*>( Level().CurrentViewEntity() );
 	if ( !pActor ) return;
 
-	if (!( Device.dwFrame % 20 ))
+	if ( !( Device.dwFrame % 20 )  )
 	{
 		string16	text_str;
 		xr_strcpy( text_str, sizeof(text_str), "" );

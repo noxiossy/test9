@@ -1,4 +1,4 @@
-#ifndef SPU_TASK_C_INTERFACE_H
+﻿#ifndef SPU_TASK_C_INTERFACE_H
 #define SPU_TASK_C_INTERFACE_H
 
 //#include <speex.h>

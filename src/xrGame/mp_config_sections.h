@@ -1,4 +1,4 @@
-#ifndef MP_CONFIG_SECTIONS_INCLUDED
+﻿#ifndef MP_CONFIG_SECTIONS_INCLUDED
 #define MP_CONFIG_SECTIONS_INCLUDED
 
 #include "../xrCore/xr_ini.h"

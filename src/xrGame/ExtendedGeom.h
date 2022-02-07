@@ -1,4 +1,4 @@
-#ifndef EXTENDED_GEOM
+﻿#ifndef EXTENDED_GEOM
 #define EXTENDED_GEOM
 #include "PHObject.h"
 #include "ode_include.h"

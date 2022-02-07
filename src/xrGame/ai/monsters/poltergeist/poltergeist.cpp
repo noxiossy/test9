@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "poltergeist.h"
 #include "poltergeist_state_manager.h"
 #include "../../../characterphysicssupport.h"
@@ -351,7 +351,7 @@ BOOL CPoltergeist::net_Spawn (CSE_Abstract* DC)
 	VERIFY(character_physics_support());
 	VERIFY(character_physics_support()->movement());
 	character_physics_support()->movement()->DestroyCharacter();
-	// ñïàóíèòñÿ íèâèäèìûì
+	// спаунится нивидимым
 	setVisible		(false);
 	ability()->on_hide();
 	

@@ -1,4 +1,4 @@
-#ifndef DTROCOLLIDERH
+﻿#ifndef DTROCOLLIDERH
 #define DTROCOLLIDERH
 
 #include "dTriBox.h"

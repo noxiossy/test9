@@ -1,4 +1,4 @@
-#ifndef BLOCK_ALLOCATOR_H
+﻿#ifndef BLOCK_ALLOCATOR_H
 #define BLOCK_ALLOCATOR_H
 template<class T,u32 block_size>
 class CBlockAllocator

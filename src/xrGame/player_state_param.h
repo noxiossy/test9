@@ -1,4 +1,4 @@
-#ifndef PLAYER_STATE_PARAM_INCLUDED
+﻿#ifndef PLAYER_STATE_PARAM_INCLUDED
 #define PLAYER_STATE_PARAM_INCLUDED
 
 #include "game_events_handler.h"

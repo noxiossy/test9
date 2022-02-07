@@ -1,4 +1,4 @@
-#ifndef _SB_INTERNAL_H_
+﻿#ifndef _SB_INTERNAL_H_
 #define _SB_INTERNAL_H_
 
 

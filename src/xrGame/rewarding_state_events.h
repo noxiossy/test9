@@ -1,4 +1,4 @@
-#ifndef REWARDING_EVENTS_INCLUDED
+﻿#ifndef REWARDING_EVENTS_INCLUDED
 #define REWARDING_EVENTS_INCLUDED
 
 #include "event_conditions_collection.h"

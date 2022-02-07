@@ -1,4 +1,4 @@
-#ifndef xrSASH_included
+﻿#ifndef xrSASH_included
 #define xrSASH_included
 #pragma once
 

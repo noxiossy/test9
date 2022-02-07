@@ -1,4 +1,4 @@
-#ifndef	dxPixEventWrapper_included
+﻿#ifndef	dxPixEventWrapper_included
 #define	dxPixEventWrapper_included
 #pragma once
 

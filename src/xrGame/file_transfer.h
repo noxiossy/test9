@@ -1,4 +1,4 @@
-#ifndef FILETRANSFER
+﻿#ifndef FILETRANSFER
 #define FILETRANSFER
 
 #include "associative_vector.h"

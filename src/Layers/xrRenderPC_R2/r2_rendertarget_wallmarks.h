@@ -1,1 +1,1 @@
-void						phase_wallmarks			();
+﻿void						phase_wallmarks			();

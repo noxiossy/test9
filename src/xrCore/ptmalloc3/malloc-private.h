@@ -1,4 +1,4 @@
-/*
+﻿/*
   $Id: malloc-private.h,v 1.4 2006/03/31 12:56:52 wg Exp $
   Private header file for ptmalloc3, created by Wolfram Gloger
   and released to the public domain, as explained at

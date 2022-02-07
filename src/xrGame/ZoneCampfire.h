@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "MosquitoBald.h"
 
 class CZoneCampfire :public CMosquitoBald

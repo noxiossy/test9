@@ -1,4 +1,4 @@
-#ifndef AFX_STDAFX_H__
+﻿#ifndef AFX_STDAFX_H__
 #define AFX_STDAFX_H__
 
 #if _MSC_VER > 1000

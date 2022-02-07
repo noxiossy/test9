@@ -1,4 +1,4 @@
-#ifndef r_constants_cacheH
+﻿#ifndef r_constants_cacheH
 #define r_constants_cacheH
 #pragma once
 

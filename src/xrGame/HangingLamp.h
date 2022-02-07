@@ -1,4 +1,4 @@
-// DummyObject.h: interface for the CHangingLamp class.
+﻿// DummyObject.h: interface for the CHangingLamp class.
 //
 //////////////////////////////////////////////////////////////////////
 

@@ -1,4 +1,4 @@
-// ConnectPage.cpp : implementation file
+﻿// ConnectPage.cpp : implementation file
 //
 
 #include "stdafx.h"

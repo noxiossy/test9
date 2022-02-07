@@ -1,4 +1,4 @@
-// ScRaceSample.cpp : Defines the class behaviors for the application.
+﻿// ScRaceSample.cpp : Defines the class behaviors for the application.
 //
 
 #include "stdafx.h"

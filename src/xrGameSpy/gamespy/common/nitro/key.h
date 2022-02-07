@@ -1,4 +1,4 @@
-#ifndef _KEY_H_
+﻿#ifndef _KEY_H_
 #define _KEY_H_
 
 // Key input information

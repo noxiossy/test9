@@ -1,4 +1,4 @@
-#include "stdafx.h"
+ï»¿#include "stdafx.h"
 #pragma once
 
 #include "Rain.h"
@@ -74,7 +74,7 @@ void CEffect_Rain::Born(Item& dest, float radius)
 {
     Fvector axis;
     axis.set(0, -1, 0);
-	float gust = g_pGamePersistent->Environment().wind_strength_factor / 10.f;
+    float gust = g_pGamePersistent->Environment().wind_strength_factor / 10.f;
     float k = g_pGamePersistent->Environment().CurrentEnv->wind_velocity*gust / drop_max_wind_vel;
     clamp(k, 0.f, 1.f);
     float pitch = drop_max_angle*k - PI_DIV_2;
@@ -132,10 +132,6 @@ void CEffect_Rain::OnFrame()
     if (!g_pGameLevel) return;
 #endif
 
-#ifdef DEDICATED_SERVER
-    return;
-#endif
-
     // Parse states
     float factor = g_pGamePersistent->Environment().CurrentEnv->rain_density;
     static float hemi_factor = 0.f;
@@ -161,8 +157,8 @@ void CEffect_Rain::OnFrame()
     switch (state)
     {
     case stIdle:
-		if (factor < EPS_L) return;
-		state = stWorking;
+        if (factor < EPS_L) return;
+        state = stWorking;
         snd_Ambient.play(0, sm_Looped);
         snd_Ambient.set_position(Fvector().set(0, 0, 0));
         snd_Ambient.set_range(source_offset, source_offset*2.f);
@@ -237,7 +233,7 @@ void CEffect_Rain::Render()
     if (one.dwTime_Hit<Device.dwTimeGlobal) Hit (one.Phit);
     if (one.dwTime_Life<Device.dwTimeGlobal) Born(one,source_radius);
 
-    // ïîñëåäíÿÿ äåëüòà ??
+    // Ð¿Ð¾ÑÐ»ÐµÐ´Ð½ÑÑ Ð´ÐµÐ»ÑŒÑ‚Ð° ??
     //. float xdt = float(one.dwTime_Hit-Device.dwTimeGlobal)/1000.f;
     //. float dt = Device.fTimeDelta;//xdt<Device.fTimeDelta?xdt:Device.fTimeDelta;
     float dt = Device.fTimeDelta;

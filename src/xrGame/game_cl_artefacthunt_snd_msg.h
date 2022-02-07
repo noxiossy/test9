@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 enum {
 	ID_NEW_AF  = 300,

@@ -1,4 +1,4 @@
-#ifndef MONSTER_STATE_ATTACK_ON_RUN_H
+﻿#ifndef MONSTER_STATE_ATTACK_ON_RUN_H
 #define MONSTER_STATE_ATTACK_ON_RUN_H
 
 #include "../state.h"

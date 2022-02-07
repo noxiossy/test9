@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #ifndef CPHOBJECT
 #define CPHOBJECT
 #include "../xrEngine/ispatial.h"

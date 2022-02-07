@@ -1,4 +1,4 @@
-// NET_Compressor.cpp: implementation of the NET_Compressor class.
+﻿// NET_Compressor.cpp: implementation of the NET_Compressor class.
 //
 //////////////////////////////////////////////////////////////////////
 #include "stdafx.h"

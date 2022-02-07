@@ -1,6 +1,4 @@
-#include "stdafx.h"
-#pragma hdrstop
-
+﻿#include "stdafx.h"
 #include "cpuid.h"
 
 /***
@@ -16,7 +14,7 @@
 *   Returns int with capablity bit set.
 *
 ****************************************************/
-#ifdef _EDITOR
+#ifdef X64
 int _cpuid ( _processor_info *pinfo )
 {
     ZeroMemory(pinfo, sizeof(_processor_info));

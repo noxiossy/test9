@@ -1,4 +1,4 @@
-#ifndef TRAJECTORIES_H
+﻿#ifndef TRAJECTORIES_H
 #define TRAJECTORIES_H
 
 struct trajectory_pick

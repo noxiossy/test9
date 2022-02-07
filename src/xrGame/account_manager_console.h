@@ -1,4 +1,4 @@
-#ifndef ACCOUNT_MANAGER_CONSOLE
+﻿#ifndef ACCOUNT_MANAGER_CONSOLE
 #define ACCOUNT_MANAGER_CONSOLE
 
 #include "../xrEngine/xr_ioconsole.h"

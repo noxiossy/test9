@@ -1,4 +1,4 @@
-#include "pch_script.h"
+﻿#include "pch_script.h"
 #include "Actor_Flags.h"
 #include "hudmanager.h"
 #ifdef DEBUG
@@ -138,7 +138,7 @@ CActor::CActor() : CEntityAlive(), current_ik_cam_shift(0)
     fPrevCamPos = 0.0f;
     vPrevCamDir.set(0.f, 0.f, 1.f);
     fCurAVelocity = 0.0f;
-    // ýôôåêòîðû
+    // эффекторы
     pCamBobbing = 0;
 
 
@@ -178,7 +178,7 @@ CActor::CActor() : CEntityAlive(), current_ik_cam_shift(0)
     Device.seqRender.Add	(this,REG_PRIORITY_LOW);
 #endif
 
-    //ðàçðåøèòü èñïîëüçîâàíèå ïîÿñà â inventory
+    //разрешить использование пояса в inventory
     inventory().SetBeltUseful(true);
 
     m_pPersonWeLookingAt = NULL;
@@ -437,7 +437,7 @@ void CActor::Load(LPCSTR section)
     // sheduler
     shedule.t_min = shedule.t_max = 1;
 
-    // íàñòðîéêè äèñïåðñèè ñòðåëüáû
+    // настройки дисперсии стрельбы
     m_fDispBase = pSettings->r_float(section, "disp_base");
     m_fDispBase = deg2rad(m_fDispBase);
 
@@ -571,6 +571,8 @@ void	CActor::Hit(SHit* pHDS)
             HitMark(HDS.damage(), HDS.dir, HDS.who, HDS.bone(), HDS.p_in_bone_space, HDS.impulse, HDS.hit_type);
     }
 
+
+
         if (GodMode())
         {
             HDS.power = 0.0f;
@@ -617,22 +619,6 @@ void	CActor::Hit(SHit* pHDS)
             }
             inherited::Hit(&HDS);
         }
-
-        /* AVO: rewritten above and added hit callback*/
-        /*float hit_power = HitArtefactsOnBelt(HDS.damage(), HDS.hit_type);
-
-        if (GodMode())
-        {
-        HDS.power = 0.0f;
-        inherited::Hit(&HDS);
-        return;
-        }
-        else
-        {
-        HDS.power = hit_power;
-        HDS.add_wound = true;
-        inherited::Hit(&HDS);
-        }*/
 }
 
 void CActor::HitMark(float P,
@@ -768,12 +754,12 @@ void CActor::Die(CObject* who)
         };
 
 
-        ///!!! ÷èñòêà ïîÿñà
+        ///!!! чистка пояса
         TIItemContainer &l_blist = inventory().m_belt;
         while (!l_blist.empty())
             inventory().Ruck(l_blist.front());
-
     };
+
 
     {
         ::Sound->play_at_pos(sndDie[Random.randI(SND_DIE_COUNT)], this, Position());
@@ -782,7 +768,6 @@ void CActor::Die(CObject* who)
         m_BloodSnd.stop();
         m_DangerSnd.stop();
     }
-
 
 #ifdef FP_DEATH
         cam_Set(eacFirstEye);
@@ -810,7 +795,7 @@ void CActor::Die(CObject* who)
         /* avo: end */
 
         start_tutorial("game_over");
-
+	
     mstate_wishful &= ~mcAnyMove;
     mstate_real &= ~mcAnyMove;
 
@@ -1228,7 +1213,7 @@ void CActor::shedule_Update(u32 DT)
 
     inherited::shedule_Update(DT);
 
-    //ýôôåêòîð âêëþ÷àåìûé ïðè õîäüáå
+    //эффектор включаемый при ходьбе
     if (!pCamBobbing)
     {
         pCamBobbing = xr_new<CEffectorBobbing>();
@@ -1236,7 +1221,7 @@ void CActor::shedule_Update(u32 DT)
     }
     pCamBobbing->SetState(mstate_real, conditions().IsLimping(), IsZoomAimingMode());
 
-    //çâóê òÿæåëîãî äûõàíèÿ ïðè óòàëîñòè è õðîìàíèè
+    //звук тяжелого дыхания при уталости и хромании
     if (this == Level().CurrentControlEntity() )
     {
         if (conditions().IsLimping() && g_Alive() && !psActorFlags.test(AF_GODMODE_RT))
@@ -1304,11 +1289,11 @@ void CActor::shedule_Update(u32 DT)
             m_DangerSnd.stop();
     }
 
-    //åñëè â ðåæèìå HUD, òî ñàìà ìîäåëü àêòåðà íå ðèñóåòñÿ
+    //если в режиме HUD, то сама модель актера не рисуется
     if (!character_physics_support()->IsRemoved())
         setVisible(!HUDview());
 
-    //÷òî àêòåð âèäèò ïåðåä ñîáîé
+    //что актер видит перед собой
     collide::rq_result& RQ = HUD().GetCurrentRayQuery();
 
 
@@ -1383,7 +1368,7 @@ void CActor::shedule_Update(u32 DT)
 
     //	UpdateSleep									();
 
-    //äëÿ ñâîéñò àðòåôàêòîâ, íàõîäÿùèõñÿ íà ïîÿñå
+    //для свойст артефактов, находящихся на поясе
     UpdateArtefactsOnBeltAndOutfit();
     m_pPhysics_support->in_shedule_Update(DT);
     Check_for_AutoPickUp();
@@ -1456,6 +1441,7 @@ void CActor::OnHUDDraw(CCustomHUD*)
     R_ASSERT(IsFocused());
     if (!((mstate_real & mcLookout) && !IsGameTypeSingle()))
         g_player_hud->render_hud();
+
 }
 
 void CActor::RenderIndicator(Fvector dpos, float r1, float r2, const ui_shader &IndShader)
@@ -1870,11 +1856,11 @@ bool CActor::can_attach(const CInventoryItem *inventory_item) const
     if (!item || /*!item->enabled() ||*/ !item->can_be_attached())
         return			(false);
 
-    //ìîæíî ëè ïðèñîåäèíÿòü îáúåêòû òàêîãî òèïà
+    //можно ли присоединять объекты такого типа
     if (m_attach_item_sections.end() == std::find(m_attach_item_sections.begin(), m_attach_item_sections.end(), inventory_item->object().cNameSect()))
         return false;
 
-    //åñëè óæå åñòü ïðèñîåäèííåíûé îáúåò òàêîãî òèïà 
+    //если уже есть присоединненый объет такого типа 
     if (attached(inventory_item->object().cNameSect()))
         return false;
 

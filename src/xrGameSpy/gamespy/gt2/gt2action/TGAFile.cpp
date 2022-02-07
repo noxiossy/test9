@@ -1,4 +1,4 @@
-/*
+﻿/*
 
 	Modified by Chris Losinger for Smaller Animals Software's ImgLib/ImgDLL.
 	Esp. RGB->BGR and row order switches. 9/98

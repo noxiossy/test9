@@ -1,4 +1,4 @@
-#ifndef LocatorAPI_defsH
+﻿#ifndef LocatorAPI_defsH
 #define LocatorAPI_defsH
 
 #pragma once

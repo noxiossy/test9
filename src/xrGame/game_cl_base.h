@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "game_base.h"
 #include "../xrCore/client_id.h"

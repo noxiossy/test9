@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "../BaseMonster/base_monster.h"
 #include "../ai_monster_bones.h"

@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 //#include "weaponrevolver.h"
 #include "WeaponPistol.h"

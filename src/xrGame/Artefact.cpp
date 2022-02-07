@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "artefact.h"
 #include "../xrphysics/PhysicsShell.h"
 #include "PhysicsShellHolder.h"
@@ -114,6 +114,7 @@ void CArtefact::net_Destroy()
 void CArtefact::OnH_A_Chield() 
 {
 	inherited::OnH_A_Chield		();
+
 	StopLights();
 	SwitchAfParticles(false);
 	if(m_detectorObj)
@@ -387,9 +388,10 @@ bool CArtefact::Action(u16 cmd, u32 flags)
 	return inherited::Action(cmd,flags);
 }
 
-void CArtefact::OnStateSwitch(u32 S)
-{
-	inherited::OnStateSwitch	(S);
+void CArtefact::OnStateSwitch(u32 S, u32 oldState)
+{	
+	inherited::OnStateSwitch	(S, oldState);
+	
 	switch(S){
 	case eShowing:
 		{
@@ -397,7 +399,10 @@ void CArtefact::OnStateSwitch(u32 S)
 		}break;
 	case eHiding:
 		{
-			PlayHUDMotion("anm_hide", FALSE, this, S);
+			if (oldState != eHiding)
+			{
+				PlayHUDMotion("anm_hide", FALSE, this, S);
+			}
 		}break;
 	case eActivating:
 		{

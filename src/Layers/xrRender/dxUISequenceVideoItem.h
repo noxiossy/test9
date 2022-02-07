@@ -1,4 +1,4 @@
-#ifndef	dxUISequenceVideoItem_included
+﻿#ifndef	dxUISequenceVideoItem_included
 #define	dxUISequenceVideoItem_included
 #pragma once
 

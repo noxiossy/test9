@@ -1,4 +1,4 @@
-#ifndef	dxThunderboltDescRender_included
+﻿#ifndef	dxThunderboltDescRender_included
 #define	dxThunderboltDescRender_included
 #pragma once
 

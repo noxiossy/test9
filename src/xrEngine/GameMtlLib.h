@@ -1,4 +1,4 @@
-//---------------------------------------------------------------------------
+п»ї//---------------------------------------------------------------------------
 #ifndef GameMtlLibH
 #define GameMtlLibH
 //---------------------------------------------------------------------------
@@ -113,13 +113,13 @@ public:
     float fPHBounceStartVelocity; // ?
     float fPHBouncing; // ?
     // shoot&bounce&visibility&flotation
-    float fFlotationFactor; // 0.f - 1.f (1.f-полностью проходимый)
-    float fShootFactor; // 0.f - 1.f (1.f-полностью простреливаемый)
-    float fShootFactorMP; // 0.f - 1.f (1.f-полностью простреливаемый)
+    float fFlotationFactor; // 0.f - 1.f (1.f-РїРѕР»РЅРѕСЃС‚СЊСЋ РїСЂРѕС…РѕРґРёРјС‹Р№)
+    float fShootFactor; // 0.f - 1.f (1.f-РїРѕР»РЅРѕСЃС‚СЊСЋ РїСЂРѕСЃС‚СЂРµР»РёРІР°РµРјС‹Р№)
+    float fShootFactorMP; // 0.f - 1.f (1.f-РїРѕР»РЅРѕСЃС‚СЊСЋ РїСЂРѕСЃС‚СЂРµР»РёРІР°РµРјС‹Р№)
     float fBounceDamageFactor; // 0.f - 100.f
-    float fInjuriousSpeed; // 0.f - ... (0.f-не отбирает здоровье (скорость уменьшения здоровья))
-    float fVisTransparencyFactor; // 0.f - 1.f (1.f-полностью прозрачный)
-    float fSndOcclusionFactor; // 0.f - 1.f (1.f-полностью слышен)
+    float fInjuriousSpeed; // 0.f - ... (0.f-РЅРµ РѕС‚Р±РёСЂР°РµС‚ Р·РґРѕСЂРѕРІСЊРµ (СЃРєРѕСЂРѕСЃС‚СЊ СѓРјРµРЅСЊС€РµРЅРёСЏ Р·РґРѕСЂРѕРІСЊСЏ))
+    float fVisTransparencyFactor; // 0.f - 1.f (1.f-РїРѕР»РЅРѕСЃС‚СЊСЋ РїСЂРѕР·СЂР°С‡РЅС‹Р№)
+    float fSndOcclusionFactor; // 0.f - 1.f (1.f-РїРѕР»РЅРѕСЃС‚СЊСЋ СЃР»С‹С€РµРЅ)
     float fDensityFactor;
 public:
     SGameMtl()
@@ -355,8 +355,8 @@ public:
 #define GET_RANDOM(a_vector) (a_vector[Random.randI(a_vector.size())])
 
 #define CLONE_MTL_SOUND(_res_, _mtl_pair_, _a_vector_)\
- { VERIFY2(!_mtl_pair_##->_a_vector_.empty(),_mtl_pair_->dbg_Name());\
- _res_.clone(GET_RANDOM(_mtl_pair_##->_a_vector_),st_Effect,sg_SourceType);\
+ { VERIFY2(!_mtl_pair_->_a_vector_.empty(),_mtl_pair_->dbg_Name());\
+ _res_.clone(GET_RANDOM(_mtl_pair_->_a_vector_),st_Effect,sg_SourceType);\
  }
 
 extern MTL_EXPORT_API CGameMtlLibrary GMLib;

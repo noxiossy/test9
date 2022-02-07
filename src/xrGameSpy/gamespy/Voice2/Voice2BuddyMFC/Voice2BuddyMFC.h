@@ -1,4 +1,4 @@
-// Voice2BuddyMFC.h : main header file for the VOICE2BUDDYMFC application
+﻿// Voice2BuddyMFC.h : main header file for the VOICE2BUDDYMFC application
 //
 
 #if !defined(AFX_VOICE2BUDDYMFC_H__B124CD13_D911_4447_AF83_E1503E9147BF__INCLUDED_)

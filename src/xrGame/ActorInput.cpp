@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include <dinput.h>
 #include "Actor.h"
 #include "Torch.h"
@@ -466,7 +466,7 @@ void CActor::ActorUse()
 					TryToTalk();
 				}else
 				{
-					//òîëüêî åñëè íàõîäèìñÿ â ðåæèìå single
+					//только если находимся в режиме single
 					CUIGameSP* pGameSP = smart_cast<CUIGameSP*>(CurrentGameUI());
 					if ( pGameSP )
 					{

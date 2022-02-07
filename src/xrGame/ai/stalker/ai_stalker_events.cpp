@@ -1,4 +1,4 @@
-////////////////////////////////////////////////////////////////////////////
+﻿////////////////////////////////////////////////////////////////////////////
 //	Module 		: ai_stalker_events.cpp
 //	Created 	: 26.02.2003
 //  Modified 	: 26.02.2003
@@ -146,7 +146,7 @@ void CAI_Stalker::feel_touch_new				(CObject* O)
 	// Now, test for game specific logical objects to minimize traffic
 	CInventoryItem		*I	= smart_cast<CInventoryItem*>	(O);
 
-	if (I && I->useful_for_NPC() && can_take(I) && !wounded() && !critically_wounded()) {
+	if (!wounded() && !critically_wounded() && I && I->useful_for_NPC() && can_take(I)) {
 #ifndef SILENCE
 		Msg("Taking item %s (%d)!",I->object().cName().c_str(),I->object().ID());
 #endif

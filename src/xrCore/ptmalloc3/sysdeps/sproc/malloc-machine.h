@@ -1,4 +1,4 @@
-/* Basic platform-independent macro definitions for mutexes,
+﻿/* Basic platform-independent macro definitions for mutexes,
    thread-specific data and parameters for malloc.
    SGI threads (sprocs) version.
    Copyright (C) 2004 Wolfram Gloger <wg@malloc.de>.

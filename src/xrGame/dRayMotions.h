@@ -1,4 +1,4 @@
-#ifndef dRayMotions_h
+﻿#ifndef dRayMotions_h
 #define dRayMotions_h
 
 struct dxRayMotions;

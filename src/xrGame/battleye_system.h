@@ -1,4 +1,4 @@
-// battleye_system.h
+﻿// battleye_system.h
 // BattlEyeSystem class
 
 #ifndef	XR_BATTLEYE_SYSTEM_H_INCLUDED

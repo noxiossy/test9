@@ -1,4 +1,4 @@
-// LightShadows.cpp: implementation of the CLightShadows class.
+﻿// LightShadows.cpp: implementation of the CLightShadows class.
 //
 //////////////////////////////////////////////////////////////////////
 

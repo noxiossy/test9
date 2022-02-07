@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "UIScrollView.h"
 #include "UIStatsPlayerList.h"

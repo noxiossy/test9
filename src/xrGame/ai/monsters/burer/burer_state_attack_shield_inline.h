@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 template <class Object>
 CStateBurerShield<Object>::CStateBurerShield (Object *obj) : inherited(obj)

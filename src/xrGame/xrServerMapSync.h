@@ -1,4 +1,4 @@
-#ifndef XRSERVER_MAP_SYNC_H
+﻿#ifndef XRSERVER_MAP_SYNC_H
 #define XRSERVER_MAP_SYNC_H
 
 //this is a response tag that server puts in the first byte of response packet.

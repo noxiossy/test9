@@ -1,4 +1,4 @@
-// gt2test.h : main header file for the GT2TEST application
+﻿// gt2test.h : main header file for the GT2TEST application
 //
 
 #if !defined(AFX_GT2TEST_H__BDC522B0_AA93_4D1B_8271_A3CFD716E950__INCLUDED_)

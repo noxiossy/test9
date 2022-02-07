@@ -1,4 +1,4 @@
-// Actor.cpp: implementation of the CSpectator class.
+﻿// Actor.cpp: implementation of the CSpectator class.
 //
 //////////////////////////////////////////////////////////////////////
 
@@ -154,12 +154,12 @@ void CSpectator::UpdateCL()
 					}
 				}
 			}
-			// íå íàéäåí îáúåêò ñ òàêèì èíäåêñîì - ñáðîñèì íà ïåðâûé îáúåêò
+			// не найден объект с таким индексом - сбросим на первый объект
 			look_idx = 0;
-			// íèêîãî íåò çà êåì ñìîòðåòü - ïåðåêëþ÷èìñÿ íà 
+			// никого нет за кем смотреть - переключимся на 
 			if (0==idx) cam_Set(eacFreeFly);
 		}
-		// ïî óìîë÷àíèþ eacFreeFly
+		// по умолчанию eacFreeFly
 		cam_Update		(0);
 	}
 }
@@ -344,7 +344,7 @@ void CSpectator::FirstEye_ToPlayer(CObject* pObject)
 /*			CHudItem* pHudItem = smart_cast<CHudItem*>(pActor->inventory().ActiveItem());
 			if (pHudItem) 
 			{
-				pHudItem->OnStateSwitch(pHudItem->GetState());
+				pHudItem->OnStateSwitch(pHudItem->GetState(), pHudItem->GetState());
 			}*/
 		}
 	};

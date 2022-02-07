@@ -1,4 +1,4 @@
-// CustomMonster.h: interface for the CCustomMonster class.
+﻿// CustomMonster.h: interface for the CCustomMonster class.
 //
 //////////////////////////////////////////////////////////////////////
 

@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "../xrRender/fbasicvisual.h"
 #include "../../xrEngine/fmesh.h"
 #include "../../xrEngine/xrLevel.h"
@@ -41,6 +41,11 @@ void CRender::level_Load(IReader *fs)
 			LPSTR			delim	= strchr(n_sh,'/');
 			*delim					= 0;
 			xr_strcpy					(n_tlist,delim+1);
+
+			//Alundaio: Fix Static Renderer issue with 'default' shader and only a single texture (we know this because string won't have comma present! Force change to 'def_shaders\def_vertex'
+			if (xr_strcmp(n_sh, "default")==0 && !strstr(n_tlist,","))
+				Shaders[i] = dxRenderDeviceRender::Instance().Resources->Create("def_shaders\\def_vertex", n_tlist);
+			else
 				Shaders[i] = dxRenderDeviceRender::Instance().Resources->Create(n_sh,n_tlist);
 		}
 		chunk->close();
@@ -60,7 +65,7 @@ void CRender::level_Load(IReader *fs)
 
 	marker						= 0;
 
-	if	(!g_dedicated_server)	{
+	{
 		// VB,IB,SWI
 //		g_pGamePersistent->LoadTitle("st_loading_geometry");
 		g_pGamePersistent->LoadTitle();
@@ -203,7 +208,8 @@ void CRender::LoadBuffers	(CStreamReader *base_fs)
 			// count, size
 			u32 vCount = fs->r_u32();
 			u32 vSize = D3DXGetDeclVertexSize(dcl, 0);
-			Msg("* [Loading VB] %d verts, %d Kb", vCount, (vCount*vSize) / 1024);
+			if (Core.ParamFlags.test(Core.verboselog))
+				Msg("* [Loading VB] %d verts, %d Kb", vCount, (vCount*vSize) / 1024);
 
 			// Create and fill
 			BYTE*	pData = 0;
@@ -230,7 +236,8 @@ void CRender::LoadBuffers	(CStreamReader *base_fs)
 		for (u32 i=0; i<count; i++)
 		{
 			u32 iCount		= fs->r_u32	();
-			Msg("* [Loading IB] %d indices, %d Kb",iCount,(iCount*2)/1024);
+			if (Core.ParamFlags.test(Core.verboselog))
+				Msg("* [Loading IB] %d indices, %d Kb",iCount,(iCount*2)/1024);
 
 			// Create and fill
 			BYTE*	pData		= 0;

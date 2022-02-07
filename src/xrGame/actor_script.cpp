@@ -1,4 +1,4 @@
-////////////////////////////////////////////////////////////////////////////
+﻿////////////////////////////////////////////////////////////////////////////
 //	Module 		: actor_script.cpp
 //	Created 	: 17.01.2008
 //  Modified 	: 17.01.2008
@@ -19,11 +19,8 @@ void CActor::script_register(lua_State *L)
 	[
 		class_<CActor,CGameObject>("CActor")
 			.def(constructor<>())
-			
-#ifndef	BENCHMARK_BUILD
 		,
 		class_<CLevelChanger,CGameObject>("CLevelChanger")
 			.def(constructor<>())
-#endif	//	BENCHMARK_BUILD
 	];
 }

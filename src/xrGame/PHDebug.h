@@ -1,4 +1,4 @@
-#ifndef PH_DEBUG_H
+﻿#ifndef PH_DEBUG_H
 #define PH_DEBUG_H
 #ifdef DEBUG
 struct dContact;

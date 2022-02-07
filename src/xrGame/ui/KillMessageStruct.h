@@ -1,4 +1,4 @@
-// File:		KillMessageStruct.h
+﻿// File:		KillMessageStruct.h
 // Description:	storage for HUD message about player death
 // Created:		10.03.2005
 // Mail:		narrator@gsc-game.kiev.ua

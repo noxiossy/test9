@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "xrServer.h"
 #include "GameSpy/GameSpy_GCD_Server.h"

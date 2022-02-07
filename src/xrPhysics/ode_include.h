@@ -1,4 +1,4 @@
-#ifndef dSINGLE
+﻿#ifndef dSINGLE
 	#define dSINGLE
 #endif
 #pragma warning(disable:4995)

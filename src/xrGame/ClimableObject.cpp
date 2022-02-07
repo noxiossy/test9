@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "climableobject.h "
 #include "../xrphysics/IPHStaticGeomShell.h"
 #include "xrServer_Objects_ALife.h"

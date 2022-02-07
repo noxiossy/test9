@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "pp_effector_custom.h"
 #include "actor.h"
 #include "ActorEffector.h"

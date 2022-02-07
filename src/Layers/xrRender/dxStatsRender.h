@@ -1,4 +1,4 @@
-#ifndef	dxStatsRender_included
+﻿#ifndef	dxStatsRender_included
 #define	dxStatsRender_included
 #pragma once
 

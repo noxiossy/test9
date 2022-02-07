@@ -1,4 +1,4 @@
-/*
+﻿/*
 	IC	void	transform_tiny		(Tvector &dest, const Tvector &v)	const // preferred to use
 	{
 		dest.x = v.x*_11 + v.y*_21 + v.z*_31 + _41;

@@ -1,4 +1,4 @@
-#ifndef xrstringH
+﻿#ifndef xrstringH
 #define xrstringH
 #pragma once
 

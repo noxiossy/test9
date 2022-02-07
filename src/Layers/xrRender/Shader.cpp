@@ -1,4 +1,4 @@
-// Shader.cpp: implementation of the CShader class.
+﻿// Shader.cpp: implementation of the CShader class.
 //
 //////////////////////////////////////////////////////////////////////
 

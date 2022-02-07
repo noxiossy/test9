@@ -1,4 +1,4 @@
-// File:        UIListWndEx.cpp
+﻿// File:        UIListWndEx.cpp
 // Description: Extended ListItem
 //              Requiered to use feature "Selected Item"
 // Created:     

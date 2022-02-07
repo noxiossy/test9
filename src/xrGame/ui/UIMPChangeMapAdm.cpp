@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "UIMPChangeMapAdm.h"
 #include "UIXmlInit.h"
 #include "UIListBox.h"

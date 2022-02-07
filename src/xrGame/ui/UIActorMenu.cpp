@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "UIActorMenu.h"
 #include "UIActorStateInfo.h"
 #include "../actor.h"
@@ -511,9 +511,13 @@ void CUIActorMenu::highlight_item_slot(CUICellItem* cell_item)
 
 	u16 slot_id = item->BaseSlot();
 
-	if (weapon && (slot_id == INV_SLOT_2 || slot_id == INV_SLOT_3))
+	if (weapon && (slot_id == INV_SLOT_2))
 	{
 		m_InvSlot2Highlight->Show(true);
+		return;
+	}
+	if (weapon && (slot_id == INV_SLOT_3))
+	{
 		m_InvSlot3Highlight->Show(true);
 		return;
 	}
@@ -863,7 +867,7 @@ bool CUIActorMenu::CanSetItemToList(PIItem item, CUIDragDropListEx* l, u16& ret_
 		return		true;
 	}
 
-	if(item_slot==INV_SLOT_3 && l==m_pInventoryPistolList)
+	/*if(item_slot==INV_SLOT_3 && l==m_pInventoryPistolList)
 	{
 		ret_slot	= INV_SLOT_2;
 		return		true;
@@ -873,7 +877,7 @@ bool CUIActorMenu::CanSetItemToList(PIItem item, CUIDragDropListEx* l, u16& ret_
 	{
 		ret_slot	= INV_SLOT_3;
 		return		true;
-	}
+	}*/
 
 	return false;
 }

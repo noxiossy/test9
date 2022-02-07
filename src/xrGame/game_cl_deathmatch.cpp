@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "game_cl_deathmatch.h"
 #include "xrMessages.h"
 #include "UIGameDM.h"
@@ -976,13 +976,13 @@ IC bool	DM_Compare_Players(game_PlayerState* p1, game_PlayerState* p2)
 void game_cl_Deathmatch::PlayParticleEffect(LPCSTR EffName, Fvector& pos)
 {
 	if (!EffName) return;
-	// âû÷èñëèòü ïîçèöèþ è íàïðàâëåííîñòü ïàðòèêëà
+	// вычислить позицию и направленность партикла
 	Fmatrix M; 
 	M.translate(pos);
 
 //	CParticlesPlayer::MakeXFORM(pObj,0,Fvector().set(0.f,1.f,0.f),Fvector().set(0.f,0.f,0.f),pos);
 
-	// óñòàíîâèòü particles
+	// установить particles
 	CParticlesObject* ps = NULL;
 
 	ps = CParticlesObject::Create(EffName,TRUE);

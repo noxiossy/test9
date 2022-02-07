@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 class	CPhysicsShell;
 class	CPhysicsShellHolder;
 class physics_shell_animated

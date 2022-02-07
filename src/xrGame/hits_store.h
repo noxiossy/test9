@@ -1,4 +1,4 @@
-#ifndef HITS_STORE_INCLUDED
+﻿#ifndef HITS_STORE_INCLUDED
 #define HITS_STORE_INCLUDED
 
 #include "obsolete_queue.h"

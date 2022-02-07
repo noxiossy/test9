@@ -1,4 +1,4 @@
-#ifndef UI_TEAM_HEADER
+﻿#ifndef UI_TEAM_HEADER
 #define UI_TEAM_HEADER
 
 #include "ui/UIWindow.h"

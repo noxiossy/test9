@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #pragma hdrstop
 
 #include "envelope.h"
@@ -237,7 +237,7 @@ void CEnvelope::LoadA(IReader& F)
         }
         // behavior <pre> <post>
         F.r_string(buf, sizeof(buf));
-		int cnt = sscanf(buf,"Behaviors %d %d", &behavior[0], &behavior[1] );
+        int cnt = sscanf(buf, "Behaviors %d %d", &behavior[0], &behavior[1]);
         R_ASSERT(cnt == 2);
     }
 }

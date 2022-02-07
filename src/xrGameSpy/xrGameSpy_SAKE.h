@@ -1,4 +1,4 @@
-#ifndef XRGAMESPY_SAKE
+﻿#ifndef XRGAMESPY_SAKE
 #define XRGAMESPY_SAKE
 
 #include "xrGameSpy_MainDefs.h"

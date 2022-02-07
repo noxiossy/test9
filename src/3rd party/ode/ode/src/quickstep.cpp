@@ -1,4 +1,4 @@
-/*************************************************************************
+﻿/*************************************************************************
  *                                                                       *
  * Open Dynamics Engine, Copyright (C) 2001-2003 Russell L. Smith.       *
  * All rights reserved.  Email: russ@q12.org   Web: www.q12.org          *
@@ -32,7 +32,7 @@
 #include "lcp.h"
 #include "util.h"
 #include "stdlib.h"
-
+#include <random>
 #include <algorithm>
 
 
@@ -425,7 +425,7 @@ static void SOR_LCP (int m, int nb, dRealMutablePtr J, int *jb, dxBody * const *
 #endif
 #ifdef RANDOMLY_REORDER_CONSTRAINTS
 		if ((iteration & 3) == 0) {
-			std::random_shuffle	(order,order+m);
+			std::shuffle(order, order + m, std::random_device());
 			/*
 			for (i=1; i<m; ++i) {
 				IndexError tmp = order[i];
@@ -486,7 +486,7 @@ static void SOR_LCP (int m, int nb, dRealMutablePtr J, int *jb, dxBody * const *
 			// @@@ potential optimization: does SSE have clamping instructions
 			//     to save test+jump penalties here?
 			dReal new_lambda = lambda[index] + delta;
-			if (new_lambda < lo[index]) {
+			if (new_lambda < lo[index] && !isnan(lo[index])) {
 				delta = lo[index]-lambda[index];
 				lambda[index] = lo[index];
 			}

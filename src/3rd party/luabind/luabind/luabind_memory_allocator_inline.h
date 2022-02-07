@@ -1,4 +1,4 @@
-////////////////////////////////////////////////////////////////////////////
+﻿////////////////////////////////////////////////////////////////////////////
 //	Module 		: luabind_memory_allocator_inline.h
 //	Created 	: 18.03.2007
 //  Modified 	: 23.04.2008
@@ -48,7 +48,7 @@ typename MEMORY_ALLOCATOR::const_pointer MEMORY_ALLOCATOR::address		(const_refer
 }
 
 TEMPLATE_SPECIALIZATION
-typename MEMORY_ALLOCATOR::pointer MEMORY_ALLOCATOR::allocate			(size_type const n, void const* const p=0) const
+typename MEMORY_ALLOCATOR::pointer MEMORY_ALLOCATOR::allocate			(size_type const n, void const* const p) const
 {
 	pointer			result = (pointer)call_allocator(p,n*sizeof(T));
 	if (!n)

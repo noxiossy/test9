@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "igame_level.h"
 #include "IGame_Persistent.h"
 #include "igame_objectpool.h"
@@ -51,8 +51,8 @@ void IGame_ObjectPool::clear()
 
 CObject* IGame_ObjectPool::create(LPCSTR name)
 {
-	CLASS_ID CLS = pSettings->r_clsid(name, "class");
-	CObject* O = (CObject*)NEW_INSTANCE(CLS);
+    CLASS_ID CLS = pSettings->r_clsid(name, "class");
+    CObject* O = (CObject*)NEW_INSTANCE(CLS);
 	if (!O)
 	{
 		LogStackTrace("");

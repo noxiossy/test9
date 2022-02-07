@@ -1,4 +1,4 @@
-#include "StdAfx.h"
+﻿#include "StdAfx.h"
 #include "../../xrEngine/_d3d_extensions.h"
 #include "../../xrEngine/xrLevel.h"
 #include "../../xrEngine/igame_persistent.h"
@@ -190,7 +190,7 @@ void			CLight_DB::add_light		(light* L)
 	L->frame_render							=	Device.dwFrame		;
 	if (RImplementation.o.noshadows)		L->flags.bShadow		= FALSE;
 	if (L->flags.bStatic && !ps_r2_ls_flags.test(R2FLAG_R1LIGHTS))	return;
-	L->export								(package);
+	L->export_to								(package);
 }
 #endif // (RENDER==R_R2) || (RENDER==R_R3) || (RENDER==R_R4)
 

@@ -1,4 +1,4 @@
-#include "pch.h"
+﻿#include "pch.h"
 
 #ifndef LUABIND_NO_EXCEPTIONS
 namespace boost

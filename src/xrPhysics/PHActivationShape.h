@@ -1,4 +1,4 @@
-#ifndef PH_ACTIVATION_SHAPE
+﻿#ifndef PH_ACTIVATION_SHAPE
 #define PH_ACTIVATION_SHAPE
 #endif
 

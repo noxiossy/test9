@@ -1,4 +1,4 @@
-#ifndef _CYLINDER_H
+﻿#ifndef _CYLINDER_H
 #define _CYLINDER_H
 
 template <class T>

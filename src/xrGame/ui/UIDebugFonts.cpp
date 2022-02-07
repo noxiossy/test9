@@ -1,4 +1,4 @@
-#include "StdAfx.h"
+﻿#include "StdAfx.h"
 #include "UIDebugFonts.h"
 #include "UIDialogHolder.h"
 #include "dinput.h"

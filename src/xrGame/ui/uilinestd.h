@@ -1,4 +1,4 @@
-typedef xr_string::size_type StrSize;
+﻿typedef xr_string::size_type StrSize;
 
 #define BEGIN  "%c["
 #define END  "]"

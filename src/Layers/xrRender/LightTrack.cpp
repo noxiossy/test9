@@ -1,4 +1,4 @@
-// LightTrack.cpp: implementation of the CROS_impl class.
+﻿// LightTrack.cpp: implementation of the CROS_impl class.
 //
 //////////////////////////////////////////////////////////////////////
 

@@ -1,4 +1,4 @@
-#ifndef BLENDER_BLUR_H
+﻿#ifndef BLENDER_BLUR_H
 #define BLENDER_BLUR_H
 #pragma once
 

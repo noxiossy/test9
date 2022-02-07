@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "../../../ai_space.h"
 #include "../monster_cover_manager.h"

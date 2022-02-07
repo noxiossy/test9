@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "dxUIShader.h"
 
 void dxUIShader::Copy(IUIShader&_in)

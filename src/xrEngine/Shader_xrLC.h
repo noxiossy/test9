@@ -1,4 +1,4 @@
-#ifndef SHADER_XRLC_H
+﻿#ifndef SHADER_XRLC_H
 #define SHADER_XRLC_H
 #pragma once
 

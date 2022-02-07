@@ -1,4 +1,4 @@
-#include "pch_script.h"
+п»ї#include "pch_script.h"
 #include "actor.h"
 #include "UIGameSP.h"
 #include "PDA.h"
@@ -56,7 +56,7 @@ bool CActor::OnReceiveInfo(shared_str info_id) const
 
 	if(!CurrentGameUI())
 		return false;
-	//только если находимся в режиме single
+	//С‚РѕР»СЊРєРѕ РµСЃР»Рё РЅР°С…РѕРґРёРјСЃСЏ РІ СЂРµР¶РёРјРµ single
 	CUIGameSP* pGameSP = smart_cast<CUIGameSP*>(CurrentGameUI());
 	if(!pGameSP) return false;
 
@@ -77,7 +77,7 @@ void CActor::OnDisableInfo(shared_str info_id) const
 	if(!CurrentGameUI())
 		return;
 
-	//только если находимся в режиме single
+	//С‚РѕР»СЊРєРѕ РµСЃР»Рё РЅР°С…РѕРґРёРјСЃСЏ РІ СЂРµР¶РёРјРµ single
 	CUIGameSP* pGameSP = smart_cast<CUIGameSP*>(CurrentGameUI());
 	if(!pGameSP) return;
 
@@ -87,7 +87,7 @@ void CActor::OnDisableInfo(shared_str info_id) const
 
 void  CActor::ReceivePhrase		(DIALOG_SHARED_PTR& phrase_dialog)
 {
-	//только если находимся в режиме single
+	//С‚РѕР»СЊРєРѕ РµСЃР»Рё РЅР°С…РѕРґРёРјСЃСЏ РІ СЂРµР¶РёРјРµ single
 	CUIGameSP* pGameSP = smart_cast<CUIGameSP*>(CurrentGameUI());
 	if(!pGameSP) return;
 
@@ -102,7 +102,7 @@ void   CActor::UpdateAvailableDialogs	(CPhraseDialogManager* partner)
 	m_AvailableDialogs.clear();
 	m_CheckedDialogs.clear();
 
-	//добавить актерский диалог собеседника
+	//РґРѕР±Р°РІРёС‚СЊ Р°РєС‚РµСЂСЃРєРёР№ РґРёР°Р»РѕРі СЃРѕР±РµСЃРµРґРЅРёРєР°
 	CInventoryOwner* pInvOwnerPartner = smart_cast<CInventoryOwner*>(partner); VERIFY(pInvOwnerPartner);
 	
 	for(u32 i = 0; i<pInvOwnerPartner->CharacterInfo().ActorDialogs().size(); i++)
@@ -121,7 +121,7 @@ void CActor::TryToTalk()
 
 void CActor::RunTalkDialog(CInventoryOwner* talk_partner, bool disable_break)
 {
-	//предложить поговорить с нами
+	//РїСЂРµРґР»РѕР¶РёС‚СЊ РїРѕРіРѕРІРѕСЂРёС‚СЊ СЃ РЅР°РјРё
 	if(talk_partner->OfferTalk(this))
 	{	
 		StartTalk(talk_partner);

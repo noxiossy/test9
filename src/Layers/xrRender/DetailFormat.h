@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #ifndef _DETAIL_FORMAT_H_
 #define _DETAIL_FORMAT_H_

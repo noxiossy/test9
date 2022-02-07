@@ -1,4 +1,4 @@
-// WaitingDlg.cpp : implementation file
+﻿// WaitingDlg.cpp : implementation file
 //
 
 #include "stdafx.h"

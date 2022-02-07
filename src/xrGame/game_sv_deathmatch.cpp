@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "game_sv_deathmatch.h"
 #include "xrserver_objects_alife_monsters.h"
 #include "level.h"
@@ -447,8 +447,6 @@ void	game_sv_Deathmatch::Update()
 		break;
 	case GAME_PHASE_PENDING:
 		{
-			//CheckStatisticsReady();
-			//checkForRoundStart	();
 		}
 		break;
 	case GAME_PHASE_PLAYER_SCORES:
@@ -976,7 +974,7 @@ void	game_sv_Deathmatch::OnPlayerBuyFinished		(ClientID id_who, NET_Packet& P)
 		xr_vector<u16>				ItemsToDelete;
 
 		bool ExactMatch	= true;
-		//ïðîâåðÿåì ïîÿñ
+		//проверяем пояс
 		TIItemContainer::const_iterator	IBelt = pActor->inventory().m_belt.begin();
 		TIItemContainer::const_iterator	EBelt = pActor->inventory().m_belt.end();
 
@@ -986,7 +984,7 @@ void	game_sv_Deathmatch::OnPlayerBuyFinished		(ClientID id_who, NET_Packet& P)
 			CheckItem(ps, pItem, &ItemsDesired, &ItemsToDelete, ExactMatch);
 		};
 
-		//ïðîâåðÿåì ruck
+		//проверяем ruck
 		TIItemContainer::const_iterator	IRuck = pActor->inventory().m_ruck.begin();
 		TIItemContainer::const_iterator	ERuck = pActor->inventory().m_ruck.end();
 
@@ -997,7 +995,7 @@ void	game_sv_Deathmatch::OnPlayerBuyFinished		(ClientID id_who, NET_Packet& P)
 			CheckItem(ps, pItem, &ItemsDesired, &ItemsToDelete, ExactMatch);
 		};
 
-		//ïðîâåðÿåì ñëîòû
+		//проверяем слоты
 		TISlotArr::const_iterator	ISlot = pActor->inventory().m_slots.begin();
 		TISlotArr::const_iterator	ESlot = pActor->inventory().m_slots.end();
 
@@ -1059,18 +1057,18 @@ void game_sv_Deathmatch::LoadSkinsForTeam(const shared_str& caSection, TEAM_SKIN
 	string256			SkinSingleName;
 	string4096			Skins;
 
-	// Ïîëå strSectionName äîëæíî ñîäåðæàòü èìÿ ñåêöèè
+	// Поле strSectionName должно содержать имя секции
 	R_ASSERT(xr_strcmp(caSection,""));
 
 	pTeamSkins->clear();
 
-	// Èìÿ ïîëÿ
+	// Имя поля
 	if (!pSettings->line_exist(caSection, "skins")) return;
 
-	// ×èòàåì äàííûå ýòîãî ïîëÿ
+	// Читаем данные этого поля
 	xr_strcpy(Skins, pSettings->r_string(caSection, "skins"));
 	u32 count	= _GetItemCount(Skins);
-	// òåïåðü äëÿ êàæäîå èìÿ îðóæèÿ, ðàçäåëåííûå çàïÿòûìè, çàíîñèì â ìàññèâ
+	// теперь для каждое имя оружия, разделенные запятыми, заносим в массив
 	for (u32 i = 0; i < count; ++i)
 	{
 		_GetItem(Skins, i, SkinSingleName);
@@ -1083,18 +1081,18 @@ void game_sv_Deathmatch::LoadDefItemsForTeam(const shared_str& caSection, DEF_IT
 	string256			ItemName;
 	string4096			DefItems;
 
-	// Ïîëå strSectionName äîëæíî ñîäåðæàòü èìÿ ñåêöèè
+	// Поле strSectionName должно содержать имя секции
 	R_ASSERT(xr_strcmp(caSection,""));
 
 	pDefItems->clear();
 
-	// Èìÿ ïîëÿ
+	// Имя поля
 	if (!pSettings->line_exist(caSection, "default_items")) return;
 
-	// ×èòàåì äàííûå ýòîãî ïîëÿ
+	// Читаем данные этого поля
 	xr_strcpy(DefItems, pSettings->r_string(caSection, "default_items"));
 	u32 count	= _GetItemCount(DefItems);
-	// òåïåðü äëÿ êàæäîå èìÿ îðóæèÿ, ðàçäåëåííûå çàïÿòûìè, çàíîñèì â ìàññèâ
+	// теперь для каждое имя оружия, разделенные запятыми, заносим в массив
 	for (u32 i = 0; i < count; ++i)
 	{
 		_GetItem(DefItems, i, ItemName);
@@ -1111,14 +1109,14 @@ void game_sv_Deathmatch::SetSkin(CSE_Abstract* E, u16 Team, u16 ID)
 	//-------------------------------------------
 	string256 SkinName;
 	xr_strcpy(SkinName, pSettings->r_string("mp_skins_path", "skin_path"));
-	//çàãðóæåíû ëè ñêèíû äëÿ ýòîé êîììàíäû
+	//загружены ли скины для этой комманды
 //	if (SkinID != -1) ID = u16(SkinID);
 
 	if (!TeamList.empty()	&&
 		TeamList.size() > Team	&&
 		!TeamList[Team].aSkins.empty())
 	{
-		//çàãðóæåíî ëè äîñòàòî÷íî ñêèíîâ äëÿ ýòîé êîììàíäû
+		//загружено ли достаточно скинов для этой комманды
 		if (TeamList[Team].aSkins.size() > ID)
 		{
 			xr_strcat(SkinName, TeamList[Team].aSkins[ID].c_str());
@@ -1128,7 +1126,7 @@ void game_sv_Deathmatch::SetSkin(CSE_Abstract* E, u16 Team, u16 ID)
 	}
 	else
 	{
-		//ñêèíû äëÿ òàêîé êîììàíäû íå çàãðóæåíû
+		//скины для такой комманды не загружены
 		switch (Team)
 		{
 		case 0:

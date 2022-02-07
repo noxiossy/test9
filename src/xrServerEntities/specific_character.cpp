@@ -1,4 +1,4 @@
-#include "stdafx.h"
+п»ї#include "stdafx.h"
 #include "specific_character.h"
 
 #ifdef  XRGAME_EXPORTS
@@ -119,7 +119,7 @@ void CSpecificCharacter::load_shared	(LPCSTR)
 	data()->m_icon_name		= pXML->Read("icon", 0, "ui_npc_u_barman");
 		
 
-	//игровое имя персонажа
+	//РёРіСЂРѕРІРѕРµ РёРјСЏ РїРµСЂСЃРѕРЅР°Р¶Р°
 	data()->m_sGameName		= pXML->Read("name", 0, "");
 	data()->m_sBioText		= CStringTable().translate(pXML->Read("bio", 0, ""));
 

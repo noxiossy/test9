@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 class	CBlend;
 class	ENGINE_API	motion_marks;
 class	IKinematicsAnimated;

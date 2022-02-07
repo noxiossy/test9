@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 //#include "PHdynamicdata.h"
 //#include "Physics.h"
 #include "level.h"

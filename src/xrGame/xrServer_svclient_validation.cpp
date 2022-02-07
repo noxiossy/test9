@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "xrServer_svclient_validation.h"
 #include "GameObject.h"
 #include "Level.h"

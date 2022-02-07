@@ -1,4 +1,4 @@
-#ifndef	SkeletonXVertRender_h_included
+﻿#ifndef	SkeletonXVertRender_h_included
 #define	SkeletonXVertRender_h_included
 #pragma once
 

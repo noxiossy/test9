@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "UIBtnHint.h"
 #include "UIFrameWindow.h"
 #include "UIStatic.h"

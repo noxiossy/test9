@@ -1,4 +1,4 @@
-#include "stdafx.h"
+п»ї#include "stdafx.h"
 #include "weaponammo.h"
 #include "../xrphysics/PhysicsShell.h"
 #include "xrserver_objects_alife_items.h"
@@ -71,6 +71,22 @@ void CCartridge::Load(LPCSTR section, u8 LocalAmmoType)
 	VERIFY	(param_s.fWallmarkSize>0);
 
 	m_InvShortName			= CStringTable().translate( pSettings->r_string(section, "inv_name_short"));
+}
+
+float CCartridge::Weight() const
+{
+	auto s = m_ammoSect.c_str();
+	float res = 0;
+	if ( s )
+	{		
+		float box = pSettings->r_float(s, "box_size");
+		if (box > 0)
+		{
+			float w = pSettings->r_float(s, "inv_weight");
+			res = w / box;
+		}			
+	}
+	return res;
 }
 
 CWeaponAmmo::CWeaponAmmo(void) 
@@ -150,14 +166,14 @@ void CWeaponAmmo::OnH_B_Independent(bool just_before_destroy)
 
 bool CWeaponAmmo::Useful() const
 {
-	// Если IItem еще не полностью использованый, вернуть true
+	// Р•СЃР»Рё IItem РµС‰Рµ РЅРµ РїРѕР»РЅРѕСЃС‚СЊСЋ РёСЃРїРѕР»СЊР·РѕРІР°РЅС‹Р№, РІРµСЂРЅСѓС‚СЊ true
 	return !!m_boxCurr;
 }
 /*
 s32 CWeaponAmmo::Sort(PIItem pIItem) 
 {
-	// Если нужно разместить IItem после this - вернуть 1, если
-	// перед - -1. Если пофиг то 0.
+	// Р•СЃР»Рё РЅСѓР¶РЅРѕ СЂР°Р·РјРµСЃС‚РёС‚СЊ IItem РїРѕСЃР»Рµ this - РІРµСЂРЅСѓС‚СЊ 1, РµСЃР»Рё
+	// РїРµСЂРµРґ - -1. Р•СЃР»Рё РїРѕС„РёРі С‚Рѕ 0.
 	CWeaponAmmo *l_pA = smart_cast<CWeaponAmmo*>(pIItem);
 	if(!l_pA) return 0;
 	if(xr_strcmp(cNameSect(), l_pA->cNameSect())) return 0;
@@ -227,12 +243,14 @@ CInventoryItem *CWeaponAmmo::can_make_killing	(const CInventory *inventory) cons
 }
 
 float CWeaponAmmo::Weight() const
-{
-	float res = inherited::Weight();
-
-	res *= (float)m_boxCurr/(float)m_boxSize;
-
-	return res;
+{	
+	if (m_boxSize > 0)
+	{
+		float res = inherited::Weight();
+		res *= (float)m_boxCurr / (float)m_boxSize;
+		return res;
+	}
+	return 0;	
 }
 
 u32 CWeaponAmmo::Cost() const

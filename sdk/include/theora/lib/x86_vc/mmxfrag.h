@@ -1,4 +1,4 @@
-#if !defined(_x86_vc_mmxfrag_H)
+﻿#if !defined(_x86_vc_mmxfrag_H)
 # define _x86_vc_mmxfrag_H (1)
 # include <stddef.h>
 # include "x86int.h"

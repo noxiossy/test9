@@ -1,4 +1,4 @@
-// Blender_Model.h: interface for the Blender_Screen_SET class.
+﻿// Blender_Model.h: interface for the Blender_Screen_SET class.
 //
 //////////////////////////////////////////////////////////////////////
 

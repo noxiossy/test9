@@ -1,4 +1,4 @@
-#ifndef RenderDeviceRender_included
+﻿#ifndef RenderDeviceRender_included
 #define RenderDeviceRender_included
 #pragma once
 

@@ -1,4 +1,4 @@
-#ifndef _PLANE2
+﻿#ifndef _PLANE2
 #define _PLANE2
 
 template <class T>

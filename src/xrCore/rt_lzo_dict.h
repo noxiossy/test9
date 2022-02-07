@@ -1,4 +1,4 @@
-/* lzo_dict.h -- dictionary definitions for the the LZO library
+﻿/* lzo_dict.h -- dictionary definitions for the the LZO library
 
    This file is part of the LZO real-time data compression library.
 

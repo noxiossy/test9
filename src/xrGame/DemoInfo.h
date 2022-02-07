@@ -1,4 +1,4 @@
-#ifndef DEMOINFO_H
+﻿#ifndef DEMOINFO_H
 #define DEMOINFO_H
 
 #include <boost/noncopyable.hpp>

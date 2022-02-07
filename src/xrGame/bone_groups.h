@@ -1,4 +1,4 @@
-#ifndef BONE_GROUP_INCLUDED
+﻿#ifndef BONE_GROUP_INCLUDED
 #define BONE_GROUP_INCLUDED
 
 #include "../xrServerEntities/associative_vector.h"

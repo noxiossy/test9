@@ -1,4 +1,4 @@
-////////////////////////////////////////////////////////////////////////////
+﻿////////////////////////////////////////////////////////////////////////////
 //	Module 		: xrServer_Objects_ALife_Items_script.cpp
 //	Created 	: 19.09.2002
 //  Modified 	: 04.06.2003
@@ -31,7 +31,6 @@ void CSE_ALifeInventoryItem::script_register(lua_State *L)
 //			.def(		constructor<LPCSTR>())
 			.def("has_upgrade", &has_upgrade)
 			.def("add_upgrade", &add_upgrade)
-			.def_readwrite("condition", &CSE_ALifeInventoryItem::m_fCondition)
 	];
 }
 
@@ -87,14 +86,19 @@ void CSE_ALifeItemWeapon::script_register(lua_State *L)
 			value("eAddonDisabled", int(CSE_ALifeItemWeapon::EWeaponAddonStatus::eAddonDisabled)),
 			value("eAddonPermanent", int(CSE_ALifeItemWeapon::EWeaponAddonStatus::eAddonPermanent))
 		]
-		.def("clone_addons",		&CSE_ALifeItemWeapon::clone_addons)
-		.def("set_ammo_elapsed",	&CSE_ALifeItemWeapon::set_ammo_elapsed)
-		.def("get_ammo_elapsed",	&CSE_ALifeItemWeapon::get_ammo_elapsed)
-		.def("get_ammo_magsize",	&CSE_ALifeItemWeapon::get_ammo_magsize)
+		.def("clone_addons",						&CSE_ALifeItemWeapon::clone_addons)
+		.def("set_ammo_elapsed",					&CSE_ALifeItemWeapon::set_ammo_elapsed)
+		.def("set_ammo_elapsed2",					&CSE_ALifeItemWeapon::set_ammo_elapsed2)
+		.def("get_ammo_elapsed",					&CSE_ALifeItemWeapon::get_ammo_elapsed)
+		.def("get_ammo_elapsed2",					&CSE_ALifeItemWeapon::get_ammo_elapsed2)
+		.def("get_ammo_magsize",					&CSE_ALifeItemWeapon::get_ammo_magsize)
 		.def_readwrite("grenade_launcher_status",	&CSE_ALifeItemWeapon::m_grenade_launcher_status)
 		.def_readwrite("silencer_status",			&CSE_ALifeItemWeapon::m_silencer_status)
 		.def_readwrite("scope_status",				&CSE_ALifeItemWeapon::m_scope_status)
-		.def_readwrite("ammo_type",					&CSE_ALifeItemWeapon::ammo_type)
+		.def("get_ammo_type",						&CSE_ALifeItemWeapon::get_ammo_type)
+		.def("get_ammo_type2",						&CSE_ALifeItemWeapon::get_ammo_type2)
+		.def("set_ammo_type",						&CSE_ALifeItemWeapon::set_ammo_type)
+		.def("set_ammo_type2",						&CSE_ALifeItemWeapon::set_ammo_type2)
 		.def("get_addon_flags",						&CSE_ALifeItemWeapon::get_addon_flags)
 		//.def("set_addon_flags",					    &CSE_ALifeItemWeapon::set_addon_flags)
 	];

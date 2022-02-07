@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "VECOM.h"
 #include "INOUT.h"

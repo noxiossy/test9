@@ -1,4 +1,4 @@
-// Voice2BuddyMFC.cpp : Defines the class behaviors for the application.
+﻿// Voice2BuddyMFC.cpp : Defines the class behaviors for the application.
 //
 
 #include "stdafx.h"

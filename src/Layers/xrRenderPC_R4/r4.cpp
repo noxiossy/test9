@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "r4.h"
 #include "../xrRender/fbasicvisual.h"
 #include "../../xrEngine/xr_object.h"
@@ -14,7 +14,7 @@
 #include "../xrRenderDX10/3DFluid/dx103DFluidManager.h"
 #include "../xrRender/ShaderResourceTraits.h"
 
-#include "D3DX10Core.h"
+#include <d3dx/D3DX10Core.h>
 
 CRender										RImplementation;
 
@@ -268,12 +268,13 @@ void					CRender::create					()
 	o.nvdbt				= false;
 	if (o.nvdbt)		Msg	("* NV-DBT supported and used");
 
+    o.no_ram_textures = (strstr(Core.Params, "-noramtex")) ? TRUE : ps_r__common_flags.test(RFLAG_NO_RAM_TEXTURES);
+    if (o.no_ram_textures)
+        Msg("* Managed textures disabled");
+
 	// options (smap-pool-size)
-	if (strstr(Core.Params,"-smap1536"))	o.smapsize	= 1536;
-	if (strstr(Core.Params,"-smap2048"))	o.smapsize	= 2048;
-	if (strstr(Core.Params,"-smap2560"))	o.smapsize	= 2560;
-	if (strstr(Core.Params,"-smap3072"))	o.smapsize	= 3072;
-	if (strstr(Core.Params,"-smap4096"))	o.smapsize	= 4096;
+	o.smapsize			= r2_SmapSize;
+	Msg					("* Shadow map resolution: [%d]x[%d]", o.smapsize, o.smapsize);
 
 	// gloss
 	char*	g			= strstr(Core.Params,"-gloss ");
@@ -537,6 +538,7 @@ void CRender::OnFrame()
 	Models->DeleteQueue			();
 	if (ps_r2_ls_flags.test(R2FLAG_EXP_MT_CALC))	{
 		// MT-details (@front)
+		if (Details)
 		Device.seqParallel.insert	(Device.seqParallel.begin(),
 			fastdelegate::FastDelegate0<>(Details,&CDetailManager::MT_CALC));
 
@@ -731,7 +733,7 @@ void	CRender::Statistics	(CGameFont* _F)
 }
 
 /////////
-#pragma comment(lib,"d3dx9.lib")
+
 /*
 extern "C"
 {
@@ -745,11 +747,6 @@ void CRender::addShaderOption(const char* name, const char* value)
 	D3D_SHADER_MACRO macro = {name, value};
 	m_ShaderOptions.push_back(macro);
 }
-
-// XXX nitrocaster: workaround to eliminate conflict between different GUIDs from DXSDK/Windows SDK
-// 0a233719-3960-4578-9d7c-203b8b1d9cc1
-static const GUID guidShaderReflection =
-{0x0a233719, 0x3960, 0x4578, {0x9d, 0x7c, 0x20, 0x3b, 0x8b, 0x1d, 0x9c, 0xc1}};
 
 template <typename T>
 static HRESULT create_shader				(
@@ -765,7 +762,7 @@ static HRESULT create_shader				(
 
 	ID3DShaderReflection *pReflection = 0;
 
-	HRESULT const _hr	= D3DReflect( buffer, buffer_size, guidShaderReflection, (void**)&pReflection);
+	HRESULT const _hr	= D3DReflect( buffer, buffer_size, IID_ID3DShaderReflection, (void**)&pReflection);
 	if (SUCCEEDED(_hr) && pReflection)
 	{
 		// Parse constant table data
@@ -807,7 +804,7 @@ static HRESULT create_shader				(
 		ID3DShaderReflection *pReflection = 0;
 
 #ifdef USE_DX11
-        _result			= D3DReflect( buffer, buffer_size, guidShaderReflection, (void**)&pReflection);
+		_result			= D3DReflect( buffer, buffer_size, IID_ID3DShaderReflection, (void**)&pReflection);
 #else
 		_result			= D3D10ReflectShader( buffer, buffer_size, &pReflection);
 #endif
@@ -843,7 +840,7 @@ static HRESULT create_shader				(
 
 		ID3DShaderReflection *pReflection = 0;
 #ifdef USE_DX11
-        _result			= D3DReflect( buffer, buffer_size, guidShaderReflection, (void**)&pReflection);
+		_result			= D3DReflect( buffer, buffer_size, IID_ID3DShaderReflection, (void**)&pReflection);
 #else
 		_result			= D3D10ReflectShader( buffer, buffer_size, &pReflection);
 #endif
@@ -891,7 +888,7 @@ static HRESULT create_shader				(
 		ID3DShaderReflection *pReflection = 0;
 
 #ifdef USE_DX11
-		_result			= D3DReflect( buffer, buffer_size, guidShaderReflection, (void**)&pReflection);
+		_result			= D3DReflect( buffer, buffer_size, IID_ID3DShaderReflection, (void**)&pReflection);
 #else
 		_result			= D3D10ReflectShader( buffer, buffer_size, &pReflection);
 #endif
@@ -1521,7 +1518,7 @@ HRESULT	CRender::shader_compile			(
 		xr_strcat		( file_name, temp_file_name );
 	}
 
-	if (FS.exist(file_name))
+	if (ps_use_precompiled_shaders && FS.exist(file_name))
 	{
 		IReader* file = FS.r_open(file_name);
 		if (file->length()>4)
@@ -1559,6 +1556,8 @@ HRESULT	CRender::shader_compile			(
 
 		if (SUCCEEDED(_result))
 		{
+			if (ps_use_precompiled_shaders)
+			{
 			IWriter* file = FS.w_open(file_name);
 
 			boost::crc_32_type		processor;
@@ -1568,14 +1567,13 @@ HRESULT	CRender::shader_compile			(
 			file->w_u32				(crc);
 			file->w					(pShaderBuf->GetBufferPointer(), (u32)pShaderBuf->GetBufferSize());
 			FS.w_close				(file);
-
+			}
 			_result					= create_shader(pTarget, (DWORD*)pShaderBuf->GetBufferPointer(), (u32)pShaderBuf->GetBufferSize(), file_name, result, o.disasm);
 		}
 		else {
-//			Msg						( "! shader compilation failed" );
-			Log						("! ", file_name);
+			Msg						("! %s", file_name);
 			if ( pErrorBuf )
-				Log					("! error: ",(LPCSTR)pErrorBuf->GetBufferPointer());
+				Msg					("! error: %s", pErrorBuf->GetBufferPointer());
 			else
 				Msg					("Can't compile shader hr=0x%08x", _result);
 		}

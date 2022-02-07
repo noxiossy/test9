@@ -1,4 +1,4 @@
-#ifndef TRAFFIC_OPTIMIZATION_INCLUDED
+﻿#ifndef TRAFFIC_OPTIMIZATION_INCLUDED
 #define TRAFFIC_OPTIMIZATION_INCLUDED
 
 #include "../xrCore/compression_ppmd_stream.h"

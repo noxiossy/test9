@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 
 #include "Environment.h"
 #include "xr_efflensflare.h"
@@ -8,6 +8,8 @@
 #include "IGame_Level.h"
 #include "../xrServerEntities/object_broker.h"
 #include "../xrServerEntities/LevelGameDef.h"
+
+//#include "securom_api.h"
 
 void CEnvModifier::load(IReader* fs, u32 version)
 {
@@ -338,6 +340,11 @@ void CEnvDescriptor::on_device_create()
 void CEnvDescriptor::on_device_destroy()
 {
     m_pDescriptor->OnDeviceDestroy();
+    /*
+    sky_texture.destroy ();
+    sky_texture_env.destroy ();
+    clouds_texture.destroy ();
+    */
 }
 
 //-----------------------------------------------------------------------------
@@ -447,8 +454,8 @@ void CEnvDescriptorMixer::lerp(CEnvironment*, CEnvDescriptor& A, CEnvDescriptor&
     // wind
     wind_velocity = fi*A.wind_velocity + f*B.wind_velocity;
     wind_direction = fi*A.wind_direction + f*B.wind_direction;
-    m_fSunShaftsIntensity = fi*A.m_fSunShaftsIntensity + f*B.m_fSunShaftsIntensity;
 
+    m_fSunShaftsIntensity = fi*A.m_fSunShaftsIntensity + f*B.m_fSunShaftsIntensity;
     m_fWaterIntensity = fi*A.m_fWaterIntensity + f*B.m_fWaterIntensity;
 
 #ifdef TREE_WIND_EFFECT

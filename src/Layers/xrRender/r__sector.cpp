@@ -1,4 +1,4 @@
-// Portal.cpp: implementation of the CPortal class.
+﻿// Portal.cpp: implementation of the CPortal class.
 //
 //////////////////////////////////////////////////////////////////////
 

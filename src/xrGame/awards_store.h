@@ -1,4 +1,4 @@
-#ifndef AWARD_SYSTEM_INCLUDED
+﻿#ifndef AWARD_SYSTEM_INCLUDED
 #define AWARD_SYSTEM_INCLUDED
 
 #include "../xrServerEntities/associative_vector.h"

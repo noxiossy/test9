@@ -1,4 +1,4 @@
-////////////////////////////////////////////////////////////////////////////
+﻿////////////////////////////////////////////////////////////////////////////
 //	Module 		: script_game_object_script3.cpp
 //	Created 	: 17.11.2004
 //  Modified 	: 17.11.2004
@@ -40,6 +40,7 @@
 #include "space_restriction_manager.h"
 #include "artefact.h"
 //Alundaio
+#ifdef GAME_OBJECT_EXTENDED_EXPORTS
 #include "holder_custom.h"
 #include "actor.h"
 #include "CharacterPhysicsSupport.h"
@@ -49,6 +50,7 @@
 #include "../xrEngine/feel_touch.h"
 #include "weaponammo.h"
 #include "WeaponMagazinedWGrenade.h"
+#endif
 //-Alundaio
 
 namespace MemorySpace {
@@ -1261,8 +1263,8 @@ u32 CScriptGameObject::PlayHudMotion(LPCSTR M, bool bMixIn, u32 state)
 {
 	CWeapon* Weapon = object().cast_weapon();
 	if (Weapon){
-		//if (!Weapon->IsHudAnimationExist(M))
-		//	return 0;
+		if (!Weapon->HudAnimationExist(M))
+			return 0;
 
 		return Weapon->PlayHUDMotion(M, bMixIn, Weapon, state);
 	}
@@ -1271,9 +1273,8 @@ u32 CScriptGameObject::PlayHudMotion(LPCSTR M, bool bMixIn, u32 state)
 	if (!itm)
 		return 0;
 
-	//if (!itm->IsHudAnimationExist(M))
-	//	return 0;
-        // LR_DEV REWRITE THIS
+	if (!itm->HudAnimationExist(M))
+		return 0;
 
 	return itm->PlayHUDMotion(M, bMixIn, itm, state);
 }
@@ -1468,7 +1469,7 @@ u8 CScriptGameObject::GetRestrictionType()
 	if (restr)
 		return restr->m_space_restrictor_type;
 
-	return (-1);
+	return u8(-1);
 }
 
 void CScriptGameObject::SetRestrictionType(u8 typ)

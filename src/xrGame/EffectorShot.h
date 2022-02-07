@@ -1,4 +1,4 @@
-// EffectorShot.h: interface for the CCameraShotEffector class.
+﻿// EffectorShot.h: interface for the CCameraShotEffector class.
 //
 //////////////////////////////////////////////////////////////////////
 

@@ -1,4 +1,4 @@
-// HOM.h: interface for the CHOM class.
+﻿// HOM.h: interface for the CHOM class.
 //
 //////////////////////////////////////////////////////////////////////
 #pragma once

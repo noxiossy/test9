@@ -1,4 +1,4 @@
-#ifndef XRGAMESPY_GP
+﻿#ifndef XRGAMESPY_GP
 #define XRGAMESPY_GP
 
 #include "xrGameSpy_MainDefs.h"

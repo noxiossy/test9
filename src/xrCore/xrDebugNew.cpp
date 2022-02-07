@@ -1,16 +1,17 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 
 #include "xrdebug.h"
 #include "os_clipboard.h"
 
 #include <sal.h>
 #include <dxerr.h>
-
+#include "blackbox/CrashHandler.h"
 #pragma warning(push)
 #pragma warning(disable:4995)
 #include <malloc.h>
 #include <direct.h>
 #pragma warning(pop)
+#include <intrin.h>
 
 #include "../build_config_defines.h"
 
@@ -28,7 +29,7 @@ static BOOL bException = TRUE;
 #ifndef NO_BUG_TRAP
 # define USE_BUG_TRAP
 #endif //-!NO_BUG_TRAP
-# define DEBUG_INVOKE __asm int 3
+#	define DEBUG_INVOKE	__debugbreak()
 static BOOL bException = FALSE;
 #endif
 
@@ -46,9 +47,9 @@ static BOOL bException = FALSE;
 
 #ifdef USE_BUG_TRAP
 # include <BugTrap/source/BugTrap.h> // for BugTrap functionality
-#ifndef __BORLANDC__
-# pragma comment(lib,"BugTrap.lib") // Link to ANSI DLL
-#else
+#ifdef __BORLANDC__
+//# pragma comment(lib,"BugTrap.lib") // Link to ANSI DLL
+//#else
 # pragma comment(lib,"BugTrapB.lib") // Link to ANSI DLL
 #endif
 #endif // USE_BUG_TRAP
@@ -150,10 +151,10 @@ void xrDebug::gather_info(const char* expression, const char* description, const
     memory_monitor::flush_each_time(false);
 #endif //-USE_MEMORY_MONITOR
 
-    if (!IsDebuggerPresent() && !strstr(GetCommandLine(), "-no_call_stack_assert"))
+    if (!strstr(GetCommandLine(), "-no_call_stack_assert"))
     {
         if (shared_str_initialized)
-            Msg("stack trace:\n");
+            Msg("stack trace:");
 
 #ifdef USE_OWN_ERROR_MESSAGE_WINDOW
         buffer += xr_sprintf(buffer, assertion_size - u32(buffer - buffer_base), "stack trace:%s%s", endline, endline);
@@ -318,12 +319,14 @@ void xrDebug::backend(const char* expression, const char* description, const cha
 
 LPCSTR xrDebug::error2string(long code)
 {
-    LPCSTR result = 0;
+    char* result = 0;
     static string1024 desc_storage;
 
 #ifdef _M_AMD64
 #else
-    result = DXGetErrorDescription(code);
+    WCHAR err_result[1024];
+    DXGetErrorString(code);
+    wcstombs(result, err_result, sizeof(err_result));
 #endif
     if (0 == result)
     {
@@ -478,7 +481,7 @@ void SetupExceptionHandler(const bool& dedicated)
 	SetErrorMode(prevMode|SEM_NOGPFAULTERRORBOX);
     BT_InstallSehFilter();
 #if 1//ndef USE_OWN_ERROR_MESSAGE_WINDOW
-    if (!strstr(GetCommandLine(), "-silent_error_mode"))
+    if (!dedicated && !strstr(GetCommandLine(), "-silent_error_mode"))
         BT_SetActivityType(BTA_SHOWUI);
     else
         BT_SetActivityType(BTA_SAVEREPORT);
@@ -546,6 +549,9 @@ void SetupExceptionHandler(const bool& dedicated)
 #endif // #ifndef MASTER_GOLD
 
     BT_SetDumpType(minidump_flags);
+    // BT_SetSupportEMail("cop-crash-report@stalker-game.com");
+    // BT_SetSupportServer ("localhost", 9999);
+    // BT_SetSupportURL ("www.gsc-game.com");
 }
 #endif //-USE_BUG_TRAP
 
@@ -697,14 +703,16 @@ void format_message(LPSTR buffer, const u32& buffer_size)
 }
 
 #ifndef _EDITOR
-#pragma comment( lib, "faultrep.lib" )
 #include <errorrep.h>
+#pragma comment( lib, "faultrep.lib" )
 #endif //-!_EDITOR
 
 #ifdef NO_BUG_TRAP
 //AVO: simplify function
 LONG WINAPI UnhandledFilter(_EXCEPTION_POINTERS* pExceptionInfo)
 {
+	Msg("\n%s", GetFaultReason(pExceptionInfo));
+
     string256 error_message;
     format_message(error_message, sizeof(error_message));
 
@@ -713,7 +721,7 @@ LONG WINAPI UnhandledFilter(_EXCEPTION_POINTERS* pExceptionInfo)
     *pExceptionInfo->ContextRecord = save;
 
     if (shared_str_initialized)
-        Msg("stack trace:\n");
+        Msg("stack trace:");
 
     if (!IsDebuggerPresent())
     {
@@ -872,7 +880,7 @@ void xrDebug::_initialize (const bool& dedicated)
 #else
 typedef int(__cdecl* _PNH)(size_t);
 _CRTIMP int __cdecl _set_new_mode(int);
-_CRTIMP _PNH __cdecl _set_new_handler(_PNH);
+//_CRTIMP _PNH __cdecl _set_new_handler(_PNH);
 
 #ifdef LEGACY_CODE
 #ifndef USE_BUG_TRAP

@@ -1,4 +1,4 @@
-#ifndef XR_DSA_SIGNER_INCLUDED
+﻿#ifndef XR_DSA_SIGNER_INCLUDED
 #define XR_DSA_SIGNER_INCLUDED
 
 #include "../3rd party/crypto/crypto.h"

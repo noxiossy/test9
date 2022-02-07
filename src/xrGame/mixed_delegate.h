@@ -1,4 +1,4 @@
-#ifndef MIXED_DELEGATE_INCLUDED
+﻿#ifndef MIXED_DELEGATE_INCLUDED
 #define MIXED_DELEGATE_INCLUDED
 
 #include "../xrCore/fastdelegate.h"

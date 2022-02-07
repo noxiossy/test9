@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "alife_abstract_registry.h"
 
 class CMapLocation;

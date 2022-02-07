@@ -1,4 +1,4 @@
-// BlenderDefault.h: interface for the CBlenderDefault class.
+﻿// BlenderDefault.h: interface for the CBlenderDefault class.
 //
 //////////////////////////////////////////////////////////////////////
 

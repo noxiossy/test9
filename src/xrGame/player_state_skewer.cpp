@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "player_state_skewer.h"
 #include "game_base.h"
 #include "game_state_accumulator.h"

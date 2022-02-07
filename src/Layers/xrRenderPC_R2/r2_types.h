@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 // r3xx code-path (MRT)
 #define		r2_RT_depth			"$user$depth"			// MRT

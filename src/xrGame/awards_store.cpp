@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "awards_store.h"
 #include "GameSpy/GameSpy_Full.h"
 #include "GameSpy/GAmeSpy_SAKE.h"

@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "../../entity.h"
 #include "../../../Include/xrRender/KinematicsAnimated.h"

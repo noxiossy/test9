@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "inventory_item_object.h"
 

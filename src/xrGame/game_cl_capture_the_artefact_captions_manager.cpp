@@ -1,4 +1,4 @@
-#include "StdAfx.h"
+﻿#include "StdAfx.h"
 #include "string_table.h"
 #include "Level.h"
 #include "ui/TeamInfo.h"

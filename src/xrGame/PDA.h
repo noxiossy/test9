@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "../xrEngine/feel_touch.h"
 #include "inventory_item_object.h"

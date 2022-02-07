@@ -1,4 +1,4 @@
-#include "stdafx.h"
+п»ї#include "stdafx.h"
 #include "grenade.h"
 #include "../xrphysics/PhysicsShell.h"
 //.#include "WeaponHUD.h"
@@ -33,7 +33,7 @@ void CGrenade::Load(LPCSTR section)
 	m_sounds.LoadSound(section,"snd_checkout", "sndCheckout", false, m_eSoundCheckout);
 
 	//////////////////////////////////////
-	//время убирания оружия с уровня
+	//РІСЂРµРјСЏ СѓР±РёСЂР°РЅРёСЏ РѕСЂСѓР¶РёСЏ СЃ СѓСЂРѕРІРЅСЏ
 	if(pSettings->line_exist(section,"grenade_remove_time"))
 		m_dwGrenadeRemoveTime = pSettings->r_u32(section,"grenade_remove_time");
 	else
@@ -94,7 +94,7 @@ void CGrenade::OnH_A_Chield()
 	inherited::OnH_A_Chield				();
 }
 
-void CGrenade::State(u32 state) 
+void CGrenade::State(u32 state, u32 old_state) 
 {
 	switch (state)
 	{
@@ -124,7 +124,7 @@ void CGrenade::State(u32 state)
 			};
 		}break;
 	};
-	inherited::State( state );
+	inherited::State( state, old_state );
 }
 
 bool CGrenade::DropGrenade()
@@ -143,9 +143,12 @@ bool CGrenade::DropGrenade()
 }
 
 void CGrenade::DiscardState()
-{
-	if(IsGameTypeSingle() && (GetState()==eReady || GetState()==eThrow) )
-		OnStateSwitch(eIdle);
+{	
+	u32 state = GetState();
+	if (state==eReady || state==eThrow)
+	{
+		OnStateSwitch(eIdle, state);
+	}
 }
 
 void CGrenade::SendHiddenItem						()
@@ -178,7 +181,7 @@ void CGrenade::Throw()
 	if (pGrenade) 
 	{
 		pGrenade->set_destroy_time(m_dwDestroyTimeMax);
-//установить ID того кто кинул гранату
+//СѓСЃС‚Р°РЅРѕРІРёС‚СЊ ID С‚РѕРіРѕ РєС‚Рѕ РєРёРЅСѓР» РіСЂР°РЅР°С‚Сѓ
 		pGrenade->SetInitiator( H_Parent()->ID() );
 	}
 	inherited::Throw			();
@@ -224,7 +227,7 @@ void CGrenade::PutNextToSlot()
 	if (OnClient()) return;
 
 	VERIFY									(!getDestroy());
-	//выкинуть гранату из инвентаря
+	//РІС‹РєРёРЅСѓС‚СЊ РіСЂР°РЅР°С‚Сѓ РёР· РёРЅРІРµРЅС‚Р°СЂСЏ
 	NET_Packet						P;
 	if (m_pInventory)
 	{
@@ -283,10 +286,10 @@ void CGrenade::UpdateCL()
 bool CGrenade::Action(u16 cmd, u32 flags) 
 {
 	if(inherited::Action(cmd, flags)) return true;
-
+/*
 	switch(cmd) 
 	{
-	//переключение типа гранаты
+	//РїРµСЂРµРєР»СЋС‡РµРЅРёРµ С‚РёРїР° РіСЂР°РЅР°С‚С‹
 	case kWPN_NEXT:
 		{
             if(flags&CMD_START) 
@@ -311,7 +314,7 @@ bool CGrenade::Action(u16 cmd, u32 flags)
 			}
 			return true;
 		};
-	}
+	}*/
 	return false;
 }
 

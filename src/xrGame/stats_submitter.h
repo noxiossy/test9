@@ -1,4 +1,4 @@
-#ifndef STATS_SUBMITTER_INCLUDED
+﻿#ifndef STATS_SUBMITTER_INCLUDED
 #define STATS_SUBMITTER_INCLUDED
 
 #include <boost/noncopyable.hpp>

@@ -1,4 +1,4 @@
-#include "hxGridInterface.h"
+﻿#include "hxGridInterface.h"
 #include "assert.h"
 
 typedef IGridUser* (__cdecl TCreateGridUserObject)(DWORD version);

@@ -1,4 +1,4 @@
-////////////////////////////////////////////////////////////////////////////
+﻿////////////////////////////////////////////////////////////////////////////
 //	Module 		: stalker_animation_legs.cpp
 //	Created 	: 25.02.2003
 //  Modified 	: 19.11.2004
@@ -150,10 +150,9 @@ MotionID CStalkerAnimationManager::legs_move_animation		()
 		(movement.mental_state() != eMentalStateFree)
 	);
 
-	if (eMentalStateDanger != movement.mental_state())
-	{
+	if (eMentalStateDanger != movement.mental_state()) {
 		m_target_speed			= movement.speed(eMovementDirectionForward);
-		m_last_non_zero_speed	= m_target_speed; 
+		m_last_non_zero_speed	= m_target_speed;
 
 		//Alun: Sprint stalker fix
 		if (movement.movement_type() == eMovementTypeRun && movement.mental_state() == eMentalStatePanic)

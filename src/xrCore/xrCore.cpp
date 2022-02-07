@@ -1,4 +1,4 @@
-// xrCore.cpp : Defines the entry point for the DLL application.
+﻿// xrCore.cpp : Defines the entry point for the DLL application.
 //
 #include "stdafx.h"
 #pragma hdrstop
@@ -6,8 +6,9 @@
 #include <mmsystem.h>
 #include <objbase.h>
 #include "xrCore.h"
+
 #pragma comment(lib,"winmm.lib")
- 
+
 #ifdef DEBUG
 # include <malloc.h>
 #endif // DEBUG
@@ -48,8 +49,8 @@ void xrCore::_initialize(LPCSTR _ApplicationName, LogCallback cb, BOOL init_fs, 
 		if (strstr(Params, "-verboselog"))
 			ParamFlags.set(ParamFlag::verboselog, TRUE);
 
-        //if (!strstr(Params, "-editor"))
-        //    CoInitializeEx(NULL, COINIT_MULTITHREADED);
+        if (!strstr(Params, "-editor"))
+            CoInitializeEx(NULL, COINIT_MULTITHREADED);
 
         string_path fn, dr, di;
 
@@ -180,8 +181,8 @@ BOOL WINAPI DllMain(HINSTANCE hinstDLL, DWORD ul_reason_for_call, LPVOID lpvRese
         //. LogFile.reserve (256);
     break;
     case DLL_THREAD_ATTACH:
-       // if (!strstr(GetCommandLine(), "-editor"))
-       //     CoInitializeEx(NULL, COINIT_MULTITHREADED);
+        if (!strstr(GetCommandLine(), "-editor"))
+            CoInitializeEx(NULL, COINIT_MULTITHREADED);
         timeBeginPeriod(1);
         break;
     case DLL_THREAD_DETACH:

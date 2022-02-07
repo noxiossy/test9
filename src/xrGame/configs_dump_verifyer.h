@@ -1,4 +1,4 @@
-#ifndef CONFIGS_DUMP_VERIFYER
+﻿#ifndef CONFIGS_DUMP_VERIFYER
 #define CONFIGS_DUMP_VERIFYER
 
 #include "mp_config_sections.h"

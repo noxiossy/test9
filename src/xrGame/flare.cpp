@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "flare.h"
 #include "player_hud.h"
 #include "../xrEngine/LightAnimLibrary.h"
@@ -41,9 +41,9 @@ bool CFlare::IsFlareActive()
 	return ( GetState()==eFlareIdle );
 }
 
-void CFlare::OnStateSwitch(u32 S)
+void CFlare::OnStateSwitch(u32 S, u32 oldState)
 {
-	inherited::OnStateSwitch(S);
+	inherited::OnStateSwitch(S, oldState);
 
 	switch(S)
 	{
@@ -55,8 +55,11 @@ void CFlare::OnStateSwitch(u32 S)
 		}break;
 	case eFlareHiding:
 		{
-			PlayHUDMotion				("anm_hide", TRUE, this, GetState());
-			SetPending					(TRUE);
+			if (oldState != eFlareHiding)
+			{
+				PlayHUDMotion				("anm_hide", TRUE, this, GetState());
+				SetPending					(TRUE);
+			}
 		}break;
 	case eFlareIdle:
 		{

@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "UIHudStatesWnd.h"
 
 #include "../Actor.h"
@@ -95,8 +95,6 @@ void CUIHudStatesWnd::InitFromXml( CUIXml& xml, LPCSTR path )
 	XML_NODE* new_root = xml.NavigateToNode( path, 0 );
 	xml.SetLocalRoot( new_root );
 
-//m_actor_icon      = UIHelper::CreateStatic( xml, "actor_icon", this );
-   //     m_actor_icon->AttachChild(&m_actor_info_hud);
 
 	m_back            = UIHelper::CreateStatic( xml, "back", this );
 	m_ui_health_bar   = UIHelper::CreateProgressBar( xml, "progress_bar_health", this );
@@ -244,8 +242,6 @@ void CUIHudStatesWnd::UpdateHealth( CActor* actor )
 //		m_timer_1sec = Device.dwTimeGlobal;
 //	}
 	
-      //  m_actor_info_hud.InitCharacterInfo(Fvector2().set(0, 0), m_actor_icon->GetWndSize(), "talk_character.xml");
-
 	float cur_health = actor->GetfHealth();
 	m_ui_health_bar->SetProgressPos(iCeil(cur_health * 100.0f * 35.f) / 35.f);
 	if ( _abs(cur_health - m_last_health) > m_health_blink )
@@ -358,11 +354,11 @@ void CUIHudStatesWnd::UpdateActiveItemInfo( CActor* actor )
 		CWeaponMagazined* wpnm = smart_cast<CWeaponMagazined*>(item);
 		if (wpnm)
 		{
-			if (wpnm->m_ammoType == 0)
+			if (wpnm->m_ammoType.type1 == 0)
 				m_ui_weapon_fmj_ammo->SetTextColor(color_rgba(238, 155, 23, 255));
-			else if (wpnm->m_ammoType == 1)
+			else if (wpnm->m_ammoType.type1 == 1)
 				m_ui_weapon_ap_ammo->SetTextColor(color_rgba(238, 155, 23, 255));
-			else if (wpnm->m_ammoType == 2)
+			else if (wpnm->m_ammoType.type1 == 2)
 				m_ui_weapon_third_ammo->SetTextColor(color_rgba(238, 155, 23, 255));
 		}
 		//-Alundaio
@@ -529,12 +525,12 @@ void CUIHudStatesWnd::UpdateZones()
 			if ( dist_to_zone < rad_zone )
 			{
 				fRelPow *= 0.3f;
-				fRelPow *= ( 2.5f - 2.0f * power ); // çâóê çàâèñèò îò ñèëû çîíû
+				fRelPow *= ( 2.5f - 2.0f * power ); // звук зависит от силы зоны
 			}
 		}
 		clamp( fRelPow, 0.0f, 1.0f );
 
-		//îïðåäåëèòü òåêóùóþ ÷àñòîòó ñðàáàòûâàíèÿ ñèãíàëà
+		//определить текущую частоту срабатывания сигнала
 		zone_info.cur_period = zone_type->freq.x + (zone_type->freq.y - zone_type->freq.x) * (fRelPow * fRelPow);
 		
 		//string256	buff_z;

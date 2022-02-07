@@ -1,4 +1,4 @@
-// Last update: June 20, 2001
+﻿// Last update: June 20, 2001
 
 #ifdef _MSC_VER
 # pragma once

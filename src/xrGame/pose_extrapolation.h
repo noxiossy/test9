@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "../xrphysics/CycleConstStorage.h"
 namespace extrapolation

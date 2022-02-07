@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 IC	CEntityCondition &CEntityAlive::conditions	() const
 {

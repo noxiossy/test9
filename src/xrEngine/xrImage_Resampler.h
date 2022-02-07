@@ -1,4 +1,4 @@
-#ifndef xrImage_ResamplerH
+﻿#ifndef xrImage_ResamplerH
 #define xrImage_ResamplerH
 
 #pragma once

@@ -1,4 +1,4 @@
-#ifndef REWARD_EVENT_HANDLER
+﻿#ifndef REWARD_EVENT_HANDLER
 #define REWARD_EVENT_HANDLER
 
 #include "game_state_accumulator.h"

@@ -1,4 +1,4 @@
-#ifndef EXTENDED_GEOM
+﻿#ifndef EXTENDED_GEOM
 #define EXTENDED_GEOM
 
 #ifndef	dSINGLE

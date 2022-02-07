@@ -1,4 +1,4 @@
-#ifndef PPMD_COMPRESSOR_H
+﻿#ifndef PPMD_COMPRESSOR_H
 #define PPMD_COMPRESSOR_H
 
 #include "fastdelegate.h"

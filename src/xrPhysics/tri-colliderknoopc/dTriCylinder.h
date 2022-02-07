@@ -1,4 +1,4 @@
-#ifndef D_TRI_CYLINDER_H
+﻿#ifndef D_TRI_CYLINDER_H
 #define D_TRI_CYLINDER_H
 #include "../dCylinder/dCylinder.h"
 #include "TriPrimitiveCollideClassDef.h"

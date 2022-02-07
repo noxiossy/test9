@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #ifndef	dSINGLE
  #define dSINGLE
 #endif
@@ -20,7 +20,7 @@ class CPHAICharacter;
 namespace ALife {
 	enum EHitType;
 };
- static enum EEnvironment
+ enum EEnvironment
 			{
 				peOnGround,
 				peAtWall,

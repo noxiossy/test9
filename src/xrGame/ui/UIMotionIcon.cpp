@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "UIMainIngameWnd.h"
 #include "UIMotionIcon.h"
 #include "UIXmlInit.h"
@@ -64,6 +64,7 @@ void CUIMotionIcon::SetNoise(float Pos)
 {
 	if (!IsShown())
 		return;
+
 	Pos	= clampr(Pos, 0.f, 100.f);
 	m_noise_progress.SetPos(Pos/100.f);
 }
@@ -72,6 +73,7 @@ void CUIMotionIcon::SetLuminosity(float Pos)
 {
 	if (!IsShown())
 		return;
+
 	m_luminosity	= Pos;
 }
 

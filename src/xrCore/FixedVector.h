@@ -1,4 +1,4 @@
-#ifndef FixedVectorH
+﻿#ifndef FixedVectorH
 #define FixedVectorH
 #pragma once
 

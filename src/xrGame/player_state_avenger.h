@@ -1,4 +1,4 @@
-#ifndef PLAYER_STATE_AVENGER
+﻿#ifndef PLAYER_STATE_AVENGER
 #define PLAYER_STATE_AVENGER
 
 #include "player_state_param.h"

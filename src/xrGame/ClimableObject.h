@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "physicsshellholder.h"
 #include "../xrphysics/iclimableobject.h"
 class IPHStaticGeomShell;

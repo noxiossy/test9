@@ -1,4 +1,4 @@
-/* lzo_ptr.h -- low-level pointer constructs
+﻿/* lzo_ptr.h -- low-level pointer constructs
 
    This file is part of the LZO real-time data compression library.
 

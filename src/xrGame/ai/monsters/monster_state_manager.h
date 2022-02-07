@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "state_manager.h"
 #include "state.h"
 

@@ -1,12 +1,10 @@
-#include "stdafx.h"
-#pragma hdrstop
-
+﻿#include "stdafx.h"
 #include "xrstring.h"
 
 #include "FS_impl.h"
 
-XRCORE_API extern str_container* g_pStringContainer = NULL;
-#define HEADER 16 // ref + len + crc + next
+XRCORE_API	extern		str_container*	g_pStringContainer	= NULL;
+const int HEADER = sizeof(str_value);// ref + len + crc + next
 
 #if 1
 

@@ -1,4 +1,4 @@
-#ifndef PLAYER_ACCOUNT_H
+﻿#ifndef PLAYER_ACCOUNT_H
 #define PLAYER_ACCOUNT_H
 
 #include "profile_data_types.h"

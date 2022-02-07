@@ -1,4 +1,4 @@
-template<typename TypeListElement>
+﻿template<typename TypeListElement>
 void game_state_accumulator::init_acpv_list()
 {
 	STATIC_CHECK(Loki::TL::is_Typelist<TypeListElement>::value,

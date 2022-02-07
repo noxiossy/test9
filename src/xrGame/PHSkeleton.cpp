@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "PHSkeleton.h"
 #include "PhysicsShellHolder.h"
 #include "xrServer_Objects_ALife.h"

@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "uistaticitem.h"
 #include "ui/uiabstract.h"

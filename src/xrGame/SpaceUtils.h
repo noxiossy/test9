@@ -1,4 +1,4 @@
-#ifndef SPACE_UTILS_H
+﻿#ifndef SPACE_UTILS_H
 #define SPACE_UTILS_H
 #pragma warning(disable:4995)
 #pragma warning(disable:4267)

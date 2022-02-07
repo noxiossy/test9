@@ -1,4 +1,4 @@
-#ifndef xr_sharedH
+﻿#ifndef xr_sharedH
 #define xr_sharedH
 #pragma once
 

@@ -1,4 +1,4 @@
- /*
+﻿ /*
 GameSpy GHTTP SDK 
 Dan "Mr. Pants" Schoenblum
 dan@gamespy.com

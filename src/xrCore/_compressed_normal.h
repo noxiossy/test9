@@ -1,4 +1,4 @@
-#ifndef _COMPR_NORMAL_
+﻿#ifndef _COMPR_NORMAL_
 #define _COMPR_NORMAL_
 
 // A Unit Vector to 16-bit word conversion algorithm

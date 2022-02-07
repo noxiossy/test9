@@ -1,4 +1,4 @@
-#ifndef STATE_PREDICATES_INCLUDED
+﻿#ifndef STATE_PREDICATES_INCLUDED
 #define STATE_PREDICATES_INCLUDED
 
 namespace award_system

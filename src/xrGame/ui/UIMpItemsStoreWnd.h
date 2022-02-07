@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "../../xrServerEntities/object_interfaces.h"
 #include "UIBuyWndShared.h"
 

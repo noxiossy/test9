@@ -1,4 +1,4 @@
-#ifndef	FactoryPtr_included
+﻿#ifndef	FactoryPtr_included
 #define FactoryPtr_included
 #pragma once
 

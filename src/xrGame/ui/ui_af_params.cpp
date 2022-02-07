@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "ui_af_params.h"
 #include "UIStatic.h"
 
@@ -41,7 +41,8 @@ LPCSTR af_immunity_section_names[] = // ALife::EInfluenceType
 	"chemical_burn_immunity",	// infl_acid=2
 	"telepatic_immunity",		// infl_psi=3
 	"shock_immunity",			// infl_electra=4
-	
+
+	//Alundaio: Uncommented
 	"wound_immunity",		
 	"fire_wound_immunity",
 	"explosion_immunity",

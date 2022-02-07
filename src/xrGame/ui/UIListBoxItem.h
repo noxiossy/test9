@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "UIFrameLineWnd.h"
 
 class CUITextWnd;

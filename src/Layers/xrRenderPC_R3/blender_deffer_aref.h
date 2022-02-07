@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 class CBlender_deffer_aref : public IBlender  
 {

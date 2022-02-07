@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "uiFrameLineWnd.h"
 
 class CUIScrollBox :public CUIFrameLineWnd

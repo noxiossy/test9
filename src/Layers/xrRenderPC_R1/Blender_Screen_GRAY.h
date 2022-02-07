@@ -1,4 +1,4 @@
-// Blender_Screen_GRAY.h: interface for the CBlender_Screen_GRAY class.
+﻿// Blender_Screen_GRAY.h: interface for the CBlender_Screen_GRAY class.
 //
 //////////////////////////////////////////////////////////////////////
 

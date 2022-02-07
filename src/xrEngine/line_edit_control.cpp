@@ -1,4 +1,4 @@
-////////////////////////////////////////////////////////////////////////////
+﻿////////////////////////////////////////////////////////////////////////////
 // Module : line_edit_control.cpp
 // Created : 21.02.2008
 // Author : Evgeniy Sokolov
@@ -809,7 +809,7 @@ void remove_spaces(PSTR str) // in & out
         while (a < str_size && str[a] == ' ') { ++a; }
         b = a;
         while (b < str_size && str[b] != ' ') { ++b; }
-        strncpy_s(new_str + i, str_size + 1, str + a, b - a);
+		strncpy_s( new_str + i, str_size+1 - i, str + a, b - a );
         i += (b - a);
         if (i < str_size)
         {

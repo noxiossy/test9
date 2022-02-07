@@ -1,4 +1,4 @@
-// trackDlg.cpp : implementation file
+﻿// trackDlg.cpp : implementation file
 //
 
 #include "stdafx.h"

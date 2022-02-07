@@ -1,4 +1,4 @@
-/*
+﻿/*
  * $Id:$
  * Generic version: no threads.
  * by Wolfram Gloger 2004

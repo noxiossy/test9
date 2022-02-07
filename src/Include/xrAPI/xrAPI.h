@@ -1,4 +1,4 @@
-#ifndef	xrApi_included
+﻿#ifndef	xrApi_included
 #define xrApi_included
 #pragma once
 

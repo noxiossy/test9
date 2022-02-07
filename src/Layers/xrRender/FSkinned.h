@@ -1,4 +1,4 @@
-// SkeletonX.h: interface for the CSkeletonX class.
+﻿// SkeletonX.h: interface for the CSkeletonX class.
 //
 //////////////////////////////////////////////////////////////////////
 

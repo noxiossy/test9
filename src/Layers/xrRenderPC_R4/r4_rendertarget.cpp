@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "../xrRender/resourcemanager.h"
 #include "blender_light_occq.h"
 #include "blender_light_mask.h"
@@ -15,11 +15,10 @@
 #include "../xrRenderDX10/msaa/dx10MSAABlender.h"
 #include "../xrRenderDX10/DX10 Rain/dx10RainBlender.h"
 
-#include "blender_aa.h"
 
 #include "../xrRender/dxRenderDeviceRender.h"
 
-#include <D3DX10Tex.h>
+#include <d3dx/D3DX10Tex.h>
 
 void	CRenderTarget::u_setrt			(const ref_rt& _1, const ref_rt& _2, const ref_rt& _3, ID3DDepthStencilView* zb)
 {
@@ -289,7 +288,7 @@ CRenderTarget::CRenderTarget		()
 	param_noise_fps		= 25.f;
 	param_noise_scale	= 1.f;
 
-	im_noise_time		= 1/100.0f; //Alundaio should be float?
+	im_noise_time		= 1.f/100.0f;
 	im_noise_shift_w	= 0;
 	im_noise_shift_h	= 0;
 
@@ -317,7 +316,6 @@ CRenderTarget::CRenderTarget		()
 	b_luminance				= xr_new<CBlender_luminance>		();
 	b_combine				= xr_new<CBlender_combine>			();
 	b_ssao					= xr_new<CBlender_SSAO_noMSAA>		();
-	b_fxaa = xr_new<CBlender_FXAA>();
 
 	// HDAO
 	b_hdao_cs               = xr_new<CBlender_CS_HDAO>			();
@@ -403,12 +401,11 @@ CRenderTarget::CRenderTarget		()
 		// generic(LDR) RTs
 		rt_Generic_0.create		(r2_RT_generic0,w,h,D3DFMT_A8R8G8B8, 1		);
 		rt_Generic_1.create		(r2_RT_generic1,w,h,D3DFMT_A8R8G8B8, 1		);
-		rt_Generic.create(r2_RT_generic, w, h, D3DFMT_A8R8G8B8, 1);
-
 		if( RImplementation.o.dx10_msaa )
 		{
 			rt_Generic_0_r.create			(r2_RT_generic0_r,w,h,D3DFMT_A8R8G8B8, SampleCount	);
 			rt_Generic_1_r.create			(r2_RT_generic1_r,w,h,D3DFMT_A8R8G8B8, SampleCount		);
+			rt_Generic.create		      (r2_RT_generic,w,h,   D3DFMT_A8R8G8B8, 1		);
 		}
 		//	Igor: for volumetric lights
 		//rt_Generic_2.create			(r2_RT_generic2,w,h,D3DFMT_A8R8G8B8		);
@@ -598,9 +595,6 @@ CRenderTarget::CRenderTarget		()
 		}
 		f_bloom_factor				= 0.5f;
 	}
-
-	s_fxaa.create(b_fxaa, "r3\\fxaa");
-	g_fxaa.create(FVF::F_V, RCache.Vertex.Buffer(), RCache.QuadIB);
 
 	// TONEMAP
 	{
@@ -908,7 +902,7 @@ CRenderTarget::CRenderTarget		()
 			descHBAO.CPUAccessFlags = 0;
 			descHBAO.MiscFlags = 0;
 
-			it = TEX_jitter_count-1;
+			int it = TEX_jitter_count-1;
 			subData[it].pSysMem = tempDataHBAO;
 			subData[it].SysMemPitch = descHBAO.Width*sampleSize * sizeof(float);
 
@@ -1068,7 +1062,6 @@ CRenderTarget::~CRenderTarget	()
 	xr_delete					(b_accum_mask			);
 	xr_delete					(b_occq					);
 	xr_delete					(b_hdao_cs				);
-	xr_delete(b_fxaa);
 	if( RImplementation.o.dx10_msaa )
 	{
         xr_delete( b_hdao_msaa_cs );
@@ -1117,9 +1110,9 @@ bool CRenderTarget::need_to_render_sunshafts()
 
 	{
 		CEnvDescriptor&	E = *g_pGamePersistent->Environment().CurrentEnv;
-		float fValue = E.m_fSunShaftsIntensity;
-		//	TODO: add multiplication by sun color here
-		if (fValue<0.0001) return false;
+		Fcolor sun_color= ((light*)RImplementation.Lights.sun_adapted._get())->color; //dsh:
+		float fValue = E.m_fSunShaftsIntensity * u_diffuse2s(sun_color.r,sun_color.g,sun_color.b);
+		if (fValue<EPS) return false;
 	}
 
 	return true;

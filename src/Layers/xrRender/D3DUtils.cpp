@@ -1,7 +1,7 @@
-// file: D3DUtils.cpp
+п»ї// file: D3DUtils.cpp
 
 #include "stdafx.h"
-#pragma hdrstop
+
 
 #include "../../xrEngine/gamefont.h"
 #include "d3dutils.h"
@@ -15,12 +15,12 @@
 
 #pragma warning(push)
 #pragma warning(disable:4995)
-#include "d3dx9.h"
+#include <d3dx/d3dx9.h>
 #pragma warning(pop)
 
 CDrawUtilities DUImpl;
 
-#define LINE_DIVISION  32  // не меньше 6!!!!!
+#define LINE_DIVISION  32  // РЅРµ РјРµРЅСЊС€Рµ 6!!!!!
 // for drawing sphere
 static Fvector circledef1[LINE_DIVISION];
 static Fvector circledef2[LINE_DIVISION];

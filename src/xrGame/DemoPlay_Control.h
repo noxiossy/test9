@@ -1,4 +1,4 @@
-#ifndef DEMOPLAY_CONTROL
+﻿#ifndef DEMOPLAY_CONTROL
 #define DEMOPLAY_CONTROL
 
 

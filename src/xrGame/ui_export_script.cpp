@@ -1,4 +1,4 @@
-#include "pch_script.h"
+﻿#include "pch_script.h"
 
 #include "script_ui_registrator.h"
 #include "MainMenu.h"

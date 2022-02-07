@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 class CBlender_SSAO : public IBlender  
 {

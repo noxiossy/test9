@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "monster_state_hitted_hide.h"
 #include "monster_state_hitted_moveout.h"

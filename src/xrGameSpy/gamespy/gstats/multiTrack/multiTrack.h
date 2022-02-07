@@ -1,4 +1,4 @@
-// multiTrack.h : main header file for the MULTITRACK application
+﻿// multiTrack.h : main header file for the MULTITRACK application
 //
 
 #if !defined(AFX_MULTITRACK_H__6EF40CA1_83C8_448A_883A_63AF15457C5E__INCLUDED_)

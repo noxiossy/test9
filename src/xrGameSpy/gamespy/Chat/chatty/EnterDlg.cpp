@@ -1,4 +1,4 @@
-// EnterDlg.cpp : implementation file
+﻿// EnterDlg.cpp : implementation file
 //
 
 #include "stdafx.h"

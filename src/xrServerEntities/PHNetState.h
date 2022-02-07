@@ -1,4 +1,4 @@
-#ifndef  PHNETSTATE_H
+﻿#ifndef  PHNETSTATE_H
 #define  PHNETSTATE_H
 
 class NET_Packet;

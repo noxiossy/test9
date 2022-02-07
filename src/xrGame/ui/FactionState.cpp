@@ -1,4 +1,4 @@
-////////////////////////////////////////////////////////////////////////////
+ï»¿////////////////////////////////////////////////////////////////////////////
 //	Module 		: FactionState.cpp
 //	Created 	: 22.01.2008
 //	Author		: Evgeniy Sokolov
@@ -103,9 +103,9 @@ void FactionState::update_info()
 	CActor* pActor = smart_cast<CActor*>( Level().CurrentEntity() );
 	if ( pActor )
 	{
-		CHARACTER_COMMUNITY		char_ñomm;
-		char_ñomm.set( m_id );
-		m_actor_goodwill = RELATION_REGISTRY().GetCommunityGoodwill( char_ñomm.index(), pActor->object_id() );
+		CHARACTER_COMMUNITY		char_Ñomm;
+		char_Ñomm.set( m_id );
+		m_actor_goodwill = RELATION_REGISTRY().GetCommunityGoodwill( char_Ñomm.index(), pActor->object_id() );
 	}
 	ResetStates();
 

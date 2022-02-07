@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "actor.h"
 #include "customdetector.h"
 #include "weapon.h"
@@ -49,6 +49,7 @@ void CActor::OnEvent(NET_Packet& P, u16 type)
 			{
 				Obj->H_SetParent		(smart_cast<CObject*>(this));
 				inventory().Take	(_GO, false, true);
+			
 				SelectBestWeapon(Obj);
 			}
 			else
@@ -78,12 +79,6 @@ void CActor::OnEvent(NET_Packet& P, u16 type)
 			Obj->SetTmpPreDestroy			(just_before_destroy);
 			
 			CGameObject * GO = smart_cast<CGameObject*>(Obj);
-			
-#ifdef MP_LOGGING
-			string64 act;
-			xr_strcpy( act, (type == GE_TRADE_SELL)? "sells" : "rejects" );
-			Msg("--- Actor [%d][%s]  %s  [%d][%s]", ID(), Name(), act, GO->ID(), GO->cNameSect().c_str());
-#endif // MP_LOGGING
 			
 			VERIFY( GO->H_Parent() );
 			if ( !GO->H_Parent() )

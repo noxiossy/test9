@@ -1,4 +1,4 @@
-#ifndef ACTOR_MP_CLIENT_H
+﻿#ifndef ACTOR_MP_CLIENT_H
 #define ACTOR_MP_CLIENT_H
 
 #include "actor.h"

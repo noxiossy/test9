@@ -1,4 +1,4 @@
-#ifndef	dx10ShaderResourceStateCache_included
+﻿#ifndef	dx10ShaderResourceStateCache_included
 #define	dx10ShaderResourceStateCache_included
 #pragma once
 

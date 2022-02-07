@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 class	CLight_Compute_XFORM_and_VIS
 {

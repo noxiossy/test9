@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 enum GAME_MENU_EVENTS
 {
 	PLAYER_SELECT_SPECTATOR,

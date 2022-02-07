@@ -1,4 +1,4 @@
-#ifndef PLAYER_STATE_SKEWER_INCLUDED
+﻿#ifndef PLAYER_STATE_SKEWER_INCLUDED
 #define PLAYER_STATE_SKEWER_INCLUDED
 
 #include "player_state_param.h"

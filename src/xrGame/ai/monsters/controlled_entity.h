@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "controller/controller.h"
 
 class CEntity;

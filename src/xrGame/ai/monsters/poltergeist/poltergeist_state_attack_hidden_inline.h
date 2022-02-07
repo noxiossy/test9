@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "../../../sound_player.h"
 #include "../../../../xrCore/_vector3d_ext.h"

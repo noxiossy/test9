@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "uiwindow.h"
 
 class CUI3tButton;

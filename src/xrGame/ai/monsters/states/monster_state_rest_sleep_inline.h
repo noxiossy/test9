@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #define TEMPLATE_SPECIALIZATION template <\
 	typename _Object\

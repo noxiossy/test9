@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 struct XRPHYSICS_API ph_console
 {

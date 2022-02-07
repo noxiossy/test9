@@ -1,4 +1,4 @@
-/////////////////////////////////////////////////////////////////////////////////////////////////////
+п»ї/////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 #include "StdAfx.h"
 #include "PHDynamicData.h"
@@ -1165,7 +1165,7 @@ void CPHShell::EnabledCallbacks(BOOL val)
 
 
 template< typename T>
-void for_each_bone_id( IKinematics &K, T op )
+void for_each_bone_id( IKinematics &K, const T& op )
 {
 	u16 bn =  K.LL_BoneCount();
 	for(u16 i = 0; i < bn; ++i )
@@ -1206,7 +1206,7 @@ void CPHShell::SetCallbacks( )
 	{
 		IKinematics &K;
 		set_bone_reference( IKinematics &K_ ): K( K_ ){}
-		void operator() ( u16 id )
+		void operator() ( u16 id ) const
 		{
 			CBoneInstance &bi  = K.LL_GetBoneInstance(id);
 			if(!bi.callback() || bi.callback_type() != bctPhysics  )
@@ -1731,10 +1731,10 @@ void CPHShell::SetIgnoreRagDoll()
 }
 
 
-	//Делает данный физический объек анимированным 
+	//Р”РµР»Р°РµС‚ РґР°РЅРЅС‹Р№ С„РёР·РёС‡РµСЃРєРёР№ РѕР±СЉРµРє Р°РЅРёРјРёСЂРѕРІР°РЅРЅС‹Рј 
 void CPHShell::CreateShellAnimator( CInifile* ini, LPCSTR section )
 {	
-	//Для фильтра коллизий относим данный объект к классу анимированных
+	//Р”Р»СЏ С„РёР»СЊС‚СЂР° РєРѕР»Р»РёР·РёР№ РѕС‚РЅРѕСЃРёРј РґР°РЅРЅС‹Р№ РѕР±СЉРµРєС‚ Рє РєР»Р°СЃСЃСѓ Р°РЅРёРјРёСЂРѕРІР°РЅРЅС‹С…
 	CPHCollideValidator::SetAnimatedClass(*this);
 	m_pPhysicsShellAnimatorC=xr_new<CPhysicsShellAnimator>( this,  ini, section );
 	VERIFY( PhysicsRefObject( ) );
@@ -1742,17 +1742,17 @@ void CPHShell::CreateShellAnimator( CInifile* ini, LPCSTR section )
 	//m_pPhysicsShellAnimatorC->ResetCallbacks();
 }
 
-//Настраивает фильтр коллизий на игнорирование столкновенний данного
-//физического объекта с анимированным физическим объектом
+//РќР°СЃС‚СЂР°РёРІР°РµС‚ С„РёР»СЊС‚СЂ РєРѕР»Р»РёР·РёР№ РЅР° РёРіРЅРѕСЂРёСЂРѕРІР°РЅРёРµ СЃС‚РѕР»РєРЅРѕРІРµРЅРЅРёР№ РґР°РЅРЅРѕРіРѕ
+//С„РёР·РёС‡РµСЃРєРѕРіРѕ РѕР±СЉРµРєС‚Р° СЃ Р°РЅРёРјРёСЂРѕРІР°РЅРЅС‹Рј С„РёР·РёС‡РµСЃРєРёРј РѕР±СЉРµРєС‚РѕРј
 void CPHShell::SetIgnoreAnimated()
 {
-	//Для фильтра коллизий указываем, что данный
-	//физический объект игнорирует анимированные физические тела
+	//Р”Р»СЏ С„РёР»СЊС‚СЂР° РєРѕР»Р»РёР·РёР№ СѓРєР°Р·С‹РІР°РµРј, С‡С‚Рѕ РґР°РЅРЅС‹Р№
+	//С„РёР·РёС‡РµСЃРєРёР№ РѕР±СЉРµРєС‚ РёРіРЅРѕСЂРёСЂСѓРµС‚ Р°РЅРёРјРёСЂРѕРІР°РЅРЅС‹Рµ С„РёР·РёС‡РµСЃРєРёРµ С‚РµР»Р°
 	
 	CPHCollideValidator::SetAnimatedClassNotCollide(*this);
 }
 
-//Выдает информацию о том является ли данный объект анимированным
+//Р’С‹РґР°РµС‚ РёРЅС„РѕСЂРјР°С†РёСЋ Рѕ С‚РѕРј СЏРІР»СЏРµС‚СЃСЏ Р»Рё РґР°РЅРЅС‹Р№ РѕР±СЉРµРєС‚ Р°РЅРёРјРёСЂРѕРІР°РЅРЅС‹Рј
 
 
 void	CPHShell::				SetSmall()

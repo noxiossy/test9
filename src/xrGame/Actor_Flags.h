@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 enum{
 		AF_GODMODE			=(1<<0),

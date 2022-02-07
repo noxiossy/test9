@@ -1,4 +1,4 @@
-#ifndef PH_SYNCHRONIZE_H
+﻿#ifndef PH_SYNCHRONIZE_H
 #define PH_SYNCHRONIZE_H
 
 #include "../xrserverentities/PHNetState.h"

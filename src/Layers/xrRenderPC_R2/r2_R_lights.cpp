@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 
 IC		bool	pred_area		(light* _1, light* _2)
 {

@@ -1,4 +1,4 @@
-#ifndef dxConsoleRender_included
+﻿#ifndef dxConsoleRender_included
 #define dxConsoleRender_included
 #pragma once
 

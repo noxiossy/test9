@@ -1,4 +1,4 @@
-#ifndef D_SORT_TRI_PRIMITIVE_H
+﻿#ifndef D_SORT_TRI_PRIMITIVE_H
 #define D_SORT_TRI_PRIMITIVE_H
 #include "dTriCollideK.h"
 #include "dTriColliderCommon.h"
@@ -146,7 +146,12 @@ IC int dcTriListCollider::dSortTriPrimitiveCollide (
 				DBG_DrawTri(T,V_array,D3DCOLOR_XRGB(0,0,255));
 #endif
 			float last_pos_dist=dDOT(last_pos,tri.norm)-tri.pos;
-			if((!(last_pos_dist<0.f))||b_pushing)
+#ifdef _M_AMD64
+			bool TestNAN = isnan(last_pos_dist);
+#else
+			const bool TestNAN = false;
+#endif
+			if((!(last_pos_dist<0.f))||b_pushing||TestNAN)
 				if(__aabb_tri(Point(p),Point((float*)&AABB),vertices))
 				{
 #ifdef DEBUG

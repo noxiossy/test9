@@ -1,4 +1,4 @@
-#include "stdafx.h"
+ï»¿#include "stdafx.h"
 #include "searchlight.h"
 #include "../xrEngine/LightAnimLibrary.h"
 #include "script_entity_action.h"
@@ -142,7 +142,7 @@ void CProjector::UpdateCL	()
 		// calc color animator
 		if (lanim){
 			int frame;
-			// âîçâðàùàåò â ôîðìàòå BGR
+			// Ð²Ð¾Ð·Ð²Ñ€Ð°Ñ‰Ð°ÐµÑ‚ Ð² Ñ„Ð¾Ñ€Ð¼Ð°Ñ‚Ðµ BGR
 			u32 clr			= lanim->CalculateBGR(Device.fTimeGlobal,frame); 
 
 			Fcolor			fclr;

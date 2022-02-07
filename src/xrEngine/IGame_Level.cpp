@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "igame_level.h"
 #include "igame_persistent.h"
 
@@ -11,8 +11,6 @@
 #include "CameraManager.h"
 #include "xr_object.h"
 #include "feel_sound.h"
-
-//#include "securom_api.h"
 
 ENGINE_API IGame_Level* g_pGameLevel = NULL;
 extern BOOL g_bLoaded;

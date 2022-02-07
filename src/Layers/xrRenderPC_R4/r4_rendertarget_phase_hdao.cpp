@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 
 static unsigned int g_uGroupTexelDimension = 56;
 static unsigned int g_uGroupTexelOverlap = 12;

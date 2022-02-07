@@ -1,4 +1,4 @@
-#include <lua.hpp>
+﻿#include <lua.hpp>
 #include "xrCore.h"
 
 #include <fstream>

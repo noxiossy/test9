@@ -1,4 +1,4 @@
-// LightShadows.h: interface for the CLightShadows class.
+﻿// LightShadows.h: interface for the CLightShadows class.
 //
 //////////////////////////////////////////////////////////////////////
 

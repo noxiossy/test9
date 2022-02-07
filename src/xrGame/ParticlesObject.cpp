@@ -1,4 +1,4 @@
-//----------------------------------------------------
+﻿//----------------------------------------------------
 // file: PSObject.cpp
 //----------------------------------------------------
 #include "stdafx.h"
@@ -231,8 +231,8 @@ void CParticlesObject::SetAutoRemove		(bool auto_remove)
 	m_bAutoRemove = auto_remove;
 }
 
-//èãðàþòñÿ ëè ïàðòèêëû, îòëè÷àåòñÿ îò PSI_Alive, òåì ÷òî ïîñëå
-//îñòàíîâêè Stop ïàðòèêëû ìîãóò åùå äîèãðûâàòü àíèìàöèþ IsPlaying = true
+//играются ли партиклы, отличается от PSI_Alive, тем что после
+//остановки Stop партиклы могут еще доигрывать анимацию IsPlaying = true
 bool CParticlesObject::IsPlaying()
 {
 	IParticleCustom* V	= smart_cast<IParticleCustom*>(renderable.visual); 

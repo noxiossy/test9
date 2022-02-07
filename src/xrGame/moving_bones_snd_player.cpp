@@ -1,4 +1,4 @@
-#include	"stdafx.h"
+﻿#include	"stdafx.h"
 
 #include	"moving_bones_snd_player.h"
 

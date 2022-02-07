@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 IC float clamp_rotation( Fquaternion &q, float v )
 {
 	float angl;Fvector ax;

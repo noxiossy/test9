@@ -1,4 +1,4 @@
-#ifndef DEATH_COUNT_INCLUDED
+﻿#ifndef DEATH_COUNT_INCLUDED
 #define DEATH_COUNT_INCLUDED
 
 #include "player_state_param.h"

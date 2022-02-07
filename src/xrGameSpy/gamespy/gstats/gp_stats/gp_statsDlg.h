@@ -1,4 +1,4 @@
-// gp_statsDlg.h : header file
+﻿// gp_statsDlg.h : header file
 //
 
 #if !defined(AFX_GP_STATSDLG_H__B7B25B2A_61E9_4BFE_BBD7_D7C4D7242B7D__INCLUDED_)

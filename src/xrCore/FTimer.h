@@ -1,4 +1,4 @@
-#ifndef FTimerH
+﻿#ifndef FTimerH
 #define FTimerH
 #pragma once
 

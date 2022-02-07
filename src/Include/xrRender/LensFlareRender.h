@@ -1,4 +1,4 @@
-#ifndef LensFlareRender_included
+﻿#ifndef LensFlareRender_included
 #define LensFlareRender_included
 #pragma once
 

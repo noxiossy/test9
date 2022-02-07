@@ -1,4 +1,4 @@
-
+﻿
 #pragma once
 #include "object_interfaces.h"
 #include "alife_space.h"

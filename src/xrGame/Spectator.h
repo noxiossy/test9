@@ -1,4 +1,4 @@
-#ifndef __SPECTATOR_H__
+﻿#ifndef __SPECTATOR_H__
 #define __SPECTATOR_H__
 
 #pragma once

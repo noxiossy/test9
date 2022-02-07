@@ -1,4 +1,4 @@
-////////////////////////////////////////////////////////////////////////////
+﻿////////////////////////////////////////////////////////////////////////////
 // Module : editor_environment_weathers_time.cpp
 // Created : 12.01.2008
 // Modified : 12.01.2008
@@ -628,7 +628,7 @@ void time::fill(editor::property_holder_collection* collection)
         wind_velocity,
         wind_velocity,
         0.f,
-        100.f
+        1000.f
     );
 }
 

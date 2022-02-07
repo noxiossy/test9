@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 struct SHit;
 
 #include "../include/xrRender/animation_motion.h"

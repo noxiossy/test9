@@ -1,4 +1,4 @@
-// file:		UITextureMaster.h
+﻿// file:		UITextureMaster.h
 // description:	holds info about shared textures. able to initialize external controls
 //				through IUITextureControl interface
 // created:		11.05.2005

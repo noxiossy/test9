@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #pragma hdrstop
 
 #ifndef _EDITOR
@@ -23,9 +23,9 @@ static BOOL bException = FALSE;
 #define DEBUG_INVOKE DebugBreak ()
 #else
 #define DEBUG_INVOKE __asm { int 3 }
-#ifndef __BORLANDC__
-#pragma comment (lib,"dxerr.lib")
-#endif
+//#ifndef __BORLANDC__
+//#pragma comment (lib,"dxerr.lib")
+//#endif
 #endif
 
 XRCORE_API xrDebug Debug;

@@ -1,4 +1,4 @@
-#ifndef SH_CONSTANT_H
+﻿#ifndef SH_CONSTANT_H
 #define SH_CONSTANT_H
 #pragma once
 

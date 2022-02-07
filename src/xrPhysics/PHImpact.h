@@ -1,4 +1,4 @@
-#ifndef PH_IMPACT_H
+﻿#ifndef PH_IMPACT_H
 #define PH_IMPACT_H
 
 struct SPHImpact 

@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "best_scores_helper.h"
 #include "game_base.h"
 

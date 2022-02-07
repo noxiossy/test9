@@ -1,4 +1,4 @@
-#ifndef __XR_MATH_H__
+﻿#ifndef __XR_MATH_H__
 #define __XR_MATH_H__
 
 #include "cpuid.h"

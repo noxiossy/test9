@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #pragma hdrstop
 
 #include "../xrRender/ResourceManager.h"
@@ -534,11 +534,10 @@ void CTexture::Load		()
 				{
 					// pSurface->SetPriority	(PRIORITY_NORMAL);
 					flags.MemoryUsage		=	mem;
+					if (bCreateView)
+						CHK_DX(HW.pDevice->CreateShaderResourceView(pSurface, nullptr, &m_pSRView));
 				}
 			}
-
-			if (pSurface && bCreateView)
-				CHK_DX(HW.pDevice->CreateShaderResourceView(pSurface, NULL, &m_pSRView));
 			PostLoad	()		;
 }
 

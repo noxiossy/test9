@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "game_cl_teamdeathmatch.h"
 
 class CUIGameAHunt;

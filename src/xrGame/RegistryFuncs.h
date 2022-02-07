@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 bool	ReadRegistry_StrValue	(LPCSTR rKeyName, char* value );
 void	WriteRegistry_StrValue	(LPCSTR rKeyName, const char* value );

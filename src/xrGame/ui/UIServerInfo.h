@@ -1,4 +1,4 @@
-#ifndef UISERVER_INFO_INCLUDED
+﻿#ifndef UISERVER_INFO_INCLUDED
 #define UISERVER_INFO_INCLUDED
 
 #include "UIDialogWnd.h"

@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "object_interfaces.h"
 #include "map_location_defs.h"
 

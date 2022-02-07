@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 struct lua_State;
 struct Proto;

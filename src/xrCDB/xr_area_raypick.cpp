@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "xr_area.h"
 #include "ispatial.h"
 #include "../xrengine/xr_collide_form.h"

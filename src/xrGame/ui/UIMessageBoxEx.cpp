@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 
 #include "UIMessageBox.h"
 #include "UIMessageBoxEx.h"
@@ -98,7 +98,15 @@ bool CUIMessageBoxEx::OnKeyboardAction(int dik, EUIMessages keyboard_action)
 		{
 			m_pMessageBox->OnYesOk();
 			return true;
-
+/*
+		}else
+			if ( dik == DIK_ESCAPE )
+		{
+			CUIMessageBox::E_MESSAGEBOX_STYLE style = m_pMessageBox->GetBoxStyle();
+			if(style != CUIMessageBox::MESSAGEBOX_INFO)
+				HideDialog();
+			return true;
+*/
 		}else
 			if ( dik == DIK_ESCAPE )
 		{

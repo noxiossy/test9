@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "light.h"
 #include "light_package.h"

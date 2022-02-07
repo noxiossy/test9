@@ -1,4 +1,4 @@
-////////////////////////////////////////////////////////////////////////////
+п»ї////////////////////////////////////////////////////////////////////////////
 //	Module 		: script_game_object.h
 //	Created 	: 25.09.2003
 //  Modified 	: 29.06.2004
@@ -301,7 +301,7 @@ public:
             bool				inv_box_can_take		(bool status);
             bool				inv_box_can_take_status	();
 
-    //передача порции информации InventoryOwner
+    //РїРµСЂРµРґР°С‡Р° РїРѕСЂС†РёРё РёРЅС„РѕСЂРјР°С†РёРё InventoryOwner
             bool				GiveInfoPortion		(LPCSTR info_id);
             bool				DisableInfoPortion	(LPCSTR info_id);
             void				GiveGameNews		(LPCSTR caption, LPCSTR news, LPCSTR texture_name, int delay, int show_time);
@@ -309,10 +309,10 @@ public:
 
             void				AddIconedTalkMessage_old(LPCSTR text, LPCSTR texture_name, LPCSTR templ_name) {};
             void				AddIconedTalkMessage(LPCSTR caption, LPCSTR text, LPCSTR texture_name, LPCSTR templ_name);
-    //предикаты наличия/отсутствия порции информации у персонажа
+    //РїСЂРµРґРёРєР°С‚С‹ РЅР°Р»РёС‡РёСЏ/РѕС‚СЃСѓС‚СЃС‚РІРёСЏ РїРѕСЂС†РёРё РёРЅС„РѕСЂРјР°С†РёРё Сѓ РїРµСЂСЃРѕРЅР°Р¶Р°
             bool				HasInfo				(LPCSTR info_id);
             bool				DontHasInfo			(LPCSTR info_id);
-    //работа с заданиями
+    //СЂР°Р±РѕС‚Р° СЃ Р·Р°РґР°РЅРёСЏРјРё
             ETaskState			GetGameTaskState	(LPCSTR task_id);
             void				SetGameTaskState	(ETaskState state, LPCSTR task_id);
             void				GiveTaskToActor		(CGameTask* t, u32 dt, bool bCheckExisting, u32 t_timer);
@@ -928,3 +928,5 @@ extern void sell_condition	(float friend_factor, float enemy_factor);
 extern void buy_condition	(CScriptIniFile *ini_file, LPCSTR section);
 extern void buy_condition	(float friend_factor, float enemy_factor);
 extern void show_condition	(CScriptIniFile *ini_file, LPCSTR section);
+
+#include "script_game_object_impl.h" 

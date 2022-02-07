@@ -1,4 +1,4 @@
-#ifndef BEST_SCORES_HELPER_INCLUDED
+﻿#ifndef BEST_SCORES_HELPER_INCLUDED
 #define BEST_SCORES_HELPER_INCLUDED
 
 #include "profile_data_types.h"

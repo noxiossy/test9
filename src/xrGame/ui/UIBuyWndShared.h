@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 
 #define _new_buy_wnd

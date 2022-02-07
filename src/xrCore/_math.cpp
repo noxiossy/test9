@@ -1,5 +1,5 @@
-#include "stdafx.h"
-#pragma hdrstop
+﻿#include "stdafx.h"
+
 
 #include <process.h>
 
@@ -203,7 +203,7 @@ void Detect()
     // Detect QPC Overhead
     QueryPerformanceFrequency((PLARGE_INTEGER)&qpc_freq);
     qpc_overhead = 0;
-    for (i = 0; i < 256; i++)
+    for (int i = 0; i < 256; i++)
     {
         start = QPC();
         qpc_overhead += QPC() - start - dummy;
@@ -249,7 +249,6 @@ void _initialize_cpu(void)
     {
         CPU::ID.feature &= ~_CPU_FEATURE_MMX;
         CPU::ID.feature &= ~_CPU_FEATURE_3DNOW;
-		CPU::ID.feature &= ~_CPU_FEATURE_3DNOWEXT;
         CPU::ID.feature &= ~_CPU_FEATURE_SSE;
         CPU::ID.feature &= ~_CPU_FEATURE_SSE2;
         CPU::ID.feature &= ~_CPU_FEATURE_SSE3;
@@ -262,7 +261,6 @@ void _initialize_cpu(void)
     xr_strcpy(features, sizeof(features), "RDTSC");
     if (CPU::ID.feature&_CPU_FEATURE_MMX) xr_strcat(features, ", MMX");
     if (CPU::ID.feature&_CPU_FEATURE_3DNOW) xr_strcat(features, ", 3DNow!");
-	if (CPU::ID.feature&_CPU_FEATURE_3DNOWEXT) xr_strcat(features, ", 3DNowExt!");
     if (CPU::ID.feature&_CPU_FEATURE_SSE) xr_strcat(features, ", SSE");
     if (CPU::ID.feature&_CPU_FEATURE_SSE2) xr_strcat(features, ", SSE2");
     if (CPU::ID.feature&_CPU_FEATURE_SSE3) xr_strcat(features, ", SSE3");
@@ -343,7 +341,7 @@ void thread_name(const char* name)
     tn.dwFlags = 0;
     __try
     {
-        RaiseException(0x406D1388, 0, sizeof(tn) / sizeof(DWORD), (DWORD*)&tn);
+		RaiseException(0x406D1388,0,sizeof(tn)/sizeof(DWORD),(PDWORD_PTR)&tn);
     }
     __except (EXCEPTION_CONTINUE_EXECUTION)
     {

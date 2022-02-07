@@ -1,4 +1,4 @@
-#include "StdAfx.h"
+﻿#include "StdAfx.h"
 #include "UIComboBox.h"
 #include "UITextureMaster.h"
 #include "UIScrollBar.h"
@@ -80,6 +80,7 @@ CUIListBoxItem* CUIComboBox::AddItem_(LPCSTR str, int _data)
 	itm->SetData		((void*)(__int64)_data);
 	return				itm;
 }
+
 
 void CUIComboBox::OnListItemSelect()
 {

@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 class CBlender_accum_direct : public IBlender  
 {

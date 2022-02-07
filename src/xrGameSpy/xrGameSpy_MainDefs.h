@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #define QRCDKEY_INTEGRATION
 #define SB_ICMP_SUPPORT

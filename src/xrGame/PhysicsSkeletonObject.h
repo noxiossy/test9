@@ -1,4 +1,4 @@
-#ifndef PHYSICS_SKELETON_OBJECT_H
+﻿#ifndef PHYSICS_SKELETON_OBJECT_H
 #define PHYSICS_SKELETON_OBJECT_H
 #include "physicsshellholder.h"
 #include "PHSkeleton.h"

@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include <boost/noncopyable.hpp>
 
 #include "../Include/xrRender/KinematicsAnimated.h"

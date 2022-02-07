@@ -1,4 +1,4 @@
-#include "stdafx.h"
+п»ї#include "stdafx.h"
 #include "light_render_direct.h"
 
 void CLight_Compute_XFORM_and_VIS::compute_xf_spot	(light* L)
@@ -71,7 +71,7 @@ void CLight_Compute_XFORM_and_VIS::compute_xf_spot	(light* L)
 	//float	g_alpha		= 2*rad2deg		(alpha);
 	//float	g_beta		= 2*rad2deg		(atanf(tan_beta));
 	//Msg				("x(%f) : a(%f), b(%f)",x,g_alpha,g_beta);
-	// только для поинта меняем на 11.5
+	// С‚РѕР»СЊРєРѕ РґР»СЏ РїРѕРёРЅС‚Р° РјРµРЅСЏРµРј РЅР° 11.5
 	float tan_shift;
 	if (L->flags.type == IRender_Light::POINT)
 		tan_shift = deg2rad(11.5f);

@@ -1,4 +1,4 @@
-// GlowManager.cpp: implementation of the CGlowManager class.
+﻿// GlowManager.cpp: implementation of the CGlowManager class.
 //
 //////////////////////////////////////////////////////////////////////
 

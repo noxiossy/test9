@@ -1,4 +1,4 @@
-// ladderTrackDlg.cpp : implementation file
+﻿// ladderTrackDlg.cpp : implementation file
 //
 
 #include "stdafx.h"

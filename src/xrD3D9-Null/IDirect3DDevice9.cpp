@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 
 #include "IDirect3DDevice9.h"
 #include "IDirect3DQuery9.h"

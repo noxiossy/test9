@@ -1,4 +1,4 @@
-// Blender.h: interface for the IBlender class.
+﻿// Blender.h: interface for the IBlender class.
 //
 //////////////////////////////////////////////////////////////////////
 

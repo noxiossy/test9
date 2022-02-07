@@ -1,4 +1,4 @@
-// ChannelModeDlg.cpp : implementation file
+﻿// ChannelModeDlg.cpp : implementation file
 //
 
 #include "stdafx.h"

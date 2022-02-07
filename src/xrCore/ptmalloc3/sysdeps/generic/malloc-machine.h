@@ -1,4 +1,4 @@
-/* Basic platform-independent macro definitions for mutexes,
+﻿/* Basic platform-independent macro definitions for mutexes,
    thread-specific data and parameters for malloc.
    Copyright (C) 2003 Free Software Foundation, Inc.
    This file is part of the GNU C Library.

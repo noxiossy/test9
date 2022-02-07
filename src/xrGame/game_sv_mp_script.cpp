@@ -1,4 +1,4 @@
-#include "pch_script.h"
+﻿#include "pch_script.h"
 #include "game_sv_mp_script.h"
 #include "xrServer_script_macroses.h"
 #include "xrserver.h"

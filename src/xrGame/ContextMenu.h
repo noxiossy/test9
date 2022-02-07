@@ -1,4 +1,4 @@
-#ifndef __XR_CONTEXTMENU_H__
+﻿#ifndef __XR_CONTEXTMENU_H__
 #define __XR_CONTEXTMENU_H__
 #pragma once
 

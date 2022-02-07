@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "ui_base.h"
 class CUIStatic;

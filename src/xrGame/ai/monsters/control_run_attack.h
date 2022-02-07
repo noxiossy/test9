@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "control_combase.h"
 
 class CControlRunAttack : public CControl_ComCustom<> {

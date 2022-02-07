@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "../xrRender/ColorMapManager.h"
 
@@ -48,7 +48,6 @@ public:
 	IBlender*					b_accum_reflected_msaa[8];
 	IBlender*					b_ssao;
 	IBlender*					b_ssao_msaa[8];
-	IBlender*					b_fxaa;
 
     // compute shader for hdao
     IBlender*                   b_hdao_cs;
@@ -77,7 +76,6 @@ public:
 	// 
 	ref_rt						rt_Accumulator;		// 64bit		(r,g,b,specular)
 	ref_rt						rt_Accumulator_temp;// only for HW which doesn't feature fp16 blend
-
 	ref_rt						rt_Generic_0;		// 32bit		(r,g,b,a)				// post-process, intermidiate results, etc.
 	ref_rt						rt_Generic_1;		// 32bit		(r,g,b,a)				// post-process, intermidiate results, etc.
 	//	Igor: for volumetric lights
@@ -135,8 +133,6 @@ private:
 	ref_shader					s_accum_spot	;
 	ref_shader					s_accum_reflected;
 	ref_shader					s_accum_volume;
-	ref_shader					s_fxaa;
-	ref_geom					g_fxaa;
 
 	//	generate min/max
 	ref_shader					s_create_minmax_sm;
@@ -252,7 +248,6 @@ public:
 	BOOL						u_DBT_enable			(float zMin, float zMax);
 	void						u_DBT_disable			();
 
-	void						phase_fxaa();
 	void						phase_scene_prepare		();
 	void						phase_scene_begin		();
 	void						phase_scene_end			();

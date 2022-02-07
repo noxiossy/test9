@@ -1,4 +1,4 @@
-#ifndef SILENT_SHOTS_INCLUDED
+﻿#ifndef SILENT_SHOTS_INCLUDED
 #define SILENT_SHOTS_INCLUDED
 
 #include "player_state_param.h"

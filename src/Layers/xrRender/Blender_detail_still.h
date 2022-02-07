@@ -1,4 +1,4 @@
-// Blender_Vertex_aref.h: interface for the CBlender_Vertex_aref class.
+﻿// Blender_Vertex_aref.h: interface for the CBlender_Vertex_aref class.
 //
 //////////////////////////////////////////////////////////////////////
 

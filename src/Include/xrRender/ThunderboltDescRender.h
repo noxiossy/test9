@@ -1,4 +1,4 @@
-#ifndef	ThunderboltDescRender_included
+﻿#ifndef	ThunderboltDescRender_included
 #define	ThunderboltDescRender_included
 #pragma once
 

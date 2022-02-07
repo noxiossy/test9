@@ -1,4 +1,4 @@
-#ifndef ANTI_AIM_ABILITY_H_INCLUDED
+﻿#ifndef ANTI_AIM_ABILITY_H_INCLUDED
 #define ANTI_AIM_ABILITY_H_INCLUDED
 
 #include "ai_monster_defs.h"

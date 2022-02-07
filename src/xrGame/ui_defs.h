@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "../Include/xrRender/FactoryPtr.h"
 #include "../Include/xrRender/UIRender.h"

@@ -1,4 +1,4 @@
-/* crypto/objects/obj_dat.h */
+﻿/* crypto/objects/obj_dat.h */
 
 /* THIS FILE IS GENERATED FROM objects.h by obj_dat.pl via the
  * following command:

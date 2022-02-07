@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "../xrCDB/frustum.h"
 
 #pragma warning(disable:4995)
@@ -10,7 +10,7 @@
 #define MMNOJOY
 #include <mmsystem.h>
 // d3dx9.h
-#include <d3dx9.h>
+#include <d3dx/d3dx9.h>
 #pragma warning(default:4995)
 
 #include "x_ray.h"
@@ -29,8 +29,6 @@
 #include "xrSash.h"
 
 #include "../build_config_defines.h"
-#pragma comment( lib, "d3dx9.lib" )
-
 ENGINE_API CRenderDevice Device;
 ENGINE_API CLoadScreenRenderer load_screen_renderer;
 

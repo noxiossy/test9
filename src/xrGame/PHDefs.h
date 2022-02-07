@@ -1,4 +1,4 @@
-#ifndef PHDEFS_H
+﻿#ifndef PHDEFS_H
 #define PHDEFS_H
 class CPHElement;
 class CPHJoint;

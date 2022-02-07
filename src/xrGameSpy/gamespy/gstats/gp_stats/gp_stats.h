@@ -1,4 +1,4 @@
-// gp_stats.h : main header file for the GP_STATS application
+﻿// gp_stats.h : main header file for the GP_STATS application
 //
 
 #if !defined(AFX_GP_STATS_H__90B1DDCE_A86E_49A8_B136_0B29EA43F6B4__INCLUDED_)

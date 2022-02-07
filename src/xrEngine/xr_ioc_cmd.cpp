@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "igame_level.h"
 
 //#include "xr_effgamma.h"
@@ -27,9 +27,9 @@ xr_token FpsLockToken[] = {
 };
 
 xr_token							vid_bpp_token							[ ]={
-	{ "16",							16											},
-	{ "32",							32											},
-	{ 0,							0											}
+    {"16", 16},
+    {"32", 32},
+    {0, 0}
 };
 //-----------------------------------------------------------------------
 
@@ -709,13 +709,6 @@ ENGINE_API float	psHUD_FOV=psHUD_FOV_def;
 //extern int psSkeletonUpdate;
 extern int rsDVB_Size;
 extern int rsDIB_Size;
-//extern int psNET_ClientUpdate;
-//extern int psNET_ClientPending;
-//extern int psNET_ServerUpdate;
-//extern int psNET_ServerPending;
-//extern int psNET_DedicatedSleep;
-//extern char psNET_Name[32];
-//extern Flags32 psEnvFlags;
 //extern float r__dtex_range;
 
 extern int g_ErrorLineCount;
@@ -777,7 +770,7 @@ void CCC_Register()
     CMD3(CCC_Mask, "rs_fullscreen", &psDeviceFlags, rsFullscreen);
     CMD3(CCC_Mask, "rs_refresh_60hz", &psDeviceFlags, rsRefresh60hz);
     CMD3(CCC_Mask, "rs_stats", &psDeviceFlags, rsStatistic);
-	CMD4(CCC_Float,		"rs_vis_distance",		&psVisDistance,		0.4f,	1.0f			);
+    CMD4(CCC_Float, "rs_vis_distance", &psVisDistance, 0.4f, 1.0f);
 
     CMD3(CCC_Mask, "rs_cam_pos", &psDeviceFlags, rsCameraPos);
 #ifdef DEBUG
@@ -793,8 +786,7 @@ void CCC_Register()
     // CMD4(CCC_Integer, "rs_ib_size", &rsDIB_Size, 32, 4096);
 
     // Texture manager
-    CMD4(CCC_Integer, "texture_lod", &psTextureLOD, 0, 2);
-    //CMD4(CCC_Integer, "net_dedicated_sleep", &psNET_DedicatedSleep, 0, 64);
+    CMD4(CCC_Integer, "texture_lod", &psTextureLOD, 0, 4);
 
     // General video control
     CMD1(CCC_VidMode, "vid_mode");
@@ -836,23 +828,17 @@ void CCC_Register()
 
     CMD1(CCC_r2, "renderer");
 
-#ifndef DEDICATED_SERVER
     CMD1(CCC_soundDevice, "snd_device");
-#endif
     //psSoundRolloff = pSettings->r_float ("sound","rolloff"); clamp(psSoundRolloff, EPS_S, 2.f);
     psSoundOcclusionScale = pSettings->r_float("sound", "occlusion_scale");
     clamp(psSoundOcclusionScale, 0.1f, .5f);
-
-    //extern int g_Dump_Export_Obj;
-    //extern int g_Dump_Import_Obj;
-    //CMD4(CCC_Integer, "net_dbg_dump_export_obj", &g_Dump_Export_Obj, 0, 1);
-    //CMD4(CCC_Integer, "net_dbg_dump_import_obj", &g_Dump_Import_Obj, 0, 1);
 
 #ifdef DEBUG
     CMD1(CCC_DumpOpenFiles, "dump_open_files");
 #endif
 
     CMD1(CCC_ExclusiveMode, "input_exclusive_mode");
+
     CMD1(CCC_HideConsole, "hide");
 
 #ifdef DEBUG

@@ -1,4 +1,4 @@
-
+﻿
 IC	Fvector& CIKFoot::ToePosition( Fvector &toe_position ) const
 {
 	

@@ -1,4 +1,4 @@
-#ifndef REWARD_EVENT_GENERATOR_INCLUDED
+﻿#ifndef REWARD_EVENT_GENERATOR_INCLUDED
 #define REWARD_EVENT_GENERATOR_INCLUDED
 
 #include "game_cl_base_weapon_usage_statistic.h"

@@ -1,4 +1,4 @@
-// DynamicHeightMap.cpp: implementation of the CDynamicHeightMap class.
+﻿// DynamicHeightMap.cpp: implementation of the CDynamicHeightMap class.
 //
 //////////////////////////////////////////////////////////////////////
 

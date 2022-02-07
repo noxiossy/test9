@@ -1,4 +1,4 @@
-#ifndef	dxDebugRender_included
+﻿#ifndef	dxDebugRender_included
 #define	dxDebugRender_included
 #pragma once
 

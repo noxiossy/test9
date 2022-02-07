@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 
 #include "CharacterPhysicsSupport.h"
 #include "alife_space.h"
@@ -22,7 +22,7 @@
 //#include "../xrphysics/ICollideValidator.h"
 #include "../xrphysics/IPHWorld.h"
 
-#include "../xrphysics/Physics.h"
+//#include "Physics.h"
 
 
 #include "IKLimbsController.h"
@@ -38,6 +38,8 @@
 #include "inventory.h"
 #include "activatingcharcollisiondelay.h"
 #include "stalker_movement_manager_smart_cover.h"
+
+//#include "../build_config_defines.h"
 
 //const float default_hinge_friction = 5.f;//gray_wolf comment
 #ifdef DEBUG
@@ -216,9 +218,9 @@ void CCharacterPhysicsSupport::in_NetSpawn( CSE_Abstract* e )
 			ka->PlayCycle( "death_init" );
 
 	}else if( !m_EntityAlife.animation_movement_controlled( ) )
-		ka->PlayCycle( "death_init" );///íåïîíÿòíî çà÷åì ýòî âîîáùå íàäî çàïóñêàòü
-									  ///ýòîò õàê íóæåí, ïîòîìó ÷òî íåêîòîðûì ìîíñòðàì 
-									  ///àíèìàöèÿ ïîñëå ñïîíà, ìîæåò áûòü âîîáùå íå íàçíà÷åíà
+		ka->PlayCycle( "death_init" );///непонятно зачем это вообще надо запускать
+									  ///этот хак нужен, потому что некоторым монстрам 
+									  ///анимация после спона, может быть вообще не назначена
 	pK->CalculateBones_Invalidate( );
 	pK->CalculateBones( TRUE );
 	
@@ -624,7 +626,7 @@ void CCharacterPhysicsSupport::in_UpdateCL( )
 	if( m_pPhysicsShell )
 	{
 		VERIFY( m_pPhysicsShell->isFullActive( ) );
-		m_pPhysicsShell->SetRagDoll( );//Òåïåðü øåëà îòíîñèòüñÿ ê êëàññó îáúåêòîâ cbClassRagDoll
+		m_pPhysicsShell->SetRagDoll( );//Теперь шела относиться к классу объектов cbClassRagDoll
 		
 		if( !is_imotion(m_interactive_motion ) )//!m_flags.test(fl_use_death_motion)
 			m_pPhysicsShell->InterpolateGlobalTransform( &mXFORM );
@@ -1164,6 +1166,17 @@ void	CCharacterPhysicsSupport::	CreateShell						( CObject* who, Fvector& dp, Fv
 	m_eState=esDead;
 	m_flags.set(fl_skeleton_in_shell,TRUE);
 	
+	/*if(IsGameTypeSingle())
+	{
+		m_pPhysicsShell->SetPrefereExactIntegration	();//use exact integration for ragdolls in single
+        //AVO: turn on collision with dead bodies (thanks malandrinus)
+#ifndef DEAD_BODY_COLLISION
+			m_pPhysicsShell->SetRemoveCharacterCollLADisable();
+#endif
+        //-AVO
+	}
+	else
+		m_pPhysicsShell->SetIgnoreDynamic();*/
 	m_pPhysicsShell->SetIgnoreSmall();
 	AddActiveWeaponCollision();
 }

@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 IC	void CControlPathBuilderBase::set_cover_params(float min, float max, float dev, float radius)
 {

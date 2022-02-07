@@ -1,4 +1,4 @@
-#ifndef RenderFactory_included
+﻿#ifndef RenderFactory_included
 #define RenderFactory_included
 #pragma once
 

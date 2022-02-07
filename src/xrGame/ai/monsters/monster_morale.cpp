@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "monster_morale.h"
 
 void CMonsterMorale::init_external(CBaseMonster *obj)

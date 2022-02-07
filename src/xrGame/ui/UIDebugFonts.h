@@ -1,4 +1,4 @@
-// File:		UIDebugFonts.h
+﻿// File:		UIDebugFonts.h
 // Description:	Output list of all fonts
 // Created:		22.03.2005
 // Author:		Serge Vynnychenko

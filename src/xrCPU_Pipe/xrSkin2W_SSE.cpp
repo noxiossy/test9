@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #pragma hdrstop
 
 #define transform_dir(idx,res,SX,SY,SZ,T1)									\

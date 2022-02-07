@@ -1,4 +1,4 @@
-// Blender_Tree.h: interface for the CBlender_Tree class.
+﻿// Blender_Tree.h: interface for the CBlender_Tree class.
 //
 //////////////////////////////////////////////////////////////////////
 

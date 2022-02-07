@@ -1,4 +1,4 @@
-#ifndef _AVAILABLE_H_
+﻿#ifndef _AVAILABLE_H_
 #define _AVAILABLE_H_
 
 #include "gsStringUtil.h"

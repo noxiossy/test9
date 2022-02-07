@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "dx10TextureUtils.h"
 
 namespace dx10TextureUtils

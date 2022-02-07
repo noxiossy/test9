@@ -1,4 +1,4 @@
-#ifndef _CLSID_H
+﻿#ifndef _CLSID_H
 #define _CLSID_H
 
 #pragma once

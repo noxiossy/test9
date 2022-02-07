@@ -1,4 +1,4 @@
-#ifndef _STL_EXT_type_traits
+﻿#ifndef _STL_EXT_type_traits
 #define _STL_EXT_type_traits
 #pragma once
 

@@ -1,4 +1,4 @@
-// xrGameSpy.cpp : Defines the entry point for the DLL application.
+﻿// xrGameSpy.cpp : Defines the entry point for the DLL application.
 //
 
 #include "stdafx.h"

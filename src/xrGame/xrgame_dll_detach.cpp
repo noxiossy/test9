@@ -1,4 +1,4 @@
-#include "pch_script.h"
+﻿#include "pch_script.h"
 #include "ai_space.h"
 #include "object_factory.h"
 #include "ai/monsters/ai_monster_squad_manager.h"
@@ -106,11 +106,11 @@ void clean_game_globals()
 	//static shader for blood
 	CEntityAlive::UnloadBloodyWallmarks				();
 	CEntityAlive::UnloadFireParticles				();
-	//î÷èùåíèå ïàìÿòè òàáëèöû ñòðîê
+	//очищение памяти таблицы строк
 	CStringTable::Destroy							();
-	// Î÷èùåíèå òàáëèöû öâåòîâ
+	// Очищение таблицы цветов
 	CUIXmlInit::DeleteColorDefs						();
-	// Î÷èùåíèå òàáëèöû èäåíòèôèêàòîðîâ ðàíãîâ è îòíîøåíèé ñòàëêåðîâ
+	// Очищение таблицы идентификаторов рангов и отношений сталкеров
 	InventoryUtilities::ClearCharacterInfoStrings	();
 
 	xr_delete										(g_sound_collection_storage);

@@ -1,4 +1,4 @@
-// LobbyWizard.cpp : implementation file
+﻿// LobbyWizard.cpp : implementation file
 //
 
 #include "stdafx.h"

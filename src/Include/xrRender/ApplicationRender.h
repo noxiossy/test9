@@ -1,4 +1,4 @@
-#ifndef ApplicationRender_included
+﻿#ifndef ApplicationRender_included
 #define ApplicationRender_included
 #pragma once
 

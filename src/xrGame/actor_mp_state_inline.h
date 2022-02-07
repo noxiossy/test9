@@ -1,4 +1,4 @@
-#ifndef ACTOR_MP_STATE_INLINE_H
+﻿#ifndef ACTOR_MP_STATE_INLINE_H
 #define ACTOR_MP_STATE_INLINE_H
 
 IC actor_mp_state_holder::actor_mp_state_holder			()

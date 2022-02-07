@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #pragma hdrstop
 
 #include "particle_actions_collection.h"
@@ -1774,9 +1774,9 @@ void PATurbulence::Execute(ParticleEffect *effect, const float dt, float& tm_max
 	if ( ! p_cnt )
 		return;
 
-	u32 nWorkers = ttapi_GetWorkersCount();
+/*	u32 nWorkers = ttapi_GetWorkersCount();
 
-	if ( p_cnt < nWorkers * 64 )
+	if ( p_cnt < ( nWorkers * 64 ) )
 		nWorkers = 1;
 
 	TES_PARAMS* tesParams = (TES_PARAMS*) _alloca( sizeof(TES_PARAMS) * nWorkers );
@@ -1805,7 +1805,19 @@ void PATurbulence::Execute(ParticleEffect *effect, const float dt, float& tm_max
 		ttapi_AddWorker( PATurbulenceExecuteStream , (LPVOID) &tesParams[i] );
 	}
 
-	ttapi_RunAllWorkers();
+	ttapi_RunAllWorkers();*/
+	
+	TES_PARAMS tesParams;
+	tesParams.p_from    = 0;
+	tesParams.p_to      = p_cnt;
+	tesParams.effect    = effect;
+	tesParams.offset    = offset;
+	tesParams.age       = age;
+	tesParams.epsilon   = epsilon;
+	tesParams.frequency = frequency;
+	tesParams.octaves   = octaves;
+	tesParams.magnitude = magnitude;
+	PATurbulenceExecuteStream( &tesParams );
 
 }
 

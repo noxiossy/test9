@@ -1,4 +1,4 @@
-#ifndef PHYSICS_COMMON_H
+﻿#ifndef PHYSICS_COMMON_H
 #define PHYSICS_COMMON_H
 
 #include "DisablingParams.h"

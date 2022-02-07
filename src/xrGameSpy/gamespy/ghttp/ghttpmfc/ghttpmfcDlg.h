@@ -1,4 +1,4 @@
-// ghttpmfcDlg.h : header file
+﻿// ghttpmfcDlg.h : header file
 //
 
 #if !defined(AFX_GHTTPMFCDLG_H__14B35CAF_3960_4669_972D_59B741AA032C__INCLUDED_)

@@ -1,4 +1,4 @@
-#ifndef REWARDING_EVENTS_HANDLERS_INCLUDED
+﻿#ifndef REWARDING_EVENTS_HANDLERS_INCLUDED
 #define REWARDING_EVENTS_HANDLERS_INCLUDED
 
 #include "event_conditions_collection.h" //for event_action_delegate_t

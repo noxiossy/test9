@@ -1,4 +1,4 @@
-#ifndef VECTOR3D_EXT_INCLUDED
+﻿#ifndef VECTOR3D_EXT_INCLUDED
 #define VECTOR3D_EXT_INCLUDED
 
 #include "_vector3d.h"

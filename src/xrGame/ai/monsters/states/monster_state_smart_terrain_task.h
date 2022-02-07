@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "../state.h"
 
 #include "../../../alife_smart_terrain_task.h"

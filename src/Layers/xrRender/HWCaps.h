@@ -1,4 +1,4 @@
-#ifndef _HW_CAPS_
+﻿#ifndef _HW_CAPS_
 #define _HW_CAPS_
 #pragma once
 

@@ -1,4 +1,4 @@
-#ifndef _F_SPHERE_H_
+﻿#ifndef _F_SPHERE_H_
 #define _F_SPHERE_H_
 
 template <class T>

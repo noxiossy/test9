@@ -1,4 +1,4 @@
-#ifndef BEST_SCORES_SYSTEM_INCLUDED
+﻿#ifndef BEST_SCORES_SYSTEM_INCLUDED
 #define BEST_SCORES_SYSTEM_INCLUDED
 
 #include <boost/noncopyable.hpp>

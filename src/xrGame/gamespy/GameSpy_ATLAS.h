@@ -1,4 +1,4 @@
-#ifndef GAMESPY_ATLAS_INCLUDED
+﻿#ifndef GAMESPY_ATLAS_INCLUDED
 #define GAMESPY_ATLAS_INCLUDED
 
 #include "GameSpy_FuncDefs.h"

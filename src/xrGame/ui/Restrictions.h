@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #define _RANK_COUNT 5
 

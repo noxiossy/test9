@@ -1,4 +1,4 @@
-#ifndef WAVEFORM_H
+﻿#ifndef WAVEFORM_H
 #define WAVEFORM_H
 #pragma once
 

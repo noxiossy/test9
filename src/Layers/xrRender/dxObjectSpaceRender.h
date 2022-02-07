@@ -1,4 +1,4 @@
-#ifndef dxObjectSpaceRender_included
+﻿#ifndef dxObjectSpaceRender_included
 #define dxObjectSpaceRender_included
 #pragma once
 

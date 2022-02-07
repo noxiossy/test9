@@ -1,4 +1,4 @@
-#ifndef _Actor_Animation_H
+﻿#ifndef _Actor_Animation_H
 #define _Actor_Animation_H
 #pragma once
 

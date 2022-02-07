@@ -1,4 +1,4 @@
-//---------------------------------
+﻿//---------------------------------
 #include <stdlib.h>
 #include <objbase.h>
 #include <windows.h>

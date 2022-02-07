@@ -1,4 +1,4 @@
-/*
+﻿/*
 ** C data management.
 ** Copyright (C) 2005-2015 Mike Pall. See Copyright Notice in luajit.h
 */

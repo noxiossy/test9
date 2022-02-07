@@ -1,4 +1,4 @@
-// DynamicHeightMap.h: interface for the CDynamicHeightMap class.
+﻿// DynamicHeightMap.h: interface for the CDynamicHeightMap class.
 //
 //////////////////////////////////////////////////////////////////////
 

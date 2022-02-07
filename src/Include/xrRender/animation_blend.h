@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include	"animation_motion.h"
 //*** Run-time Blend definition *******************************************************************

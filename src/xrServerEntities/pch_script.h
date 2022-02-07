@@ -1,4 +1,4 @@
-////////////////////////////////////////////////////////////////////////////
+﻿////////////////////////////////////////////////////////////////////////////
 //	Module 		: pch_script.h
 //	Created 	: 23.05.2007
 //  Modified 	: 10.08.2007
@@ -22,7 +22,7 @@
 //-AVO
 
 #pragma warning(push)
-#pragma warning(disable:4995)
+#pragma warning(disable:4995 4297 4913)
 #include <luabind/luabind.hpp>
 #pragma warning(pop)
 

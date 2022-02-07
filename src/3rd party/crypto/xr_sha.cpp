@@ -1,4 +1,4 @@
-#include "xr_sha.h"
+﻿#include "xr_sha.h"
 #include <openssl/sha.h>
 
 namespace crypto

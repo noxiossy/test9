@@ -1,4 +1,4 @@
-// SetPasswordDlg.cpp : implementation file
+﻿// SetPasswordDlg.cpp : implementation file
 //
 
 #include "stdafx.h"

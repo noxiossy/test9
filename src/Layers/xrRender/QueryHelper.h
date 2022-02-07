@@ -1,4 +1,4 @@
-#ifndef	QueryHelper_included
+﻿#ifndef	QueryHelper_included
 #define	QueryHelper_included
 #pragma once
 

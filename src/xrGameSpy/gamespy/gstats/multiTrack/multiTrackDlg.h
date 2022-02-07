@@ -1,4 +1,4 @@
-// multiTrackDlg.h : header file
+﻿// multiTrackDlg.h : header file
 //
 
 #if !defined(AFX_MULTITRACKDLG_H__4B977C2B_DD72_4B3A_B1F9_E95D26F0C328__INCLUDED_)

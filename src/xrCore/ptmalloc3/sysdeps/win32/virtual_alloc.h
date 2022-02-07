@@ -1,4 +1,4 @@
-#ifndef VIRTUAL_ALLOC_H_INCLUDED
+﻿#ifndef VIRTUAL_ALLOC_H_INCLUDED
 #define VIRTUAL_ALLOC_H_INCLUDED
 
 #ifdef __cplusplus

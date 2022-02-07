@@ -1,4 +1,4 @@
-#ifndef MIXED_DELEGATE_UNIQUE_TAGS
+﻿#ifndef MIXED_DELEGATE_UNIQUE_TAGS
 #define MIXED_DELEGATE_UNIQUE_TAGS
 
 enum enum_mixed_delegate_unique_tags

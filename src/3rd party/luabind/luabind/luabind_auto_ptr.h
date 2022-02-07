@@ -1,4 +1,4 @@
-// luabind::auto_ptr implementation is copied from the stlport std::auto_ptr (v5.1)
+﻿// luabind::auto_ptr implementation is copied from the stlport std::auto_ptr (v5.1)
 
 #ifndef LUABIND_AUTO_PTR_H_INCLUDED
 #define LUABIND_AUTO_PTR_H_INCLUDED

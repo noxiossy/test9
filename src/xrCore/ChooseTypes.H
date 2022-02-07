@@ -1,4 +1,4 @@
-#ifndef ChooseTypesH
+﻿#ifndef ChooseTypesH
 #define ChooseTypesH
 
 enum EChooseMode

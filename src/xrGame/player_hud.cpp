@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "player_hud.h"
 #include "HudItem.h"
 #include "ui_base.h"
@@ -15,15 +15,8 @@ player_hud* g_player_hud = NULL;
 Fvector _ancor_pos;
 Fvector _wpn_root_pos;
 
-Fvector m_hud_offset_pos = { 0.f, 0.f, 0.f }; //only in hud adj mode
-Fvector m_hand_offset_pos = { 0.f, 0.f, 0.f };
-
 float CalcMotionSpeed(const shared_str& anim_name)
 {
-
-	//if(!IsGameTypeSingle() && (anim_name=="anm_show" || anim_name=="anm_hide") )
-	//	return 2.0f;
-	//else		// LR_DEVS CHECK !!!
 		return 1.0f;
 }
 
@@ -107,8 +100,7 @@ void player_hud_motion_container::load(IKinematicsAnimated* model, const shared_
 
 Fvector& attachable_hud_item::hands_attach_pos()
 {
-	Fvector v; v.set(m_measures.m_hands_attach[0]).add(m_hand_offset_pos);
-	return v;
+	return m_measures.m_hands_attach[0];
 }
 
 Fvector& attachable_hud_item::hands_attach_rot()
@@ -118,9 +110,8 @@ Fvector& attachable_hud_item::hands_attach_rot()
 
 Fvector& attachable_hud_item::hands_offset_pos()
 {
-	u8 idx = m_parent_hud_item->GetCurrentHudOffsetIdx();
-	Fvector v; v.set(m_measures.m_hands_offset[0][idx]).add(m_hud_offset_pos);
-	return v;
+	u8 idx	= m_parent_hud_item->GetCurrentHudOffsetIdx();
+	return m_measures.m_hands_offset[0][idx];
 }
 
 Fvector& attachable_hud_item::hands_offset_rot()

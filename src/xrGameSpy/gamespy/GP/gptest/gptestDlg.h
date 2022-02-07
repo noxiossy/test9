@@ -1,4 +1,4 @@
-// gptestDlg.h : header file
+﻿// gptestDlg.h : header file
 //
 
 #include "afxcmn.h"

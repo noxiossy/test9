@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "xrGameSpy_MainDefs.h"
 
 #include "GameSpy\ServerBrowsing\sb_serverbrowsing.h"

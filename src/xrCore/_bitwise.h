@@ -1,4 +1,4 @@
-#ifndef _BITWISE_
+﻿#ifndef _BITWISE_
 #define _BITWISE_
 #pragma once
 

@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "missile.h"
 #include "explosive.h"
 #include "../xrEngine/feel_touch.h"
@@ -36,7 +36,7 @@ public:
 	
 	virtual bool			Action								(u16 cmd, u32 flags);
 	virtual bool			Useful								() const;
-	virtual void			State								(u32 state);
+	virtual void			State                               (u32 state, u32 old_state);
 
 	virtual void			OnH_B_Chield						()				{inherited::OnH_B_Chield();}
 

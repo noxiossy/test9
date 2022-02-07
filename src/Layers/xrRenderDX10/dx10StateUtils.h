@@ -1,4 +1,4 @@
-#ifndef	dx10StateUtils_included
+﻿#ifndef	dx10StateUtils_included
 #define	dx10StateUtils_included
 #pragma once
 

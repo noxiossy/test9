@@ -1,4 +1,4 @@
-// sbmfcsample.h : main header file for the SBMFCSAMPLE application
+﻿// sbmfcsample.h : main header file for the SBMFCSAMPLE application
 //
 
 #if !defined(AFX_SBMFCSAMPLE_H__F2EE1BD5_6089_4F00_9E83_2D0A7C9AA592__INCLUDED_)

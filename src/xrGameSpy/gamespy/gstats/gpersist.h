@@ -1,4 +1,4 @@
-/******
+﻿/******
 gpersist.h
 GameSpy Persistent Storage SDK 
   

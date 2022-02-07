@@ -1,4 +1,4 @@
-////////////////////////////////////////////////////////////////////////////
+﻿////////////////////////////////////////////////////////////////////////////
 //	Module 		: alife_simulator_script.cpp
 //	Created 	: 25.12.2002
 //  Modified 	: 13.05.2004
@@ -312,6 +312,12 @@ void CALifeSimulator__release					(CALifeSimulator *self, CSE_Abstract *object, 
 
 LPCSTR get_level_name							(const CALifeSimulator *self, int level_id)
 {
+	const GameGraph::LEVEL_MAP& levels = ai().game_graph().header().levels();
+	GameGraph::LEVEL_MAP::const_iterator I = levels.find((GameGraph::_LEVEL_ID)level_id);
+	if (I == levels.end())
+	{
+		return NULL;
+	}
 	LPCSTR								result = *ai().game_graph().header().level((GameGraph::_LEVEL_ID)level_id).name();
 	return								(result);
 }
@@ -400,9 +406,10 @@ CSE_Abstract* try_to_clone_object(CALifeSimulator *self, CSE_Abstract *object, L
 		clone->wpn_flags = wpnmag->wpn_flags;
 		clone->m_addon_flags = wpnmag->m_addon_flags;
 		clone->m_fCondition = wpnmag->m_fCondition;
-		clone->ammo_type = wpnmag->ammo_type;
+		clone->ammo_type.data = wpnmag->ammo_type.data;
 		clone->m_upgrades = wpnmag->m_upgrades;
-		clone->set_ammo_elapsed(wpnmag->get_ammo_elapsed());
+		clone->a_elapsed.data = wpnmag->a_elapsed.data;
+		clone->a_current_addon.data = wpnmag->a_current_addon.data;
 
 		return	bRegister ? reprocess_spawn(self, absClone) : absClone;// (self->server().Process_spawn(packet, clientID));
 	}

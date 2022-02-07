@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 enum {
 	ID_HEADSHOT = 0,	//0

@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 
 HRESULT		HRESULT_Proc(HRESULT ret)
 {

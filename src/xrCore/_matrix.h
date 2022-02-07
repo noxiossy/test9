@@ -1,4 +1,4 @@
-#ifndef __M__
+﻿#ifndef __M__
 #define __M__
 /*
 * DirectX-compliant, ie row-column order, ie m[Row][Col].

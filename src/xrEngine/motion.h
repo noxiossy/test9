@@ -1,4 +1,4 @@
-//----------------------------------------------------
+п»ї//----------------------------------------------------
 #ifndef MotionH
 #define MotionH
 
@@ -39,7 +39,7 @@ struct st_BoneMotion
     st_BoneMotion() { name = 0; m_Flags.zero(); ZeroMemory(envs, sizeof(CEnvelope*)*ctMaxChannel); }
     void SetName(LPCSTR nm) { name = nm; }
 };
-// vector по костям
+// vector РїРѕ РєРѕСЃС‚СЏРј
 DEFINE_VECTOR(st_BoneMotion, BoneMotionVec, BoneMotionIt);
 
 //--------------------------------------------------------------------------

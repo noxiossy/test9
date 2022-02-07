@@ -1,4 +1,4 @@
-// gptest.h : main header file for the GPTEST application
+﻿// gptest.h : main header file for the GPTEST application
 //
 
 #if !defined(AFX_GPTEST_H__FFE82BD6_F31E_4222_818F_A8EE211E15E4__INCLUDED_)

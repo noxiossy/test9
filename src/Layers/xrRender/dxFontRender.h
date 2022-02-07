@@ -1,4 +1,4 @@
-#ifndef dxFontRender_included
+﻿#ifndef dxFontRender_included
 #define dxFontRender_included
 #pragma once
 

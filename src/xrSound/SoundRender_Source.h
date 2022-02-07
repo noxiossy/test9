@@ -1,4 +1,4 @@
-#ifndef SoundRender_SourceH
+﻿#ifndef SoundRender_SourceH
 #define SoundRender_SourceH
 #pragma once
 

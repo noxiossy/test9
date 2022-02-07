@@ -1,4 +1,4 @@
-private:
+﻿private:
     BOOL m_DemoPlay = false;
     BOOL m_DemoPlayStarted = false;
     BOOL m_DemoPlayStoped = false;

@@ -1,4 +1,4 @@
-#include "ximacfg.h"
+﻿#include "ximacfg.h"
 
 #ifdef CXIMAGE_AS_SHARED_LIBRARY
 void*	cxalloc(size_t size)

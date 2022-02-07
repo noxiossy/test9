@@ -1,4 +1,4 @@
-// PHDynamicData.cpp: implementation of the PHDynamicData class.
+﻿// PHDynamicData.cpp: implementation of the PHDynamicData class.
 //
 //////////////////////////////////////////////////////////////////////
 #include "stdafx.h"

@@ -1,4 +1,4 @@
-// EffectorShot.cpp: implementation of the CCameraShotEffector class.
+﻿// EffectorShot.cpp: implementation of the CCameraShotEffector class.
 //
 //////////////////////////////////////////////////////////////////////
 

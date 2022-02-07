@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "control_com_defs.h"
 
 #include "control_animation.h"

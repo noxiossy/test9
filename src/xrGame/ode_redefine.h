@@ -1,4 +1,4 @@
-#ifndef ODE_REDEFINE
+﻿#ifndef ODE_REDEFINE
 #define ODE_REDEFINE
 
 #ifdef  XRGAME_EXPORTS

@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 enum {
 	ID_YOU_WON = 100,
 	ID_RANK_0,

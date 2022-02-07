@@ -1,4 +1,4 @@
-// chattyDoc.h : interface of the CChattyDoc class
+﻿// chattyDoc.h : interface of the CChattyDoc class
 //
 /////////////////////////////////////////////////////////////////////////////
 

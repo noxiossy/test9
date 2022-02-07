@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "../control_direction_base.h"
 #include "../ai_monster_bones.h"

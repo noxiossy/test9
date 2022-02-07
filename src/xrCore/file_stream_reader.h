@@ -1,4 +1,4 @@
-#ifndef FILE_STREAM_READER_H
+﻿#ifndef FILE_STREAM_READER_H
 #define FILE_STREAM_READER_H
 
 #include "stream_reader.h"

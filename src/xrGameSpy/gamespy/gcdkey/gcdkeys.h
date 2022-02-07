@@ -1,4 +1,4 @@
-/******
+﻿/******
 gcdkeys.h
 GameSpy CDKey SDK Server Header
   

@@ -1,4 +1,4 @@
-#ifndef __FBOX
+﻿#ifndef __FBOX
 #define __FBOX
 
 template <class T>

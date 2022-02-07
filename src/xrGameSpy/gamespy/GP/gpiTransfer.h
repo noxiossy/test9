@@ -1,4 +1,4 @@
-/*
+﻿/*
 gpiTransfer.h
 GameSpy Presence SDK 
 Dan "Mr. Pants" Schoenblum

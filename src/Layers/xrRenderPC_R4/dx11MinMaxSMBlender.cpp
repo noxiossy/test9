@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "dx11MinMaxSMBlender.h"
 
 void CBlender_createminmax::Compile(CBlender_Compile& C)

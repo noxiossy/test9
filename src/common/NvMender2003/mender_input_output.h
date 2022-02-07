@@ -1,4 +1,4 @@
-#ifndef	_MENDER_INPUT_OUTPUT_H_
+﻿#ifndef	_MENDER_INPUT_OUTPUT_H_
 #define	_MENDER_INPUT_OUTPUT_H_
 
 #include	"convert.h"

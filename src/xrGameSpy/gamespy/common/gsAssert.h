@@ -1,4 +1,4 @@
-#ifndef __GSIASSERT_H__
+﻿#ifndef __GSIASSERT_H__
 #define __GSIASSERT_H__
 
 #if defined(__LANGUAGE_C_PLUS_PLUS)||defined(__cplusplus)||defined(c_plusplus)

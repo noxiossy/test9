@@ -1,4 +1,4 @@
-#include	"stdafx.h"
+﻿#include	"stdafx.h"
 #include	"ik_foot_collider.h"
 
 #include "../xrEngine/gamemtllib.h"

@@ -1,4 +1,4 @@
-#ifndef	dxHashHelper_included
+﻿#ifndef	dxHashHelper_included
 #define	dxHashHelper_included
 #pragma once
 

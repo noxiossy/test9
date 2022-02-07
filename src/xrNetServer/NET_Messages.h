@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #pragma pack(push,1)
 
 #define	DPNSEND_IMMEDIATELLY				0x0100

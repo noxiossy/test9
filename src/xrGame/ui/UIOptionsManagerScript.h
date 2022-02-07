@@ -1,4 +1,4 @@
-
+﻿
 #pragma once
 #include "../../xrServerEntities/script_export_space.h"
 

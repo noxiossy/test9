@@ -1,4 +1,4 @@
-#ifndef ATLAS_SUBMIT_QUEUE_INCLUDED
+﻿#ifndef ATLAS_SUBMIT_QUEUE_INCLUDED
 #define ATLAS_SUBMIT_QUEUE_INCLUDED
 
 #include <boost/noncopyable.hpp>

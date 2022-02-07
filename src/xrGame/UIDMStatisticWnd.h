@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "ui/UIStatsWnd.h"
 #include "game_cl_base.h"

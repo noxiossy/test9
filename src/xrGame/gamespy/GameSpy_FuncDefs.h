@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "../../xrGameSpy/GameSpy/Common/gsCommon.h"
 #include "../../xrGameSpy/GameSpy/Common/gsAvailable.h"

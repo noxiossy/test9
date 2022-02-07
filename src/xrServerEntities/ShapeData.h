@@ -1,4 +1,4 @@
-#ifndef ShapeDataH
+﻿#ifndef ShapeDataH
 #define ShapeDataH
 
 struct CShapeData

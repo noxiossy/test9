@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "r2.h"
 #include "../xrRender/fbasicvisual.h"
 #include "../../xrEngine/xr_object.h"
@@ -597,7 +597,6 @@ void	CRender::Statistics	(CGameFont* _F)
 }
 
 /////////
-#pragma comment(lib,"d3dx9.lib")
 
 /*
 extern "C"
@@ -832,7 +831,6 @@ HRESULT	CRender::shader_compile			(
 		def_it						++	;
 	}
 	sh_name[len]='0'+char(o.simplestatic); ++len;
-
 	if (o.forcegloss)		{
 		xr_sprintf						(c_gloss,"%f",o.forcegloss_v);
 		defines[def_it].Name		=	"FORCE_GLOSS";
@@ -1049,7 +1047,7 @@ HRESULT	CRender::shader_compile			(
 		xr_strcat		( file_name, temp_file_name );
 	}
 
-	if (ps_r2_ls_flags_ext.test(R2FLAGEXT_SHADER_CACHE) && FS.exist(file_name))
+	if (ps_use_precompiled_shaders && FS.exist(file_name))
 	{
 //		Msg				( "opening library or cache shader..." );
 		IReader* file = FS.r_open(file_name);
@@ -1093,18 +1091,18 @@ HRESULT	CRender::shader_compile			(
 		if (SUCCEEDED(_result)) {
 //			Msg						( "shader compilation succeeded" );
 
-			if (ps_r2_ls_flags_ext.test(R2FLAGEXT_SHADER_CACHE))
-			{
-				IWriter* file = FS.w_open(file_name);
+		if (ps_use_precompiled_shaders)
+		{
+			IWriter* file = FS.w_open(file_name);
 
-				boost::crc_32_type		processor;
-				processor.process_block	( pShaderBuf->GetBufferPointer(), ((char*)pShaderBuf->GetBufferPointer()) + pShaderBuf->GetBufferSize() );
-				u32 const crc			= processor.checksum( );
+			boost::crc_32_type		processor;
+			processor.process_block	( pShaderBuf->GetBufferPointer(), ((char*)pShaderBuf->GetBufferPointer()) + pShaderBuf->GetBufferSize() );
+			u32 const crc			= processor.checksum( );
 
-				file->w_u32(crc);
-				file->w(pShaderBuf->GetBufferPointer(), (u32)pShaderBuf->GetBufferSize());
-				FS.w_close(file);
-			}
+			file->w_u32				(crc);
+			file->w					( pShaderBuf->GetBufferPointer(), (u32)pShaderBuf->GetBufferSize());
+			FS.w_close				(file);
+		}
 
 			_result					= create_shader(pTarget, (DWORD*)pShaderBuf->GetBufferPointer(), pShaderBuf->GetBufferSize(), file_name, result, o.disasm);
 		}
@@ -1113,7 +1111,7 @@ HRESULT	CRender::shader_compile			(
 			if ( pErrorBuf )
 				Msg("! error: %s", pErrorBuf->GetBufferPointer());
 			else
-				Msg("Can't compile shader hr=0x%08x", _result);
+				Msg					("Can't compile shader hr=0x%08x", _result);
 		}
 	}
 

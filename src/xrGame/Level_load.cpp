@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "LevelGameDef.h"
 #include "ai_space.h"
 #include "ParticlesObject.h"
@@ -110,7 +110,7 @@ bool CLevel::Load_GameSpecific_After()
 			Sounds_Random_Enabled	= FALSE;
 		}
 
-	g_pGamePersistent->Environment().SetGameTime(GetEnvironmentGameDayTimeSec(), game->GetEnvironmentGameTimeFactor());
+		g_pGamePersistent->Environment().SetGameTime(GetEnvironmentGameDayTimeSec(), game->GetEnvironmentGameTimeFactor());
 
 		if (g_pGamePersistent->pEnvironment)	// LR_DEVS CHECK
 			g_pGamePersistent->pEnvironment->Invalidate();

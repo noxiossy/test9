@@ -1,4 +1,4 @@
-#include "StdAfx.h"
+﻿#include "StdAfx.h"
 
 #include "../xrGameSpyServer.h"
 #include "GameSpy_Keys.h"

@@ -1,4 +1,4 @@
-#ifndef FBasicVisualH
+﻿#ifndef FBasicVisualH
 #define FBasicVisualH
 #pragma once
 

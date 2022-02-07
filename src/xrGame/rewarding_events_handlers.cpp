@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "rewarding_events_handlers.h"
 #include "reward_event_handler.h"
 #include "../xrServerEntities/object_broker.h"

@@ -1,4 +1,4 @@
-#ifndef __XR_WEAPON_HPSA_H__
+﻿#ifndef __XR_WEAPON_HPSA_H__
 #define __XR_WEAPON_HPSA_H__
 
 #pragma once

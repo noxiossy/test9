@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 
 #include "../../xrEngine/render.h"
 #include "../../xrEngine/irenderable.h"
@@ -570,8 +570,8 @@ void R_dsgraph_structure::r_dsgraph_render_hud_ui()
 void	R_dsgraph_structure::r_dsgraph_render_sorted	()
 {
 	// Sorted (back to front)
-	mapSorted.traverseRL(sorted_L1);
-	mapSorted.clear();
+	mapSorted.traverseRL	(sorted_L1);
+	mapSorted.clear			();
 
 	// Change projection
 	Fmatrix Pold = Device.mProject;

@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "player_state_climber.h"
 #include "game_cl_base.h"
 #include "level.h"

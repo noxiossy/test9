@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "state_hide_from_point.h"
 #include "state_look_unprotected_area.h"

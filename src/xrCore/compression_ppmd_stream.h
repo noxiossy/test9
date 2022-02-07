@@ -1,4 +1,4 @@
-#ifndef COMPRESSION_PPMD_STREAM_H
+﻿#ifndef COMPRESSION_PPMD_STREAM_H
 #define COMPRESSION_PPMD_STREAM_H
 
 namespace compression

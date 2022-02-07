@@ -1,4 +1,4 @@
-#ifndef	UI_ARROW_H_INCLUDED
+﻿#ifndef	UI_ARROW_H_INCLUDED
 #define UI_ARROW_H_INCLUDED
 
 #include "UIStatic.h"

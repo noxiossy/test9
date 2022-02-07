@@ -1,4 +1,4 @@
-/* crypto/md32_common.h */
+﻿/* crypto/md32_common.h */
 /* ====================================================================
  * Copyright (c) 1999-2007 The OpenSSL Project.  All rights reserved.
  *

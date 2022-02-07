@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "UIOptionsItem.h"
 #include "UI_IB_Static.h"

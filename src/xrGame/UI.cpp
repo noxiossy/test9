@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "UI.h"
 #include "../xrEngine/xr_IOConsole.h"
 #include "Entity.h"

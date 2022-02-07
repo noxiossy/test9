@@ -1,4 +1,4 @@
-// Opcode 1.1: ray-AABB overlap tests based on Woo's code
+﻿// Opcode 1.1: ray-AABB overlap tests based on Woo's code
 // Opcode 1.2: ray-AABB overlap tests based on the separating axis theorem
 //
 // The point of intersection is not computed anymore. The distance to impact is not needed anymore

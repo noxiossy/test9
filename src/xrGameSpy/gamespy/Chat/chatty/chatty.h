@@ -1,4 +1,4 @@
-// chatty.h : main header file for the CHATTY application
+﻿// chatty.h : main header file for the CHATTY application
 //
 
 #if !defined(AFX_CHATTY_H__D2C88C24_CA2E_4ED3_B08E_BF48F6C0A36B__INCLUDED_)

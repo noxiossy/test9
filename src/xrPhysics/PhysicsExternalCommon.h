@@ -1,4 +1,4 @@
-#ifndef	_PHYSICS_EXTERNAL_COMMON_
+﻿#ifndef	_PHYSICS_EXTERNAL_COMMON_
 #define _PHYSICS_EXTERNAL_COMMON_
 #pragma once
 struct dContactGeom;

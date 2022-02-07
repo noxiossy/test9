@@ -1,4 +1,4 @@
-#ifndef FASTER_THAN_BULLETS_INCLUDED
+﻿#ifndef FASTER_THAN_BULLETS_INCLUDED
 #define FASTER_THAN_BULLETS_INCLUDED
 
 #include "player_state_param.h"

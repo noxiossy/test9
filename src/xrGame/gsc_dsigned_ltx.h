@@ -1,4 +1,4 @@
-#ifndef GSC_DSINGNED_LTX_INCLUDED
+﻿#ifndef GSC_DSINGNED_LTX_INCLUDED
 #define GSC_DSINGNED_LTX_INCLUDED
 
 #include "../xrCore/fastdelegate.h"

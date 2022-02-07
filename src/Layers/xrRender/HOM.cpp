@@ -1,4 +1,4 @@
-// HOM.cpp: implementation of the CHOM class.
+﻿// HOM.cpp: implementation of the CHOM class.
 //
 //////////////////////////////////////////////////////////////////////
 

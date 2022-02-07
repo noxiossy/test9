@@ -1,4 +1,4 @@
-// Blender_Vertex_aref.cpp: implementation of the CBlender_Tree class.
+﻿// Blender_Vertex_aref.cpp: implementation of the CBlender_Tree class.
 //
 //////////////////////////////////////////////////////////////////////
 

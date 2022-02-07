@@ -1,4 +1,4 @@
-// CRender.cpp: implementation of the CRender class.
+﻿// CRender.cpp: implementation of the CRender class.
 //
 //////////////////////////////////////////////////////////////////////
 
@@ -88,6 +88,10 @@ void					CRender::create					()
 	o.no_detail_textures		= !ps_r2_ls_flags.test(R1FLAG_DETAIL_TEXTURES);
 	c_ldynamic_props			= "L_dynamic_props";
 
+    o.no_ram_textures = (strstr(Core.Params, "-noramtex")) ? TRUE : ps_r__common_flags.test(RFLAG_NO_RAM_TEXTURES);
+    if (o.no_ram_textures)
+        Msg("* Managed textures disabled");
+		
 	m_bMakeAsyncSS				= false;
 
 //---------
@@ -665,8 +669,6 @@ void	CRender::Statistics	(CGameFont* _F)
 #endif
 }
 
-#pragma comment(lib,"d3dx9.lib")
-
 #include <boost/crc.hpp>
 
 static inline bool match_shader_id		( LPCSTR const debug_shader_id, LPCSTR const full_shader_id, FS_FileSet const& file_set, string_path& result );
@@ -882,7 +884,7 @@ HRESULT	CRender::shader_compile			(
 		xr_strcat		( file_name, temp_file_name );
 	}
 
-	if (FS.exist(file_name))
+	if (ps_use_precompiled_shaders && FS.exist(file_name))
 	{
 		IReader* file = FS.r_open(file_name);
 		if (file->length()>4)
@@ -911,6 +913,8 @@ HRESULT	CRender::shader_compile			(
 
 		_result						= D3DXCompileShader((LPCSTR)pSrcData,SrcDataLen,defines,pInclude,pFunctionName,pTarget,Flags|D3DXSHADER_USE_LEGACY_D3DX9_31_DLL,&pShaderBuf,&pErrorBuf,&pConstants);
 		if (SUCCEEDED(_result)) {
+			if (ps_use_precompiled_shaders)
+			{
 			IWriter* file = FS.w_open(file_name);
 
 			boost::crc_32_type		processor;
@@ -920,13 +924,13 @@ HRESULT	CRender::shader_compile			(
 			file->w_u32				(crc);
 			file->w					( pShaderBuf->GetBufferPointer(), (u32)pShaderBuf->GetBufferSize());
 			FS.w_close				(file);
-
+			}
 			_result					= create_shader(pTarget, (DWORD*)pShaderBuf->GetBufferPointer(), pShaderBuf->GetBufferSize(), file_name, result, o.disasm);
 		}
 		else {
-			Log						("! ", file_name);
+			Msg						("! %s", file_name);
 			if ( pErrorBuf )
-				Log					("! error: ",(LPCSTR)pErrorBuf->GetBufferPointer());
+				Msg					("! error: %s", pErrorBuf->GetBufferPointer());
 			else
 				Msg					("Can't compile shader hr=0x%08x", _result);
 		}

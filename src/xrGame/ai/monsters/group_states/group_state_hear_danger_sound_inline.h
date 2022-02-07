@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "../states/state_move_to_point.h"
 #include "../states/monster_state_home_point_danger.h"

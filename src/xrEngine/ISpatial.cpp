@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "ispatial.h"
 #include "render.h"
 #include "xr_object.h"
@@ -264,7 +264,7 @@ void ISpatial_DB::insert(ISpatial* S)
     if (!bValid)
     {
         CObject* O = dynamic_cast<CObject*>(S);
-        if (O) Debug.fatal(DEBUG_INFO, "Invalid OBJECT position or radius (%s)", O->cName());
+        if (O) Debug.fatal(DEBUG_INFO, "Invalid OBJECT position or radius (%s)", O->cName().c_str());
         else
         {
             CPS_Instance* P = dynamic_cast<CPS_Instance*>(S);

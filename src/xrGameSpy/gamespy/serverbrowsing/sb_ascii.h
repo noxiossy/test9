@@ -1,4 +1,4 @@
-/******
+﻿/******
 GameSpy Server Browsing SDK
   
 Copyright 1999-2007 GameSpy Industries, Inc

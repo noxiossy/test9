@@ -1,4 +1,4 @@
-#ifndef __CELL_VECTORMATH_H__
+﻿#ifndef __CELL_VECTORMATH_H__
 #define __CELL_VECTORMATH_H__
 
 #ifndef __CELLOS_LV2__

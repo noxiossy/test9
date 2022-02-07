@@ -1,4 +1,4 @@
-#ifndef BLENDER_SHADOW_WORLD_H
+﻿#ifndef BLENDER_SHADOW_WORLD_H
 #define BLENDER_SHADOW_WORLD_H
 #pragma once
 

@@ -1,4 +1,4 @@
-////////////////////////////////////////////////////////////////////////////
+﻿////////////////////////////////////////////////////////////////////////////
 //	Module 		: visual_memory_manager.h
 //	Created 	: 02.10.2001
 //  Modified 	: 19.11.2003
@@ -128,7 +128,7 @@ public:
 	IC		const RAW_VISIBLES		&raw_objects				() const;
 	IC		const NOT_YET_VISIBLES	&not_yet_visible_objects	() const;
 	IC		const CVisionParameters &current_state				() const;
-	IC		squad_mask_type			mask						() const;
+			squad_mask_type			mask						() const;
 
 public:
 #ifdef DEBUG

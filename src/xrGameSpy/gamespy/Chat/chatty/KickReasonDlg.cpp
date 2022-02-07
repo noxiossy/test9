@@ -1,4 +1,4 @@
-// KickReasonDlg.cpp : implementation file
+﻿// KickReasonDlg.cpp : implementation file
 //
 
 #include "stdafx.h"

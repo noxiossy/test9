@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "UIWindow.h"
 #include "../../xrServerEntities/script_export_space.h"

@@ -1,4 +1,4 @@
-/******
+﻿/******
 gstats.h
 GameSpy Stats/Tracking SDK 
   

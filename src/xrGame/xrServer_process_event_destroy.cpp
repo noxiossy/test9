@@ -1,11 +1,10 @@
-#include "stdafx.h"
+ï»¿#include "stdafx.h"
 #include "xrServer.h"
 #include "game_sv_single.h"
 #include "alife_simulator.h"
 #include "xrserver_objects.h"
 #include "game_base.h"
 #include "game_cl_base.h"
-#include "game_sv_base.h"
 #include "ai_space.h"
 #include "alife_object_registry.h"
 
@@ -31,7 +30,7 @@ void xrServer::Process_event_destroy	(NET_Packet& P, ClientID sender, u32 time, 
 		Msg								("sv destroy object %s [%d]", ent_name_safe(id_dest).c_str(), Device.dwFrame);
 #endif
 
-	CSE_Abstract*					e_dest = game->get_entity_from_eid	(id_dest);	// êòî äîëæåí áûòü óíè÷òîæåí
+	CSE_Abstract*					e_dest = game->get_entity_from_eid	(id_dest);	// ÐºÑ‚Ð¾ Ð´Ð¾Ð»Ð¶ÐµÐ½ Ð±Ñ‹Ñ‚ÑŒ ÑƒÐ½Ð¸Ñ‡Ñ‚Ð¾Ð¶ÐµÐ½
 	if (!e_dest) 
 	{
 #ifndef MASTER_GOLD
@@ -41,16 +40,11 @@ void xrServer::Process_event_destroy	(NET_Packet& P, ClientID sender, u32 time, 
 	};
 
 	R_ASSERT						(e_dest);
-	xrClientData					*c_dest = e_dest->owner;				// êëèåíò, ÷åé þíèò
+	xrClientData					*c_dest = e_dest->owner;				// ÐºÐ»Ð¸ÐµÐ½Ñ‚, Ñ‡ÐµÐ¹ ÑŽÐ½Ð¸Ñ‚
 	R_ASSERT						(c_dest);
-	xrClientData					*c_from = ID_to_client(sender);	// êëèåíò, êòî ïðèñëàë
+	xrClientData					*c_from = ID_to_client(sender);	// ÐºÐ»Ð¸ÐµÐ½Ñ‚, ÐºÑ‚Ð¾ Ð¿Ñ€Ð¸ÑÐ»Ð°Ð»
 	R_ASSERT						(c_dest == c_from);							// assure client ownership of event
 	u16								parent_id = e_dest->ID_Parent;
-
-#ifdef MP_LOGGING
-	Msg("--- SV: Process destroy: parent [%d] item [%d][%s]", 
-		parent_id, id_dest, e_dest->name());
-#endif //#ifdef MP_LOGGING
 
 	//---------------------------------------------
 	NET_Packet	P2, *pEventPack = pEPack;

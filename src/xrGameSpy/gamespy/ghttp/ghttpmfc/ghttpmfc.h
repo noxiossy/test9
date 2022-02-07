@@ -1,4 +1,4 @@
-// ghttpmfc.h : main header file for the GHTTPMFC application
+﻿// ghttpmfc.h : main header file for the GHTTPMFC application
 //
 
 #if !defined(AFX_GHTTPMFC_H__30518F92_6CEC_4512_AC74_EF31A5DE2D1C__INCLUDED_)

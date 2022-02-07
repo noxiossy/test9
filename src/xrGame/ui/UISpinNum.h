@@ -1,4 +1,4 @@
-#include "UICustomSpin.h"
+﻿#include "UICustomSpin.h"
 
 class CUISpinNum : public CUICustomSpin 
 {

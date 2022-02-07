@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "player_state_remembrance.h"
 #include "kills_store.h"
 #include "game_cl_base.h"

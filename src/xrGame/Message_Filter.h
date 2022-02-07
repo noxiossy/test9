@@ -1,4 +1,4 @@
-#ifndef DEMO_MESSAGE_FILER
+﻿#ifndef DEMO_MESSAGE_FILER
 #define DEMO_MESSAGE_FILER
 
 #include "../xrCore/fastdelegate.h"

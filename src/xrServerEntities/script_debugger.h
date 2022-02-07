@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "script_lua_helper.h"
 #include "script_debugger_threads.h"

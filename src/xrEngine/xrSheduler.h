@@ -1,4 +1,4 @@
-#ifndef XRSHEDULER_H_INCLUDED
+﻿#ifndef XRSHEDULER_H_INCLUDED
 #define XRSHEDULER_H_INCLUDED
 
 #include "ISheduled.h"

@@ -1,4 +1,4 @@
-#ifndef xrTheora_SurfaceH
+﻿#ifndef xrTheora_SurfaceH
 #define xrTheora_SurfaceH
 #pragma once
 

@@ -1,4 +1,4 @@
-// gp_stats.cpp : Defines the class behaviors for the application.
+﻿// gp_stats.cpp : Defines the class behaviors for the application.
 //
 
 #include "stdafx.h"

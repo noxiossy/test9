@@ -1,4 +1,4 @@
-// ModelPool.h: interface for the CModelPool class.
+﻿// ModelPool.h: interface for the CModelPool class.
 //////////////////////////////////////////////////////////////////////
 #ifndef ModelPoolH
 #define ModelPoolH

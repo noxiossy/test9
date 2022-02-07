@@ -1,4 +1,4 @@
-#ifndef rt_compressorH
+﻿#ifndef rt_compressorH
 #define rt_compressorH
 #pragma once
 

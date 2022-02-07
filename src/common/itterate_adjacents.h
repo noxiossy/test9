@@ -1,4 +1,4 @@
-#ifndef _ITTERATE_ADJACENTS_H_
+﻿#ifndef _ITTERATE_ADJACENTS_H_
 #define _ITTERATE_ADJACENTS_H_
 
 template	<typename itterate_adjacents_params>

@@ -1,4 +1,4 @@
-#ifndef BLACK_LIST_INCLUDED
+﻿#ifndef BLACK_LIST_INCLUDED
 #define BLACK_LIST_INCLUDED
 
 #include "player_state_param.h"

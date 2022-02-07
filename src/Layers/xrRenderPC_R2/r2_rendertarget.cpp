@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "../xrRender/resourcemanager.h"
 #include "blender_light_occq.h"
 #include "blender_light_mask.h"
@@ -187,7 +187,7 @@ CRenderTarget::CRenderTarget		()
 	param_noise_fps		= 25.f;
 	param_noise_scale	= 1.f;
 
-	im_noise_time		= 1.0f / 100.0f;
+	im_noise_time		= 1.f/100.0f;
 	im_noise_shift_w	= 0;
 	im_noise_shift_h	= 0;
 

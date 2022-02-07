@@ -1,4 +1,4 @@
-/* TGA File REader Classs Implementation File
+﻿/* TGA File REader Classs Implementation File
    This Implementation Allows the reading of TGA (Targa) Files
    into an RGB buffer. Also the class allows an RGB Buffer to be 
    written to a TGA File. There is also a function to determine 

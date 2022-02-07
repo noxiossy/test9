@@ -1,4 +1,4 @@
-#ifndef SPRINTER_STOPPER_INCLUDED
+﻿#ifndef SPRINTER_STOPPER_INCLUDED
 #define SPRINTER_STOPPER_INCLUDED
 
 #include "player_state_param.h"

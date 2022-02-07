@@ -1,4 +1,4 @@
-#ifndef ANTICHEAT_DUMPABLE_OBJECT
+﻿#ifndef ANTICHEAT_DUMPABLE_OBJECT
 #define ANTICHEAT_DUMPABLE_OBJECT
 
 class IAnticheatDumpable

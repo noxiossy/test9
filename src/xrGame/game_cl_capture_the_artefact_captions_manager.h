@@ -1,4 +1,4 @@
-#ifndef GAME_CL_CTA_CAPTIONS_MANAGER
+﻿#ifndef GAME_CL_CTA_CAPTIONS_MANAGER
 #define GAME_CL_CTA_CAPTIONS_MANAGER
 
 #include <boost/noncopyable.hpp>

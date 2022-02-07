@@ -1,4 +1,4 @@
-#ifndef SH_RT_H
+﻿#ifndef SH_RT_H
 #define SH_RT_H
 #pragma once
 

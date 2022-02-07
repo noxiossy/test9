@@ -1,4 +1,4 @@
-#ifndef __ppanimator_included__
+﻿#ifndef __ppanimator_included__
 #define __ppanimator_included__
 #pragma once
 

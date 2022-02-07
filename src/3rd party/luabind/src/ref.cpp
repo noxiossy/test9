@@ -1,4 +1,4 @@
-#include "pch.h"
+﻿#include "pch.h"
 
 #if 0
 // Copyright (c) 2003 Daniel Wallin and Arvid Norberg

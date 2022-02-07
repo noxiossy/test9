@@ -1,4 +1,4 @@
-// ghttpmfcDlg.cpp : implementation file
+﻿// ghttpmfcDlg.cpp : implementation file
 //
 
 #include "stdafx.h"

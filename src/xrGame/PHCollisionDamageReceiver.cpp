@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "phcollisiondamagereceiver.h"
 #include "../xrphysics/IPhysicsShellHolder.h"
 #include "../xrcore/xr_ini.h"

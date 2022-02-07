@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "UIFrameLine.h"
 #include "../hudmanager.h"
 #include "UITextureMaster.h"

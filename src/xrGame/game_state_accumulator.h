@@ -1,4 +1,4 @@
-#ifndef GAME_STATE_ACCUMULATOR_INCLUDED
+﻿#ifndef GAME_STATE_ACCUMULATOR_INCLUDED
 #define GAME_STATE_ACCUMULATOR_INCLUDED
 
 #include "game_cl_base_weapon_usage_statistic.h"

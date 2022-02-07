@@ -1,4 +1,4 @@
-#ifndef _FVF_H_
+﻿#ifndef _FVF_H_
 #define _FVF_H_
 #pragma once
 

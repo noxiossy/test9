@@ -1,4 +1,4 @@
-// stdafx.cpp : source file that includes just the standard includes
+﻿// stdafx.cpp : source file that includes just the standard includes
 // xrSound.pch will be the pre-compiled header
 // stdafx.obj will contain the pre-compiled type information
 
@@ -16,6 +16,10 @@
 #	pragma comment(lib,	"dsoundb.lib" 		)
 //#	pragma comment(lib,	"xrapi.lib" 		)
 #else
+#	pragma comment(lib,	"eax.lib"			)
+#	pragma comment(lib,	"xrCore.lib"		)
+#	pragma comment(lib,	"xrCDB.lib"			)
 #	pragma comment(lib,	"dsound.lib" 		)
+#	pragma comment(lib,	"xrapi.lib" 		)
 #endif
 

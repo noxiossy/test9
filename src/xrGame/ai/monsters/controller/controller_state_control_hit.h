@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 template<typename _Object>
 class CStateControlAttack : public CState<_Object> {

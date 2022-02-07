@@ -1,4 +1,4 @@
-// ConnectDlg.cpp : implementation file
+﻿// ConnectDlg.cpp : implementation file
 //
 
 #include "stdafx.h"

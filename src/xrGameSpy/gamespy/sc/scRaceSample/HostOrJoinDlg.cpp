@@ -1,4 +1,4 @@
-// HostOrJoinDlg.cpp : implementation file
+﻿// HostOrJoinDlg.cpp : implementation file
 //
 
 #include "stdafx.h"

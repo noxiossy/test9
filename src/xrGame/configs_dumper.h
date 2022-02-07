@@ -1,4 +1,4 @@
-#ifndef CONFIGS_DUMPER_INCLUDED
+﻿#ifndef CONFIGS_DUMPER_INCLUDED
 #define CONFIGS_DUMPER_INCLUDED
 
 #include "xr_dsa_signer.h"

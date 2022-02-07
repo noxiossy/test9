@@ -1,4 +1,4 @@
-#ifndef _STL_EXT_internal
+﻿#ifndef _STL_EXT_internal
 #define _STL_EXT_internal
 
 using std::swap;
@@ -85,8 +85,19 @@ public:
     char* _charalloc(size_type n) { return (char*)allocate(n); }
     void deallocate(pointer p, size_type n) const { xr_free(p); }
     void deallocate(void* p, size_type n) const { xr_free(p); }
-    void construct(pointer p, const T& _Val) { std::_Construct(p, _Val); }
-    void destroy(pointer p) { std::_Destroy(p); }
+
+    template <class U, class... Args>
+    static void construct(U* ptr, Args&&... args)
+    {
+        new (ptr) U(std::forward<Args>(args)...);
+    }
+
+    template <class U>
+    static void destroy(U* p)
+    {
+        p->~U();
+    }
+
     size_type max_size() const { size_type _Count = (size_type)(-1) / sizeof(T); return (0 < _Count ? _Count : 1); }
 };
 

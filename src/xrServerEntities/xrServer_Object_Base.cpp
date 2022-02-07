@@ -1,4 +1,4 @@
-////////////////////////////////////////////////////////////////////////////
+ï»¿////////////////////////////////////////////////////////////////////////////
 //	Module 		: xrServer_Object_Base.cpp
 //	Created 	: 19.09.2002
 //  Modified 	: 16.07.2004
@@ -221,7 +221,7 @@ void CSE_Abstract::Spawn_Write				(NET_Packet	&tNetPacket, BOOL bLocal)
 
 
 	//client object custom data serialization SAVE
-	u16 client_data_size		= (u16)client_data.size(); //íå ìîæåò áûòü áîëüøå 256 áàéò
+	u16 client_data_size		= (u16)client_data.size(); //Ð½Ðµ Ð¼Ð¾Ð¶ÐµÑ‚ Ð±Ñ‹Ñ‚ÑŒ Ð±Ð¾Ð»ÑŒÑˆÐµ 256 Ð±Ð°Ð¹Ñ‚
 	tNetPacket.w_u16			(client_data_size);
 //	Msg							("SERVER:saving:save:%d bytes:%d:%s",client_data_size,ID,s_name_replace ? s_name_replace : "");
 	if (client_data_size > 0) {
@@ -252,7 +252,7 @@ void CSE_Abstract::Spawn_Write				(NET_Packet	&tNetPacket, BOOL bLocal)
 	tNetPacket.w_seek			(position,&size,sizeof(u16));
 }
 
-static enum EGameTypes {
+enum EGameTypes {
 	GAME_ANY							= 0,
 	GAME_SINGLE							= 1,
 	GAME_DEATHMATCH						= 2,
@@ -315,7 +315,7 @@ BOOL CSE_Abstract::Spawn_Read				(NET_Packet	&tNetPacket)
 
 	//client object custom data serialization LOAD
 	if (m_wVersion > 70) {
-		u16 client_data_size	= (m_wVersion > 93) ? tNetPacket.r_u16() : tNetPacket.r_u8(); //íå ìîæåò áûòü áîëüøå 256 áàéò
+		u16 client_data_size	= (m_wVersion > 93) ? tNetPacket.r_u16() : tNetPacket.r_u8(); //Ð½Ðµ Ð¼Ð¾Ð¶ÐµÑ‚ Ð±Ñ‹Ñ‚ÑŒ Ð±Ð¾Ð»ÑŒÑˆÐµ 256 Ð±Ð°Ð¹Ñ‚
 		if (client_data_size > 0) {
 //			Msg					("SERVER:loading:load:%d bytes:%d:%s",client_data_size,ID,s_name_replace ? s_name_replace : "");
 			client_data.resize	(client_data_size);
@@ -362,7 +362,7 @@ BOOL CSE_Abstract::Spawn_Read				(NET_Packet	&tNetPacket)
 void	CSE_Abstract::load			(NET_Packet	&tNetPacket)
 {
 	CPureServerObject::load		(tNetPacket);
-	u16 client_data_size		= (m_wVersion > 93) ? tNetPacket.r_u16() : tNetPacket.r_u8(); //íå ìîæåò áûòü áîëüøå 256 áàéò
+	u16 client_data_size		= (m_wVersion > 93) ? tNetPacket.r_u16() : tNetPacket.r_u8(); //Ð½Ðµ Ð¼Ð¾Ð¶ÐµÑ‚ Ð±Ñ‹Ñ‚ÑŒ Ð±Ð¾Ð»ÑŒÑˆÐµ 256 Ð±Ð°Ð¹Ñ‚
 	if (client_data_size > 0) {
 #ifdef DEBUG
 //		Msg						("SERVER:loading:load:%d bytes:%d:%s",client_data_size,ID,s_name_replace ? s_name_replace : "");

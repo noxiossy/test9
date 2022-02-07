@@ -1,4 +1,4 @@
-#ifndef PLAYER_STATE_OPENER_INCLUDED
+﻿#ifndef PLAYER_STATE_OPENER_INCLUDED
 #define PLAYER_STATE_OPENER_INCLUDED
 
 #include "player_state_param.h"

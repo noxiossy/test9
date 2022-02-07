@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "controller_state_attack_hide.h"
 #include "controller_state_attack_hide_lite.h"

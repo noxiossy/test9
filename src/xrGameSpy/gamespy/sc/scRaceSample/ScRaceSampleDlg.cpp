@@ -1,4 +1,4 @@
-// ScRaceSampleDlg.cpp : implementation file
+﻿// ScRaceSampleDlg.cpp : implementation file
 //
 
 #include "stdafx.h"

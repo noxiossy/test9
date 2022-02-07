@@ -1,4 +1,4 @@
-#ifndef _TOUCH_H_
+﻿#ifndef _TOUCH_H_
 #define _TOUCH_H_
 
 #define TOUCH_X_RANGE 256

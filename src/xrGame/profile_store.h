@@ -1,4 +1,4 @@
-#ifndef GAMESPY_PROFILE_STORE
+﻿#ifndef GAMESPY_PROFILE_STORE
 #define GAMESPY_PROFILE_STORE
 
 #include <boost/noncopyable.hpp>

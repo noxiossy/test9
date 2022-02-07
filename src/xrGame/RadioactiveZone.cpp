@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "radioactivezone.h"
 #include "level.h"
 #include "xrmessages.h"

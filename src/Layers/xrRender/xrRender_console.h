@@ -1,8 +1,9 @@
-#pragma once
+﻿#pragma once
 
 // Common
 //Alundaio
 extern ECORE_API	BOOL 		ps_clear_models_on_unload;
+extern ECORE_API    BOOL		ps_use_precompiled_shaders;
 //-Alundaio
 
 extern ECORE_API	u32			ps_r_sun_shafts;	//=	0;
@@ -143,9 +144,6 @@ extern ECORE_API float			ps_r3_dyn_wet_surf_near;	// 10.0f
 extern ECORE_API float			ps_r3_dyn_wet_surf_far;		// 30.0f
 extern ECORE_API int			ps_r3_dyn_wet_surf_sm_res;	// 256
 extern u32 						r2_SmapSize;
-extern ECORE_API float			ps_r2_ss_sunshafts_length;
-extern ECORE_API float			ps_r2_ss_sunshafts_radius;
-extern u32 ps_sunshafts_mode;
 
 enum
 {
@@ -206,10 +204,7 @@ enum
 	R_FLAGEXT_HOM_DEPTH_DRAW		= (1<<7),
 	R2FLAGEXT_SUN_ZCULLING			= (1<<8),
 	R2FLAGEXT_SUN_OLD				= (1<<9),
-	R2FLAGEXT_SHADER_CACHE 			= 1 << 10,
 };
-
-extern ECORE_API int ps_r2_fxaa;
 
 //Swartz: actor shadow
 extern ECORE_API Flags32 ps_actor_shadow_flags; 
@@ -219,12 +214,6 @@ enum
 RFLAG_ACTOR_SHADOW = (1<<0),
 };
 //-Swartz
-
-enum
- {
-	R2SS_VOLUMETRIC,
-	R2SS_SCREEN_SPACE,
-};
 
 extern void						xrRender_initconsole	();
 extern BOOL						xrRender_test_hw		();

@@ -1,4 +1,4 @@
-#include "pch_script.h"
+﻿#include "pch_script.h"
 #include "GameTask.h"
 #include "ui/xrUIXmlParser.h"
 #include "encyclopedia_article.h"

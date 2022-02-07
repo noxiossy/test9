@@ -1,4 +1,4 @@
-#ifndef SECRET_KEY_GENERATOR_INCLUDED
+﻿#ifndef SECRET_KEY_GENERATOR_INCLUDED
 #define SECRET_KEY_GENERATOR_INCLUDED
 
 #include <boost/noncopyable.hpp>

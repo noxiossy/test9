@@ -1,4 +1,4 @@
-#ifndef FOBB_H
+﻿#ifndef FOBB_H
 #define FOBB_H
 
 template <class T>

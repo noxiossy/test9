@@ -1,4 +1,4 @@
-#pragma once
+п»ї#pragma once
 
 #include "UIDialogWnd.h"
 #include "UIEditBox.h"
@@ -60,7 +60,7 @@ protected:
 	CUIStatic*				m_pUIOurBagWnd;
 	CUIStatic*				m_pUIOthersBagWnd;
 
-	//информация о персонажах 
+	//РёРЅС„РѕСЂРјР°С†РёСЏ Рѕ РїРµСЂСЃРѕРЅР°Р¶Р°С… 
 	CUIStatic*				m_pUIOurIcon;
 	CUIStatic*				m_pUIOthersIcon;
 	CUICharacterInfo*		m_pUICharacterInfoLeft;
@@ -82,7 +82,7 @@ protected:
 	CUICellItem*			CurrentItem					();
 	PIItem					CurrentIItem				();
 
-	// Взять все
+	// Р’Р·СЏС‚СЊ РІСЃРµ
 	void					TakeAll						();
 
 

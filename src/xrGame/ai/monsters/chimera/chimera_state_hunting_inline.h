@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "chimera_state_hunting_move_to_cover.h"
 #include "chimera_state_hunting_come_out.h"

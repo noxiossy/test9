@@ -1,4 +1,4 @@
-#include "stdafx.h"
+п»ї#include "stdafx.h"
 #include "xrserver.h"
 #include "xrserver_objects.h"
 #include "xrserver_objects_alife_monsters.h"
@@ -6,7 +6,7 @@
 
 void ReplaceOwnershipHeader	(NET_Packet& P)
 {
-	//способ очень грубый, но на данный момент иного выбора нет. Заранее приношу извинения
+	//СЃРїРѕСЃРѕР± РѕС‡РµРЅСЊ РіСЂСѓР±С‹Р№, РЅРѕ РЅР° РґР°РЅРЅС‹Р№ РјРѕРјРµРЅС‚ РёРЅРѕРіРѕ РІС‹Р±РѕСЂР° РЅРµС‚. Р—Р°СЂР°РЅРµРµ РїСЂРёРЅРѕС€Сѓ РёР·РІРёРЅРµРЅРёСЏ
 	u16 NewType = GE_OWNERSHIP_TAKE;
 	CopyMemory(&P.B.data[6],&NewType,2);
 };

@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #if XRGAME_EXPORTS | XRSE_FACTORY_EXPORTS
 #	define	_memcpy CopyMemory

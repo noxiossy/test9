@@ -1,4 +1,4 @@
-/*
+﻿/*
  * $Id: t-test.h,v 1.1 2004/11/04 14:32:21 wg Exp $
  * by Wolfram Gloger 1996.
  * Common data structures and functions for testing malloc performance.

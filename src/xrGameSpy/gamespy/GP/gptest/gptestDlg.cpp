@@ -1,4 +1,4 @@
-// gptestDlg.cpp : implementation file
+﻿// gptestDlg.cpp : implementation file
 //
 
 #include "stdafx.h"

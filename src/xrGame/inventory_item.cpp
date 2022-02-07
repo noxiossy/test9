@@ -1,4 +1,4 @@
-////////////////////////////////////////////////////////////////////////////
+﻿////////////////////////////////////////////////////////////////////////////
 //	Module 		: inventory_item.cpp
 //	Created 	: 24.03.2003
 //  Modified 	: 29.01.2004
@@ -272,9 +272,9 @@ void CInventoryItem::OnEvent (NET_Packet& P, u16 type)
 	}
 }
 
-//ïðîöåññ îòñîåäèíåíèÿ âåùè çàêëþ÷àåòñÿ â ñïàóíå íîâîé âåùè 
-//â èíâåíòàðå è óñòàíîâêå ñîîòâåòñòâóþùèõ ôëàãîâ â ðîäèòåëüñêîì
-//îáúåêòå, ïîýòîìó ôóíêöèÿ äîëæíà áûòü ïåðåîïðåäåëåíà
+//процесс отсоединения вещи заключается в спауне новой вещи 
+//в инвентаре и установке соответствующих флагов в родительском
+//объекте, поэтому функция должна быть переопределена
 bool CInventoryItem::Detach(const char* item_section_name, bool b_spawn_item) 
 {
 	if (OnClient()) return true;
@@ -347,7 +347,7 @@ void CInventoryItem::net_Destroy		()
 		VERIFY(std::find(m_pInventory->m_all.begin(), m_pInventory->m_all.end(), this)==m_pInventory->m_all.end() );
 	}
 
-	//èíâåíòàðü êîòîðîìó ìû ïðèíàäëåæàëè
+	//инвентарь которому мы принадлежали
 //.	m_pInventory = NULL;
 }
 
@@ -600,6 +600,17 @@ void CInventoryItem::net_Export			(NET_Packet& P)
 {	
 	//copy from CPhysicObject
 	P.w_u8				(0);
+
+	//Alun: To fix condition not persisting offline for items except weapons
+	if (g_actor && this->parent_id() == g_actor->ID()) //Optimization, as I can't think of very many cases where we need update condition change when item is not actor's
+	{
+		CGameObject *obj = smart_cast<CGameObject*>(this);
+		NET_Packet stpk;
+		obj->u_EventGen(stpk, GE_SYNC_ALIFEITEM, obj->ID());
+		stpk.w_float(m_fCondition);
+		obj->u_EventSend(stpk, net_flags(FALSE));
+	}
+	//-Alun
 	return;
 };
 
@@ -808,7 +819,7 @@ void CInventoryItem::CalculateInterpolationParams()
 		for (u32 k=0; k<3; k++)
 		{
 			P0[k] = c*(c*(c*p->SCoeff[k][0]+p->SCoeff[k][1])+p->SCoeff[k][2])+p->SCoeff[k][3];
-			P1[k] = (c*c*p->SCoeff[k][0]*3+c*p->SCoeff[k][1]*2+p->SCoeff[k][2])/3; // ñîêðîñòü èç ôîðìóëû â 3 ðàçà ïðåâûøàåò ñêîðîñòü ïðè ðàñ÷åòå êîýôôèöèåíòîâ !!!!
+			P1[k] = (c*c*p->SCoeff[k][0]*3+c*p->SCoeff[k][1]*2+p->SCoeff[k][2])/3; // сокрость из формулы в 3 раза превышает скорость при расчете коэффициентов !!!!
 		};
 		P0.set(p->IStartPos);
 		P1.add(p->IStartPos);

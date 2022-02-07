@@ -1,4 +1,4 @@
-#ifndef EnvironmentRender_included
+﻿#ifndef EnvironmentRender_included
 #define EnvironmentRender_included
 #pragma once
 

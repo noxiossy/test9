@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "game_base_space.h"
 #include "alife_space.h"

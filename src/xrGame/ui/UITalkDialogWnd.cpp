@@ -1,4 +1,4 @@
-#include "stdafx.h"
+п»ї#include "stdafx.h"
 #include "UITalkDialogWnd.h"
 
 #include "xrUIXmlParser.h"
@@ -50,14 +50,14 @@ void CUITalkDialogWnd::InitTalkDialogWnd()
 	AttachChild(&UIOurIcon);
 	AttachChild(&UIOthersIcon);
 
-	// Фрейм с нащими фразами
+	// Р¤СЂРµР№Рј СЃ РЅР°С‰РёРјРё С„СЂР°Р·Р°РјРё
 	UIDialogFrameBottom			= UIHelper::CreateStatic	( *m_uiXml, "frame_bottom", this );
 
-	//основной фрейм диалога
+	//РѕСЃРЅРѕРІРЅРѕР№ С„СЂРµР№Рј РґРёР°Р»РѕРіР°
 	UIDialogFrameTop			= UIHelper::CreateStatic	( *m_uiXml, "frame_top", this );
 
 
-	//Ответы
+	//РћС‚РІРµС‚С‹
 	UIAnswersList = xr_new<CUIScrollView>();
 	UIAnswersList->SetAutoDelete(true);
 //	UIDialogFrameTop.AttachChild(UIAnswersList);
@@ -65,8 +65,8 @@ void CUITalkDialogWnd::InitTalkDialogWnd()
 	CUIXmlInit::InitScrollView	(*m_uiXml, "answers_list", 0, UIAnswersList);
 	UIAnswersList->SetWindowName("---UIAnswersList");
 
-	//Вопросы
-	UIQuestionsList = xr_new<CUIScrollView>();
+	//Р’РѕРїСЂРѕСЃС‹
+	UIQuestionsList				= xr_new<CUIScrollView>();
 	UIQuestionsList->SetAutoDelete(true);
 //	UIDialogFrameBottom.AttachChild(UIQuestionsList);
 	AttachChild(UIQuestionsList);
@@ -74,9 +74,9 @@ void CUITalkDialogWnd::InitTalkDialogWnd()
 	UIQuestionsList->SetWindowName("---UIQuestionsList");
 
 
-	//кнопка перехода в режим торговли
-	AttachChild(&UIToTradeButton);
-	CUIXmlInit::Init3tButton(*m_uiXml, "button", 0, &UIToTradeButton);
+	//РєРЅРѕРїРєР° РїРµСЂРµС…РѕРґР° РІ СЂРµР¶РёРј С‚РѕСЂРіРѕРІР»Рё
+	AttachChild					(&UIToTradeButton);
+	CUIXmlInit::Init3tButton	(*m_uiXml, "button", 0, &UIToTradeButton);
 
 	//AttachChild					(&UIToExitButton);
 	//CUIXmlInit::Init3tButton	(*m_uiXml, "button_exit", 0, &UIToExitButton);
@@ -85,20 +85,21 @@ void CUITalkDialogWnd::InitTalkDialogWnd()
 	//m_btn_pos[1]				= UIToExitButton.GetWndPos();
 	//m_btn_pos[2].x				= (m_btn_pos[0].x+m_btn_pos[1].x)/2.0f;
 	//m_btn_pos[2].y				= m_btn_pos[0].y;
-	// шрифт для индикации имени персонажа в окне разговора
-	CUIXmlInit::InitFont(*m_uiXml, "font", 0, m_iNameTextColor, m_pNameTextFont);
+	// С€СЂРёС„С‚ РґР»СЏ РёРЅРґРёРєР°С†РёРё РёРјРµРЅРё РїРµСЂСЃРѕРЅР°Р¶Р° РІ РѕРєРЅРµ СЂР°Р·РіРѕРІРѕСЂР°
+	CUIXmlInit::InitFont		(*m_uiXml, "font", 0, m_iNameTextColor, m_pNameTextFont);
 
-	CGameFont * pFont = NULL;
-	CUIXmlInit::InitFont(*m_uiXml, "font", 1, m_uOurReplicsColor, pFont);
+	CGameFont * pFont			= NULL;
+	CUIXmlInit::InitFont		(*m_uiXml, "font", 1, m_uOurReplicsColor, pFont);
 
 
-	SetWindowName("----CUITalkDialogWnd");
+	SetWindowName				("----CUITalkDialogWnd");
 
-	Register(&UIToTradeButton);
-	AddCallbackStr("question_item", LIST_ITEM_CLICKED, CUIWndCallback::void_function(this, &CUITalkDialogWnd::OnQuestionClicked));
+	Register					(&UIToTradeButton);
+	AddCallbackStr				("question_item",LIST_ITEM_CLICKED,CUIWndCallback::void_function(this, &CUITalkDialogWnd::OnQuestionClicked));
 	AddCallback					(&UIToTradeButton,BUTTON_CLICKED,CUIWndCallback::void_function(this, &CUITalkDialogWnd::OnTradeClicked));
 //	AddCallback					(&UIToExitButton,BUTTON_CLICKED,CUIWndCallback::void_function(this, &CUITalkDialogWnd::OnExitClicked));
 }
+
 	
 void CUITalkDialogWnd::Show()
 {
@@ -116,7 +117,7 @@ void CUITalkDialogWnd::Hide()
 	InventoryUtilities::SendInfoToLuaScripts		("ui_talk_hide");
 	inherited::Show									(false);
 	inherited::Enable								(false);
-	g_btnHint->Discard								(); //хз надо ли убрать
+	g_btnHint->Discard								();
 }
 
 void CUITalkDialogWnd::OnQuestionClicked(CUIWindow* w, void*)
@@ -152,8 +153,8 @@ void CUITalkDialogWnd::SetTradeMode()
 	OnTradeClicked( &UIToTradeButton, 0 );
 }
 
-//пересылаем сообщение родительскому окну для обработки
-//и фильтруем если оно пришло от нашего дочернего окна
+//РїРµСЂРµСЃС‹Р»Р°РµРј СЃРѕРѕР±С‰РµРЅРёРµ СЂРѕРґРёС‚РµР»СЊСЃРєРѕРјСѓ РѕРєРЅСѓ РґР»СЏ РѕР±СЂР°Р±РѕС‚РєРё
+//Рё С„РёР»СЊС‚СЂСѓРµРј РµСЃР»Рё РѕРЅРѕ РїСЂРёС€Р»Рѕ РѕС‚ РЅР°С€РµРіРѕ РґРѕС‡РµСЂРЅРµРіРѕ РѕРєРЅР°
 void CUITalkDialogWnd::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 {
 	CUIWndCallback::OnEvent(pWnd, msg, pData);
@@ -186,11 +187,12 @@ void CUITalkDialogWnd::AddQuestion(LPCSTR str, LPCSTR value, int number, bool b_
 	if (b_finalizer)
 	{
 		itm->m_text->SetAccelerator(kQUIT, 2);
-		itm->m_text->SetAccelerator(kUSE, 3);
+		itm->m_text->SetAccelerator		(kUSE, 3);
 	}
-	itm->SetWindowName("question_item");
-	UIQuestionsList->AddWindow(itm, true);
-	Register(itm);
+
+	itm->SetWindowName				("question_item");
+	UIQuestionsList->AddWindow		(itm, true);
+	Register						(itm);
 }
 
 
@@ -248,12 +250,12 @@ void CUITalkDialogWnd::SetOsoznanieMode(bool b)
 	if (mechanic_mode)
 	{
 		UIToTradeButton.m_hint_text = "ui_st_upgrade_hint";
-		UIToTradeButton.TextItemControl()->SetTextST("ui_st_upgrade");
+		UIToTradeButton.TextItemControl()->SetTextST( "ui_st_upgrade" );
 	}
 	else
 	{
 		UIToTradeButton.m_hint_text = "ui_st_trade_hint";
-		UIToTradeButton.TextItemControl()->SetTextST("ui_st_trade");
+		UIToTradeButton.TextItemControl()->SetTextST( "ui_st_trade" );
 	}
 }
 
@@ -287,11 +289,11 @@ CUIQuestionItem::CUIQuestionItem(CUIXml* xml_doc, LPCSTR path)
 	Register						(m_text);
 	AddCallback						(m_text,BUTTON_CLICKED,CUIWndCallback::void_function(this, &CUIQuestionItem::OnTextClicked));
 
-	m_num_text = xr_new<CUITextWnd>();
-	m_num_text->SetAutoDelete(true);
-	AttachChild(m_num_text);
-	strconcat(sizeof(str), str, path, ":num_text");
-	xml_init.InitTextWnd(*xml_doc, str, 0, m_num_text);
+	m_num_text						= xr_new<CUITextWnd>();
+	m_num_text->SetAutoDelete		(true);
+	AttachChild						(m_num_text);
+	strconcat						(sizeof(str),str,path,":num_text");
+	xml_init.InitTextWnd			(*xml_doc, str, 0, m_num_text);
 }
 
 void CUIQuestionItem::Init			(LPCSTR val, LPCSTR text)

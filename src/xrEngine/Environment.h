@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 // refs
 class ENGINE_API IRender_Visual;
@@ -389,4 +389,4 @@ public:
 
 ENGINE_API extern Flags32 psEnvFlags;
 ENGINE_API extern float psVisDistance;
-extern ENGINE_API float ps_r_sunshafts_intensity;
+

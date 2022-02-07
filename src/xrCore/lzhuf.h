@@ -1,4 +1,4 @@
-#ifndef _LZ_H_
+﻿#ifndef _LZ_H_
 #define _LZ_H_
 
 extern XRCORE_API unsigned _writeLZ(int hf, void* d, unsigned size);

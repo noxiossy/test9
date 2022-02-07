@@ -1,4 +1,4 @@
-// ChannelListDlg.cpp : implementation file
+﻿// ChannelListDlg.cpp : implementation file
 //
 
 #include "stdafx.h"

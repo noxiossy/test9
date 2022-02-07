@@ -1,4 +1,4 @@
-#ifndef COMMAND_SWITCH_COUNTER_INCLUDED
+﻿#ifndef COMMAND_SWITCH_COUNTER_INCLUDED
 #define COMMAND_SWITCH_COUNTER_INCLUDED
 
 #include "player_state_param.h"

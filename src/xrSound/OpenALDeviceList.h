@@ -1,4 +1,4 @@
-#ifndef ALDEVICELIST_H
+﻿#ifndef ALDEVICELIST_H
 #define ALDEVICELIST_H
 
 #include "openal/al.h"

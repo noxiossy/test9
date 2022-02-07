@@ -1,4 +1,4 @@
-// BlenderDefault.cpp: implementation of the CBlender_Model_EbB class.
+﻿// BlenderDefault.cpp: implementation of the CBlender_Model_EbB class.
 //
 //////////////////////////////////////////////////////////////////////
 

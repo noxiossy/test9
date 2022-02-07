@@ -1,4 +1,4 @@
-//
+﻿//
 //
 #ifndef PH_FRACTURE_H
 #define PH_FRACTURE_H

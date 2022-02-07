@@ -1,4 +1,4 @@
-#ifndef SCREENSHOT_SERVER
+﻿#ifndef SCREENSHOT_SERVER
 #define SCREENSHOT_SERVER
 #include "file_transfer.h"
 #include <boost/noncopyable.hpp>

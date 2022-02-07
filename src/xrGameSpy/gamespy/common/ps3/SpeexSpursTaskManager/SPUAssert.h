@@ -1,4 +1,4 @@
-#ifndef __SPU_ASSERT_H__
+﻿#ifndef __SPU_ASSERT_H__
 #define __SPU_ASSERT_H__
 
 // Author: Sauce

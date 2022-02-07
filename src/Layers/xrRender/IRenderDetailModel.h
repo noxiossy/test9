@@ -1,4 +1,4 @@
-#ifndef IRenderDetailModelH
+﻿#ifndef IRenderDetailModelH
 #define IRenderDetailModelH
 #pragma once
 

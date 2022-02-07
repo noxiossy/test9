@@ -1,4 +1,4 @@
-/* lran2.h
+﻿/* lran2.h
  * by Wolfram Gloger 1996.
  *
  * A small, portable pseudo-random number generator.

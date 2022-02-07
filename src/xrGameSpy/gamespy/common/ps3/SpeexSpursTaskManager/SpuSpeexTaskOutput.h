@@ -1,4 +1,4 @@
-
+﻿
 
 #ifndef __SPEEX_TASK_OUTPUT_H
 #define __SPEEX_TASK_OUTPUT_H

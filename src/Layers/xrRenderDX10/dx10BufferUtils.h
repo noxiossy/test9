@@ -1,4 +1,4 @@
-#ifndef	dx10BufferUtils_included
+﻿#ifndef	dx10BufferUtils_included
 #define	dx10BufferUtils_included
 #pragma once
 #if defined(USE_DX10) || defined(USE_DX11)

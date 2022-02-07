@@ -1,4 +1,4 @@
-#ifndef PH_STATIC_GEOM_SHELL_H
+﻿#ifndef PH_STATIC_GEOM_SHELL_H
 #define PH_STATIC_GEOM_SHELL_H
 #include "PHGeometryOwner.h"
 #include "PHObject.h"

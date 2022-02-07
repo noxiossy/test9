@@ -1,4 +1,4 @@
-// ladderTrackDlg.h : header file
+﻿// ladderTrackDlg.h : header file
 //
 
 #if !defined(AFX_LADDERTRACKDLG_H__82121F55_1FDB_427A_B616_B59EB16C5E6D__INCLUDED_)

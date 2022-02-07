@@ -1,4 +1,4 @@
-#ifndef	dx9R_Backend_Runtime_included
+﻿#ifndef	dx9R_Backend_Runtime_included
 #define	dx9R_Backend_Runtime_included
 #pragma once
 

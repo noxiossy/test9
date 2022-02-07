@@ -1,4 +1,4 @@
-// LightProjector.cpp: implementation of the CLightProjector class.
+﻿// LightProjector.cpp: implementation of the CLightProjector class.
 //
 //////////////////////////////////////////////////////////////////////
 

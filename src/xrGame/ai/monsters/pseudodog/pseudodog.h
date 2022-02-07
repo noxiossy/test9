@@ -1,4 +1,4 @@
-#pragma once
+п»ї#pragma once
 
 #include "../BaseMonster/base_monster.h"
 #include "../../../../xrServerEntities/script_export_space.h"
@@ -13,7 +13,7 @@ public:
 
 	TTime			m_time_became_angry;
 
-	TTime			time_growling;			// время нахождения в состоянии пугания
+	TTime			time_growling;			// РІСЂРµРјСЏ РЅР°С…РѕР¶РґРµРЅРёСЏ РІ СЃРѕСЃС‚РѕСЏРЅРёРё РїСѓРіР°РЅРёСЏ
 
 	enum {
 		eAdditionalSounds		= MonsterSound::eMonsterSoundCustom,

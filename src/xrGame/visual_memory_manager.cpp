@@ -1,4 +1,4 @@
-////////////////////////////////////////////////////////////////////////////
+﻿////////////////////////////////////////////////////////////////////////////
 //	Module 		: visual_memory_manager.cpp
 //	Created 	: 02.10.2001
 //  Modified 	: 19.11.2003
@@ -640,7 +640,7 @@ CVisibleObject *CVisualMemoryManager::visible_object	(const CGameObject *game_ob
 	return						(&*I);
 }
 
-IC	squad_mask_type CVisualMemoryManager::mask			() const
+squad_mask_type CVisualMemoryManager::mask			() const
 {
 	if (!m_stalker)
 		return					(squad_mask_type(-1));

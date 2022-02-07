@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "UIOutfitSlot.h"
 #include "UIStatic.h"
 #include "UICellItem.h"

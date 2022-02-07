@@ -1,4 +1,4 @@
-#ifndef KILLS_STORE_INCLUDED
+﻿#ifndef KILLS_STORE_INCLUDED
 #define KILLS_STORE_INCLUDED
 
 #include "obsolete_queue.h"

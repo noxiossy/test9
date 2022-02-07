@@ -1,4 +1,4 @@
-// Blender_Vertex_aref.cpp: implementation of the CBlender_Vertex_aref class.
+﻿// Blender_Vertex_aref.cpp: implementation of the CBlender_Vertex_aref class.
 //
 //////////////////////////////////////////////////////////////////////
 

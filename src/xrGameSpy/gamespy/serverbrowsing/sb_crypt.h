@@ -1,4 +1,4 @@
-#ifndef _SB_CRYPT_H
+﻿#ifndef _SB_CRYPT_H
 #define _SB_CRYPT_H
 
 #ifdef __cplusplus

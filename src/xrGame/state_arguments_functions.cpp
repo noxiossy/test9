@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "state_arguments_functions.h"
 
 namespace award_system

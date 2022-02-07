@@ -1,4 +1,4 @@
-#error unused file 
+п»ї#error unused file 
 
 #pragma once
 /*
@@ -118,7 +118,7 @@ protected:
 
 	CUIPropertiesBox			UIPropertiesBox;
 	
-	//информация о персонаже
+	//РёРЅС„РѕСЂРјР°С†РёСЏ Рѕ РїРµСЂСЃРѕРЅР°Р¶Рµ
 	CUIOutfitInfo2				UIOutfitInfo;
 	CUIItemInfo					UIItemInfo;
 

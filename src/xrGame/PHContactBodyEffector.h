@@ -1,4 +1,4 @@
-#ifndef PH_CONTACT_BODY_EFFECTOR_H
+﻿#ifndef PH_CONTACT_BODY_EFFECTOR_H
 #define PH_CONTACT_BODY_EFFECTOR_H
 #include "PHBaseBodyEffector.h"
 struct SGameMtl;

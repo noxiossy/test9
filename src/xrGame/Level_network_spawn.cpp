@@ -1,4 +1,4 @@
-#include "pch_script.h"
+﻿#include "pch_script.h"
 #include "xrServer_Objects_ALife_All.h"
 #include "level.h"
 #include "game_cl_base.h"
@@ -97,7 +97,8 @@ void CLevel::g_sv_Spawn		(CSE_Abstract* E)
 	psNET_Flags.set	(NETFLAG_MINIMIZEUPDATES,TRUE);
 
 	// Client spawn
-	CObject* O = Objects.Create(*E->s_name);
+//	T.Start		();
+	CObject*	O		= Objects.Create	(*E->s_name);
 	if (!O)
 	{
 		Msg("! Failed to create entity '%s'", *E->s_name);
@@ -207,10 +208,10 @@ CSE_Abstract *CLevel::spawn_item		(LPCSTR section, const Fvector &position, u32 
 			dynamic_object->m_tGraphID	= ai().cross_table().vertex(level_vertex_id).game_vertex_id();
 	}
 
-	//îðóæèå ñïàâíèì ñ ïîëíûì ìàãàçèíîè
+	//оружие спавним с полным магазинои
 	CSE_ALifeItemWeapon* weapon = smart_cast<CSE_ALifeItemWeapon*>(abstract);
 	if(weapon)
-		weapon->a_elapsed	= weapon->get_ammo_magsize();
+		weapon->a_elapsed.type1	= weapon->get_ammo_magsize();
 	
 	// Fill
 	abstract->s_name		= section;

@@ -1,4 +1,4 @@
-#ifndef __CELL_UTILITY_MACROS_H
+﻿#ifndef __CELL_UTILITY_MACROS_H
 #define __CELL_UTILITY_MACROS_H
 
 // This type pretends to be a pointer to a type on the PPU, and

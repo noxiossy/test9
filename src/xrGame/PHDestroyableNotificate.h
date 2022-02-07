@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 class CSE_Abstract;
 class CPhysicsShellHolder;

@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "../xrRender/du_sphere_part.h"
 #include "../xrRender/du_cone.h"
 #include "../xrRender/du_sphere.h"

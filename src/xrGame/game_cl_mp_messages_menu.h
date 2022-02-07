@@ -1,4 +1,4 @@
-protected:
+﻿protected:
 	DEF_VECTOR(MESSAGEMENUS, cl_MessageMenu);
 	MESSAGEMENUS					m_aMessageMenus;
 

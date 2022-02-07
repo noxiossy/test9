@@ -1,4 +1,4 @@
-#ifndef GAMESPY_SAKE
+﻿#ifndef GAMESPY_SAKE
 #define GAMESPY_SAKE
 
 #include "GameSpy_FuncDefs.h"

@@ -1,4 +1,4 @@
-#ifndef FIRST_BULLET_CONTROLLER
+﻿#ifndef FIRST_BULLET_CONTROLLER
 #define FIRST_BULLET_CONTROLLER
 
 class first_bullet_controller

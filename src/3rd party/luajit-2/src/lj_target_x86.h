@@ -1,4 +1,4 @@
-/*
+﻿/*
 ** Definitions for x86 and x64 CPUs.
 ** Copyright (C) 2005-2015 Mike Pall. See Copyright Notice in luajit.h
 */

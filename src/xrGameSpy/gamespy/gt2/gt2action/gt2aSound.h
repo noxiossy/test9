@@ -1,4 +1,4 @@
-/*
+﻿/*
 GameSpy GT2 SDK
 GT2Action - sample app
 Dan "Mr. Pants" Schoenblum

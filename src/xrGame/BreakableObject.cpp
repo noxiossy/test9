@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "BreakableObject.h"
 #include "xrserver_objects_alife.h"
 #include "../xrphysics/IPHStaticGeomShell.h"

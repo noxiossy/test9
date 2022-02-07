@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "alife_space.h"
 #include "string_table_defs.h"

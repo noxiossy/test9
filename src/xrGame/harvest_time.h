@@ -1,4 +1,4 @@
-#ifndef HARVEST_TIME_INCLUDED
+﻿#ifndef HARVEST_TIME_INCLUDED
 #define HARVEST_TIME_INCLUDED
 
 #include "player_state_param.h"

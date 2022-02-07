@@ -1,4 +1,4 @@
-// GetUserInfoDlg.cpp : implementation file
+﻿// GetUserInfoDlg.cpp : implementation file
 //
 
 #include "stdafx.h"

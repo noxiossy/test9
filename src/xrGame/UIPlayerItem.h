@@ -1,4 +1,4 @@
-#ifndef UIPLAYERITEM
+﻿#ifndef UIPLAYERITEM
 #define UIPLAYERITEM
 
 #include "ui/UIWindow.h"

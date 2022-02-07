@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "../state.h"
 #include "../states/monster_state_attack.h"

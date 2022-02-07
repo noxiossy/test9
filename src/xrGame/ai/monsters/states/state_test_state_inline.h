@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "../../../level.h"
 #include "state_move_to_point.h"

@@ -1,4 +1,4 @@
-// LzHuf.cpp : Defines the entry point for the console application.
+﻿// LzHuf.cpp : Defines the entry point for the console application.
 //
 
 #include "stdafx.h"

@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "Level.h"
 #include "xrMessages.h"
 #include "../xrEngine/x_ray.h"

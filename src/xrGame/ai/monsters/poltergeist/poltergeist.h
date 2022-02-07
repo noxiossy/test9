@@ -1,4 +1,4 @@
-#pragma once
+п»ї#pragma once
 #include "../BaseMonster/base_monster.h"
 #include "../telekinesis.h"
 #include "../energy_holder.h"
@@ -99,7 +99,7 @@ public:
 			ref_sound m_strange_sound;
 	
 	// Movement
-			Fvector m_current_position;		// Позиция на ноде
+			Fvector m_current_position;		// РџРѕР·РёС†РёСЏ РЅР° РЅРѕРґРµ
 
 	// Dynamic Height
 			u32		time_height_updated;

@@ -1,4 +1,4 @@
-#ifndef	dx10MinMaxSMBlender_included
+﻿#ifndef	dx10MinMaxSMBlender_included
 #define	dx10MinMaxSMBlender_included
 
 

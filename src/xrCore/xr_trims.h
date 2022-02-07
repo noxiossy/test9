@@ -1,4 +1,4 @@
-#ifndef xr_trimsH
+﻿#ifndef xr_trimsH
 #define xr_trimsH
 
 // refs

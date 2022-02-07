@@ -1,4 +1,4 @@
-#include "LibTab.h"
+﻿#include "LibTab.h"
 #include "LibMath.h"
 
 #include <cstdlib>

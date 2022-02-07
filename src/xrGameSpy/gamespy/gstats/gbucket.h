@@ -1,4 +1,4 @@
-/******
+﻿/******
 gbucket.h
 GameSpy Stats/Tracking SDK 
   

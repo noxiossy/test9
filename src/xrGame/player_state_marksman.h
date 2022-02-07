@@ -1,4 +1,4 @@
-#ifndef PLAYER_STATE_MARKSMAN
+﻿#ifndef PLAYER_STATE_MARKSMAN
 #define PLAYER_STATE_MARKSMAN
 
 #include "player_state_param.h"

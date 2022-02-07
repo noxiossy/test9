@@ -1,4 +1,4 @@
-#pragma once
+п»ї#pragma once
 
 #include "ai_monster_defs.h"
 #include "../../../xrServerEntities/ai_sounds.h"
@@ -41,11 +41,11 @@ typedef struct tagSoundElement
 {
 	const CObject		*who;
 	TSoundDangerValue	type;
-	Fvector				position;		// позиция звука, не объекта, издавшего звук
+	Fvector				position;		// РїРѕР·РёС†РёСЏ Р·РІСѓРєР°, РЅРµ РѕР±СЉРµРєС‚Р°, РёР·РґР°РІС€РµРіРѕ Р·РІСѓРє
 	float				power;
-	TTime				time;			// время обнаружения звука
+	TTime				time;			// РІСЂРµРјСЏ РѕР±РЅР°СЂСѓР¶РµРЅРёСЏ Р·РІСѓРєР°
 
-	int					value;			// оценочное значение данного звука		
+	int					value;			// РѕС†РµРЅРѕС‡РЅРѕРµ Р·РЅР°С‡РµРЅРёРµ РґР°РЅРЅРѕРіРѕ Р·РІСѓРєР°		
 
 	tagSoundElement() {  
 		who = 0; type = NONE_DANGEROUS_SOUND; position.set(0,0,0); power = 0.f; time = 0; value = 0;
@@ -58,14 +58,14 @@ typedef struct tagSoundElement
 	}
 	TSoundDangerValue ConvertSoundType(ESoundTypes stype);
 
-	void CalcValue(TTime cur_time, Fvector cur_pos) {
+	void CalcValue(TTime cur_time, const Fvector &cur_pos) {
 		value = FACTOR_SOUND_TYPE * u32(NONE_DANGEROUS_SOUND - WEAPON_SHOOTING) - iFloor(FACTOR_DISTANCE * cur_pos.distance_to(position)) - FACTOR_DELTA_TIME * iFloor(float((cur_time - time) / 1000)) + FACTOR_SOUND_POWER * iFloor(power);
 	}
 
 } SoundElem;
 
 class CMonsterSoundMemory {
-	TTime					time_memory;				// время хранения звуков
+	TTime					time_memory;				// РІСЂРµРјСЏ С…СЂР°РЅРµРЅРёСЏ Р·РІСѓРєРѕРІ
 	xr_vector<SoundElem>	Sounds;
 
 	CBaseMonster			*monster;
@@ -87,7 +87,7 @@ public:
 	int         GetNumSounds            () {return Sounds.size();}
 	void        GetFirstSound           (SoundElem& s, bool& bDangerous);
 
-	void		GetSound				(SoundElem& s, bool& bDangerous);	// возвращает самый опасный звук
+	void		GetSound				(SoundElem& s, bool& bDangerous);	// РІРѕР·РІСЂР°С‰Р°РµС‚ СЃР°РјС‹Р№ РѕРїР°СЃРЅС‹Р№ Р·РІСѓРє
 	SoundElem	&GetSound				();
 	bool		get_sound_from_object	(const CObject* who, SoundElem	&value);	
 

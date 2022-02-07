@@ -1,4 +1,4 @@
-#ifndef _CPS_Instance_H_
+﻿#ifndef _CPS_Instance_H_
 #define _CPS_Instance_H_
 
 #include "../xrcdb/ispatial.h"

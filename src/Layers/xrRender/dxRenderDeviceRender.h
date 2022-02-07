@@ -1,4 +1,4 @@
-#ifndef dxRenderDeviceRender_included
+﻿#ifndef dxRenderDeviceRender_included
 #define dxRenderDeviceRender_included
 #pragma once
 

@@ -1,4 +1,4 @@
-#include "spursConfiguration.h"
+﻿#include "spursConfiguration.h"
 #include "SpursSpeexCInterface.h"
 #include <stdio.h>
 #include "SpursSpeexTaskManager.h"

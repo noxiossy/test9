@@ -1,4 +1,4 @@
-#ifndef PLAYER_STATE_CLIMBER_INCLUDED
+﻿#ifndef PLAYER_STATE_CLIMBER_INCLUDED
 #define PLAYER_STATE_CLIMBER_INCLUDED
 
 #include "player_state_param.h"

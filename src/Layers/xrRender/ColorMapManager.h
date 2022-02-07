@@ -1,4 +1,4 @@
-#ifndef	ColorMapManager_included
+﻿#ifndef	ColorMapManager_included
 #define	ColorMapManager_included
 #pragma once
 

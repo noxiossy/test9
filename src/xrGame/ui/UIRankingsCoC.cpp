@@ -1,4 +1,4 @@
-#include "pch_script.h"
+﻿#include "pch_script.h"
 #include "UIRankingsCoC.h"
 #include "UIScrollView.h"
 #include "UIXmlInit.h"

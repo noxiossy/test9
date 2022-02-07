@@ -1,4 +1,4 @@
-#ifndef CDKEY_BAN_LIST_H
+﻿#ifndef CDKEY_BAN_LIST_H
 #define CDKEY_BAN_LIST_H
 
 #include "xrServer.h"

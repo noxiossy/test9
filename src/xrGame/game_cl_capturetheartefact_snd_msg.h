@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 enum {
 	ID_CTA_ARTRET_TEAM1	= 400,

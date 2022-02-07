@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 class CGameSpy_Available;
 class CGameSpy_Patching;

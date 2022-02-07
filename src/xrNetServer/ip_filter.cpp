@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "ip_filter.h"
 #include "..\xrCore\xr_ini.h"
 

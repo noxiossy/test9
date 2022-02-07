@@ -1,4 +1,4 @@
-#ifndef xrLevelH
+﻿#ifndef xrLevelH
 #define xrLevelH
 
 #pragma once

@@ -1,4 +1,4 @@
-#ifndef IGENERICSTREAM_INCLUDED
+п»ї#ifndef IGENERICSTREAM_INCLUDED
 #define IGENERICSTREAM_INCLUDED
 
 #include "hxplatform.h"
@@ -19,8 +19,8 @@ typedef struct
 //===========================================================
 // IGenericStream
 //===========================================================
-//простой stream с интерфейсом
-//может использоваться между языками в случаях, когда необходимо передавать stream
+//РїСЂРѕСЃС‚РѕР№ stream СЃ РёРЅС‚РµСЂС„РµР№СЃРѕРј
+//РјРѕР¶РµС‚ РёСЃРїРѕР»СЊР·РѕРІР°С‚СЊСЃСЏ РјРµР¶РґСѓ СЏР·С‹РєР°РјРё РІ СЃР»СѓС‡Р°СЏС…, РєРѕРіРґР° РЅРµРѕР±С…РѕРґРёРјРѕ РїРµСЂРµРґР°РІР°С‚СЊ stream
 DECLARE_INTERFACE_(IGenericStream, IUnknown)
 {
   IUNKNOWN_METHODS_PURE(0x762EFFFE,0x00010000)    

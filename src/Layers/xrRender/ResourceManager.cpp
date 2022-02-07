@@ -1,12 +1,12 @@
-// TextureManager.cpp: implementation of the CResourceManager class.
+﻿// TextureManager.cpp: implementation of the CResourceManager class.
 //
 //////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
-#pragma hdrstop
+
 
 #pragma warning(disable:4995)
-#include <d3dx9.h>
+#include <d3dx/d3dx9.h>
 #pragma warning(default:4995)
 
 #include "ResourceManager.h"
@@ -296,7 +296,9 @@ void CResourceManager::DeferredUpload()
 {
 	if (!RDEVICE.b_is_Ready) return;
 	for (map_TextureIt t=m_textures.begin(); t!=m_textures.end(); t++)
+	{
 		t->second->Load();
+	}
 }
 
 void	CResourceManager::DeferredUnload	()

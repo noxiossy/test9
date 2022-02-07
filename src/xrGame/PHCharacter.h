@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "PHObject.h"
 #include "PHInterpolation.h"
 #include "PHSynchronize.h"
@@ -17,7 +17,7 @@ class CPHAICharacter;
 namespace ALife {
 	enum EHitType;
 };
- static enum EEnvironment
+enum EEnvironment
 			{
 				peOnGround,
 				peAtWall,

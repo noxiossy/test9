@@ -1,4 +1,4 @@
-// chattyView.h : interface of the CChattyView class
+﻿// chattyView.h : interface of the CChattyView class
 //
 /////////////////////////////////////////////////////////////////////////////
 

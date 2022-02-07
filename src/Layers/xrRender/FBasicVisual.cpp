@@ -1,4 +1,4 @@
-// dxRender_Visual.cpp: implementation of the dxRender_Visual class.
+﻿// dxRender_Visual.cpp: implementation of the dxRender_Visual class.
 //
 //////////////////////////////////////////////////////////////////////
 

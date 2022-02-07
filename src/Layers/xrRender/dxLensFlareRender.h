@@ -1,4 +1,4 @@
-#ifndef dxLensFlareRender_included
+﻿#ifndef dxLensFlareRender_included
 #define dxLensFlareRender_included
 #pragma once
 

@@ -1,4 +1,4 @@
-#ifndef NET_AUTH_CHECK_INCLUDED
+﻿#ifndef NET_AUTH_CHECK_INCLUDED
 #define NET_AUTH_CHECK_INCLUDED
 
 #include "net_shared.h"

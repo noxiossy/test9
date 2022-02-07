@@ -1,4 +1,4 @@
-#ifndef xrMemory_alignH
+﻿#ifndef xrMemory_alignH
 #define xrMemory_alignH
 #pragma once
 

@@ -1,4 +1,4 @@
-// VoiceSessionDlg.cpp : implementation file
+﻿// VoiceSessionDlg.cpp : implementation file
 //
 
 #include "stdafx.h"

@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 
 class CSE_Abstract;
 class CPhysicItem;
@@ -41,16 +41,16 @@ public:
 	IC		u32				CurrStateTime		() const			{return Device.dwTimeGlobal-m_dw_curr_state_time;}
 	IC		void			ResetSubStateTime	()					{m_dw_curr_substate_time=Device.dwTimeGlobal;}
 	virtual void			SwitchState			(u32 S)				= 0;
-	virtual void			OnStateSwitch		(u32 S)				= 0;
+	virtual void			OnStateSwitch		(u32 S, u32 oldState) 	= 0;
 };
 
 class CHudItem :public CHUDState
 {
-protected:
+public:
 							CHudItem			();
 	virtual					~CHudItem			();
 	virtual DLL_Pure*		_construct			();
-	
+protected:
 	Flags16					m_huditem_flags;
 	enum{
 		fl_pending			= (1<<0),
@@ -104,7 +104,7 @@ public:
 	bool						IsShowing			()	const		{	return GetState() == eShowing;}
 
 	virtual void				SwitchState			(u32 S);
-	virtual void				OnStateSwitch		(u32 S);
+	virtual void				OnStateSwitch		(u32 S, u32 oldState);
 
 	virtual void				OnAnimationEnd		(u32 state);
 	virtual void				OnMotionMark		(u32 state, const motion_marks&){};
@@ -150,7 +150,7 @@ protected:
 	IC		void				SetPending			(BOOL H)			{ m_huditem_flags.set(fl_pending, H);}
 	shared_str					hud_sect;
 
-	//êàäðû ìîìåíòà ïåðåñ÷åòà XFORM è FirePos
+	//ÐºÐ°Ð´Ñ€Ñ‹ Ð¼Ð¾Ð¼ÐµÐ½Ñ‚Ð° Ð¿ÐµÑ€ÐµÑÑ‡ÐµÑ‚Ð° XFORM Ð¸ FirePos
 	u32							dwFP_Frame;
 	u32							dwXF_Frame;
 
@@ -175,11 +175,7 @@ public:
 	virtual void				debug_draw_firedeps		() {};
 
 	virtual CHudItem*			cast_hud_item			()				{ return this; }
-
-public:
-	// mmccxvii: FWR code
-	//*
-	bool IsHUDAnimationExist(LPCSTR AnimationName);
-	//*
+    void PlayAnimCrouchIdleMoving(); //AVO: new crouch idle animation
+    bool HudAnimationExist(LPCSTR anim_name);
 };
 

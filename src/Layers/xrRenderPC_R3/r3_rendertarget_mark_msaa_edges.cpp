@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 
 void CRenderTarget::mark_msaa_edges()
 {

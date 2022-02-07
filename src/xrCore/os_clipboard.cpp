@@ -1,4 +1,4 @@
-////////////////////////////////////////////////////////////////////////////
+﻿////////////////////////////////////////////////////////////////////////////
 // Module : os_clipboard.cpp
 // Created : 21.02.2008
 // Author : Evgeniy Sokolov
@@ -47,7 +47,7 @@ void os_clipboard::paste_from_clipboard(LPSTR buffer, u32 const& buffer_size)
     for (u32 i = 0; i < strlen(buffer); ++i)
     {
         char c = buffer[i];
-        if (((isprint(c) == 0) && (c != char(-1))) || c == '\t' || c == '\n')// "�" = -1
+        if (((isprint(c) == 0) && (c != char(-1))) || c == '\t' || c == '\n')// "я" = -1
         {
             buffer[i] = ' ';
         }

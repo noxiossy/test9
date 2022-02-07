@@ -1,4 +1,4 @@
-#ifndef logH
+﻿#ifndef logH
 #define logH
 
 #define VPUSH(a) ((a).x), ((a).y), ((a).z)

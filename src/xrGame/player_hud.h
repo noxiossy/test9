@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "firedeps.h"
 
 #include "../Include/xrRender/Kinematics.h"

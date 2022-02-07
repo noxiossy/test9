@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 
 #include "hwcaps.h"
 #include "hw.h"
@@ -53,7 +53,7 @@ u32 GetNVGpuNum()
 	Msg	("* NVidia MGPU: Logical(%d), Physical(%d)", physicalGPUCount, logicalGPUCount);
 
 	//	Assume that we are running on logical GPU with most physical GPUs connected.
-	for ( u32 i = 0; i<logicalGPUCount; i++ )
+	for ( u32 i = 0; i<logicalGPUCount; ++i )
 	{
 		status = NvAPI_GetPhysicalGPUsFromLogicalGPU( logicalGPUs[i], physicalGPUs, &physicalGPUCount);
 		if (status == NVAPI_OK)
@@ -70,13 +70,13 @@ u32 GetNVGpuNum()
 
 u32 GetATIGpuNum()
 {
-	int iGpuNum = AtiMultiGPUAdapters();
-	
-	if (iGpuNum <= 0)
-		return 0;
+//	int iGpuNum = AtiMultiGPUAdapters();
+	int iGpuNum = 1;
 
 	if (iGpuNum>1)
+	{
 		Msg	("* ATI MGPU: %d-Way CrossFire detected.", iGpuNum);
+	}
 
 	return iGpuNum;
 }

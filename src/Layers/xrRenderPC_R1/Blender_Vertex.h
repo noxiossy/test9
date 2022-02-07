@@ -1,4 +1,4 @@
-// Blender_Vertex.h: interface for the CBlender_Vertex class.
+﻿// Blender_Vertex.h: interface for the CBlender_Vertex class.
 //
 //////////////////////////////////////////////////////////////////////
 

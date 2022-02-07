@@ -1,4 +1,4 @@
-#ifndef __FLAGS_H__
+﻿#ifndef __FLAGS_H__
 #define __FLAGS_H__
 
 template <class T>

@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "net_log.h"
 //---------------------------------------------------------
 string64 PacketName[] = {

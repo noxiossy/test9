@@ -1,4 +1,4 @@
-/*
+﻿/*
  * $Id:$
  * sproc version
  * by Wolfram Gloger 2001, 2004, 2006

@@ -1,4 +1,4 @@
-
+﻿
 #ifndef INOUT_INCLUDED
 #define INOUT_INCLUDED
 

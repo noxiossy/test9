@@ -1,4 +1,4 @@
-#include "stdafx.h"
+п»ї#include "stdafx.h"
 #include "car.h"
 //#if 0
 
@@ -78,7 +78,7 @@ CCar::CCar()
 	m_exhaust_particles	="vehiclefx\\exhaust_1";
 	m_car_sound			=xr_new<SCarSound>	(this);
 
-	//у машины слотов в инвентаре нет
+	//Сѓ РјР°С€РёРЅС‹ СЃР»РѕС‚РѕРІ РІ РёРЅРІРµРЅС‚Р°СЂРµ РЅРµС‚
 	inventory			= xr_new<CInventory>();
 	inventory->SetSlotsUseful(false);
 	m_doors_torque_factor = 2.f;
@@ -194,6 +194,7 @@ BOOL	CCar::net_Spawn				(CSE_Abstract* DC)
 									
 	CDamagableItem::RestoreEffect();
 	
+	
 	CInifile* pUserData		= PKinematics(Visual())->LL_UserData(); 
 	if(pUserData->section_exist("destroyed"))
 		CPHDestroyable::Load(pUserData,"destroyed");
@@ -231,8 +232,6 @@ void CCar::SpawnInitPhysics	(CSE_Abstract	*D)
 	//PPhysicsShell()->add_ObjectContactCallback(ActorObstacleCallback);
 	SetDefaultNetState				(so);
 	CPHUpdateObject::Activate       ();
-
-	//m_pPhysicsShell->applyImpulse(Fvector().set(0.f, -1.f, 0.f), 0.1f);
 }
 
 void	CCar::net_Destroy()
@@ -1742,7 +1741,7 @@ void CCar::OnEvent(NET_Packet& P, u16 type)
 	inherited::OnEvent		(P,type);
 	CExplosive::OnEvent		(P,type);
 
-	//обработка сообщений, нужных для работы с багажником машины
+	//РѕР±СЂР°Р±РѕС‚РєР° СЃРѕРѕР±С‰РµРЅРёР№, РЅСѓР¶РЅС‹С… РґР»СЏ СЂР°Р±РѕС‚С‹ СЃ Р±Р°РіР°Р¶РЅРёРєРѕРј РјР°С€РёРЅС‹
 	u16 id;
 	switch (type)
 	{
@@ -2099,7 +2098,7 @@ Fvector	CCar::		ExitVelocity				()
 
 /************************************************** added by Ray Twitty (aka Shadows) START **************************************************/
 #ifdef ENABLE_CAR
-// получить и задать текущее количество топлива
+// РїРѕР»СѓС‡РёС‚СЊ Рё Р·Р°РґР°С‚СЊ С‚РµРєСѓС‰РµРµ РєРѕР»РёС‡РµСЃС‚РІРѕ С‚РѕРїР»РёРІР°
 float CCar::GetfFuel()
 {
 	return m_fuel;
@@ -2108,7 +2107,7 @@ void CCar::SetfFuel(float fuel)
 {
 	m_fuel = fuel;
 }
-// получить и задать размер топливного бака 
+// РїРѕР»СѓС‡РёС‚СЊ Рё Р·Р°РґР°С‚СЊ СЂР°Р·РјРµСЂ С‚РѕРїР»РёРІРЅРѕРіРѕ Р±Р°РєР° 
 float CCar::GetfFuelTank()
 {
 	return m_fuel_tank;
@@ -2117,7 +2116,7 @@ void CCar::SetfFuelTank(float fuel_tank)
 {
 	m_fuel_tank = fuel_tank;
 }
-// получить и задать величину потребление топлива
+// РїРѕР»СѓС‡РёС‚СЊ Рё Р·Р°РґР°С‚СЊ РІРµР»РёС‡РёРЅСѓ РїРѕС‚СЂРµР±Р»РµРЅРёРµ С‚РѕРїР»РёРІР°
 float CCar::GetfFuelConsumption()
 {
 	return m_fuel_consumption;
@@ -2126,7 +2125,7 @@ void CCar::SetfFuelConsumption(float fuel_consumption)
 {
 	m_fuel_consumption = fuel_consumption;
 }
-// прибавить или убавить количество топлива
+// РїСЂРёР±Р°РІРёС‚СЊ РёР»Рё СѓР±Р°РІРёС‚СЊ РєРѕР»РёС‡РµСЃС‚РІРѕ С‚РѕРїР»РёРІР°
 void CCar::ChangefFuel(float fuel)
 {
 	if(m_fuel + fuel < 0)
@@ -2144,7 +2143,7 @@ void CCar::ChangefFuel(float fuel)
 		m_fuel = m_fuel_tank;
 	}
 }
-// прибавить или убавить жизней :)
+// РїСЂРёР±Р°РІРёС‚СЊ РёР»Рё СѓР±Р°РІРёС‚СЊ Р¶РёР·РЅРµР№ :)
 void CCar::ChangefHealth(float health)
 {
 	float current_health = GetfHealth();
@@ -2163,7 +2162,7 @@ void CCar::ChangefHealth(float health)
 		SetfHealth(1);
 	}
 }
-// активен ли сейчас двигатель
+// Р°РєС‚РёРІРµРЅ Р»Рё СЃРµР№С‡Р°СЃ РґРІРёРіР°С‚РµР»СЊ
 bool CCar::isActiveEngine()
 {
 	return b_engine_on;

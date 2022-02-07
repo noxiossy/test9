@@ -1,4 +1,4 @@
-#ifndef UITEAMPANELS
+﻿#ifndef UITEAMPANELS
 #define UITEAMPANELS
 
 #include "ui/UIWindow.h"

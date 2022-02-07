@@ -1,4 +1,4 @@
-
+﻿
 
 #ifndef _QR2REGKEYS_H_
 #define _QR2REGKEYS_H_

@@ -1,4 +1,4 @@
-// FHierrarhyVisual.h: interface for the FHierrarhyVisual class.
+﻿// FHierrarhyVisual.h: interface for the FHierrarhyVisual class.
 //
 //////////////////////////////////////////////////////////////////////
 

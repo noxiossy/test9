@@ -1,4 +1,4 @@
-#include "spursConfiguration.h"
+﻿#include "spursConfiguration.h"
 #include "spursSupportInterface.h"
 #include <spu_printf.h>
 #include <sys/ppu_thread.h>

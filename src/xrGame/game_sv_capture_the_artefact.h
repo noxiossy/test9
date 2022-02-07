@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "game_sv_mp.h"
 #include "actor_mp_server.h"

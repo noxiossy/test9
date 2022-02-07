@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "state_custom_action.h"
 #include "state_move_to_point.h"

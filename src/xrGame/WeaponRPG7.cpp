@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "weaponrpg7.h"
 #include "xrserver_objects_alife_items.h"
 #include "explosiverocket.h"
@@ -27,7 +27,7 @@ void CWeaponRPG7::Load	(LPCSTR section)
 
 bool CWeaponRPG7::AllowBore()
 {
-	return inherited::AllowBore() && 0!=iAmmoElapsed;
+	return inherited::AllowBore() && 0 != m_ammoElapsed.type1;
 }
 
 void CWeaponRPG7::FireTrace(const Fvector& P, const Fvector& D)
@@ -45,8 +45,8 @@ void CWeaponRPG7::on_a_hud_attach()
 void CWeaponRPG7::UpdateMissileVisibility()
 {
 	bool vis_hud,vis_weap;
-	vis_hud		= (!!iAmmoElapsed || GetState()==eReload);
-	vis_weap	= !!iAmmoElapsed;
+	vis_hud = (!!m_ammoElapsed.type1 || GetState() == eReload);
+	vis_weap = !!m_ammoElapsed.type1;
 
 	if(GetHUDmode())
 	{
@@ -63,15 +63,15 @@ BOOL CWeaponRPG7::net_Spawn(CSE_Abstract* DC)
 	BOOL l_res = inherited::net_Spawn(DC);
 
 	UpdateMissileVisibility();
-	if(iAmmoElapsed && !getCurrentRocket())
+	if (m_ammoElapsed.type1 && !getCurrentRocket())
 		CRocketLauncher::SpawnRocket(m_sRocketSection, this);
 
 	return l_res;
 }
 
-void CWeaponRPG7::OnStateSwitch(u32 S) 
+void CWeaponRPG7::OnStateSwitch(u32 S, u32 oldState) 
 {
-	inherited::OnStateSwitch(S);
+	inherited::OnStateSwitch(S, oldState);
 	UpdateMissileVisibility();
 }
 
@@ -85,7 +85,7 @@ void CWeaponRPG7::ReloadMagazine()
 {
 	inherited::ReloadMagazine();
 
-	if(iAmmoElapsed && !getRocketCount()) 
+	if (m_ammoElapsed.type1 && !getRocketCount())
 		CRocketLauncher::SpawnRocket(m_sRocketSection.c_str(), this);
 }
 

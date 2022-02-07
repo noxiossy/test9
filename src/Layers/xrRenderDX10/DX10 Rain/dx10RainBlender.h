@@ -1,4 +1,4 @@
-#ifndef	dx10RainBlender_included
+﻿#ifndef	dx10RainBlender_included
 #define	dx10RainBlender_included
 
 class CBlender_rain : public IBlender  

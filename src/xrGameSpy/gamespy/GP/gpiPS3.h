@@ -1,4 +1,4 @@
-/*
+﻿/*
 gpiPS3.h
 GameSpy Presence SDK 
 

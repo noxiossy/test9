@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "UIWindow.h"
 #include "UIWndCallback.h"
 #include "../../xrServerEntities/associative_vector.h"

@@ -1,4 +1,4 @@
-#include "pch_script.h"
+ï»¿#include "pch_script.h"
 #include "xml_str_id_loader.h"
 #include "object_broker.h"
 /*
@@ -65,7 +65,7 @@ void CInfoPortion::load_shared	(LPCSTR)
 	XML_NODE* pNode			= pXML->NavigateToNode(id_to_index::tag_name, item_data->pos_in_file);
 	THROW3					(pNode, "info_portion id=", *item_data->id);
 
-	//ñïèñîê íàçâàíèé äèàëîãîâ
+	//ÑÐ¿Ð¸ÑÐ¾Ðº Ð½Ð°Ð·Ð²Ð°Ð½Ð¸Ð¹ Ð´Ð¸Ð°Ð»Ð¾Ð³Ð¾Ð²
 	int dialogs_num			= pXML->GetNodesNum(pNode, "dialog");
 	info_data()->m_DialogNames.clear();
 	for(int i=0; i<dialogs_num; ++i)
@@ -75,24 +75,24 @@ void CInfoPortion::load_shared	(LPCSTR)
 	}
 
 	
-	//ñïèñîê íàçâàíèé ïîðöèé èíôîðìàöèè, êîòîðûå äåàêòèâèðóþòñÿ,
-	//ïîñëå ïîëó÷åíèÿ ýòîé ïîðöèè
+	//ÑÐ¿Ð¸ÑÐ¾Ðº Ð½Ð°Ð·Ð²Ð°Ð½Ð¸Ð¹ Ð¿Ð¾Ñ€Ñ†Ð¸Ð¹ Ð¸Ð½Ñ„Ð¾Ñ€Ð¼Ð°Ñ†Ð¸Ð¸, ÐºÐ¾Ñ‚Ð¾Ñ€Ñ‹Ðµ Ð´ÐµÐ°ÐºÑ‚Ð¸Ð²Ð¸Ñ€ÑƒÑŽÑ‚ÑÑ,
+	//Ð¿Ð¾ÑÐ»Ðµ Ð¿Ð¾Ð»ÑƒÑ‡ÐµÐ½Ð¸Ñ ÑÑ‚Ð¾Ð¹ Ð¿Ð¾Ñ€Ñ†Ð¸Ð¸
 	int disable_num = pXML->GetNodesNum(pNode, "disable");
 	info_data()->m_DisableInfo.clear();
-	for(int i=0; i<disable_num; ++i)
+	for(i=0; i<disable_num; ++i)
 	{
 		shared_str info_id		= pXML->Read(pNode, "disable", i,"");
 		info_data()->m_DisableInfo.push_back(info_id);
 	}
 
-	//èìåíà ñêðèïòîâûõ ôóíêöèé
+	//Ð¸Ð¼ÐµÐ½Ð° ÑÐºÑ€Ð¸Ð¿Ñ‚Ð¾Ð²Ñ‹Ñ… Ñ„ÑƒÐ½ÐºÑ†Ð¸Ð¹
 	info_data()->m_InfoScriptHelper.Load(pXML, pNode);
 
 
-	//èíäåêñû ñòàòåé
+	//Ð¸Ð½Ð´ÐµÐºÑÑ‹ ÑÑ‚Ð°Ñ‚ÐµÐ¹
 	info_data()->m_Articles.clear();
 	int articles_num	= pXML->GetNodesNum(pNode, "article");
-	for(int i=0; i<articles_num; ++i)
+	for(i=0; i<articles_num; ++i)
 	{
 		LPCSTR article_str_id = pXML->Read(pNode, "article", i, NULL);
 		THROW(article_str_id);
@@ -101,7 +101,7 @@ void CInfoPortion::load_shared	(LPCSTR)
 
 	info_data()->m_ArticlesDisable.clear();
 	articles_num = pXML->GetNodesNum(pNode, "article_disable");
-	for(int i=0; i<articles_num; ++i)
+	for(i=0; i<articles_num; ++i)
 	{
 		LPCSTR article_str_id = pXML->Read(pNode, "article_disable", i, NULL);
 		THROW(article_str_id);

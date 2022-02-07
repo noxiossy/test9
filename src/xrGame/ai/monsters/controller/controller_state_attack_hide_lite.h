@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 // Hiding until enemy get out from its sight
 template<typename _Object>

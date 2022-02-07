@@ -1,4 +1,4 @@
-#ifndef GameFontH
+﻿#ifndef GameFontH
 #define GameFontH
 #pragma once
 

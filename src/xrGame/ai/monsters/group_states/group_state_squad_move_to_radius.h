@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "../state.h"
 #include "../states/state_data.h"
 

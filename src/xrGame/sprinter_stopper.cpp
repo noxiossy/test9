@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "sprinter_stopper.h"
 #include "game_state_accumulator.h"
 #include "game_cl_base.h"

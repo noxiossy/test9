@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "net_shared.h"
 #include "NET_Common.h"

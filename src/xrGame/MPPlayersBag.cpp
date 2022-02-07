@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 
 #include "MPPlayersBag.h"
 #include "Level.h"
@@ -27,10 +27,6 @@ void CMPPlayersBag::OnEvent(NET_Packet& P, u16 type)
 				CInventoryItem*	pIItem		= smart_cast<CInventoryItem*>(O);
 				R_ASSERT					(pIItem->m_pInventory==NULL);
 				
-#ifdef MP_LOGGING
-				Msg("--- Rukzak [%d] takes [%d][%s]", ID(), O->ID(), O->cNameSect().c_str());
-#endif // MP_LOGGING
-
 				O->H_SetParent(this);
 				O->Position().set(Position());
 			}break;
@@ -39,10 +35,6 @@ void CMPPlayersBag::OnEvent(NET_Packet& P, u16 type)
 				P.r_u16			(id);
 				CObject* O = Level().Objects.net_Find(id);
 				
-#ifdef MP_LOGGING
-				Msg("--- Rukzak [%d] rejects [%d][%s]", ID(), O->ID(), O->cNameSect().c_str());
-#endif // MP_LOGGING
-
 				O->H_SetParent(0,!P.r_eof() && P.r_u8());
 			}break;
 

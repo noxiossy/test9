@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "PHReqComparer.h"
 #include "phcommander.h"
 #include "script_engine.h"

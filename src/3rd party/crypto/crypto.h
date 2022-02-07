@@ -1,4 +1,4 @@
-#ifndef CRYPTO_INCLUDED
+﻿#ifndef CRYPTO_INCLUDED
 #define CRYPTO_INCLUDED
 
 #include "../../xrCore/xrCore.h"

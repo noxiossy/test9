@@ -1,4 +1,4 @@
-// LightPPA.h: interface for the CLightPPA class.
+﻿// LightPPA.h: interface for the CLightPPA class.
 //
 //////////////////////////////////////////////////////////////////////
 

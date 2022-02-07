@@ -1,4 +1,4 @@
-#pragma once
+п»ї#pragma once
 class CCar;
 DEFINE_VECTOR(u16,BIDS,BIDS_I);
 struct CCarDamageParticles
@@ -17,7 +17,7 @@ void			Clear			();
 void			Play1			(CCar* car);
 void			Play2			(CCar* car);
 /************************************************** added by Ray Twitty (aka Shadows) START **************************************************/
-// функции для выключения партиклов дыма
+// С„СѓРЅРєС†РёРё РґР»СЏ РІС‹РєР»СЋС‡РµРЅРёСЏ РїР°СЂС‚РёРєР»РѕРІ РґС‹РјР°
 void			Stop1			(CCar* car);
 void			Stop2			(CCar* car);
 /*************************************************** added by Ray Twitty (aka Shadows) END ***************************************************/

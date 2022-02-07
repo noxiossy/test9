@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "encyclopedia_article_defs.h"
 #include "GameTaskDefs.h"

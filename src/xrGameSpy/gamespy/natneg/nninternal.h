@@ -1,4 +1,4 @@
-#ifndef _NNINTERNAL_H_
+﻿#ifndef _NNINTERNAL_H_
 #define _NNINTERNAL_H_
 
 #include "natneg.h"

@@ -1,4 +1,4 @@
-// FProgressive.cpp: implementation of the FProgressive class.
+﻿// FProgressive.cpp: implementation of the FProgressive class.
 //
 //////////////////////////////////////////////////////////////////////
 

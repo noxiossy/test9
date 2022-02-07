@@ -1,4 +1,4 @@
-#ifndef FILERECEIVER_NODE
+﻿#ifndef FILERECEIVER_NODE
 #define FILERECEIVER_NODE
 
 #include "filetransfer_common.h"

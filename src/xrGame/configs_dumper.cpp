@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "configs_dumper.h"
 #include "configs_common.h"
 #include "../xrCore/ppmd_compressor.h"
@@ -209,13 +209,13 @@ void configs_dumper::dump_config(complete_callback_t complete_cb)
 		return;
 	}
 
-	DWORD	process_affinity_mask;
-	DWORD	tmp_dword;
+	PDWORD_PTR	process_affinity_mask;
+	PDWORD_PTR	tmp_dword;
 	GetProcessAffinityMask(
 		GetCurrentProcess(),
-		&process_affinity_mask,
-		&tmp_dword);
-	bool single_core = (btwCount1(static_cast<u32>(process_affinity_mask)) == 1);
+		process_affinity_mask,
+		tmp_dword);
+	bool single_core = (btwCount1(static_cast<u32>(*process_affinity_mask)) == 1);
 	if (single_core)
 	{
 		m_yield_cb.bind(this, &configs_dumper::yield_cb);

@@ -1,4 +1,4 @@
-#ifndef DEMO_INFO_LOADER
+﻿#ifndef DEMO_INFO_LOADER
 #define DEMO_INFO_LOADER
 
 #include "DemoInfo.h"

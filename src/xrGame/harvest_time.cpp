@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "harvest_time.h"
 #include "kills_store.h"
 #include "game_base.h"

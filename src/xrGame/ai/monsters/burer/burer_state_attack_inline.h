@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "burer_state_attack_tele.h"
 #include "burer_state_attack_gravi.h"

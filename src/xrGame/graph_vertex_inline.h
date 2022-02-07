@@ -1,4 +1,4 @@
-////////////////////////////////////////////////////////////////////////////
+﻿////////////////////////////////////////////////////////////////////////////
 //	Module 		: graph_vertex_base_inline.h
 //	Created 	: 14.01.2004
 //  Modified 	: 19.02.2005
@@ -21,7 +21,7 @@
 >
 
 TEMPLATE_SPECIALIZATION
-IC	CSGraphVertex::CVertex					(const _data_type &data, const _vertex_id_type &vertex_id, size_t *edge_count)
+IC	CSGraphVertex::CVertex					(const _data_type &data, const _vertex_id_type &vertex_id, u32 *edge_count)
 {
 	m_data					= data;
 	m_vertex_id				= vertex_id;

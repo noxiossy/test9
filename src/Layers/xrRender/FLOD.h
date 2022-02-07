@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "fhierrarhyvisual.h"
 
 class	FLOD	:	public FHierrarhyVisual

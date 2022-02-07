@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 
 #include "xrTheora_Surface_mmx.h"
 
@@ -42,7 +42,7 @@ pos += width_diff;
 }
 }
 */
-
+#ifndef _M_X64
 lp_tv_uchar tv_yuv2argb(lp_tv_uchar argb_plane, tv_slong argb_width, tv_slong argb_height, lp_tv_uchar y_plane,
     tv_slong y_width, tv_slong y_height, tv_slong y_stride, lp_tv_uchar u_plane, lp_tv_uchar v_plane,
     tv_slong uv_width, tv_slong uv_height, tv_slong uv_stride, tv_slong width_diff)
@@ -273,5 +273,5 @@ lp_tv_uchar tv_yuv2argb(lp_tv_uchar argb_plane, tv_slong argb_width, tv_slong ar
 
     return argb_plane;
 } // tv_yuv2argb
-
+#endif
 #pragma warning(default:4731)

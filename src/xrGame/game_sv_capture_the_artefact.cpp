@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "game_sv_capture_the_artefact.h"
 #include "xrserver_objects_alife_monsters.h"
 #include "level.h"
@@ -15,7 +15,6 @@
 #include "weapon.h"
 #include "eatable_item_object.h" 
 #include "Missile.h"
-//#include "game_cl_base_weapon_usage_statistic.h"
 #include "LevelGameDef.h"
 #include "clsid_game.h"
 #include "ui\UIBuyWndShared.h"
@@ -1213,18 +1212,18 @@ void game_sv_CaptureTheArtefact::LoadSkinsForTeam(const shared_str& caSection, T
 	string256			SkinSingleName;
 	string4096			Skins;
 
-	// Ïîëå strSectionName äîëæíî ñîäåðæàòü èìÿ ñåêöèè
+	// Поле strSectionName должно содержать имя секции
 	VERIFY(xr_strcmp(caSection,""));
 
 	pTeamSkins->clear();
 
-	// Èìÿ ïîëÿ
+	// Имя поля
 	if (!pSettings->line_exist(caSection, "skins")) return;
 
-	// ×èòàåì äàííûå ýòîãî ïîëÿ
+	// Читаем данные этого поля
 	xr_strcpy(Skins, pSettings->r_string(caSection, "skins"));
 	u32 count	= _GetItemCount(Skins);
-	// òåïåðü äëÿ êàæäîå èìÿ îðóæèÿ, ðàçäåëåííûå çàïÿòûìè, çàíîñèì â ìàññèâ
+	// теперь для каждое имя оружия, разделенные запятыми, заносим в массив
 	for (u32 i = 0; i < count; ++i)
 	{
 		_GetItem(Skins, i, SkinSingleName);
@@ -1237,18 +1236,18 @@ void game_sv_CaptureTheArtefact::LoadDefItemsForTeam(const shared_str& caSection
 	string256			ItemName;
 	string4096			DefItems;
 
-	// Ïîëå strSectionName äîëæíî ñîäåðæàòü èìÿ ñåêöèè
+	// Поле strSectionName должно содержать имя секции
 	VERIFY(xr_strcmp(caSection,""));
 
 	pDefItems->clear();
 
-	// Èìÿ ïîëÿ
+	// Имя поля
 	if (!pSettings->line_exist(caSection, "default_items")) return;
 
-	// ×èòàåì äàííûå ýòîãî ïîëÿ
+	// Читаем данные этого поля
 	xr_strcpy(DefItems, pSettings->r_string(caSection, "default_items"));
 	u32 count	= _GetItemCount(DefItems);
-	// òåïåðü äëÿ êàæäîå èìÿ îðóæèÿ, ðàçäåëåííûå çàïÿòûìè, çàíîñèì â ìàññèâ
+	// теперь для каждое имя оружия, разделенные запятыми, заносим в массив
 	for (u32 i = 0; i < count; ++i)
 	{
 		_GetItem(DefItems, i, ItemName);
@@ -1520,7 +1519,6 @@ void game_sv_CaptureTheArtefact::OnPlayerKillPlayer(game_PlayerState* ps_killer,
 	bool CanGiveBonus					= OnKillResult(KillRes, ps_killer, ps_killed);
 	if (CanGiveBonus) 
 		OnGiveBonus						(KillRes, ps_killer, ps_killed, KillType, SpecialKillType, pWeaponA);
-	//Game().m_WeaponUsageStatistic->OnPlayerKillPlayer(ps_killer,KillType,SpecialKillType);
 	signal_Syncronize();
 }
 
@@ -1580,7 +1578,6 @@ void game_sv_CaptureTheArtefact::ProcessPlayerDeath(game_PlayerState *playerStat
 			childArtefactTeam->second.artefactOwner->ID,
 			childArtefactTeam->second.artefact->ID, true);*/
 	}
-	//Game().m_WeaponUsageStatistic->OnPlayerKilled(playerState);
 }
 
 /*void game_sv_CaptureTheArtefact::ProcessPlayerKill(game_PlayerState * playerState)
@@ -2166,7 +2163,6 @@ void game_sv_CaptureTheArtefact::ActorDeliverArtefactOnBase(CSE_ActorMP *actor, 
 	Set_RankUp_Allowed(false);
 	
 	signal_Syncronize();
-	//Game().m_WeaponUsageStatistic->OnPlayerBringArtefact(ps);
 	AskAllToUpdateStatistics();
 	StartNewRound();
 }

@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "../state.h"
 #include "state_data.h"
 #include "../../../ai_object_location.h"

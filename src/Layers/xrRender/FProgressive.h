@@ -1,4 +1,4 @@
-// FProgressive.h: interface for the FProgressive class.
+﻿// FProgressive.h: interface for the FProgressive class.
 //
 //////////////////////////////////////////////////////////////////////
 

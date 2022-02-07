@@ -1,4 +1,4 @@
-// MusicStream.h: interface for the CMusicStream class.
+﻿// MusicStream.h: interface for the CMusicStream class.
 //
 //////////////////////////////////////////////////////////////////////
 

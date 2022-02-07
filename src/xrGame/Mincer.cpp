@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "alife_space.h"
 #include "hit.h"
 #include "PHDestroyable.h"

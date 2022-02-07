@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "../control_animation_base.h"
 #include "../ai_monster_defs.h"

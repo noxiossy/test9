@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "UIDialogWnd.h"
 #include "../../xrServerEntities/script_space_forward.h"

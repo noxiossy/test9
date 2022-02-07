@@ -1,4 +1,4 @@
-// WallmarksEngine.h: interface for the CWallmarksEngine class.
+﻿// WallmarksEngine.h: interface for the CWallmarksEngine class.
 //
 //////////////////////////////////////////////////////////////////////
 #pragma once

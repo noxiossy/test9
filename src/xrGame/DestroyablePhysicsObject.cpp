@@ -1,4 +1,4 @@
-#include "pch_script.h"
+﻿#include "pch_script.h"
 #include "PHCollisionDamageReceiver.h"
 #include "PhysicObject.h"
 #include "hit.h"
@@ -30,7 +30,7 @@ CDestroyablePhysicsObject::~CDestroyablePhysicsObject()
 void CDestroyablePhysicsObject::OnChangeVisual()
 {
 	if (m_pPhysicsShell){
-		if(m_pPhysicsShell)m_pPhysicsShell->Deactivate();
+		m_pPhysicsShell->Deactivate();
 		xr_delete		(m_pPhysicsShell);
 		VERIFY			(0==Visual());
 	}
