@@ -20,6 +20,7 @@
 #include "../../../xr_level_controller.h"
 #include "../../../weapon.h"
 
+#include "../../../../xrCore/_vector3d_ext.h"
 
 CPseudoGigant::CPseudoGigant()
 {
@@ -197,6 +198,7 @@ void CPseudoGigant::event_on_step()
 {
 	//////////////////////////////////////////////////////////////////////////
 	// Earthquake Effector	//////////////
+	CWeapon* const active_weapon	=	smart_cast<CWeapon*>(Actor()->inventory().ActiveItem());
 	CActor* pActor =  smart_cast<CActor*>(Level().CurrentEntity());
 	if(pActor)
 	{
@@ -210,6 +212,11 @@ void CPseudoGigant::event_on_step()
 				step_effector.period_number, 
 				(max_dist - dist_to_actor) / (1.2f * max_dist))
 			);
+
+			if ( !active_weapon )
+			{
+				return;
+			}
 			Fvector dir					=	Actor()->Direction();
 			if ( dir.y < 0.f )
 			{
