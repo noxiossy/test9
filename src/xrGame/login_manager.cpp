@@ -1,6 +1,7 @@
 ﻿#include "stdafx.h"
 #include "login_manager.h"
 #include "account_manager.h"
+#include "MainMenu.h"
 #include "gamespy/GameSpy_Full.h"
 #include "gamespy/GameSpy_GP.h"
 #include "gamespy/GameSpy_ATLAS.h"
@@ -231,6 +232,22 @@ void login_manager::logout()
 
 void login_manager::reinit_connection_tasks()
 {
+	account_manager* tmp_acc_mngr = MainMenu()->GetAccountMngr();
+	if (tmp_acc_mngr->is_get_account_profiles_active())
+	{
+		Msg("! WARNING: reiniting get account profiles");
+		tmp_acc_mngr->reinit_get_account_profiles();
+	}
+	if (tmp_acc_mngr->is_email_searching_active())
+	{
+		Msg("! WARNING: reiniting searching emails");
+		tmp_acc_mngr->reinit_email_searching();
+	}
+	if (tmp_acc_mngr->is_suggest_unique_nicks_active())
+	{
+		Msg("! WARNING: reiniting suggesting unique nicks");
+		tmp_acc_mngr->reinit_suggest_unique_nicks();
+	}
 }
 
 void login_manager::delete_profile_obj()

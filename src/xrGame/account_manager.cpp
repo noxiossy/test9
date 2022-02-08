@@ -2,6 +2,7 @@
 #include "account_manager.h"
 #include "gamespy/GameSpy_GP.h"
 
+#include "MainMenu.h"	   //for accesssing to login_manager, if there's deleting profile
 #include "login_manager.h" //for deleting profile (verifying) and deleting profile class instance
 
 #define GP_UNIQUENICK_MIN_LEN 3
@@ -255,6 +256,30 @@ void account_manager::create_profile(char const * nick,
 
 void account_manager::delete_profile(account_operation_cb dpcb)
 {
+	if (!dpcb)
+	{
+		m_profile_deleting_cb.bind(this, &account_manager::only_log_profdel_cb);
+	} else
+	{
+		m_profile_deleting_cb = dpcb;
+	}
+
+	login_manager* tmp_lmngr = MainMenu()->GetLoginMngr();
+	VERIFY(tmp_lmngr);
+	if (!tmp_lmngr->get_current_profile())
+	{
+		m_profile_deleting_cb(false, "mp_gp_not_logged_in");
+		return;
+	}
+	
+	GPResult tmp_res = m_gamespy_gp->DeleteProfile(
+		&account_manager::delete_profile_cb,
+		this
+	);
+	if (tmp_res != GP_NO_ERROR)
+	{
+		m_profile_deleting_cb(false, CGameSpy_GP::TryToTranslate(tmp_res).c_str());
+	}
 }
 
 void account_manager::get_account_profiles(char const * email,
@@ -507,6 +532,19 @@ void __cdecl account_manager::delete_profile_cb(GPConnection * connection,
 												void * arg,
 												void * param)
 {
+	account_manager* tmp_inst				= static_cast<account_manager*>(param);
+	VERIFY(tmp_inst);
+	GPDeleteProfileResponseArg* tmp_arg		= static_cast<GPDeleteProfileResponseArg*>(arg);
+	if (tmp_arg->result != GP_NO_ERROR)
+	{
+		tmp_inst->m_profile_deleting_cb(false, CGameSpy_GP::TryToTranslate(tmp_arg->result).c_str());
+		return;
+	}
+	VERIFY(tmp_inst->m_gamespy_gp);
+	login_manager*	tmp_lmngr				= MainMenu()->GetLoginMngr();
+	VERIFY(tmp_lmngr);
+	tmp_lmngr->delete_profile_obj			();
+	tmp_inst->m_profile_deleting_cb			(true, "");
 }
 
 void __cdecl account_manager::search_profile_cb(GPConnection * connection,
