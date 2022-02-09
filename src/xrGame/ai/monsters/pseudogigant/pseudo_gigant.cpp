@@ -198,7 +198,6 @@ void CPseudoGigant::event_on_step()
 {
 	//////////////////////////////////////////////////////////////////////////
 	// Earthquake Effector	//////////////
-	CWeapon* const active_weapon	=	smart_cast<CWeapon*>(Actor()->inventory().ActiveItem());
 	CActor* pActor =  smart_cast<CActor*>(Level().CurrentEntity());
 	if(pActor)
 	{
@@ -212,22 +211,6 @@ void CPseudoGigant::event_on_step()
 				step_effector.period_number, 
 				(max_dist - dist_to_actor) / (1.2f * max_dist))
 			);
-
-			if ( !active_weapon )
-			{
-				return;
-			}
-			Fvector dir					=	Actor()->Direction();
-			if ( dir.y < 0.f )
-			{
-				dir.y					=	-dir.y;
-			}
-			active_weapon->SetActivationSpeedOverride ( normalize(dir) * 8 );
-
-			if ( !Actor()->inventory().Action((u16)kDROP, CMD_STOP) )
-			{
-				Actor()->g_PerformDrop		();
-			}
 		}
 	}
 	//////////////////////////////////
@@ -313,7 +296,25 @@ void CPseudoGigant::on_threaten_execute()
 	}
 
 	Actor()->lock_accel_for	(m_time_kick_actor_slow_down);
-	
+
+	// Выбить из рук оружие - cari0us
+	CWeapon* const active_weapon	= smart_cast<CWeapon*>(Actor()->inventory().ActiveItem());
+
+	if ( active_weapon )
+	{
+		Fvector dir			= Actor()->Direction();
+		if ( dir.y < 0.f )
+		{
+			dir.y			= -dir.y;
+		}
+		active_weapon->SetActivationSpeedOverride ( normalize(dir) * 8 );
+
+		if ( !Actor()->inventory().Action((u16)kDROP, CMD_STOP) )
+		{
+			Actor()->g_PerformDrop		();
+		}
+	}
+
 	// Нанести хит
 	NET_Packet	l_P;
 	SHit		HS;

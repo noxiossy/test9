@@ -31,6 +31,7 @@ void CSE_ALifeInventoryItem::script_register(lua_State *L)
 //			.def(		constructor<LPCSTR>())
 			.def("has_upgrade", &has_upgrade)
 			.def("add_upgrade", &add_upgrade)
+			.def_readwrite("condition", &CSE_ALifeInventoryItem::m_fCondition)
 	];
 }
 

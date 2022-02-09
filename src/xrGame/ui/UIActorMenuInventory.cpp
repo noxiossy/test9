@@ -598,13 +598,15 @@ bool CUIActorMenu::ToSlot(CUICellItem* itm, bool force_place, u16 slot_id)
 
 		if ( m_pActorInvOwner->inventory().SlotIsPersistent(slot_id) && slot_id != DETECTOR_SLOT  )
 			return false;
-/*
+
+#ifdef EQUAL_WEAPONS_SLOTS
 		if ( slot_id == INV_SLOT_2 && m_pActorInvOwner->inventory().CanPutInSlot(iitem, INV_SLOT_3))
 			return ToSlot(itm, force_place, INV_SLOT_3);
 
 		if ( slot_id == INV_SLOT_3 && m_pActorInvOwner->inventory().CanPutInSlot(iitem, INV_SLOT_2))
 			return ToSlot(itm, force_place, INV_SLOT_2);
-*/
+#endif
+
 		CUIDragDropListEx* slot_list		= GetSlotList(slot_id);
 		if (!slot_list)
 			return false;

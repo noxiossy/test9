@@ -46,11 +46,11 @@ public:
 
 class CHudItem :public CHUDState
 {
-public:
+protected:
 							CHudItem			();
 	virtual					~CHudItem			();
 	virtual DLL_Pure*		_construct			();
-protected:
+	
 	Flags16					m_huditem_flags;
 	enum{
 		fl_pending			= (1<<0),
