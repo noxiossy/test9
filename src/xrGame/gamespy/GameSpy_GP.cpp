@@ -233,6 +233,7 @@ void __cdecl CGameSpy_GP::OnGameSpyErrorCb(GPConnection * connection,
 		Msg("! GameSpy FATAL GP ERROR: error code: %d, description: %s",
 			earg->errorCode,
 			error_descr);
+		//MainMenu()->GetLoginMngr()->delete_profile_obj();
 		return;
 	}
 	Msg("! GameSpy GP ERROR: error code: %d, description: %s", 

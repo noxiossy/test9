@@ -41,6 +41,7 @@
 #include "actor.h"
 #include "player_hud.h"
 #include "UI/UIGameTutorial.h"
+#include "file_transfer.h"
 #include "message_filter.h"
 #include "demoplay_control.h"
 #include "demoinfo.h"

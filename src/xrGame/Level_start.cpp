@@ -5,6 +5,7 @@
 #include "game_cl_base.h"
 #include "game_sv_base.h"
 #include "xrmessages.h"
+#include "xrGameSpyServer.h"
 #include "../xrEngine/x_ray.h"
 #include "../xrEngine/device.h"
 #include "../xrEngine/IGame_Persistent.h"
@@ -12,6 +13,7 @@
 #include "MainMenu.h"
 #include "string_table.h"
 #include "UIGameCustom.h"
+#include "ui/UICDkey.h"
 
 int		g_cl_save_demo = 0;
 extern XRCORE_API bool g_allow_heap_min;
