@@ -27,16 +27,16 @@ int _cpuid ( _processor_info *pinfo )
 #undef _CPUID_DEBUG
 
 int _cpuid ( _processor_info *pinfo )
-{	
+{	/*
 	unsigned int lpid_width , mlpp;
 	#ifdef _CPUID_DEBUG
 		unsigned int mlpc , mcc;
-	#endif // _CPUID_DEBUG
+	#endif // _CPUID_DEBUG*/
 __asm {
 
 	// set pointers
 	mov			edi , DWORD PTR [pinfo]
-
+/*
 	// zero structure
 	xor			eax, eax
 	mov			ecx, TYPE _processor_info
@@ -47,12 +47,12 @@ NZ:
 	mov			BYTE PTR [esi][ecx], al
 	inc			ecx
 	jnz			NZ
-
+*/
 	// zero result mask
 	xor			esi , esi
 
 	// zero bit width
-	mov			DWORD PTR [lpid_width] , esi
+	//mov			DWORD PTR [lpid_width] , esi
 
 	// test for CPUID presence
 	pushfd
@@ -78,7 +78,7 @@ NZ:
 	// check for greater function presence
 	test		eax , eax
 	jz			CHECK_EXT
-
+/*
 	// Check for Intel signature
 	cmp			ecx , 0x6C65746E				; "ntel"
 	jnz			NO_HTT
@@ -148,7 +148,7 @@ BW_READY:
 	// We have some sort of HT
 	or			esi , _CPU_FEATURE_HTT
 
-NO_HTT:
+NO_HTT:*/
 	// function 01h - feature sets
 	mov			eax , 01h
 	cpuid
@@ -344,7 +344,7 @@ MS_FIND_EXIT:
 NO_CPUID:
 	
 	mov		DWORD PTR [edi][_processor_info::feature] , esi
-}
+}/*
 #ifdef _CPUID_DEBUG
 	printf("mlpp = %u\n" , mlpp );
 	printf("mcc = %u\n" , mcc );
@@ -429,7 +429,7 @@ NO_CPUID:
 
 	pinfo->affinity_mask = ta_rec_mask;
 	pinfo->n_cores = n_avail;
-
+*/
 	return pinfo->feature;
 }
 #endif
