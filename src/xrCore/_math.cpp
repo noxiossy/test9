@@ -20,7 +20,7 @@ XRCORE_API CRandom Random;
 u16 getFPUsw() { return 0; }
 
 namespace FPU
-{/*
+{
 XRCORE_API void m24(void)
 {
     _control87(_PC_24, MCW_PC);
@@ -50,7 +50,7 @@ XRCORE_API void m64r(void)
 {
     _control87(_PC_64, MCW_PC);
     _control87(_RC_NEAR, MCW_RC);
-}*/
+}
 
 void initialize() {}
 };
@@ -70,7 +70,7 @@ u16 _53 = 0;
 u16 _53r = 0;
 u16 _64 = 0;
 u16 _64r = 0;
-/*
+
 XRCORE_API void m24()
 {
     u16 p = _24;
@@ -101,9 +101,9 @@ XRCORE_API void m64r()
     u16 p = _64r;
     __asm fldcw p;
 }
-*/
+
 void initialize()
-{/*
+{
     _clear87();
 
     _control87(_PC_24, MCW_PC);
@@ -129,7 +129,7 @@ void initialize()
     m24r();
 
 #endif //XRCORE_STATIC
-*/
+
     ::Random.seed(u32(CPU::GetCLK() % (1i64 << 32i64)));
 }
 };
@@ -216,7 +216,7 @@ void Detect()
     clk_per_milisec = clk_per_second / 1000;
     clk_per_microsec = clk_per_milisec / 1000;
 
-    //_control87(_PC_64, MCW_PC);
+    _control87(_PC_64, MCW_PC);
     // _control87 ( _RC_CHOP, MCW_RC );
     double a, b;
     a = 1;
@@ -267,7 +267,7 @@ void _initialize_cpu(void)
     if (CPU::ID.feature&_CPU_FEATURE_SSSE3) xr_strcat(features, ", SSSE3");
     if (CPU::ID.feature&_CPU_FEATURE_SSE4_1)xr_strcat(features, ", SSE4.1");
     if (CPU::ID.feature&_CPU_FEATURE_SSE4_2)xr_strcat(features, ", SSE4.2");
-    //if (CPU::ID.feature&_CPU_FEATURE_HTT) xr_strcat(features, ", HTT");
+    if (CPU::ID.feature&_CPU_FEATURE_HTT) xr_strcat(features, ", HTT");
 
     Msg("* CPU features: %s", features);
     Msg("* CPU cores/threads: %d/%d\n", CPU::ID.n_cores, CPU::ID.n_threads);
