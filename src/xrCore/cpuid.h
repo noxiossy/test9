@@ -12,7 +12,7 @@
 #define _CPU_FEATURE_SSE4_2 0x0080
 
 #define _CPU_FEATURE_MWAIT 0x0100
-#define _CPU_FEATURE_HTT 0x0200
+//#define _CPU_FEATURE_HTT 0x0200
 
 struct _processor_info
 {

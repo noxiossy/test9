@@ -24,7 +24,7 @@ int _cpuid ( _processor_info *pinfo )
 }
 #else
 
-#undef _CPUID_DEBUG
+//#undef _CPUID_DEBUG
 
 int _cpuid ( _processor_info *pinfo )
 {	/*
@@ -50,6 +50,9 @@ NZ:
 */
 	// zero result mask
 	xor			esi , esi
+
+	mov			BYTE PTR  [edi][_processor_info::model_name][0] , 0
+	mov			BYTE PTR  [edi][_processor_info::v_name][0] , 0
 
 	// zero bit width
 	//mov			DWORD PTR [lpid_width] , esi
