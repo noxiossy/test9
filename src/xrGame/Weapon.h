@@ -426,6 +426,7 @@ protected:
     virtual void			UpdateXForm();
 
 	float m_fLR_MovingFactor; // !!!!
+	u8 GetCurrentHudOffsetIdx() const;
 	
     virtual void			UpdateHudAdditonal(Fmatrix&);
     IC		void			UpdateFireDependencies()

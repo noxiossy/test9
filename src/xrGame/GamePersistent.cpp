@@ -195,20 +195,71 @@ void CGamePersistent::OnGameStart()
 
 LPCSTR GameTypeToString(EGameIDs gt, bool bShort)
 {
-    return "single";
+    switch (gt)
+    {
+    case eGameIDSingle:
+        return "single";
+        break;
+    case eGameIDDeathmatch:
+        return (bShort) ? "dm" : "deathmatch";
+        break;
+    case eGameIDTeamDeathmatch:
+        return (bShort) ? "tdm" : "teamdeathmatch";
+        break;
+    case eGameIDArtefactHunt:
+        return (bShort) ? "ah" : "artefacthunt";
+        break;
+    case eGameIDCaptureTheArtefact:
+        return (bShort) ? "cta" : "capturetheartefact";
+        break;
+    case eGameIDDominationZone:
+        return (bShort) ? "dz" : "dominationzone";
+        break;
+    case eGameIDTeamDominationZone:
+        return (bShort) ? "tdz" : "teamdominationzone";
+        break;
+    default:
+        return		"---";
+    }
 }
 
 EGameIDs ParseStringToGameType(LPCSTR str)
 {
-    return eGameIDSingle;
+    if (!xr_strcmp(str, "single"))
+        return eGameIDSingle;
+    else
+    if (!xr_strcmp(str, "deathmatch") || !xr_strcmp(str, "dm"))
+        return eGameIDDeathmatch;
+    else
+    if (!xr_strcmp(str, "teamdeathmatch") || !xr_strcmp(str, "tdm"))
+        return eGameIDTeamDeathmatch;
+    else
+    if (!xr_strcmp(str, "artefacthunt") || !xr_strcmp(str, "ah"))
+        return eGameIDArtefactHunt;
+    else
+    if (!xr_strcmp(str, "capturetheartefact") || !xr_strcmp(str, "cta"))
+        return eGameIDCaptureTheArtefact;
+    else
+    if (!xr_strcmp(str, "dominationzone"))
+        return eGameIDDominationZone;
+    else
+    if (!xr_strcmp(str, "teamdominationzone"))
+        return eGameIDTeamDominationZone;
+    else
+        return eGameIDNoGame; //EGameIDs
 }
 
 void CGamePersistent::UpdateGameType()
 {
     __super::UpdateGameType();
 
-    m_game_params.m_e_game_type = eGameIDSingle;
-	g_current_keygroup = _sp;
+    m_game_params.m_e_game_type = ParseStringToGameType(m_game_params.m_game_type);
+
+
+    if (m_game_params.m_e_game_type == eGameIDSingle)
+        g_current_keygroup = _sp;
+    else
+        g_current_keygroup = _mp;
 }
 
 void CGamePersistent::OnGameEnd()

@@ -211,7 +211,7 @@ void CWeapon::UpdateXForm()
        return;
 
     const CInventoryOwner	*parent = smart_cast<const CInventoryOwner*>(E);
-    if (!parent || parent && parent->use_simplified_visual())
+    if (parent && parent->use_simplified_visual())
         return;
 
     if (parent->attached(this))
@@ -578,6 +578,13 @@ void CWeapon::Load(LPCSTR section)
     m_zoom_params.m_bUseDynamicZoom = READ_IF_EXISTS(pSettings, r_bool, section, "scope_dynamic_zoom", FALSE);
     m_zoom_params.m_sUseZoomPostprocess = 0;
     m_zoom_params.m_sUseBinocularVision = 0;
+	
+    m_hud_fov_add_mod = READ_IF_EXISTS(pSettings, r_float, section, "hud_fov_addition_modifier", 0.f);
+
+    m_nearwall_dist_min       = READ_IF_EXISTS(pSettings, r_float, section, "nearwall_dist_min", 0.5f);
+    m_nearwall_dist_max       = READ_IF_EXISTS(pSettings, r_float, section, "nearwall_dist_max", 1.f);
+    m_nearwall_target_hud_fov = READ_IF_EXISTS(pSettings, r_float, section, "nearwall_target_hud_fov", 0.35f);
+    m_nearwall_speed_mod      = READ_IF_EXISTS(pSettings, r_float, section, "nearwall_speed_mod", 10.f);
 
 	// Added by Axel, to enable optional condition use on any item
 	m_flags.set( FUsingCondition, READ_IF_EXISTS( pSettings, r_bool, section, "use_condition", TRUE ));

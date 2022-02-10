@@ -166,6 +166,11 @@ void CLevel::net_Stop		()
 
 void CLevel::ClientSend()
 {
+	if (GameID() == eGameIDSingle || OnClient())
+	{
+		if ( !net_HasBandwidth() ) return;
+	};
+
 	NET_Packet				P;
 	u32						start	= 0;
 		if (CurrentControlEntity()) 
