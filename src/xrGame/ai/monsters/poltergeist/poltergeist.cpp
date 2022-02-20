@@ -361,6 +361,7 @@ BOOL CPoltergeist::net_Spawn (CSE_Abstract* DC)
 void CPoltergeist::net_Destroy()
 {
 	inherited::net_Destroy();
+	CTelekinesis::deactivate();
 	Energy::disable();
 
 	ability()->on_destroy();
@@ -384,6 +385,7 @@ void CPoltergeist::Die(CObject* who)
  	}
 
 	inherited::Die				(who);
+	CTelekinesis::deactivate();
 	Energy::disable				();
 
 	ability()->on_die			();

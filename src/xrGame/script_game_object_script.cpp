@@ -17,11 +17,12 @@ using namespace luabind;
 extern class_<CScriptGameObject> &script_register_game_object1(class_<CScriptGameObject> &);
 extern class_<CScriptGameObject> &script_register_game_object2(class_<CScriptGameObject> &);
 extern class_<CScriptGameObject> &script_register_game_object_trader(class_<CScriptGameObject> &);
+PCSTR scriptGameObjectLuaBindName = "game_object";
 
 #pragma optimize("s",on)
 void CScriptGameObject::script_register(lua_State *L)
 {
-    class_<CScriptGameObject>	instance("game_object");
+    class_<CScriptGameObject>	instance(scriptGameObjectLuaBindName);
 
     module(L)
     [

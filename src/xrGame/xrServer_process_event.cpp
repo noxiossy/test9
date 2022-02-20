@@ -182,6 +182,7 @@ void xrServer::Process_event	(NET_Packet& P, ClientID sender)
 				xrClientData*	C = (xrClientData*)	game->get_client(id_src);
 				if (C) e_src = C->owner;
 			};
+			if ( !e_src ) e_src = e_dest;
 			VERIFY				(e_src);
 			if (!e_src)
 			{

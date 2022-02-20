@@ -335,6 +335,12 @@ void	CRenderTarget::phase_combine	()
    // HOLGER - HACK
    PP_Complex = TRUE;
 
+
+   // Postprocess anti-aliasing
+   if (ps_r_pp_aa_mode)
+	   PhaseAA();
+
+
 	// Combine everything + perform AA
    if( RImplementation.o.dx10_msaa )
    {

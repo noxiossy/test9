@@ -99,7 +99,7 @@ void CWeapon::FireTrace		(const Fvector& P, const Fvector& D)
 	
 	// Ammo
 	m_magazine.pop_back	();
-	--m_ammoElapsed.type1;
+	--m_ammoElapsed.type1;		// LR_DEVS CHECK
 
 	VERIFY((u32)m_ammoElapsed.type1 == m_magazine.size());
 }

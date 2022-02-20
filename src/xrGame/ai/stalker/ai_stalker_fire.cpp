@@ -383,7 +383,7 @@ void CAI_Stalker::update_best_item_info_impl()
 	if (ai().script_engine().functor("ai_stalker.update_best_weapon", funct))
 	{
 		CGameObject* cur_itm = smart_cast<CGameObject*>(m_best_item_to_kill);
-		CScriptGameObject* GO = funct(this->lua_game_object(),cur_itm ? cur_itm->lua_game_object() : NULL);
+		CScriptGameObject* GO = funct(this->lua_game_object(),m_item_actuality && cur_itm ? cur_itm->lua_game_object() : NULL);
 		CInventoryItem* bw = GO ? smart_cast<CInventoryItem*>(&GO->object()): NULL;
 		if (bw)
 		{

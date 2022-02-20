@@ -10,13 +10,14 @@
 #include "script_fvector.h"
 
 using namespace luabind;
+PCSTR fVectorLuaBindName = "vector";
 
 #pragma optimize("s",on)
 void CScriptFvector::script_register(lua_State *L)
 {
 	module(L)
 	[
-		class_<Fvector>("vector")
+		class_<Fvector>(fVectorLuaBindName)
 			.def_readwrite("x",					&Fvector::x)
 			.def_readwrite("y",					&Fvector::y)
 			.def_readwrite("z",					&Fvector::z)

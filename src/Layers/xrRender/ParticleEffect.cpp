@@ -266,6 +266,7 @@ IC void FillSprite_fpu	(FVF::LIT*& pv, const Fvector& T, const Fvector& R, const
 	pv->set		(b.x+pos.x,b.y+pos.y,b.z+pos.z,	clr, rb.x,lt.y);	pv++;
 }
 
+#if !defined (_WIN64)
 __forceinline void fsincos( const float angle , float &sine , float &cosine )
 { __asm {
     fld			DWORD PTR [angle]
@@ -275,7 +276,7 @@ __forceinline void fsincos( const float angle , float &sine , float &cosine )
     mov			eax , DWORD PTR [sine]
     fstp		DWORD PTR [eax]
 } }
-
+#endif
 
 IC void FillSprite	(FVF::LIT*& pv, const Fvector& T, const Fvector& R, const Fvector& pos, const Fvector2& lt, const Fvector2& rb, float r1, float r2, u32 clr, float sina , float cosa )
 {
@@ -446,12 +447,17 @@ void ParticleRenderStream( LPVOID lpvParams )
 
 				if ( angle != *((DWORD*)&m.rot.x) ) {
 					angle = *((DWORD*)&m.rot.x);
+#if defined(_WIN64)
+					sina = sinf(*(float*)&angle);
+					cosa = cosf(*(float*)&angle);
+#else
 					__asm {
 						fld			DWORD PTR [angle]
 						fsincos
 						fstp		DWORD PTR [cosa]
 						fstp		DWORD PTR [sina]
 					}
+#endif
 				}
 
 				 _mm_prefetch( 64 + (char*) &particles[i + 1] , _MM_HINT_NTA );
@@ -541,7 +547,7 @@ void CParticleEffect::Render(float )
 			FVF::LIT* pv_start	= (FVF::LIT*)RCache.Vertex.Lock(p_cnt*4*4,geom->vb_stride,dwOffset);
 			FVF::LIT* pv		= pv_start;
 
-			u32 nWorkers = ttapi_GetWorkersCount();
+/*			u32 nWorkers = ttapi_GetWorkersCount();
 
 			if (p_cnt < (nWorkers * 64))
 				nWorkers = 1;
@@ -566,7 +572,15 @@ void CParticleEffect::Render(float )
 				ttapi_AddWorker( ParticleRenderStream , (LPVOID) &prsParams[i] );
 			}
 
-			ttapi_RunAllWorkers();
+			ttapi_RunAllWorkers();*/
+
+			PRS_PARAMS prsParams;
+			prsParams.pPE  = this;
+			prsParams.particles = particles;
+			prsParams.p_from = 0;
+			prsParams.p_to = p_cnt;
+			prsParams.pv   = pv;
+			ParticleRenderStream( &prsParams );
 
 			dwCount = p_cnt<<2;
 
