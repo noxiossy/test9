@@ -12,6 +12,7 @@
 #include "blender_luminance.h"
 #include "blender_ssao.h"
 
+#include "blender_smaa.h"
 #include "../xrRender/dxRenderDeviceRender.h"
 
 void	CRenderTarget::u_setrt			(const ref_rt& _1, const ref_rt& _2, const ref_rt& _3, IDirect3DSurface9* zb)
@@ -210,6 +211,7 @@ CRenderTarget::CRenderTarget		()
 	b_ssao							= xr_new<CBlender_SSAO>					();
 	b_luminance						= xr_new<CBlender_luminance>			();
 	b_combine						= xr_new<CBlender_combine>				();
+	b_smaa = xr_new<CBlender_smaa>();
 
 	//	NORMAL
 	{
@@ -332,6 +334,17 @@ CRenderTarget::CRenderTarget		()
 		s_bloom_dbg_2.create		("effects\\screen_set",		r2_RT_bloom2);
 		s_bloom.create				(b_bloom,					"r2\\bloom");
 		f_bloom_factor				= 0.5f;
+	}
+
+	//SMAA
+	{
+		u32 w = Device.dwWidth;
+		u32 h = Device.dwHeight;
+	
+		rt_smaa_edgetex.create(r2_RT_smaa_edgetex, w, h, D3DFMT_A8R8G8B8);
+		rt_smaa_blendtex.create(r2_RT_smaa_blendtex, w, h, D3DFMT_A8R8G8B8);
+		
+		s_smaa.create(b_smaa, "r3\\smaa");
 	}
 
 	//HBAO
@@ -629,6 +642,9 @@ CRenderTarget::~CRenderTarget	()
 	xr_delete					(b_accum_point			);
 	xr_delete					(b_accum_direct			);
 	xr_delete					(b_accum_direct_cascade	);
+
+	xr_delete(b_smaa);
+
 	xr_delete					(b_accum_mask			);
 	xr_delete					(b_occq					);
 }

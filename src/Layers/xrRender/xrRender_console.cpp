@@ -32,6 +32,16 @@ xr_token							qsun_shafts_token							[ ]={
 	{ 0,							0												}
 };
 
+u32 ps_smaa_quality = 3;
+xr_token smaa_quality_token[] = {
+	{ "off", 0 },
+	{ "low", 1 },
+	{ "medium", 2 },
+	{ "high", 3 },
+	{ "ultra", 4 },
+	{ 0, 0 }
+};
+
 u32			ps_r_ssao				=	3;
 xr_token							qssao_token									[ ]={
 	{ "st_opt_off",					0												},
@@ -863,6 +873,7 @@ void		xrRender_initconsole	()
 	CMD4(CCC_Float,		"r2_aa_kernel",			&ps_r2_aa_kernel,			0.3f,	0.7f	);
 	CMD4(CCC_Float,		"r2_mblur",				&ps_r2_mblur,				0.0f,	1.0f	);
 
+	CMD3(CCC_Token, "r2_smaa", &ps_smaa_quality, smaa_quality_token);
 	CMD3(CCC_Mask,		"r2_gi",				&ps_r2_ls_flags,			R2FLAG_GI);
 	CMD4(CCC_Float,		"r2_gi_clip",			&ps_r2_GI_clip,				EPS,	0.1f	);
 	CMD4(CCC_Integer,	"r2_gi_depth",			&ps_r2_GI_depth,			1,		5		);
