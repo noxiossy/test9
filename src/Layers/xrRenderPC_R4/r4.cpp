@@ -323,13 +323,12 @@ void					CRender::create					()
 
 	//	MSAA option dependencies
 
-#pragma todo("MSAA на R4 как известно, не работает правильно, поэтому выключен. Если вдруг когда-то пофиксится, сделать чтоб он не конфликтовал с SSLR.")
-	o.dx10_msaa = 0; //!!ps_r3_msaa;
+	o.dx10_msaa			= !!ps_r3_msaa;
 	o.dx10_msaa_samples = (1 << ps_r3_msaa);
 
 	o.dx10_msaa_opt		= ps_r2_ls_flags.test(R3FLAG_MSAA_OPT);
-	o.dx10_msaa_opt		= o.dx10_msaa_opt && o.dx10_msaa && ( HW.FeatureLevel >= D3D_FEATURE_LEVEL_10_1 );
-	//		|| o.dx10_msaa && (HW.FeatureLevel >= D3D_FEATURE_LEVEL_11_0);
+	o.dx10_msaa_opt		= o.dx10_msaa_opt && o.dx10_msaa && ( HW.FeatureLevel >= D3D_FEATURE_LEVEL_10_1 )
+			|| o.dx10_msaa && (HW.FeatureLevel >= D3D_FEATURE_LEVEL_11_0);
 
 	//o.dx10_msaa_hybrid	= ps_r2_ls_flags.test(R3FLAG_MSAA_HYBRID);
 	o.dx10_msaa_hybrid	= ps_r2_ls_flags.test((u32)R3FLAG_USE_DX10_1);
@@ -1182,6 +1181,30 @@ HRESULT	CRender::shader_compile			(
 		}
 	}
 
+    if( o.dx10_msaa )
+	{
+		static char def[ 256 ];
+		//if( m_MSAASample < 0 )
+		//{
+			def[0]= '0';
+		//	sh_name[len]='0'; ++len;
+		//}
+		//else
+		//{
+		//	def[0]= '0' + char(m_MSAASample);
+		//	sh_name[len]='0' + char(m_MSAASample); ++len;
+		//}
+		def[1] = 0;
+		defines[def_it].Name		=	"ISAMPLE";
+		defines[def_it].Definition	=	def;
+		def_it						++	;
+		sh_name[len]='0'; ++len;
+	}
+	else
+	{
+		sh_name[len]='0'; ++len;
+	}
+
 	// skinning
 	if (m_skinning<0)		{
 		defines[def_it].Name		=	"SKIN_NONE";
@@ -1369,17 +1392,6 @@ HRESULT	CRender::shader_compile			(
 	   def_it						++;
 	   sh_name[len]='0'+char(o.dx10_msaa_samples); ++len;
 
-	   static char def[256];
-	   if (m_MSAASample < 0 || o.dx10_msaa_opt)
-		   def[0] = '0';
-	   else
-		   def[0] = '0' + char(m_MSAASample);
-
-	   def[1] = 0;
-	   defines[def_it].Name = "ISAMPLE";
-	   defines[def_it].Definition = def;
-	   def_it++;
-
 	   if( o.dx10_msaa_opt )
 	   {
 		   defines[def_it].Name		=	"MSAA_OPTIMIZATION";
@@ -1445,7 +1457,7 @@ HRESULT	CRender::shader_compile			(
 				pTarget = "vs_4_0";
 			else if( HW.FeatureLevel == D3D_FEATURE_LEVEL_10_1 )
 				pTarget = "vs_4_1";
-			else if( HW.FeatureLevel >= D3D_FEATURE_LEVEL_11_0 )
+			else if( HW.FeatureLevel == D3D_FEATURE_LEVEL_11_0 )
 				pTarget = "vs_5_0";
 		}
 		else if ('p'==pTarget[0])
@@ -1454,7 +1466,7 @@ HRESULT	CRender::shader_compile			(
 				pTarget = "ps_4_0";
 			else if( HW.FeatureLevel == D3D_FEATURE_LEVEL_10_1 )
 				pTarget = "ps_4_1";
-			else if( HW.FeatureLevel >= D3D_FEATURE_LEVEL_11_0 )
+			else if( HW.FeatureLevel == D3D_FEATURE_LEVEL_11_0 )
 				pTarget = "ps_5_0";
 		}
 		else if ('g'==pTarget[0])		
@@ -1463,12 +1475,12 @@ HRESULT	CRender::shader_compile			(
 				pTarget = "gs_4_0";
 			else if( HW.FeatureLevel == D3D_FEATURE_LEVEL_10_1 )
 				pTarget = "gs_4_1";
-			else if( HW.FeatureLevel >= D3D_FEATURE_LEVEL_11_0 )
+			else if( HW.FeatureLevel == D3D_FEATURE_LEVEL_11_0 )
 				pTarget = "gs_5_0";
 		}
 		else if ('c'==pTarget[0])		
 		{
-			if( HW.FeatureLevel >= D3D_FEATURE_LEVEL_11_0 )
+			if( HW.FeatureLevel == D3D_FEATURE_LEVEL_11_0 )
 				pTarget = "cs_5_0";
 		}
 	}
