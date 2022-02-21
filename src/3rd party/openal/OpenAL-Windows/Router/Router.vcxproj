@@ -265,6 +265,7 @@
       <CompileAs>CompileAsCpp</CompileAs>
       <MinimalRebuild>false</MinimalRebuild>
       <ExceptionHandling />
+      <UndefinePreprocessorDefinitions>USE_GSC_MEM_ALLOC</UndefinePreprocessorDefinitions>
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
