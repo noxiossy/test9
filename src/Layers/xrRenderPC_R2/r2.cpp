@@ -727,7 +727,6 @@ HRESULT	CRender::shader_compile			(
 	char							c_sun_shafts	[32];
 	char							c_ssao			[32];
 	char							c_sun_quality	[32];
-	char 							c_smaa_quality	[32];
 
 	char	sh_name[MAX_PATH] = "";
 	u32 len	= 0;
@@ -1007,22 +1006,6 @@ HRESULT	CRender::shader_compile			(
 	else
 	{
 		sh_name[len]='0'; ++len;
-	}
-
-
-	if (ps_smaa_quality)
-	{
-		xr_sprintf(c_smaa_quality, "%d", ps_smaa_quality);
-		defines[def_it].Name = "SMAA_QUALITY";
-		defines[def_it].Definition = c_smaa_quality;
-		def_it++;
-		sh_name[len] = '0' + char(ps_smaa_quality);
-		++len;
-	}
-	else
-	{
-		sh_name[len] = '0';
-		++len;
 	}
 
 	// finish

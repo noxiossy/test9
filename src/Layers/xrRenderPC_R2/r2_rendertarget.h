@@ -31,8 +31,6 @@ public:
 	IBlender*					b_ssao;
 	IBlender*					b_luminance;
 	IBlender*					b_combine;
-	
-	IBlender* b_smaa;	
 #ifdef DEBUG
 	struct		dbg_line_t		{
 		Fvector	P0,P1;
@@ -54,10 +52,6 @@ public:
 	ref_rt						rt_Accumulator_temp;// only for HW which doesn't feature fp16 blend
 	ref_rt						rt_Generic_0;		// 32bit		(r,g,b,a)				// post-process, intermidiate results, etc.
 	ref_rt						rt_Generic_1;		// 32bit		(r,g,b,a)				// post-process, intermidiate results, etc.
-
-	ref_rt rt_smaa_edgetex;
-	ref_rt rt_smaa_blendtex;
-	
 	//	Igor: for volumetric lights
 	ref_rt						rt_Generic_2;		// 32bit		(r,g,b,a)				// post-process, intermidiate results, etc.
 	ref_rt						rt_Bloom_1;			// 32bit, dim/4	(r,g,b,?)
@@ -91,9 +85,6 @@ private:
 	// OCCq
 	ref_shader					s_occq;
 
-	
-    ref_shader s_smaa;
-    	
 	// Accum
 	ref_shader					s_accum_mask	;
 	ref_shader					s_accum_direct	;
@@ -211,9 +202,6 @@ public:
 	void						phase_scene_begin		();
 	void						phase_scene_end			();
 	void						phase_occq				();
-
-	void						phase_smaa				();
-		
 	void						phase_wallmarks			();
 	void						phase_smap_direct		(light* L,	u32 sub_phase);
 	void						phase_smap_direct_tsh	(light* L,	u32 sub_phase);

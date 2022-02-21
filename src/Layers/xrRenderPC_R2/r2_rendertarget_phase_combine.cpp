@@ -222,15 +222,6 @@ void	CRenderTarget::phase_combine	()
 		}
 	}
 
-	
-    //SMAA
-	if (ps_smaa_quality)
-	{
-        //PIX_EVENT(SMAA);
-        phase_smaa();
-        RCache.set_Stencil(FALSE);
-    }     
-	
 	// PP enabled ?
 	//	Render to RT texture to be able to copy RT even in windowed mode.
 	BOOL	PP_Complex		= u_need_PP	() | (BOOL)RImplementation.m_bMakeAsyncSS;
