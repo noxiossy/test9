@@ -121,7 +121,7 @@ DWORD ttapi_Init( _processor_info* ID )
 	for ( i = 0 ; i < dwNumIter ; ++i ) {
 		if ( dwDummy == 0 )
 			goto process1;
-		__asm pause;
+			_mm_pause();
 	}
 	process1:
 	QueryPerformanceCounter( &liEnd );
