@@ -29,8 +29,6 @@
 
 // VISUAL:
 	#define DETAIL_RADIUS									// detail draw radius (by KD)
-	#define VSYNC_FIX										// functional VSync by avbaula
-	#define ECO_RENDER										// limit FPS in menu to prevent video card overheat (by alpet)
 	#define TREE_WIND_EFFECT								// configurable tree sway, can be used to have trees sway more during storms or lightly on clear days.
 //-VISUAL
 
@@ -47,8 +45,9 @@
 	#define LAYERED_SND_SHOOT								// see comment down below 
 //-SOUND
 
-
+// ADDITIONAL:
 	//#define EQUAL_WEAPONS_SLOTS
+//-ADDITIONAL
 
 /*LAYERED_SND_SHOOT by Alundaio
 When defined, it will allow you to play a group of sounds from a specified section for snd_shoot.

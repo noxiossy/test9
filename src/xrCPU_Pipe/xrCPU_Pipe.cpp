@@ -27,6 +27,7 @@ extern xrPLC_calc3		PLC_calc3_SSE;
 extern "C" {
 	__declspec(dllexport) void	__cdecl	xrBind_PSGP	( xrDispatchTable* T , _processor_info* ID )
 	{
+#ifndef _M_X64
 		// generic
 		T->skin1W	= xrSkin1W_x86;
 		T->skin2W	= xrSkin2W_x86;
@@ -36,7 +37,7 @@ extern "C" {
 		T->PLC_calc3 = PLC_calc3_x86;
 	
 		// SSE
-		/*if ( ID->feature & _CPU_FEATURE_SSE) {
+/*		if (CPU::ID.hasSSE()) {
 			T->skin1W	= xrSkin1W_SSE;
 			T->skin2W	= xrSkin2W_SSE;
 			T->skin3W	= xrSkin3W_SSE;
@@ -44,13 +45,14 @@ extern "C" {
 			skin4W_func = xrSkin4W_SSE;
 			T->PLC_calc3 = PLC_calc3_SSE;
 		}*/
+#endif
 
 		// Init helper threads
-		ttapi_Init( ID );
+		ttapi_Init( &CPU::ID );
 
-		if ( ttapi_GetWorkersCount() > 1 ) {
+		/*if ( ttapi_GetWorkersCount() > 1 ) {
 			// We can use threading
 			T->skin4W	= xrSkin4W_thread;
-		}
+		}*/
 	}
 };

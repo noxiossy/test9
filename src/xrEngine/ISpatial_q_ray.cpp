@@ -306,7 +306,7 @@ void ISpatial_DB::q_ray(xr_vector<ISpatial*>& R, u32 _o, u32 _mask_and, const Fv
     cs.Enter();
     q_result = &R;
     q_result->clear_not_free();
-    if (CPU::ID.feature&_CPU_FEATURE_SSE)
+    if (CPU::ID.hasSSE())
     {
         if (_o & O_ONLYFIRST)
         {

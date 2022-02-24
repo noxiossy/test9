@@ -17,7 +17,7 @@ void XRNETSERVER_API fill_auth_check_params(xr_auth_strings_t & ignore,
 	ignore.push_back		(shared_str(FS.update_path(config, "$game_config$", "misc\\script_sound_pripyat.ltx")));		
 	ignore.push_back		(shared_str(FS.update_path(config, "$game_scripts$", "state_mgr_pri_a15.script")));
 
-	check.push_back			(shared_str(FS.update_path(config, "$game_config$", "")));
+/*	check.push_back			(shared_str(FS.update_path(config, "$game_config$", "")));
 	check.push_back			(shared_str(FS.update_path(config, "$game_scripts$", "")));
 	check.push_back			(shared_str(FS.update_path(config, "$game_shaders$", "")));
 	//sounds 
@@ -45,7 +45,7 @@ void XRNETSERVER_API fill_auth_check_params(xr_auth_strings_t & ignore,
 	check.push_back			(shared_str("xrrender_r2.dll"));
 	check.push_back			(shared_str("xrsound.dll"));
 	check.push_back			(shared_str("xrxmlparser.dll"));
-//	check.push_back			(shared_str("xrEngine.exe"));
+//	check.push_back			(shared_str("xrEngine.exe"));*/
 }
 
 bool XRNETSERVER_API allow_to_include_path	(xr_auth_strings_t const & ignore,

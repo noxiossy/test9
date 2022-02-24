@@ -10,6 +10,7 @@
 
 template<typename _Object>
 class CState {
+protected:
 	typedef CState<_Object> CSState;
 public:
 						CState					(_Object *obj, void *data = 0);
@@ -72,7 +73,6 @@ private:
 
 template<typename _Object>
 class CStateMove : public CState<_Object> {
-protected:
 	typedef CState<_Object> inherited;
 public:
 						CStateMove	(_Object *obj, void *data = 0) : inherited(obj,data){}

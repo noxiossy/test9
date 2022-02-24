@@ -63,15 +63,24 @@ void CRenderDevice::Initialize			()
         m_dwWindowStyle = WS_BORDER | WS_DLGFRAME;
 
         // Set the window's initial width
-        RECT rc;
-        SetRect(&rc, 0, 0, 640, 480);
-        AdjustWindowRect(&rc, m_dwWindowStyle, FALSE);
+        u32 screen_width = GetSystemMetrics(SM_CXSCREEN);
+        u32 screen_height = GetSystemMetrics(SM_CYSCREEN);
+
+        DEVMODE screen_settings;
+        memset(&screen_settings, 0, sizeof(screen_settings));
+        screen_settings.dmSize = sizeof(screen_settings);
+        screen_settings.dmPelsWidth = (unsigned long)screen_width;
+        screen_settings.dmPelsHeight = (unsigned long)screen_height;
+        screen_settings.dmBitsPerPel = 32;
+        screen_settings.dmFields = DM_BITSPERPEL | DM_PELSWIDTH | DM_PELSHEIGHT;
+
+        ChangeDisplaySettings(&screen_settings, CDS_FULLSCREEN);
 
         // Create the render window
         m_hWnd = CreateWindowEx(WS_EX_TOPMOST,
                                 wndclass, "Legend Returns", m_dwWindowStyle,
-                                /*rc.left, rc.top, */CW_USEDEFAULT, CW_USEDEFAULT,
-                                (rc.right - rc.left), (rc.bottom - rc.top), 0L,
+                                0, 0,
+                                screen_width, screen_height, 0L,
                                 0, hInstance, 0L);
     }
 

@@ -2,57 +2,58 @@
 #include "cpuid.h"
 #include <intrin.h>
 
-int _cpuid (_processor_info *pinfo)
-{
-	_processor_info&	P	= *pinfo;
-	ZeroMemory(&P, sizeof(_processor_info));
+#include <array>
+#include <bitset>
+#include <memory>
 
+DWORD countSetBits(ULONG_PTR bitMask)
+{
+	DWORD LSHIFT = sizeof(ULONG_PTR) * 8 - 1;
+	DWORD bitSetCount = 0;
+	ULONG_PTR bitTest = static_cast<ULONG_PTR>(1) << LSHIFT;
+	DWORD i;
+
+	for (i = 0; i <= LSHIFT; ++i) {
+		bitSetCount += ((bitMask & bitTest) ? 1 : 0);
+		bitTest /= 2;
+	}
+
+	return bitSetCount;
+}
+
+_processor_info::_processor_info()
+{
 	int cpinfo[4];
 	// detect cpu vendor
 	__cpuid(cpinfo, 0);
-
-	memcpy(P.v_name, &(cpinfo[1]), sizeof(int));
-	memcpy(P.v_name+sizeof(int), &(cpinfo[3]), sizeof(int));
-	memcpy(P.v_name+2*sizeof(int), &(cpinfo[2]), sizeof(int));
+	memcpy(vendor, &(cpinfo[1]), sizeof(int));
+	memcpy(vendor + sizeof(int), &(cpinfo[3]), sizeof(int));
+	memcpy(vendor + 2 * sizeof(int), &(cpinfo[2]), sizeof(int));
 
 	// detect cpu model
 	__cpuid(cpinfo, 0x80000002);
-	memcpy(P.model_name, cpinfo, sizeof(cpinfo));
+	memcpy(brand, cpinfo, sizeof(cpinfo));
 	__cpuid(cpinfo, 0x80000003);
-	memcpy(P.model_name+16, cpinfo, sizeof(cpinfo));
+	memcpy(brand + sizeof(cpinfo), cpinfo, sizeof(cpinfo));
 	__cpuid(cpinfo, 0x80000004);
-	memcpy(P.model_name+32, cpinfo, sizeof(cpinfo));
+	memcpy(brand + 2 * sizeof(cpinfo), cpinfo, sizeof(cpinfo));
 
 	// detect cpu main features
 	__cpuid(cpinfo, 1);
+	stepping = cpinfo[0] & 0xf;
+	model = (u8)((cpinfo[0] >> 4) & 0xf) | ((u8)((cpinfo[0] >> 16) & 0xf) << 4);
+	family = (u8)((cpinfo[0] >> 8) & 0xf) | ((u8)((cpinfo[0] >> 20) & 0xff) << 4);
+	m_f1_ECX = cpinfo[2];
+	m_f1_EDX = cpinfo[3];
 
-	P.stepping = cpinfo[0] & 0xf;
-    P.model = (u8)((cpinfo[0] >> 4) & 0xf) | ((u8)((cpinfo[0] >> 16) & 0xf) << 4);
-    P.family = (u8)((cpinfo[0] >> 8) & 0xf) | ((u8)((cpinfo[0] >> 20) & 0xff) << 4);
-
-	if (cpinfo[3] & (1 << 23))
-		P.feature |= _CPU_FEATURE_MMX;
-	if (cpinfo[3] & (1 << 25))
-		P.feature |= _CPU_FEATURE_SSE;
-	if (cpinfo[3] & (1 << 26))
-		P.feature |= _CPU_FEATURE_SSE2;
-	if (cpinfo[2] & 0x1)
-		P.feature |= _CPU_FEATURE_SSE3;
-	if (cpinfo[2] & (1 << 19))
-		P.feature |= _CPU_FEATURE_SSE41;
-	if (cpinfo[2] & (1 << 20))
-		P.feature |= _CPU_FEATURE_SSE42;
-	if (cpinfo[2] & (1 << 9))
-		P.feature |= _CPU_FEATURE_SSSE3;
-	if (cpinfo[2] & (1 << 3))
-		P.feature |= _CPU_FEATURE_MWAIT;	
+	__cpuid(cpinfo, 7);
+	m_f7_EBX = cpinfo[1];
+	m_f7_ECX = cpinfo[2];
 
 	// and check 3DNow! support
 	__cpuid(cpinfo, 0x80000001);
-	if (cpinfo[3] & (1 << 31))
-		P.feature |= _CPU_FEATURE_3DNOW;
-
-	P.os_support = P.feature;
+	m_f81_ECX = cpinfo[2];
+	m_f81_EDX = cpinfo[3];
 
 	// get version of OS
 	DWORD dwMajorVersion = 0;
@@ -61,12 +62,51 @@ int _cpuid (_processor_info *pinfo)
 
 	dwMajorVersion = (DWORD)(LOBYTE(LOWORD(dwVersion)));
 
-	if (dwMajorVersion <= 5)		// XP don't support SSE3+ instruction sets
+	if (dwMajorVersion <= 5) // XP don't support SSE3+ instruction sets
 	{
-		P.os_support	&= ~_CPU_FEATURE_SSE3	;
-		P.os_support	&= ~_CPU_FEATURE_SSE41	;
-		P.os_support	&= ~_CPU_FEATURE_SSE42	;
+		m_f1_ECX[0] = 0;
+		m_f1_ECX[9] = 0;
+		m_f1_ECX[19] = 0;
+		m_f1_ECX[20] = 0;
+		m_f81_ECX[6] = 0;
+		m_f1_ECX[28] = 0;
+		m_f7_EBX[5] = 0;
 	}
 
-	return P.feature;
+	// Calculate available processors
+	ULONG_PTR pa_mask_save, sa_mask_stub = 0;
+	GetProcessAffinityMask(GetCurrentProcess(), &pa_mask_save, &sa_mask_stub);
+
+	DWORD returnedLength = 0;
+	DWORD byteOffset = 0;
+	GetLogicalProcessorInformation(nullptr, &returnedLength);
+
+	auto buffer = std::make_unique<u8[]>(returnedLength);
+	auto ptr = reinterpret_cast<PSYSTEM_LOGICAL_PROCESSOR_INFORMATION>(buffer.get());
+	GetLogicalProcessorInformation(ptr, &returnedLength);
+
+	auto processorCoreCount = 0u;
+	auto logicalProcessorCount = 0u;
+
+	while (byteOffset + sizeof(SYSTEM_LOGICAL_PROCESSOR_INFORMATION) <= returnedLength) {
+		switch (ptr->Relationship) {
+		case RelationProcessorCore:
+			processorCoreCount++;
+
+			// A hyperthreaded core supplies more than one logical processor.
+			logicalProcessorCount += countSetBits(ptr->ProcessorMask);
+			break;
+
+		default:
+			break;
+		}
+
+		byteOffset += sizeof(SYSTEM_LOGICAL_PROCESSOR_INFORMATION);
+		ptr++;
+	}
+
+	// All logical processors
+	coresCount = processorCoreCount;
+	affinity_mask = pa_mask_save;
+	threadCount = logicalProcessorCount;
 }

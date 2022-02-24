@@ -397,7 +397,7 @@ MotionID CKinematicsAnimated::ID_FX_Safe		(LPCSTR  N)
 	MotionID motion_ID;
 	for (int k=int(m_Motions.size())-1; k>=0; --k){
     	shared_motions* s_mots	= &m_Motions[k].motions;
-		auto I 	= s_mots->fx()->find(N);
+		auto I 	= s_mots->fx()->find(LPSTR(N));
 		if (I!=s_mots->fx()->end())	{	motion_ID.set(u16(k),I->second); break;}
     }
     return motion_ID;

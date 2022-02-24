@@ -225,6 +225,11 @@ void change_game_time(u32 days, u32 hours, u32 mins)
 
 float high_cover_in_direction(u32 level_vertex_id, const Fvector &direction)
 {
+	if (!ai().level_graph().valid_vertex_id(level_vertex_id))
+	{
+		return 0;
+	}
+
 	float			y,p;
 	direction.getHP	(y,p);
 	return			(ai().level_graph().high_cover_in_direction(y,level_vertex_id));

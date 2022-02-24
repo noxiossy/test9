@@ -213,9 +213,7 @@ void CCar::SWheelDrive::Init()
 	default: NODEFAULT;
 	}
 
-	//pos_fvd=pos_fvd>0.f ? -1.f : 1.f;
-
-     pos_fvd=pos_fvd>-0.1f ? -1.1f : 2.f; //Diesel*/
+	pos_fvd=pos_fvd>0.f ? -1.f : 1.f;*/
 	pos_fvd = -1.f;
 
 }
