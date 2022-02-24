@@ -1,7 +1,5 @@
-﻿#ifndef XRENGINE_ISPATIAL_H_INCLUDED
-#define XRENGINE_ISPATIAL_H_INCLUDED
+﻿#pragma once
 
-//#pragma once
 #include "../xrCore/xrPool.h"
 
 #include "xr_collide_defs.h"
@@ -125,14 +123,11 @@ public:
 	void						_insert			(ISpatial*		_S);
 	BOOL						_empty			()						
 	{
-		return items.empty() && (
-			0==(
-				ptrt(children[0])|ptrt(children[1])|
-				ptrt(children[2])|ptrt(children[3])|
-				ptrt(children[4])|ptrt(children[5])|
-				ptrt(children[6])|ptrt(children[7])
-				)
-			);	
+		return items.empty() &&
+			children[0] == nullptr && children[1] == nullptr &&
+			children[2] == nullptr && children[3] == nullptr &&
+			children[4] == nullptr && children[5] == nullptr &&
+			children[6] == nullptr && children[7] == nullptr;
 	}
 };
 ////////////
@@ -157,12 +152,12 @@ private:
 	poolSS< ISpatial_NODE, 128 >	allocator;
 
 	xr_vector<ISpatial_NODE*>		allocator_pool;
-	ISpatial*						rt_insert_object;
+	ISpatial* rt_insert_object{};
 public:
 	ISpatial_NODE*					m_root;
 	Fvector							m_center;
-	float							m_bounds;
-	xr_vector<ISpatial*>*			q_result;
+	float							m_bounds{};
+	xr_vector<ISpatial*>* q_result{};
 	u32								stat_nodes;
 	u32								stat_objects;
 	CStatTimer						stat_insert;
@@ -215,5 +210,3 @@ XRCDB_API extern ISpatial_DB*		g_SpatialSpace			;
 XRCDB_API extern ISpatial_DB*		g_SpatialSpacePhysic	;
 
 #pragma pack(pop)
-
-#endif // #ifndef XRENGINE_ISPATIAL_H_INCLUDED

@@ -1,6 +1,5 @@
 ﻿#include "stdafx.h"
-//.#include "../xrCore/xrCore.h"
-#pragma hdrstop
+
 
 #include "xrCDB.h"
 
@@ -15,10 +14,10 @@ namespace CDB
 		return verts.size	()-1;
 	}
 
-	void	Collector::add_face_D	(
-		const Fvector& v0, const Fvector& v1, const Fvector& v2,	// vertices
-		u32 dummy								// misc
-		)
+	void	Collector::add_face_D (
+		const Fvector& v0, const Fvector& v1, const Fvector& v2, // vertices
+		size_t dummy // misc
+	)
 	{
 		TRI T;
 		T.verts		[0] = verts.size();
@@ -64,8 +63,8 @@ namespace CDB
 
 	void	Collector::add_face_packed_D	(
 		const Fvector& v0, const Fvector& v1, const Fvector& v2,	// vertices
-		u32		dummy,	float eps
-		)
+		size_t dummy, float eps
+	)
 	{
 		TRI T;
 		T.verts	[0] = VPack(v0,eps);
@@ -318,7 +317,7 @@ namespace CDB
 
 	void	CollectorPacked::add_face_D(
 		const Fvector& v0, const Fvector& v1, const Fvector& v2,	// vertices
-		u32 dummy, u32 _flags										// misc
+		size_t dummy, u32 _flags										// misc
 		)
 	{
 		TRI T;

@@ -128,7 +128,6 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Precompiled Header
 #include "stdafx.h"
-#pragma hdrstop
 
 namespace Opcode {
 #	include "OPC_TreeBuilders.h"
@@ -170,10 +169,10 @@ OPCODE_Model::OPCODE_Model() : mSource(null), mTree(null), mNoLeaf(false), mQuan
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 OPCODE_Model::~OPCODE_Model()
 {
-	CDELETE		(mSource);
-	CDELETE		(mTree);
+	xr_delete(mSource);
+	xr_delete(mTree);
 #ifdef __MESHMERIZER_H__	// Collision hulls only supported within ICE !
-	CDELETE		(mHull);
+	xr_delete(mHull);
 #endif // __MESHMERIZER_H__
 }
 
@@ -205,7 +204,7 @@ bool OPCODE_Model::Build(const OPCODECREATE& create)
 	// We continue nonetheless.... 
 
 	// 2) Build a generic AABB Tree.
-	mSource = CNEW(AABBTree)();
+	mSource = xr_new<AABBTree>();
 	CHECKALLOC(mSource);
 
 	// 2-1) Setup a builder. Our primitives here are triangles from input mesh,
@@ -224,13 +223,13 @@ bool OPCODE_Model::Build(const OPCODECREATE& create)
 
 	if(mNoLeaf)
 	{
-		if(mQuantized)	mTree = CNEW(AABBQuantizedNoLeafTree)();
-		else			mTree = CNEW(AABBNoLeafTree)();
+		if(mQuantized)	mTree = xr_new<AABBQuantizedNoLeafTree>();
+		else			mTree = xr_new<AABBNoLeafTree>();
 	}
 	else
 	{
-		if(mQuantized)	mTree = CNEW(AABBQuantizedTree)();
-		else			mTree = CNEW(AABBCollisionTree)();
+		if(mQuantized)	mTree = xr_new<AABBQuantizedTree>();
+		else			mTree = xr_new<AABBCollisionTree>();
 	}
 
 	// 3-2) Create optimized tree
@@ -239,7 +238,7 @@ bool OPCODE_Model::Build(const OPCODECREATE& create)
 	// 3-3) Delete generic tree if needed
 	if(!create.KeepOriginal)	{
 		mSource->destroy	(&TB)		;
-		CDELETE				(mSource)	;	
+		xr_delete			(mSource)	;	
 	}
 
 #ifdef __MESHMERIZER_H__
@@ -247,7 +246,7 @@ bool OPCODE_Model::Build(const OPCODECREATE& create)
 	if(create.CollisionHull)
 	{
 		// Create hull
-		mHull = CNEW(CollisionHull)();
+		mHull = xr_new<CollisionHull>();
 		CHECKALLOC(mHull);
 
 		CONVEXHULLCREATE CHC;

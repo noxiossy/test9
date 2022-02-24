@@ -62,7 +62,7 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Precompiled Header
 #include "stdafx.h"
-#pragma hdrstop
+
 
 using namespace Opcode;
 
@@ -213,7 +213,7 @@ AABBCollisionTree::AABBCollisionTree() : mNodes(null)
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 AABBCollisionTree::~AABBCollisionTree()
 {
-	CFREE(mNodes);
+	xr_free(mNodes);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -234,7 +234,7 @@ bool AABBCollisionTree::Build(AABBTree* tree)
 
 	// Get nodes
 	mNbNodes	= NbNodes;
-	mNodes		= CALLOC(AABBCollisionNode,mNbNodes);
+	mNodes		= xr_alloc<AABBCollisionNode>(mNbNodes);
 	CHECKALLOC	(mNodes);
 	ZeroMemory	(mNodes,mNbNodes*sizeof(AABBCollisionNode));
 
@@ -267,7 +267,7 @@ AABBNoLeafTree::AABBNoLeafTree() : mNodes(null)
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 AABBNoLeafTree::~AABBNoLeafTree()
 {
-	CFREE(mNodes);
+	xr_free(mNodes);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -288,7 +288,7 @@ bool AABBNoLeafTree::Build(AABBTree* tree)
 
 	// Get nodes
 	mNbNodes	= NbTriangles-1;
-	mNodes		= CALLOC(AABBNoLeafNode,mNbNodes);
+	mNodes		= xr_alloc<AABBNoLeafNode>(mNbNodes);
 	CHECKALLOC	(mNodes);
 	ZeroMemory	(mNodes,mNbNodes*sizeof(AABBNoLeafNode));
 
@@ -417,7 +417,7 @@ AABBQuantizedTree::AABBQuantizedTree() : mNodes(null)
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 AABBQuantizedTree::~AABBQuantizedTree()
 {
-	CFREE(mNodes);
+	xr_free(mNodes);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -438,7 +438,7 @@ bool AABBQuantizedTree::Build(AABBTree* tree)
 
 	// Get nodes
 	mNbNodes					= NbNodes;
-	AABBCollisionNode*	Nodes	= CALLOC(AABBCollisionNode,mNbNodes);
+	AABBCollisionNode*	Nodes	= xr_alloc<AABBCollisionNode>(mNbNodes);
 	CHECKALLOC			(Nodes);
 	ZeroMemory			(Nodes,mNbNodes*sizeof(AABBCollisionNode));
 
@@ -448,7 +448,7 @@ bool AABBQuantizedTree::Build(AABBTree* tree)
 
 	// Quantize
 	{
-		mNodes		= CALLOC(AABBQuantizedNode,mNbNodes);
+		mNodes		= xr_alloc<AABBQuantizedNode>(mNbNodes);
 		CHECKALLOC	(mNodes);
 		ZeroMemory	(mNodes,mNbNodes*sizeof(AABBQuantizedNode));
 
@@ -466,7 +466,7 @@ bool AABBQuantizedTree::Build(AABBTree* tree)
 			REMAP_DATA(mData)
 		}
 
-		CFREE(Nodes);
+		xr_free(Nodes);
 	}
 
 #ifdef __ICECORE_H__
@@ -494,7 +494,7 @@ AABBQuantizedNoLeafTree::AABBQuantizedNoLeafTree() : mNodes(null)
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 AABBQuantizedNoLeafTree::~AABBQuantizedNoLeafTree()
 {
-	CFREE(mNodes);
+	xr_free(mNodes);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -515,7 +515,7 @@ bool AABBQuantizedNoLeafTree::Build(AABBTree* tree)
 
 	// Get nodes
 	mNbNodes				= NbTriangles-1;
-	AABBNoLeafNode* Nodes	= CALLOC(AABBNoLeafNode,mNbNodes);
+	AABBNoLeafNode* Nodes	= xr_alloc<AABBNoLeafNode>(mNbNodes);
 	CHECKALLOC		(Nodes);
 	ZeroMemory		(Nodes,	mNbNodes*sizeof(AABBNoLeafNode));
 
@@ -526,7 +526,7 @@ bool AABBQuantizedNoLeafTree::Build(AABBTree* tree)
 
 	// Quantize
 	{
-		mNodes		= CALLOC(AABBQuantizedNoLeafNode,mNbNodes);
+		mNodes		= xr_alloc<AABBQuantizedNoLeafNode>(mNbNodes);
 		CHECKALLOC	(mNodes);
 		ZeroMemory	(mNodes,mNbNodes*sizeof(AABBQuantizedNoLeafNode));
 
@@ -545,7 +545,7 @@ bool AABBQuantizedNoLeafTree::Build(AABBTree* tree)
 			REMAP_DATA(mData2)
 		}
 
-		CFREE(Nodes);
+		xr_free(Nodes);
 	}
 
 #ifdef __ICECORE_H__
