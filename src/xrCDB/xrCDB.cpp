@@ -2,7 +2,7 @@
 //
 
 #include "stdafx.h"
-
+#pragma hdrstop
 
 #include "xrCDB.h"
 
@@ -52,9 +52,9 @@ MODEL::~MODEL()
 {
 	syncronize	();		// maybe model still in building
 	status		= S_INIT;
-	xr_delete	(tree);
-	xr_free		(tris);		tris_count = 0;
-	xr_free		(verts);	verts_count= 0;
+	CDELETE		(tree);
+	CFREE		(tris);		tris_count = 0;
+	CFREE		(verts);	verts_count= 0;
 }
 
 struct	BTHREAD_params
@@ -126,10 +126,10 @@ void	MODEL::build_internal	(Fvector* V, int Vcnt, TRI* T, int Tcnt, build_callba
 	status		= S_BUILD;
 	
 	// Allocate temporary "OPCODE" tris + convert tris to 'pointer' form
-	u32*		temp_tris	= xr_alloc<u32>	(tris_count*3);
+	u32*		temp_tris	= CALLOC(u32,tris_count*3);
 	if (0==temp_tris)	{
-		xr_free		(verts);
-		xr_free		(tris);
+		CFREE		(verts);
+		CFREE		(tris);
 		return;
 	}
 	u32*		temp_ptr	= temp_tris;
@@ -144,30 +144,31 @@ void	MODEL::build_internal	(Fvector* V, int Vcnt, TRI* T, int Tcnt, build_callba
 	OPCODECREATE	OPCC;
 	OPCC.NbTris		= tris_count;
 	OPCC.NbVerts	= verts_count;
-	OPCC.Tris		= temp_tris;
+	OPCC.Tris		= (unsigned*)temp_tris;
 	OPCC.Verts		= (Point*)verts;
 	OPCC.Rules		= SPLIT_COMPLETE | SPLIT_SPLATTERPOINTS | SPLIT_GEOMCENTER;
 	OPCC.NoLeaf		= true;
 	OPCC.Quantized	= false;
+	// if (Memory.debug_mode) OPCC.KeepOriginal = true;
 
-	tree			= xr_new<OPCODE_Model> ();
+	tree			= CNEW(OPCODE_Model) ();
 	if (!tree->Build(OPCC)) {
-		xr_free		(verts);
-		xr_free		(tris);
-		xr_free		(temp_tris);
+		CFREE		(verts);
+		CFREE		(tris);
+		CFREE		(temp_tris);
 		return;
 	};
 
 	// Free temporary tris
-	xr_free			(temp_tris);
+	CFREE			(temp_tris);
 	return;
 }
 
 u32 MODEL::memory	()
 {
 	if (S_BUILD==status)	{ Msg	("! xrCDB: model still isn't ready"); return 0; }
-	const u32 V = verts_count * sizeof(Fvector);
-	const u32 T = tris_count * sizeof(TRI);
+	u32 V					= verts_count*sizeof(Fvector);
+	u32 T					= tris_count *sizeof(TRI);
 	return tree->GetUsedBytes()+V+T+sizeof(*this)+sizeof(*tree);
 }
 
@@ -187,7 +188,8 @@ COLLIDER::~COLLIDER()
 
 RESULT& COLLIDER::r_add	()
 {
-	return rd.emplace_back();
+	rd.push_back		(RESULT());
+	return rd.back		();
 }
 
 void COLLIDER::r_free	()

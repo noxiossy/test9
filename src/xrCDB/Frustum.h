@@ -1,9 +1,13 @@
 ﻿// Frustum.h: interface for the CFrustum class.
 //
 //////////////////////////////////////////////////////////////////////
-#pragma once
+
+#if !defined(AFX_FRUSTUM_H__E66ED755_F741_49CF_8B2A_404CCF7067F2__INCLUDED_)
+#define AFX_FRUSTUM_H__E66ED755_F741_49CF_8B2A_404CCF7067F2__INCLUDED_
 
 #include "xrCDB.h"
+
+//#pragma once
 
 #include "../xrcore/fixedvector.h"
 
@@ -95,3 +99,5 @@ public:
     }
 };
 #pragma pack(pop)
+
+#endif // !defined(AFX_FRUSTUM_H__E66ED755_F741_49CF_8B2A_404CCF7067F2__INCLUDED_)

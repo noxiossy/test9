@@ -10,8 +10,8 @@
 #endif
 
 
-ISpatial_DB*		g_SpatialSpace			= nullptr;
-ISpatial_DB*		g_SpatialSpacePhysic	= nullptr;
+ISpatial_DB*		g_SpatialSpace			= NULL;
+ISpatial_DB*		g_SpatialSpacePhysic	= NULL;
 
 Fvector	c_spatial_offset	[8]	= 
 {
@@ -120,7 +120,7 @@ void			ISpatial_NODE::_init			(ISpatial_NODE* _parent)
 {
 	parent		=	_parent;
 	children[0]	=	children[1]	=	children[2]	=	children[3]	=
-	children[4]	=	children[5]	=	children[6]	=	children[7]	=	nullptr;
+	children[4]	=	children[5]	=	children[6]	=	children[7]	=	NULL;
 	items.clear();
 }
 
@@ -147,7 +147,7 @@ ISpatial_DB::ISpatial_DB()
 	:cs(MUTEX_PROFILE_ID(ISpatial_DB))
 #endif // PROFILE_CRITICAL_SECTIONS
 {
-	m_root					= nullptr;
+	m_root					= NULL;
 	stat_nodes				= 0;
 	stat_objects			= 0;
 }
@@ -167,7 +167,7 @@ ISpatial_DB::~ISpatial_DB()
 
 void			ISpatial_DB::initialize(Fbox& BB)
 {
-	if (!m_root)
+	if (0==m_root)			
 	{
 		// initialize
 		Fvector bbc,bbd;
@@ -179,9 +179,9 @@ void			ISpatial_DB::initialize(Fbox& BB)
 		allocator_pool.reserve	(128);
 		m_center.set			(bbc);
 		m_bounds				= _max(_max(bbd.x,bbd.y),bbd.z);
-		rt_insert_object		= nullptr;
-		m_root = _node_create();
-		m_root->_init			(nullptr);
+		rt_insert_object		= NULL;
+		if (0==m_root)	m_root	= _node_create();
+		m_root->_init			(NULL);
 	}
 }
 ISpatial_NODE*	ISpatial_DB::_node_create		()

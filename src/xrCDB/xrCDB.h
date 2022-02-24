@@ -1,4 +1,5 @@
-﻿#pragma once
+﻿#ifndef XRCDB_H
+#define XRCDB_H
 
 //#pragma once
 // The following ifdef block is the standard way of creating macros which make exporting
@@ -102,12 +103,12 @@ namespace CDB
 	{
 		Fvector			verts	[3];
 		union	{
-			size_t dummy; // 4b
+			u32			dummy;				// 4b
 			struct {
-				size_t material : 14;
-				size_t suppress_shadows : 1;
-				size_t suppress_wm : 1;
-				size_t sector : 16;
+				u32		material:14;		// 
+				u32		suppress_shadows:1;	// 
+				u32		suppress_wm:1;		// 
+				u32		sector:16;			// 
 			};
 		};
 		int				id;
@@ -146,11 +147,11 @@ namespace CDB
 		ICF void		frustum_options	(u32 f)	{	frustum_mode = f;	}
 		void			frustum_query	(const MODEL *m_def, const CFrustum& F);
 
-		ICF RESULT* r_begin() { return std::data(rd); }
-		ICF RESULT* r_end()   { return std::data(rd) + std::size(rd); }
+		ICF RESULT*		r_begin			()	{	return &*rd.begin();		};
+		ICF RESULT*		r_end			()	{	return &*rd.end();			};
 		RESULT&			r_add			()	;
 		void			r_free			()	;
-		ICF size_t		r_count			()	{	return rd.size();			};
+		ICF int			r_count			()	{	return rd.size();			};
 		ICF void		r_clear			()	{	rd.clear_not_free();		};
 		ICF void		r_clear_compact	()	{	rd.clear_and_free();		};
 	};
@@ -164,11 +165,9 @@ namespace CDB
 		u32				VPack				( const Fvector& V, float eps);
 	public:
 		void			add_face			( const Fvector& v0, const Fvector& v1, const Fvector& v2, u16 material, u16 sector	);
-
-		void			add_face_D			( const Fvector& v0, const Fvector& v1, const Fvector& v2, size_t dummy );
-		void			add_face_packed_D	( const Fvector& v0, const Fvector& v1, const Fvector& v2, size_t dummy, float eps = EPS );
-
+		void			add_face_D			( const Fvector& v0, const Fvector& v1, const Fvector& v2, u32 dummy );
 		void			add_face_packed		( const Fvector& v0, const Fvector& v1, const Fvector& v2, u16 material, u16 sector, float eps = EPS );
+		void			add_face_packed_D	( const Fvector& v0, const Fvector& v1, const Fvector& v2, u32 dummy, float eps = EPS );
         void			remove_duplicate_T	( );
 		void			calc_adjacency		( xr_vector<u32>& dest		);
 
@@ -211,7 +210,7 @@ namespace CDB
 		//		}
 
 		void				add_face	( const Fvector& v0, const Fvector& v1, const Fvector& v2, u16 material, u16 sector, u32 flags );
-		void				add_face_D	( const Fvector& v0, const Fvector& v1, const Fvector& v2, size_t dummy , u32 flags );
+		void				add_face_D	( const Fvector& v0, const Fvector& v1, const Fvector& v2, u32 dummy , u32 flags );
 
 		xr_vector<Fvector>& getV_Vec()			{ return verts;				}
 		Fvector*			getV()				{ return &*verts.begin();	}
