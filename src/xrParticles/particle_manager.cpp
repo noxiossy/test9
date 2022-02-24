@@ -1,6 +1,6 @@
 ﻿//---------------------------------------------------------------------------
 #include "stdafx.h"
-#pragma hdrstop
+
 
 #include "particle_manager.h"
 #include "particle_effect.h"
