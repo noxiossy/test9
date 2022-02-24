@@ -226,3 +226,4 @@ IC		TRI&				getT(u32 index)		{ return faces[index];		}
 };
 
 #pragma pack(pop)
+#endif
