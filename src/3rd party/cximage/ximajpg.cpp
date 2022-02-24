@@ -7,6 +7,8 @@
  
 #include "ximajpg.h"
 
+#pragma warning(disable:4995)
+
 #if CXIMAGE_SUPPORT_JPG
 
 #define XMD_H
@@ -514,3 +516,4 @@ bool CxImageJPG::Encode(CxFile * hFile)
 ////////////////////////////////////////////////////////////////////////////////
 #endif // CXIMAGE_SUPPORT_JPG
 
+#pragma warning(default:4995)
