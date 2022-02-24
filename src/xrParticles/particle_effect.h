@@ -1,4 +1,6 @@
-﻿#pragma once
+﻿//---------------------------------------------------------------------------
+#ifndef particle_effectH
+#define particle_effectH
 
 namespace PAPI{
 	// A effect of particles - Info and an array of Particles
@@ -102,3 +104,5 @@ namespace PAPI{
 		}
 	};
 };
+//---------------------------------------------------------------------------
+#endif

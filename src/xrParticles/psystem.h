@@ -1,4 +1,6 @@
-﻿#pragma once
+﻿#ifndef PSystemH
+#define PSystemH
+#pragma once
 
 #ifdef XR_PARTICLES_EXPORTS
 	#define PARTICLES_API __declspec(dllexport)
@@ -159,3 +161,4 @@ namespace PAPI{
 
     PARTICLES_API IParticleManager* ParticleManager		();
 };
+#endif //PSystemH
