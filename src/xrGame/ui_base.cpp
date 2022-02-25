@@ -252,7 +252,7 @@ bool ui_core::is_widescreen()
 
 bool ui_core::is_extrawidescreen()
 {
-	return ((float(Device.dwWidth) / float(Device.dwHeight)) > 1.8f)
+	return ((float(Device.dwWidth) / float(Device.dwHeight)) > 1.8f);
 }
 
 float ui_core::get_current_kx()
