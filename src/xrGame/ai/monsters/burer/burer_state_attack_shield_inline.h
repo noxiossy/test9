@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "../../stalker/ai_stalker.h"
 
 template <class Object>
 CStateBurerShield<Object>::CStateBurerShield (Object *obj) : inherited(obj)
@@ -71,6 +72,11 @@ bool   CStateBurerShield<Object>::check_start_conditions()
 	if ( current_time() < m_last_shield_started + object->m_shield_time + object->m_shield_cooldown )
 		return							false;
 	
+	const CEntityAlive* enemy = object->EnemyMan.get_enemy();
+	const CAI_Stalker* stalker = smart_cast<const CAI_Stalker*>(enemy);
+	if (!enemy || !(stalker || enemy == Actor()))
+		return false;
+
 	if ( !object->EnemyMan.enemy_see_me_now() )
 		return							false;
 
