@@ -76,7 +76,8 @@ BOOL CWeaponMagazinedWGrenade::net_Spawn(CSE_Abstract* DC)
 	if (m_eGrenadeLauncherStatus == ALife::eAddonAttachable)
 	{
 		m_ammoTypes2.clear();
-		LPCSTR S = pSettings->r_string(GetGrenadeLauncherName(), "grenade_class");
+		
+		LPCSTR S = READ_IF_EXISTS(pSettings, r_string, GetGrenadeLauncherName(), "grenade_class", "m203");
 		if (S && S[0])
 		{
 			string128 _ammoItem;

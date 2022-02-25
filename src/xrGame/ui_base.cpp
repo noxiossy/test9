@@ -247,7 +247,12 @@ void ui_core::RenderFont()
 
 bool ui_core::is_widescreen()
 {
-	return (Device.dwWidth)/float(Device.dwHeight) > (UI_BASE_WIDTH/UI_BASE_HEIGHT +0.01f);
+	return (float(Device.dwWidth)/float(Device.dwHeight)) > (UI_BASE_WIDTH/UI_BASE_HEIGHT +0.01f);
+}
+
+bool ui_core::is_extrawidescreen()
+{
+	return ((float(Device.dwWidth) / float(Device.dwHeight)) > 1.8f)
 }
 
 float ui_core::get_current_kx()
@@ -272,12 +277,22 @@ shared_str	ui_core::get_xml_name(LPCSTR fn)
 		{
 			xr_strcpy	(str, fn);
 			*strext(str)	= 0;
-			xr_strcat	(str, "_16.xml");
+			xr_strcat	(str, is_extrawidescreen() ? "_21.xml" : "_16.xml");
 		}else
-			xr_sprintf				(str, "%s_16", fn);
+			xr_sprintf				(str, is_extrawidescreen() ? "%s_21.xml" : "%s_16", fn);
 
 		if(NULL==FS.exist(str_, "$game_config$", "ui\\" , str) )
 		{
+			if(is_widescreen()){
+				xr_sprintf(str, "%s_16", fn);
+				
+				if (NULL == strext(fn))
+					xr_strcat(str, "_16.xml");
+
+				if (NULL != FS.exist(str_, "$game_config$", "ui\\", str))
+					return str;		
+			}
+			
 			xr_sprintf(str, "%s", fn);
 			if ( NULL==strext(fn) ) xr_strcat(str, ".xml");
 		}
