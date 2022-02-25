@@ -30,6 +30,7 @@ bool CBurer::can_scan = true;
 CBurer::CBurer()
 {
 	StateMan				=	xr_new<CStateManagerBurer>(this);
+	TScanner::init_external(this);
 
  	m_fast_gravi			=	xr_new<CBurerFastGravi>();
 
@@ -46,6 +47,7 @@ CBurer::~CBurer()
 void CBurer::reinit()
 {
 	inherited::reinit			();
+	TScanner::reinit			();
 
 	DeactivateShield			();
 
@@ -55,6 +57,7 @@ void CBurer::reinit()
 void CBurer::net_Destroy()
 {
 	inherited::net_Destroy();
+	TScanner::on_destroy();
 }
 
 void CBurer::reload(LPCSTR section)
@@ -84,6 +87,7 @@ void CBurer::DeactivateShield ()
 void CBurer::Load(LPCSTR section)
 {
 	inherited::Load							(section);
+	TScanner::load				(section);
 
 	//anim().AddReplacedAnim		(&m_bDamaged, eAnimStandIdle,	eAnimStandDamaged);	
 	//anim().AddReplacedAnim		(&m_bDamaged, eAnimRun,			eAnimRunDamaged);
@@ -221,6 +225,9 @@ void CBurer::shedule_Update(u32 dt)
 	inherited::shedule_Update		(dt);
 
 	CTelekinesis::schedule_update	();
+	TScanner::schedule_update		();
+
+	(!EnemyMan.get_enemy()) ? TScanner::enable() : TScanner::disable();
 }
 
 void CBurer::CheckSpecParams(u32 spec_params)
@@ -379,6 +386,7 @@ void CBurer::UpdateGraviObject()
 void CBurer::UpdateCL()
 {
 	inherited::UpdateCL();
+	TScanner::frame_update(Device.dwTimeDelta);
 
 	UpdateGraviObject();
 	//if (m_fast_gravi->check_start_conditions()) 
@@ -448,6 +456,7 @@ void	CBurer::Hit								(SHit* pHDS)
 void CBurer::Die(CObject* who)
 {
 	inherited::Die(who);
+	TScanner::on_destroy();
 
 	if ( com_man().ta_is_active() )
 	{
@@ -455,6 +464,19 @@ void CBurer::Die(CObject* who)
 	}
 
 	CTelekinesis::Deactivate();
+}
+
+void CBurer::on_scanning()
+{
+	time_last_scan = Device.dwTimeGlobal;
+}
+
+void CBurer::on_scan_success()
+{
+	CActor *pA = smart_cast<CActor *>(Level().CurrentEntity());
+	if (!pA) return;
+
+	EnemyMan.add_enemy(pA);
 }
 
 void CBurer::net_Relcase(CObject *O)
@@ -471,6 +493,7 @@ CBaseMonster::SDebugInfo CBurer::show_debug_info()
 	if (!info.active) return CBaseMonster::SDebugInfo();
 
 	string128 text;
+	sprintf_s(text, "Scan Value = [%f]", TScanner::get_scan_value());
 	DBG().text(this).add_item(text, info.x, info.y+=info.delta_y, info.color);
 	DBG().text(this).add_item("---------------------------------------", info.x, info.y+=info.delta_y, info.delimiter_color);
 

@@ -9,7 +9,8 @@ class CCharacterPhysicsSupport;
 class CBurerFastGravi;
 
 class CBurer :	public CBaseMonster,
-				public CTelekinesis 
+				public CTelekinesis,
+				public CScanningAbility<CBurer> 
 {
 
 	typedef		CBaseMonster				inherited;
@@ -18,6 +19,8 @@ private:
 	xr_vector<CObject*>	m_nearest;
 
 public:
+	typedef		CScanningAbility<CBurer>	TScanner;
+
 	static		bool	can_scan;
 
 				u32		last_hit_frame;
@@ -156,6 +159,8 @@ public:
 
 	virtual bool	ability_distant_feel() {return true;}
 	virtual	char*	get_monster_class_name () { return "burer"; }
+	virtual void	on_scanning			();
+	virtual void	on_scan_success		();
 
 #ifdef DEBUG
 	virtual CBaseMonster::SDebugInfo show_debug_info();

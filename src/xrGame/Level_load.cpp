@@ -110,11 +110,6 @@ bool CLevel::Load_GameSpecific_After()
 			Sounds_Random_Enabled	= FALSE;
 		}
 
-		g_pGamePersistent->Environment().SetGameTime(GetEnvironmentGameDayTimeSec(), game->GetEnvironmentGameTimeFactor());
-
-		if (g_pGamePersistent->pEnvironment)	// LR_DEVS CHECK
-			g_pGamePersistent->pEnvironment->Invalidate();
-
 		if ( FS.exist(fn_game, "$level$", "level.fog_vol")) 
 		{
 			IReader *F				= FS.r_open	(fn_game);
@@ -148,6 +143,7 @@ bool CLevel::Load_GameSpecific_After()
 		else
 			ai().script_engine().add_script_process(ScriptEngine::eScriptProcessorLevel,xr_new<CScriptProcess>("level",""));
 	}
+	g_pGamePersistent->Environment().SetGameTime	(GetEnvironmentGameDayTimeSec(),game->GetEnvironmentGameTimeFactor());
 
 	return TRUE;
 }
