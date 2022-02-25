@@ -45,6 +45,11 @@ void CSnork::Load(LPCSTR section)
 	anim().AddReplacedAnim(&m_bDamaged, eAnimWalkFwd,	eAnimWalkDamaged);
 	
 	if(!pSettings->line_exist(section,"shoc_snork"))
+		shoc_snork = false;
+	else
+		shoc_snork = true;
+
+	if(shoc_snork = false)
 	{
 		anim().AddReplacedAnim(&m_bRunTurnLeft,		eAnimRun,		eAnimRunTurnLeft);
 		anim().AddReplacedAnim(&m_bRunTurnRight,	eAnimRun,		eAnimRunTurnRight);
@@ -59,7 +64,7 @@ void CSnork::Load(LPCSTR section)
 	SVelocityParam &velocity_steal		= move().get_velocity(MonsterMovement::eVelocityParameterSteal);
 	//SVelocityParam &velocity_drag		= move().get_velocity(MonsterMovement::eVelocityParameterDrag);
 	
-	if(!pSettings->line_exist(section,"shoc_snork"))
+	if(shoc_snork = false)
 	{
 		anim().AddAnim(eAnimStandIdle,		"stand_idle_",			-1, &velocity_none,		PS_STAND, "stand_fx_f", "stand_fx_b", "stand_fx_l", "stand_fx_r");
 		anim().AddAnim(eAnimStandDamaged,	"stand_idle_damaged_",	-1, &velocity_none,		PS_STAND, "stand_fx_f", "stand_fx_b", "stand_fx_l", "stand_fx_r");
@@ -291,7 +296,7 @@ bool CSnork::check_start_conditions(ControlCom::EControlType type)
 
 	if (type == ControlCom::eControlThreaten) 
 	{	
-		if(!pSettings->line_exist(section,"shoc_snork"))
+		if(shoc_snork = false)
 		{
 			return false;
 		}
