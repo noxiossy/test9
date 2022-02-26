@@ -64,6 +64,9 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "crypto", "3rd party\crypto\crypto.vcxproj", "{FA169092-EA3E-40C1-8E5A-A2B575700FE8}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CxImage", "3rd party\cximage\cximage.vcxproj", "{880CD250-BA77-4DAF-A8D4-552F12DD3AE4}"
+	ProjectSection(ProjectDependencies) = postProject
+		{938C5808-85A1-4B5A-8CB4-D2D9D7851CB8} = {938C5808-85A1-4B5A-8CB4-D2D9D7851CB8}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "lua_extensions", "3rd party\lua-extensions\lua_extensions.vcxproj", "{44F716E7-05BD-4390-AB02-5F7DAF7FEFDE}"
 EndProject
