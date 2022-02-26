@@ -72,17 +72,18 @@
   <PropertyGroup Condition="'$(Configuration)'=='Debug'">
     <NMakePreprocessorDefinitions>WIN32;_DEBUG;$(NMakePreprocessorDefinitions)</NMakePreprocessorDefinitions>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)'=='Release'">
+    <NMakePreprocessorDefinitions>WIN32;NDEBUG;$(NMakePreprocessorDefinitions)</NMakePreprocessorDefinitions>
+  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <NMakePreprocessorDefinitions>WIN32;NDEBUG;$(NMakePreprocessorDefinitions)</NMakePreprocessorDefinitions>
-    <NMakeBuildCommandLine>msvcbuild.bat static $(PlatformShortName)</NMakeBuildCommandLine>
-    <NMakeReBuildCommandLine>msvcbuild.bat static $(PlatformShortName)</NMakeReBuildCommandLine>
+    <NMakeBuildCommandLine>msvcbuild.bat $(PlatformShortName)</NMakeBuildCommandLine>
+    <NMakeReBuildCommandLine>msvcbuild.bat $(PlatformShortName)</NMakeReBuildCommandLine>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <NMakePreprocessorDefinitions>WIN32;NDEBUG;$(NMakePreprocessorDefinitions)</NMakePreprocessorDefinitions>
-    <NMakeBuildCommandLine>msvcbuild64.bat static $(PlatformShortName)</NMakeBuildCommandLine>
-    <NMakeReBuildCommandLine>msvcbuild64.bat static $(PlatformShortName)</NMakeReBuildCommandLine>
+    <NMakeBuildCommandLine>msvcbuild64.bat $(PlatformShortName)</NMakeBuildCommandLine>
+    <NMakeReBuildCommandLine>msvcbuild64.bat $(PlatformShortName)</NMakeReBuildCommandLine>
   </PropertyGroup>
   <ItemDefinitionGroup>
   </ItemDefinitionGroup>

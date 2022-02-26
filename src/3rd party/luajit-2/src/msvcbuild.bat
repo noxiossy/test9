@@ -124,7 +124,7 @@ if exist luajit.exe.manifest^
 @del minilua.ilk 2>NUL
 @del minilua.pdb 2>NUL
 @del vc142.pdb 2>NUL
-@rmdir /S /Q x64 2>NUL
+@rmdir /S /Q x86 2>NUL
 @goto :END
 :FAIL
 @echo You must open a "Visual Studio .NET Command Prompt" to run this script
