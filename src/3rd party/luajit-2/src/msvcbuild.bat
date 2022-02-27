@@ -13,10 +13,8 @@
 
 @if not defined INCLUDE goto :FAIL
 
-@if "%1"=="clean" goto :CLEAN
-
 @setlocal
-@set LJCOMPILE=cl /nologo /c /O2 /W3 /D_CRT_SECURE_NO_DEPRECATE /D_CRT_STDIO_INLINE=__declspec(dllexport)__inline
+@set LJCOMPILE=cl /nologo /c /O2 /W3 /fp:precise /GF /GS- /D_CRT_SECURE_NO_DEPRECATE
 @set LJLINK=link /nologo
 @set LJMT=mt /nologo
 @set LJLIB=lib /nologo /nodefaultlib
@@ -111,20 +109,6 @@ if exist luajit.exe.manifest^
 @echo *******************************************************
 @echo *** Build FAILED -- Please check the error messages ***
 @echo *******************************************************
-@goto :END
-:CLEAN
-@del buildvm.ilk 2>NUL
-@del buildvm.pdb 2>NUL
-@del lua51.dll 2>NUL
-@del lua51.lib 2>NUL
-@del luajit.exe 2>NUL
-@del luajit.ilk 2>NUL
-@del luajit.pdb 2>NUL
-@del luajit.vcxproj.user 2>NUL
-@del minilua.ilk 2>NUL
-@del minilua.pdb 2>NUL
-@del vc142.pdb 2>NUL
-@rmdir /S /Q x86 2>NUL
 @goto :END
 :FAIL
 @echo You must open a "Visual Studio .NET Command Prompt" to run this script

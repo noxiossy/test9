@@ -67,6 +67,8 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
+    <NMakeBuildCommandLine>msvcbuild.bat $(PlatformShortName)</NMakeBuildCommandLine>
+    <NMakeReBuildCommandLine>msvcbuild.bat $(PlatformShortName)</NMakeReBuildCommandLine>
     <NMakeOutput>lua51.dll</NMakeOutput>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)'=='Debug'">
@@ -78,12 +80,6 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <NMakeBuildCommandLine>msvcbuild.bat static $(PlatformShortName)</NMakeBuildCommandLine>
-    <NMakeReBuildCommandLine>msvcbuild.bat static $(PlatformShortName)</NMakeReBuildCommandLine>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <NMakeBuildCommandLine>msvcbuild64.bat $(PlatformShortName)</NMakeBuildCommandLine>
-    <NMakeReBuildCommandLine>msvcbuild64.bat $(PlatformShortName)</NMakeReBuildCommandLine>
   </PropertyGroup>
   <ItemDefinitionGroup>
   </ItemDefinitionGroup>
