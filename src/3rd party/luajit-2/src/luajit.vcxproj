@@ -82,8 +82,8 @@
     <NMakeReBuildCommandLine>msvcbuild.bat static $(PlatformShortName)</NMakeReBuildCommandLine>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <NMakeBuildCommandLine>msvcbuild64.bat static $(PlatformShortName)</NMakeBuildCommandLine>
-    <NMakeReBuildCommandLine>msvcbuild64.bat static $(PlatformShortName)</NMakeReBuildCommandLine>
+    <NMakeBuildCommandLine>msvcbuild64.bat $(PlatformShortName)</NMakeBuildCommandLine>
+    <NMakeReBuildCommandLine>msvcbuild64.bat $(PlatformShortName)</NMakeReBuildCommandLine>
   </PropertyGroup>
   <ItemDefinitionGroup>
   </ItemDefinitionGroup>

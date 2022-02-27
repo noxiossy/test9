@@ -167,12 +167,14 @@ void CScriptEngine::unload()
 
 int CScriptEngine::lua_panic(lua_State *L)
 {
+	ai().script_engine().print_stack();
     print_output(L, "PANIC", LUA_ERRRUN);
     return			(0);
 }
 
 void CScriptEngine::lua_error(lua_State *L)
 {
+	ai().script_engine().print_stack();
     print_output(L, "", LUA_ERRRUN);
     ai().script_engine().on_error(L);
 
@@ -185,6 +187,7 @@ void CScriptEngine::lua_error(lua_State *L)
 
 int  CScriptEngine::lua_pcall_failed(lua_State *L)
 {
+	ai().script_engine().print_stack();
     print_output(L, "", LUA_ERRRUN);
     ai().script_engine().on_error(L);
 
@@ -222,9 +225,9 @@ void CScriptEngine::setup_callbacks()
         luabind::set_error_callback(CScriptEngine::lua_error);
 #endif
 
-#ifndef MASTER_GOLD
+//#ifndef MASTER_GOLD
         luabind::set_pcall_callback		(CScriptEngine::lua_pcall_failed);
-#endif // MASTER_GOLD
+//#endif // MASTER_GOLD
     }
 
 #if !XRAY_EXCEPTIONS

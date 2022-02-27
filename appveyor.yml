@@ -1,7 +1,7 @@
 version: xray_lrc_{build}
 image: Visual Studio 2019
 configuration: Release
-platform: Win32
+platform: x64
 shallow_clone: true
 environment:
   DXSDK: '%DXSDK_DIR%'
@@ -34,8 +34,6 @@ after_build:
     copy src\intermediate\%PLATFORM%-%CONFIGURATION%\*.exe dist\engine\bin\
 
     copy src\intermediate\%PLATFORM%-%CONFIGURATION%\*.dll dist\engine\bin\
-    
-    copy sdk\binaries\%COR_PLAT%\lua51.dll dist\engine\bin\
 
     echo appveyor PushArtifact %APPVEYOR_REPO_TAG_NAME%.7z release
 
