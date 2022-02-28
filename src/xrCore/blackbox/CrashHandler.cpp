@@ -605,7 +605,7 @@ LPCTSTR  __stdcall
     // function.
 
     // Initialize the STACKFRAME structure.
-    ZeroMemory ( &g_stFrame , sizeof ( STACKFRAME ) ) ;
+    ZeroMemory ( &g_stFrame , sizeof ( g_stFrame ) ) ;
 
 #if defined(_X86_)
     g_stFrame.AddrPC.Offset       = pExPtrs->ContextRecord->Eip ;

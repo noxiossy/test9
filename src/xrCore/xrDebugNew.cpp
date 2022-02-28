@@ -186,6 +186,8 @@ void xrDebug::do_exit(const std::string& message)
     TerminateProcess(GetCurrentProcess(), 1);
 }
 
+char assertion_info[16384];
+
 #ifdef NO_BUG_TRAP
 //AVO: simplified function
 void xrDebug::backend(const char* expression, const char* description, const char* argument0, const char* argument1, const char* file, int line, const char* function, bool& ignore_always)
@@ -197,8 +199,6 @@ void xrDebug::backend(const char* expression, const char* description, const cha
         ;
 
     CS.Enter();
-
-    string4096 assertion_info;
 
     gather_info(expression, description, argument0, argument1, file, line, function, assertion_info, sizeof(assertion_info));
 
@@ -238,8 +238,6 @@ void xrDebug::backend(const char* expression, const char* description, const cha
 
     error_after_dialog = true;
 
-    string4096 assertion_info;
-
     gather_info(expression, description, argument0, argument1, file, line, function, assertion_info, sizeof(assertion_info));
 
 #ifdef USE_OWN_ERROR_MESSAGE_WINDOW
@@ -263,11 +261,12 @@ void xrDebug::backend(const char* expression, const char* description, const cha
     MessageBox (NULL,assertion_info,"X-Ray error",MB_OK|MB_ICONERROR|MB_SYSTEMMODAL);
 #else
 # ifdef USE_OWN_ERROR_MESSAGE_WINDOW
-    ShowCursor(true);
-    ShowWindow(GetActiveWindow(), SW_FORCEMINIMIZE);
+	HWND wnd = GetActiveWindow();
+	ShowWindow(wnd, SW_MINIMIZE);
+	while (ShowCursor(TRUE) < 0);
     int result =
         MessageBox(
-        GetTopWindow(NULL),
+		wnd,
         assertion_info,
         "Fatal Error",
         /*MB_CANCELTRYCONTINUE*/MB_OK | MB_ICONERROR | /*MB_SYSTEMMODAL |*/ MB_DEFBUTTON1 | MB_SETFOREGROUND
@@ -302,6 +301,7 @@ void xrDebug::backend(const char* expression, const char* description, const cha
     default:
         DEBUG_INVOKE;
     }
+	ShowCursor(FALSE);
 # else // USE_OWN_ERROR_MESSAGE_WINDOW
 # ifdef USE_BUG_TRAP
     BT_SetUserMessage (assertion_info);
