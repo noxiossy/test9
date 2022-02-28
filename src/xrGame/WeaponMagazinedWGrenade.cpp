@@ -77,7 +77,7 @@ BOOL CWeaponMagazinedWGrenade::net_Spawn(CSE_Abstract* DC)
 	{
 		m_ammoTypes2.clear();
 		
-		LPCSTR S = READ_IF_EXISTS(pSettings, r_string, GetGrenadeLauncherName(), "grenade_class", "m203");
+		LPCSTR S = READ_IF_EXISTS(pSettings, r_string, GetGrenadeLauncherName(), "grenade_class", "ammo_m209");
 		if (S && S[0])
 		{
 			string128 _ammoItem;
