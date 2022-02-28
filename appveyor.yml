@@ -35,7 +35,7 @@ after_build:
 
     copy src\intermediate\%PLATFORM%-%CONFIGURATION%\*.dll dist\engine\bin\
     
-    copy src\3rd party\luajit-2\bin\lua51.dll dist\engine\bin\
+    copy sdk\binaries\%COR_PLAT%\lua51.dll dist\engine\bin\
     
     echo appveyor PushArtifact %APPVEYOR_REPO_TAG_NAME%.7z release
 
