@@ -375,7 +375,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="..\xrGameSpy\gamespy\md5.h" />
     <ClInclude Include="..\xrServerEntities\ai_sounds.h" />
     <ClInclude Include="..\xrServerEntities\alife_human_brain.h" />
     <ClInclude Include="..\xrServerEntities\alife_human_brain_inline.h" />
@@ -1136,21 +1135,6 @@
     <ClInclude Include="GamePersistent.h" />
     <ClInclude Include="gamespy\CdkeyDecode\base32.h" />
     <ClInclude Include="gamespy\CdkeyDecode\cdkeydecode.h" />
-    <ClInclude Include="gamespy\GameSpy_ATLAS.h" />
-    <ClInclude Include="GameSpy\GameSpy_Available.h" />
-    <ClInclude Include="GameSpy\GameSpy_Base_Defs.h" />
-    <ClInclude Include="GameSpy\GameSpy_Browser.h" />
-    <ClInclude Include="gamespy\GameSpy_Full.h" />
-    <ClInclude Include="GameSpy\GameSpy_FuncDefs.h" />
-    <ClInclude Include="GameSpy\GameSpy_GCD_Client.h" />
-    <ClInclude Include="GameSpy\GameSpy_GCD_Server.h" />
-    <ClInclude Include="gamespy\GameSpy_GP.h" />
-    <ClInclude Include="gamespy\GameSpy_HTTP.h" />
-    <ClInclude Include="GameSpy\GameSpy_Keys.h" />
-    <ClInclude Include="GameSpy\GameSpy_Patching.h" />
-    <ClInclude Include="GameSpy\GameSpy_QR2.h" />
-    <ClInclude Include="GameSpy\GameSpy_QR2_callbacks.h" />
-    <ClInclude Include="gamespy\GameSpy_SAKE.h" />
     <ClInclude Include="GameTask.h" />
     <ClInclude Include="GameTaskDefs.h" />
     <ClInclude Include="GametaskManager.h" />
@@ -2016,13 +2000,6 @@
     <ClInclude Include="ZudaArtifact.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\xrGameSpy\gamespy\md5c.c">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Mixed|Win32'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug_NEW|Win32'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-    </ClCompile>
     <ClCompile Include="..\xrServerEntities\alife_human_brain.cpp" />
     <ClCompile Include="..\xrServerEntities\alife_monster_brain.cpp" />
     <ClCompile Include="..\xrServerEntities\alife_space.cpp" />
@@ -2841,18 +2818,6 @@
       <PrecompiledHeader>
       </PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="gamespy\GameSpy_ATLAS.cpp" />
-    <ClCompile Include="GameSpy\GameSpy_Available.cpp" />
-    <ClCompile Include="GameSpy\GameSpy_Browser.cpp" />
-    <ClCompile Include="gamespy\GameSpy_Full.cpp" />
-    <ClCompile Include="GameSpy\GameSpy_GCD_Client.cpp" />
-    <ClCompile Include="GameSpy\GameSpy_GCD_Server.cpp" />
-    <ClCompile Include="gamespy\GameSpy_GP.cpp" />
-    <ClCompile Include="gamespy\GameSpy_HTTP.cpp" />
-    <ClCompile Include="GameSpy\GameSpy_Patching.cpp" />
-    <ClCompile Include="GameSpy\GameSpy_QR2.cpp" />
-    <ClCompile Include="GameSpy\GameSpy_QR2_callbacks.cpp" />
-    <ClCompile Include="gamespy\GameSpy_SAKE.cpp" />
     <ClCompile Include="GameTask.cpp">
       <PrecompiledHeaderFile>pch_script.h</PrecompiledHeaderFile>
       <PrecompiledHeaderOutputFile>$(IntDir)$(ProjectName)_script.pch</PrecompiledHeaderOutputFile>
@@ -4301,10 +4266,6 @@
       <Project>{2578c6d8-660d-48ae-9322-7422f8664f06}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
-    <ProjectReference Include="$(SolutionDir)xrGameSpy\xrGameSpy.vcxproj">
-      <Project>{5535f6b4-7ae6-4b66-8aea-cc31c14d7ab7}</Project>
-      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
-    </ProjectReference>
     <ProjectReference Include="$(SolutionDir)xrNetServer\xrNetServer.vcxproj">
       <Project>{435bac9a-b225-457d-ab40-c9bd0cc8838c}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
@@ -4323,10 +4284,6 @@
     <ProjectReference Include="..\xrCore\xrCore.vcxproj">
       <Project>{a0f7d1fb-59a7-4717-a7e4-96f37e91998e}</Project>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Players.cd" />
-    <None Include="Weapons.cd" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -667,7 +667,8 @@ void CLevel::OnFrame()
     }
 }
 
-int psLUA_GCSTEP = 10;
+int psLUA_GCSTEP = 100;
+
 void CLevel::script_gc()
 {
     lua_gc(ai().script_engine().lua(), LUA_GCSTEP, psLUA_GCSTEP);
@@ -1023,7 +1024,7 @@ void CLevel::GetGameDateTime(u32& year, u32& month, u32& day, u32& hours, u32& m
 
 float CLevel::GetGameTimeFactor()
 {
-    return (game->GetGameTimeFactor());
+	return (game ? game->GetGameTimeFactor() : 1.0f);
 }
 
 void CLevel::SetGameTimeFactor(const float fTimeFactor)
