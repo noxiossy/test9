@@ -4,7 +4,6 @@
 
 #include <boost/noncopyable.hpp>
 #include "mixed_delegate.h"
-#include "../xrGameSpy/GameSpy/GP/gp.h"
 #include "account_manager.h"
 #include "script_export_space.h"
 #include "login_manager.h"
@@ -14,6 +13,8 @@ class CGameSpy_Full;
 class CGameSpy_GP;
 class CGameSpy_ATLAS;
 class CGameSpy_Patching;
+
+typedef unsigned int GPProfile;
 
 namespace gamespy_gp
 {
@@ -25,9 +26,6 @@ struct profile
 	shared_str			m_login_ticket;
 	bool				m_online;
 		
-	GSLoginCertificate	mCertificate;
-	GSLoginPrivateData	mPrivateData;
-	
 	profile			(GPProfile const & pid,
 					 char const * unique_nick,
 					 char const * login_ticket,
@@ -137,9 +135,6 @@ private:
 													 void * arg,
 													 void * param);
 
-	static void __cdecl			wslogin_cb			(GHTTPResult httpResult,
-													 WSLoginResponse * response,
-													 void * userData);
 	static void	__cdecl			setunick_cb			(GPConnection * connection,
 													 void * arg,
 													 void * param);

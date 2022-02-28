@@ -61,18 +61,12 @@ static int start_year = 1999; // 1999
 
 // binary hash, mainly for copy-protection
 
-#include "../xrGameSpy/gamespy/md5c.c"
 #include <ctype.h>
 
 #include <thread>
 
 #define DEFAULT_MODULE_HASH "3CAABCFCFF6F3A810019C6A72180F166"
 static char szEngineHash[33] = DEFAULT_MODULE_HASH;
-
-char * ComputeModuleHash( char * pszHash )
-{
-    return pszHash;
-}
 
 void compute_build_id()
 {
@@ -159,8 +153,6 @@ struct path_excluder_predicate
 
 void InitSettings	()
 {
-    Msg("EH: %s\n", ComputeModuleHash(szEngineHash));
-
     string_path fname;
     FS.update_path(fname, "$game_config$", "system.ltx");
 #ifdef DEBUG
@@ -729,45 +721,6 @@ struct damn_keys_filter
 #undef dwFilterKeysStructSize
 #undef dwToggleKeysStructSize
 
-// Фунция для тупых требований THQ и тупых американских пользователей
-BOOL IsOutOfVirtualMemory()
-{
-#define VIRT_ERROR_SIZE 256
-#define VIRT_MESSAGE_SIZE 512
-
-    MEMORYSTATUSEX statex;
-    DWORD dwPageFileInMB = 0;
-    DWORD dwPhysMemInMB = 0;
-    HINSTANCE hApp = 0;
-    char pszError[VIRT_ERROR_SIZE];
-    char pszMessage[VIRT_MESSAGE_SIZE];
-
-    ZeroMemory(&statex, sizeof(MEMORYSTATUSEX));
-    statex.dwLength = sizeof(MEMORYSTATUSEX);
-
-    if (!GlobalMemoryStatusEx(&statex))
-        return 0;
-
-    dwPageFileInMB = (DWORD)(statex.ullTotalPageFile / (1024 * 1024));
-    dwPhysMemInMB = (DWORD)(statex.ullTotalPhys / (1024 * 1024));
-
-    // Довольно отфонарное условие
-    if ((dwPhysMemInMB > 500) && ((dwPageFileInMB + dwPhysMemInMB) > 2500))
-        return 0;
-
-    hApp = GetModuleHandle(NULL);
-
-    if (!LoadString(hApp, RC_VIRT_MEM_ERROR, pszError, VIRT_ERROR_SIZE))
-        return 0;
-
-    if (!LoadString(hApp, RC_VIRT_MEM_TEXT, pszMessage, VIRT_MESSAGE_SIZE))
-        return 0;
-
-    MessageBox(NULL, pszMessage, pszError, MB_OK | MB_ICONHAND);
-
-    return 1;
-}
-
 #include "xr_ioc_cmd.h"
 
 //typedef void DUMMY_STUFF (const void*,const u32&,void*);
@@ -845,9 +798,6 @@ int APIENTRY WinMain_impl(HINSTANCE hInstance,
     }
 
     // foo();
-    // Check for virtual memory
-    if ((strstr(lpCmdLine, "--skipmemcheck") == NULL) && IsOutOfVirtualMemory())
-        return 0;
 
     // Check for another instance
 #ifdef NO_MULTI_INSTANCES
@@ -1067,7 +1017,7 @@ int APIENTRY WinMain(HINSTANCE hInstance,
 
 LPCSTR _GetFontTexName(LPCSTR section)
 {
-    static char* tex_names[] = {"texture800", "texture", "texture1600"};
+	static char* tex_names[] = {"texture800", "texture", "texture1600", "texture2160"};
     int def_idx = 1;//default 1024x768
     int idx = def_idx;
 
@@ -1082,7 +1032,8 @@ LPCSTR _GetFontTexName(LPCSTR section)
 
     if (h <= 600) idx = 0;
     else if (h < 1024) idx = 1;
-    else idx = 2;
+	else if (h < 1440) idx = 2;
+	else idx = 3;
 #endif
 
     while (idx >= 0)
