@@ -69,13 +69,14 @@
   <PropertyGroup>
     <NMakeBuildCommandLine>msvcbuild.bat $(PlatformShortName)</NMakeBuildCommandLine>
     <NMakeReBuildCommandLine>msvcbuild.bat $(PlatformShortName)</NMakeReBuildCommandLine>
-    <NMakeOutput>lua51.dll</NMakeOutput>
+    <NMakeOutput>$(SolutionDir)intermediate\$(Platform)-$(Configuration)\lua51.dll</NMakeOutput>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)'=='Debug'">
     <NMakePreprocessorDefinitions>WIN32;_DEBUG;$(NMakePreprocessorDefinitions)</NMakePreprocessorDefinitions>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)'=='Release'">
     <NMakePreprocessorDefinitions>WIN32;NDEBUG;$(NMakePreprocessorDefinitions)</NMakePreprocessorDefinitions>
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
   </PropertyGroup>
