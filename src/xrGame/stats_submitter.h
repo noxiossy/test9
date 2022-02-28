@@ -2,7 +2,6 @@
 #define STATS_SUBMITTER_INCLUDED
 
 #include <boost/noncopyable.hpp>
-#include "gamespy/GameSpy_ATLAS.h"
 #include "profile_data_types.h"
 #include "gsc_dsigned_ltx.h"
 #include "../3rd party/crypto/crypto.h"
@@ -52,12 +51,9 @@ public:
 
 private:
 	CGameSpy_Full*			m_fullgs_obj;
-	CGameSpy_ATLAS*			m_atlas_obj;
 	gsc_dsigned_ltx_writer	m_ltx_file;
 	
 	gamespy_gp::profile const *	m_last_operation_profile;
-	gsi_u8						m_atlas_connection_id[SC_CONNECTION_GUID_SIZE];
-	SCReportPtr					m_atlas_report;
 
 	enum enum_report_type
 	{
@@ -92,18 +88,6 @@ private:
 
 	//------- callbacks --------
 	static u32 const		operation_timeout_value;
-	static void __cdecl		created_session_cb		(const SCInterfacePtr theInterface,
-													 GHTTPResult          theHttpResult,
-													 SCResult             theResult,
-													 void *               theUserData);
-	static void __cdecl		set_intension_cb		(const SCInterfacePtr theInterface,
-													 GHTTPResult          theHttpResult,
-													 SCResult             theResult,
-													 void *               theUserData);
-	static void __cdecl		submitted_cb			(const SCInterfacePtr theInterface,
-													 GHTTPResult          theHttpResult,
-													 SCResult             theResult,
-													 void *               theUserData);
 
 };
 

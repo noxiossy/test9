@@ -4,11 +4,16 @@
 #include "../xrServerEntities/associative_vector.h"
 #include <boost/noncopyable.hpp>
 #include "profile_data_types.h"
-#include "../xrGameSpy/GameSpy/sake/sake.h"
 #include "gsc_dsigned_ltx.h"
 
 class CGameSpy_Full;
 class CGameSpy_SAKE;
+
+/**/
+struct SAKEGetMyRecordsOutput; // HACK, FAKE STRUCT TO PRETEND GAMESPY EXISTS
+struct SAKEField; // HACK, FAKE STRUCT TO PRETEND GAMESPY EXISTS
+/**/
+
 
 namespace gamespy_profile
 {
@@ -40,18 +45,11 @@ private:
 	CGameSpy_Full*			m_fullgs_obj;
 
 	award_fields_names_t	m_field_names_store;
-	SAKEGetMyRecordsInput	m_get_records_input;
 	void					init_field_names();
 		
 	void				process_award			(SAKEField* ap);
 
 
-	static void __cdecl	get_my_awards_cb				(SAKE sake,
-														 SAKERequest request,
-														 SAKERequestResult result,
-														 void * inputData,
-														 void * outputData,
-														 void * userData);
 }; //class award_system
 
 } //namespace gamespy_profile

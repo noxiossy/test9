@@ -1,7 +1,5 @@
 ﻿#include "stdafx.h"
 #include "awards_store.h"
-#include "GameSpy/GameSpy_Full.h"
-#include "GameSpy/GAmeSpy_SAKE.h"
 
 namespace gamespy_profile
 {
@@ -9,14 +7,7 @@ namespace gamespy_profile
 
 awards_store::awards_store(CGameSpy_Full* fullgs_obj)
 {
-	VERIFY(fullgs_obj && fullgs_obj->GetGameSpySAKE());
-	m_fullgs_obj		= fullgs_obj;
-	m_sake_obj			= fullgs_obj->GetGameSpySAKE();
-	
 	init_field_names	();
-	m_get_records_input.mTableId	= profile_table_name;
-	m_get_records_input.mFieldNames = m_field_names_store;
-	m_get_records_input.mNumFields	= fields_count;
 }
 
 awards_store::~awards_store()
@@ -56,19 +47,6 @@ void awards_store::reset_awards()
 void awards_store::load_awards(store_operation_cb & opcb)
 {
 	m_award_operation_cb		= opcb;
-		
-	SAKERequest reqres = m_sake_obj->GetMyRecords(
-		&m_get_records_input,
-		&awards_store::get_my_awards_cb,
-		this
-	);
-	
-	if (!reqres)
-	{
-		SAKEStartRequestResult tmp_result	= m_sake_obj->GetRequestResult();
-		m_award_operation_cb				(false, CGameSpy_SAKE::TryToTranslate(tmp_result).c_str());
-		m_award_operation_cb.clear			();
-	}
 }
 
 void awards_store::load_awards_from_ltx	(CInifile& ini)
@@ -127,56 +105,9 @@ bool awards_store::is_sake_equal_to_file() const
 
 void awards_store::process_award(SAKEField* award_params)
 {
-	enum_awards_t awid			= get_award_by_stat_name(award_params[ap_award_id].mName);
-	VERIFY(awid != at_awards_count);
-
-	int rdate_statid_real		= get_award_reward_date_stat(awid);
-	int rdate_statid_from_table = ATLAS_GET_STAT(award_params[ap_award_rdate].mName);
-	VERIFY(rdate_statid_real == rdate_statid_from_table);
-
-	u16	awards_count			= award_params[ap_award_id].mValue.mShort;
-	u32 award_rdate				= award_params[ap_award_rdate].mValue.mInt;
-	m_awards_result.insert		(std::make_pair(awid, award_data(awards_count, award_rdate)));
 }
 
 void awards_store::process_aw_out_response(SAKEGetMyRecordsOutput* tmp_out, int const out_fields_count)
 {
-	VERIFY(tmp_out->mNumRecords <= 1);					//one raw
-	if (tmp_out->mNumRecords == 0)
-		return;
-
-	for (int i = 0; i < out_fields_count; ++i)
-	{
-		if (get_award_by_stat_name(tmp_out->mRecords[0][i].mName) != at_awards_count)
-		{
-			process_award(&tmp_out->mRecords[0][i]);
-		}
-	}
 }
-
-void __cdecl awards_store::get_my_awards_cb(SAKE sake,
-											SAKERequest request,
-											SAKERequestResult result,
-											void * inputData,
-											void * outputData,
-											void * userData)
-{
-	awards_store* my_inst					= static_cast<awards_store*>(userData);
-	VERIFY(my_inst && my_inst->m_award_operation_cb);
-	if (result != SAKERequestResult_SUCCESS)
-	{
-		my_inst->m_award_operation_cb		(false, CGameSpy_SAKE::TryToTranslate(result).c_str());
-	} else
-	{
-		SAKEGetMyRecordsOutput*	tmp_out		= static_cast<SAKEGetMyRecordsOutput*>(
-			outputData
-		);
-		VERIFY(tmp_out);
-		my_inst->process_aw_out_response	(tmp_out, fields_count);
-		my_inst->m_award_operation_cb		(true, "");
-	}
-	my_inst->m_award_operation_cb.clear		();
-}
-
-
 }//namespace gamespy_profile

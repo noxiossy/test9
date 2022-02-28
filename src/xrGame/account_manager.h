@@ -3,11 +3,14 @@
 
 #include <boost/noncopyable.hpp>
 #include "mixed_delegate.h"
-#include "GameSpy/GameSpy_FuncDefs.h"
 #include "script_export_space.h"
 #include "queued_async_method.h"
 
 class CGameSpy_GP;
+
+/**/
+struct GPConnection; // HACK, FAKE STRUCT TO PRETEND GAMESPY EXISTS
+/**/
 
 namespace gamespy_gp
 {
