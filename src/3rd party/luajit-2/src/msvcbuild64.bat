@@ -78,9 +78,9 @@ buildvm -m folddef -o lj_folddef.h lj_opt_fold.c
 @if errorlevel 1 goto :BAD
 @goto :MTDLL
 :STATIC
-%LJCOMPILE% lj_*.c lib_*.c
+%LJCOMPILE% lj_*.c lib_*.c xr_*.c
 @if errorlevel 1 goto :BAD
-%LJLIB% /OUT:%LJLIBNAME% lj_*.obj lib_*.obj
+%LJLIB% /OUT:%LJLIBNAME% lj_*.obj lib_*.obj xr_*.obj
 @if errorlevel 1 goto :BAD
 @goto :MTDLL
 :AMALGDLL
@@ -124,7 +124,7 @@ if exist luajit.exe.manifest^
 @del minilua.ilk 2>NUL
 @del minilua.pdb 2>NUL
 @del vc142.pdb 2>NUL
-@rmdir /S /Q x86 2>NUL
+@rmdir /S /Q x64 2>NUL
 @goto :END
 :FAIL
 @echo You must open a "Visual Studio .NET Command Prompt" to run this script
