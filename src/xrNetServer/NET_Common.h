@@ -10,6 +10,14 @@ struct GameDescriptionData
 	string512	download_url;
 };
     
+/**/
+#define START_PORT_LAN_CL 1234
+#define START_PORT_LAN_SV 1235
+#define END_PORT_LAN 1236
+#define START_PORT 1237
+#define END_PORT 1238
+/**/
+
 #define NET_MERGE_PACKETS               1
 #define NET_TAG_MERGED                  0xE1
 #define NET_TAG_NONMERGED               0xE0
