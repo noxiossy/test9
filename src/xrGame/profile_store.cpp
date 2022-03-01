@@ -1,7 +1,5 @@
 ﻿#include "stdafx.h"
 #include "profile_store.h"
-#include "GameSpy/GameSpy_Full.h"
-#include "GameSpy/GAmeSpy_SAKE.h"
 #include "MainMenu.h"
 #include "login_manager.h"
 #include "awards_store.h"
@@ -20,10 +18,6 @@ profile_store::profile_store(CGameSpy_Full* fullgs_obj) :
 		stats_submitter::g_number,
 		stats_submitter::public_key)
 {
-	VERIFY(fullgs_obj && fullgs_obj->GetGameSpySAKE());
-	m_fullgs_obj		= fullgs_obj;
-	m_sake_obj			= fullgs_obj->GetGameSpySAKE();
-
 	m_awards_store		= xr_new<awards_store>(fullgs_obj);
 	m_best_scores_store	= xr_new<best_scores_store>(fullgs_obj);
 }
@@ -56,37 +50,15 @@ void profile_store::shedule_Update(u32 dt)
 #ifdef DEBUG
 	Msg("--- GameSpy core (SAKE) thinking ...");
 #endif
-	m_fullgs_obj->CoreThink(10);	//10 milliseconds on update
 }
 
 void profile_store::set_current_profile(int profileId, char const * loginTicket)
 {
-	VERIFY(m_sake_obj);
-	m_sake_obj->SetProfile(profileId, loginTicket);
 }
 
 void profile_store::load_current_profile(store_operation_cb progress_indicator_cb,
 										 store_operation_cb complete_cb)
 {
-	if (!complete_cb)
-	{
-		complete_cb.bind(this, &profile_store::onlylog_completion);
-	}
-	gamespy_gp::login_manager*	tmp_lmngr		= MainMenu()->GetLoginMngr();
-	R_ASSERT(tmp_lmngr);
-	gamespy_gp::profile const * tmp_curr_prof	= tmp_lmngr->get_current_profile();
-	if (!tmp_curr_prof)
-	{
-		complete_cb(false, "mp_first_need_to_login");
-		return;
-	}
-	set_current_profile				(
-		tmp_curr_prof->m_profile_id,
-		tmp_curr_prof->m_login_ticket.c_str()
-	);
-
-	load_prof_params_t	tmp_args(progress_indicator_cb);
-	m_load_current_profile_qam.execute(this, tmp_args, complete_cb);
 }
 
 void profile_store::load_current_profile_raw(load_prof_params_t const & args,
@@ -152,14 +124,6 @@ void profile_store::load_profile(store_operation_cb progress_indicator_cb)
 	}
 	if (m_valid_ltx)
 	{
-		s32 tmp_profile_id = m_dsigned_reader.get_ltx().r_s32(
-			profile_data_section, profile_id_line
-		);
-		gamespy_gp::login_manager*	tmp_lmngr		= MainMenu()->GetLoginMngr();
-		R_ASSERT(tmp_lmngr);
-		gamespy_gp::profile const * tmp_curr_prof	= tmp_lmngr->get_current_profile();
-		R_ASSERT(tmp_curr_prof);
-		m_valid_ltx = (tmp_profile_id == tmp_curr_prof->m_profile_id);
 	}
 
 	m_awards_store->reset_awards		();
@@ -191,46 +155,10 @@ void profile_store::merge_fields(best_scores_store::best_fields_names_t const & 
 		++i;
 	}
 	VERIFY(i == merged_fields_count);
-	m_get_records_input.mNumFields	= i; 
-	m_get_records_input.mFieldNames = m_field_names_store;
-	m_get_records_input.mTableId	= profile_table_name;
 }
 
 void profile_store::load_profile_fields()
 {
-	SAKERequest reqres = m_sake_obj->GetMyRecords(
-		&m_get_records_input,
-		&profile_store::get_my_fields_cb,
-		this
-	);
-	
-	if (!reqres)
-	{
-		SAKEStartRequestResult tmp_result	= m_sake_obj->GetRequestResult();
-		loaded_fields(false, CGameSpy_SAKE::TryToTranslate(tmp_result).c_str());
-	}
-}
-
-void __cdecl profile_store::get_my_fields_cb(SAKE sake,
-											 SAKERequest request,
-											 SAKERequestResult result,
-											 void * inputData,
-											 void * outputData,
-											 void * userData)
-{
-	profile_store* my_inst = static_cast<profile_store*>(userData);
-	if (result != SAKERequestResult_SUCCESS)
-	{
-		my_inst->loaded_fields(false, CGameSpy_SAKE::TryToTranslate(result).c_str());
-		return;
-	}
-	SAKEGetMyRecordsOutput*	tmp_out		= static_cast<SAKEGetMyRecordsOutput*>(
-		outputData
-	);
-	VERIFY(tmp_out);
-	my_inst->m_awards_store->process_aw_out_response(tmp_out, merged_fields_count);
-	my_inst->m_best_scores_store->process_scores_out_response(tmp_out, merged_fields_count);
-	my_inst->loaded_fields(true, "");
 }
 
 void profile_store::loaded_fields(bool const result, char const * err_descr)
@@ -306,12 +234,6 @@ void profile_store::check_sake_actuality()
 				profile_last_submit_time
 			)
 		);
-		if ((current_time - last_submit_time) >= actuality_update_time)
-		{
-			atlas_submit_queue* tmp_submit_queue = MainMenu()->GetSubmitQueue();
-			VERIFY(tmp_submit_queue);
-			tmp_submit_queue->submit_all();
-		}
 	}
 }
 

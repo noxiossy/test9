@@ -79,7 +79,6 @@ private:
 	void				merge_fields				(best_scores_store::best_fields_names_t const & best_results,
 													 awards_store::award_fields_names_t const & awards_fields);
 	merged_fields_names_t	m_field_names_store;
-	SAKEGetMyRecordsInput	m_get_records_input;
 	
 	void				load_profile_fields			();
 	
@@ -90,13 +89,6 @@ private:
 
 	void __stdcall		onlylog_operation			(bool const result, char const * err_descr);
 	void __stdcall		onlylog_completion			(bool const result, char const * err_descr);
-
-	static void __cdecl	get_my_fields_cb			(SAKE sake,
-													 SAKERequest request,
-													 SAKERequestResult result,
-													 void * inputData,
-													 void * outputData,
-													 void * userData);
 
 	DECLARE_SCRIPT_REGISTER_FUNCTION
 };//class profile_store

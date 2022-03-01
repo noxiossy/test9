@@ -1,5 +1,13 @@
 ﻿#pragma once
 
+/**/
+#define GP_EMAIL_LEN 128
+#define GP_NICK_LEN 32
+#define GP_UNIQUENICK_LEN 32
+#define GP_PASSWORD_LEN 32
+/**/
+
+
 #pragma warning(push)
 #pragma warning(disable:4995)
 #include "../xrEngine/stdafx.h"
