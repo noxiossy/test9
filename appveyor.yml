@@ -1,6 +1,6 @@
 version: xray_lrc_{build}
 image: Visual Studio 2019
-configuration: Debug_NEW
+configuration: Release
 platform: Win32
 shallow_clone: true
 environment:
