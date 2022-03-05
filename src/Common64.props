@@ -18,7 +18,7 @@
   </PropertyGroup>
   <PropertyGroup>
     <IncludePath>$(SolutionDir)SDK\include;$(SolutionDir)3rd party;$(xrSdkDir)include\OpenAutomate;$(xrSdkDir)include\nvapi;$(xrSdkDir)include\dxsdk;$(SolutionDir)SDK/include/theora;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)SDK\libraries\x64;$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(SolutionDir)SDK\libraries\x64\;$(LibraryPath)</LibraryPath>
     <OutDir>$(SolutionDir)intermediate\$(Platform)-$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)intermediate\$(Platform)-$(Configuration)\$(ProjectName)\</IntDir>
   </PropertyGroup>
@@ -35,7 +35,7 @@
       <DebugInformationFormat>None</DebugInformationFormat>
     </ClCompile>
     <Link>
-      <AdditionalLibraryDirectories>$(SolutionDir)3rd party/luajit-2/bin/$(Platform);$(xrSdkDir)libraries;$(xrLibDir);$(SolutionDir)SDK\libraries\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)3rd party/luajit-2/bin/$(Platform);$(xrSdkDir)libraries;$(xrLibDir);$(SolutionDir)SDK\libraries\x64\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <LargeAddressAware>true</LargeAddressAware>
       <RandomizedBaseAddress>false</RandomizedBaseAddress>
       <GenerateDebugInformation>false</GenerateDebugInformation>
