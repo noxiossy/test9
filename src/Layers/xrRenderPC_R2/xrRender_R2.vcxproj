@@ -234,7 +234,7 @@
       <WarningLevel>Level4</WarningLevel>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>xrEngine.lib;nvapi.lib;D3dx9.lib;LuaJIT.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>luabind.beta7-devel.rc4.lib;xrEngine.lib;nvapi.lib;D3dx9.lib;LuaJIT.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>NotSet</SubSystem>
       <LargeAddressAware>true</LargeAddressAware>
