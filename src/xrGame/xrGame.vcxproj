@@ -258,7 +258,7 @@
       <LinkTimeCodeGeneration>UseLinkTimeCodeGeneration</LinkTimeCodeGeneration>
       <RandomizedBaseAddress>false</RandomizedBaseAddress>
       <ImportLibrary>$(xrLibDir)$(TargetName).lib</ImportLibrary>
-      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>LuaJIT.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug_NEW|Win32'">
@@ -314,7 +314,7 @@
       <LinkTimeCodeGeneration>Default</LinkTimeCodeGeneration>
       <RandomizedBaseAddress>false</RandomizedBaseAddress>
       <ImportLibrary>$(xrLibDir)$(TargetName).lib</ImportLibrary>
-      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>LuaJIT.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -354,7 +354,6 @@
       <DisableSpecificWarnings>4297;4589;4530;4995;4996;4189;4005;4237;4315;4913;%(DisableSpecificWarnings)</DisableSpecificWarnings>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <MinimalRebuild>false</MinimalRebuild>
-      <UndefinePreprocessorDefinitions>USE_GSC_MEM_ALLOC</UndefinePreprocessorDefinitions>
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -363,7 +362,7 @@
     <Link>
       <AdditionalOptions>/ignore:4099</AdditionalOptions>
       <SuppressStartupBanner>true</SuppressStartupBanner>
-      <AdditionalLibraryDirectories>$(SolutionDir)3rd party\luajit-2\src\;$(xrLibDir);$(XRAY_16X_LIBS)OpenAutomate\libraries;$(XRAY_16X_LIBS)jpeg\libraries\Release;$(xrGameDir)bin_dbg;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(xrLibDir);$(XRAY_16X_LIBS)OpenAutomate\libraries;$(XRAY_16X_LIBS)jpeg\libraries\Release;$(xrGameDir)bin_dbg;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>NotSet</SubSystem>
       <LargeAddressAware>true</LargeAddressAware>
@@ -372,6 +371,7 @@
       <LinkTimeCodeGeneration>Default</LinkTimeCodeGeneration>
       <RandomizedBaseAddress>false</RandomizedBaseAddress>
       <ImportLibrary>$(xrLibDir)$(TargetName).lib</ImportLibrary>
+      <AdditionalDependencies>LuaJIT.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>

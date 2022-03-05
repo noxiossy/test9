@@ -170,7 +170,6 @@
       <EnableFiberSafeOptimizations>true</EnableFiberSafeOptimizations>
       <StringPooling>true</StringPooling>
       <DisableSpecificWarnings>4005;4996</DisableSpecificWarnings>
-      <UndefinePreprocessorDefinitions>USE_GSC_MEM_ALLOC</UndefinePreprocessorDefinitions>
     </ClCompile>
     <Link>
       <ImportLibrary>$(xrLibDir)$(TargetName).lib</ImportLibrary>

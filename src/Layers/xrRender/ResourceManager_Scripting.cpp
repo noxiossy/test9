@@ -1,5 +1,4 @@
 ﻿#include "stdafx.h"
-#pragma comment(lib, "lua51.lib" )
 
 #include	"../../xrEngine/Render.h"
 #include	"ResourceManager.h"

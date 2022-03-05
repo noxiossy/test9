@@ -206,7 +206,6 @@
       </BrowseInformation>
       <WarningLevel>Level4</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-      <UndefinePreprocessorDefinitions>USE_GSC_MEM_ALLOC</UndefinePreprocessorDefinitions>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Mixed|Win32'">

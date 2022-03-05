@@ -117,11 +117,11 @@
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(xrSdkDir)libraries;$(xrLibDir);$(DXSDK_LIB)Include;$(DXSDK_LIB)lib\x86;$(SolutionDir)3rd party\luajit-2\bin\$(PlatformShortName)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(xrSdkDir)libraries;$(xrLibDir);$(DXSDK_LIB)Include;$(DXSDK_LIB)lib\x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <LargeAddressAware>true</LargeAddressAware>
       <RandomizedBaseAddress>false</RandomizedBaseAddress>
       <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
-      <AdditionalDependencies>lua51.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>LuaJIT.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ImportLibrary>$(xrLibDir)$(TargetName).lib</ImportLibrary>
     </Link>
   </ItemDefinitionGroup>
@@ -148,11 +148,11 @@
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalLibraryDirectories>$(xrSdkDir)libraries;$(xrLibDir);$(DXSDK_LIB)Include;$(DXSDK_LIB)lib\x86;$(SolutionDir)3rd party\luajit-2\bin\$(PlatformShortName)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(xrSdkDir)libraries;$(xrLibDir);$(DXSDK_LIB)Include;$(DXSDK_LIB)lib\x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <LargeAddressAware>true</LargeAddressAware>
       <RandomizedBaseAddress>false</RandomizedBaseAddress>
       <ImportLibrary>$(xrLibDir)$(TargetName).lib</ImportLibrary>
-      <AdditionalDependencies>lua51.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>LuaJIT.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug_NEW|Win32'">
@@ -178,10 +178,10 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalLibraryDirectories>$(xrSdkDir)libraries;$(xrLibDir);$(DXSDK_LIB)Include;$(DXSDK_LIB)lib\x86;$(SolutionDir)3rd party\luajit-2\bin\$(PlatformShortName)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(xrSdkDir)libraries;$(xrLibDir);$(DXSDK_LIB)Include;$(DXSDK_LIB)lib\x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <LargeAddressAware>true</LargeAddressAware>
       <RandomizedBaseAddress>false</RandomizedBaseAddress>
-      <AdditionalDependencies>lua51.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>LuaJIT.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ImportLibrary>$(xrLibDir)$(TargetName).lib</ImportLibrary>
     </Link>
   </ItemDefinitionGroup>
@@ -203,14 +203,13 @@
       <EnableFiberSafeOptimizations>true</EnableFiberSafeOptimizations>
       <EnableEnhancedInstructionSet>NotSet</EnableEnhancedInstructionSet>
       <DisableSpecificWarnings>4996;4244;4018</DisableSpecificWarnings>
-      <UndefinePreprocessorDefinitions>USE_GSC_MEM_ALLOC</UndefinePreprocessorDefinitions>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalLibraryDirectories>$(xrSdkDir)libraries;$(xrLibDir);$(DXSDK_LIB)Include;$(DXSDK_LIB)lib\x64;$(SolutionDir)3rd party\luajit-2\bin\$(PlatformShortName)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(xrSdkDir)libraries;$(xrLibDir);$(DXSDK_LIB)Include;$(DXSDK_LIB)lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <LargeAddressAware>true</LargeAddressAware>
-      <AdditionalDependencies>lua51.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>LuaJIT.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <RandomizedBaseAddress>false</RandomizedBaseAddress>
       <ImportLibrary>$(xrLibDir)$(TargetName).lib</ImportLibrary>
     </Link>
