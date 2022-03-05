@@ -234,8 +234,7 @@
       <WarningLevel>Level4</WarningLevel>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>nvapi.lib;D3dx9.lib;LuaJIT.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(xrSdkDir)libraries;$(xrLibDir);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>xrEngine.lib;nvapi.lib;D3dx9.lib;LuaJIT.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>NotSet</SubSystem>
       <LargeAddressAware>true</LargeAddressAware>
