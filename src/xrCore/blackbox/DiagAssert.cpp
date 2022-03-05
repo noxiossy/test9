@@ -602,9 +602,9 @@ void DoStackTrace ( LPTSTR szString  ,
                                              NULL     ,
                                              FALSE     ) )
         {
-#ifdef _DEBUG
             TRACE ( "DiagAssert : Unable to initialize the "
                     "symbol engine!!!\n" ) ;
+#ifdef _DEBUG
             DebugBreak ( ) ;
 #endif
         }

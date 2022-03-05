@@ -27,22 +27,18 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Makefile</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Makefile</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Makefile</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Makefile</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -51,42 +47,67 @@
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="..\..\..\Common.props" />
+    <Import Project="$(SolutionDir)Common.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="..\..\..\Common.props" />
+    <Import Project="$(SolutionDir)Common.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="..\..\..\Common.props" />
+    <Import Project="$(SolutionDir)Common.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="..\..\..\Common64.props" />
+    <Import Project="$(SolutionDir)Common64.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
-  <PropertyGroup>
-    <NMakeOutput>lua51.dll</NMakeOutput>
+    <PropertyGroup>
+    <NMakeOutput>..\bin\$(PlatformShortName)\lua51.dll</NMakeOutput>
+    <NMakeUseOemCodePage>true</NMakeUseOemCodePage>
+    <NMakeBuildCommandLine>
+		if not exist "..\bin\$(PlatformShortName)\lua51.dll" (
+			call msvcbuild.bat $(PlatformShortName)
+		)
+
+		if not exist "$(OutDir)lua51.dll" (
+			if not exist "$(OutDir)*.*" (
+				md "$(OutDir)"
+			)
+			copy /Y "..\bin\$(PlatformShortName)\lua51.dll" "$(OutDir)lua51.dll"
+		)
+		if not exist "$(OutDir)lua51.lib" (
+			if not exist "$(OutDir)*.*" (
+				md "$(OutDir)"
+			)
+			copy /Y "..\bin\$(PlatformShortName)\lua51.lib" "$(OutDir)lua51.lib"
+		)
+		if not exist "$(OutDir)lua51.exp" (
+			if not exist "$(OutDir)*.*" (
+				md "$(OutDir)"
+			)
+			copy /Y "..\bin\$(PlatformShortName)\lua51.exp" "$(OutDir)lua51.exp"
+		)
+	</NMakeBuildCommandLine>
+	<NMakeReBuildCommandLine>
+		RD /S/Q ..\bin
+		call msvcbuild.bat $(PlatformShortName)
+
+		if not exist "$(OutDir)*.*" (
+			md "$(OutDir)"
+		)
+		copy /Y "..\bin\$(PlatformShortName)\lua51.dll" "$(OutDir)lua51.dll"
+		if not exist "$(OutDir)*.*" (
+			md "$(OutDir)"
+		)
+		copy /Y "..\bin\$(PlatformShortName)\lua51.lib" "$(OutDir)lua51.lib"
+		if not exist "$(OutDir)*.*" (
+			md "$(OutDir)"
+		)
+		copy /Y "..\bin\$(PlatformShortName)\lua51.exp" "$(OutDir)lua51.exp"
+	</NMakeReBuildCommandLine>
+    <NMakeCleanCommandLine>RD /S/Q ..\bin</NMakeCleanCommandLine>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)'=='Debug'">
-    <NMakePreprocessorDefinitions>WIN32;_DEBUG;$(NMakePreprocessorDefinitions)</NMakePreprocessorDefinitions>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)'=='Release'">
-    <NMakePreprocessorDefinitions>WIN32;NDEBUG;$(NMakePreprocessorDefinitions)</NMakePreprocessorDefinitions>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <NMakeBuildCommandLine>msvcbuild.bat static $(PlatformShortName)</NMakeBuildCommandLine>
-    <NMakeReBuildCommandLine>msvcbuild.bat static $(PlatformShortName)</NMakeReBuildCommandLine>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <NMakeBuildCommandLine>msvcbuild64.bat $(PlatformShortName)</NMakeBuildCommandLine>
-    <NMakeReBuildCommandLine>msvcbuild64.bat $(PlatformShortName)</NMakeReBuildCommandLine>
-  </PropertyGroup>
-  <ItemDefinitionGroup>
-  </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

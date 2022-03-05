@@ -68,8 +68,6 @@ extern ENGINE_API CInifile* pGameIni;
 
 #pragma comment(lib, "lua51.lib" )
 
-#include "luabind/library_linkage.h"
-
 #pragma comment( lib, "xrAPI.lib" )
 
 #pragma comment( lib, "winmm.lib" )

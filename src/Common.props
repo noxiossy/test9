@@ -17,8 +17,8 @@
     <xrLuaDir>$(SolutionDir)3rd party\luajit-2\src\</xrLuaDir>
   </PropertyGroup>
   <PropertyGroup>
-    <IncludePath>..\SDK\include;$(SolutionDir)3rd party;$(xrSdkDir)include\OpenAutomate;$(xrSdkDir)include\nvapi;$(xrSdkDir)include\dxsdk;$(SolutionDir)SDK/include/theora;$(IncludePath)</IncludePath>
-    <LibraryPath>..\SDK\libraries\x86;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)SDK\include;$(SolutionDir)3rd party;$(xrSdkDir)include\OpenAutomate;$(xrSdkDir)include\nvapi;$(xrSdkDir)include\dxsdk;$(SolutionDir)SDK/include/theora;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)SDK\libraries\$(Platform);$(LibraryPath)</LibraryPath>
     <OutDir>$(SolutionDir)intermediate\$(Platform)-$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)intermediate\$(Platform)-$(Configuration)\$(ProjectName)\</IntDir>
   </PropertyGroup>
@@ -35,6 +35,7 @@
       <DebugInformationFormat>None</DebugInformationFormat>
     </ClCompile>
     <Link>
+      <AdditionalLibraryDirectories>$(SolutionDir)3rd party/luajit-2/bin/$(Platform);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <LargeAddressAware>true</LargeAddressAware>
       <RandomizedBaseAddress>false</RandomizedBaseAddress>
       <GenerateDebugInformation>false</GenerateDebugInformation>

@@ -1,5 +1,5 @@
 ﻿#include "stdafx.h"
-#pragma hdrstop
+
 
 LPSTR _TrimLeft(LPSTR str)
 {

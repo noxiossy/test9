@@ -190,7 +190,7 @@ void CScriptStorage::reinit()
     if (m_virtual_machine)
         lua_close(m_virtual_machine);
 
-#ifdef USE_GSC_MEM_ALLOC
+#ifndef _WIN64
     m_virtual_machine = lua_newstate(lua_alloc, NULL);
 #else
     m_virtual_machine = luaL_newstate();
