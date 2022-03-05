@@ -35,6 +35,7 @@
       <DebugInformationFormat>None</DebugInformationFormat>
     </ClCompile>
     <Link>
+      <ImportLibrary>$(SolutionDir)intermediate\$(Platform)-$(Configuration)\$(TargetName).lib</ImportLibrary>
       <AdditionalLibraryDirectories>$(SolutionDir)3rd party/luajit-2/bin/$(Platform);$(xrSdkDir)libraries;$(xrLibDir);$(xrSdkDir)libraries\$(Platform);$(OutDir);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <LargeAddressAware>true</LargeAddressAware>
       <RandomizedBaseAddress>false</RandomizedBaseAddress>
