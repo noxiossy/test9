@@ -1,9 +1,4 @@
-﻿#include "../../build_config_defines.h"
-
-#include "lua.hpp"
-
-//#pragma comment(lib, "xrCore.lib")
-//#pragma comment(lib, "user32.lib")
+﻿#include "lua.hpp"
 
 extern "C"{
     #include "lfs.h"

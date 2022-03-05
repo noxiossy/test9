@@ -2,7 +2,6 @@
 //#include "StdAfx.h"
 #include "script_additional_libs.h"
 #include <random>
-#include "../../build_config_defines.h"
 
 /******************** BIT ********************/
 int ROL(int a, int n)

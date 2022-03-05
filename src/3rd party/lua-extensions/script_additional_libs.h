@@ -1,7 +1,4 @@
 ﻿#pragma once
-
-#include "../../build_config_defines.h"
-
 #include "lua.hpp"
 
 #include <cstdlib>
