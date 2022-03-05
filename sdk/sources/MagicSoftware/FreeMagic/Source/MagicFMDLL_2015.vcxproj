@@ -92,7 +92,6 @@
       <Culture>0x0409</Culture>
     </ResourceCompile>
     <Link>
-      <AdditionalOptions>/MACHINE:I386 %(AdditionalOptions)</AdditionalOptions>
       <AdditionalDependencies>odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>..\Library\ReleaseDLL\MagicFM.dll</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
@@ -202,7 +201,6 @@ copy ..\Library\$(OutDir)MagicFM.dll      ..\..\Sdk\Library\$(OutDir)
       <Culture>0x0409</Culture>
     </ResourceCompile>
     <Link>
-      <AdditionalOptions>/MACHINE:I386 %(AdditionalOptions)</AdditionalOptions>
       <AdditionalDependencies>odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>..\Library\DebugDLL\MagicFMDLL.dll</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>

@@ -1,5 +1,5 @@
 ﻿#include "stdafx.h"
-#pragma hdrstop
+
 
 /* lzo1x_1.c -- LZO1X-1 compression
 
