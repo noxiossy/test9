@@ -35,7 +35,7 @@
       <DebugInformationFormat>None</DebugInformationFormat>
     </ClCompile>
     <Link>
-      <AdditionalLibraryDirectories>$(SolutionDir)3rd party/luajit-2/bin/$(Platform);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)3rd party/luajit-2/bin/$(Platform);$(SolutionDir)SDK\libraries\$(Platform);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <LargeAddressAware>true</LargeAddressAware>
       <RandomizedBaseAddress>false</RandomizedBaseAddress>
       <GenerateDebugInformation>false</GenerateDebugInformation>
