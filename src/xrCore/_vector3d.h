@@ -1,6 +1,4 @@
-﻿#ifndef __V3D__
-#define __V3D__
-
+﻿#pragma once
 // Inline call
 #ifndef IC
 #define IC __forceinline
@@ -545,5 +543,3 @@ IC BOOL exact_normalize(float* a)
 }
 IC BOOL exact_normalize(Fvector3& a) { return exact_normalize(&a.x); }
 #pragma warning(pop)
-
-#endif
