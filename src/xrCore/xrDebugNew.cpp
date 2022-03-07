@@ -5,13 +5,12 @@
 
 #include <sal.h>
 #include <dxerr.h>
-#include "blackbox/CrashHandler.h"
+
 #pragma warning(push)
 #pragma warning(disable:4995)
 #include <malloc.h>
 #include <direct.h>
 #pragma warning(pop)
-#include <intrin.h>
 
 #include "../build_config_defines.h"
 
@@ -29,7 +28,7 @@ static BOOL bException = TRUE;
 #ifndef NO_BUG_TRAP
 # define USE_BUG_TRAP
 #endif //-!NO_BUG_TRAP
-#	define DEBUG_INVOKE	__debugbreak()
+# define DEBUG_INVOKE __asm int 3
 static BOOL bException = FALSE;
 #endif
 
@@ -47,9 +46,9 @@ static BOOL bException = FALSE;
 
 #ifdef USE_BUG_TRAP
 # include <BugTrap/source/BugTrap.h> // for BugTrap functionality
-#ifdef __BORLANDC__
-//# pragma comment(lib,"BugTrap.lib") // Link to ANSI DLL
-//#else
+#ifndef __BORLANDC__
+# pragma comment(lib,"BugTrap.lib") // Link to ANSI DLL
+#else
 # pragma comment(lib,"BugTrapB.lib") // Link to ANSI DLL
 #endif
 #endif // USE_BUG_TRAP
@@ -67,21 +66,21 @@ XRCORE_API xrDebug Debug;
 
 static bool error_after_dialog = false;
 
-extern void BuildStackTrace();
-extern char g_stackTrace[100][4096];
-extern int g_stackTraceCount;
+//extern void BuildStackTrace();
+//extern char g_stackTrace[100][4096];
+//extern int g_stackTraceCount;
 
 void LogStackTrace(LPCSTR header)
 {
     if (!shared_str_initialized)
         return;
 
-    BuildStackTrace();
+	//    BuildStackTrace();
 
     Msg("%s", header);
 
-    for (int i = 1; i < g_stackTraceCount; ++i)
-        Msg("%s", g_stackTrace[i]);
+	//    for (int i = 1; i < g_stackTraceCount; ++i)
+	//        Msg("%s", g_stackTrace[i]);
 }
 
 void xrDebug::gather_info(const char* expression, const char* description, const char* argument0, const char* argument1, const char* file, int line, const char* function, LPSTR assertion_info, u32 const assertion_info_size)
@@ -160,17 +159,17 @@ void xrDebug::gather_info(const char* expression, const char* description, const
         buffer += xr_sprintf(buffer, assertion_size - u32(buffer - buffer_base), "stack trace:%s%s", endline, endline);
 #endif //-USE_OWN_ERROR_MESSAGE_WINDOW
 
-        BuildStackTrace();
+		//        BuildStackTrace();
 
-        for (int i = 2; i < g_stackTraceCount; ++i)
-        {
-            if (shared_str_initialized)
-                Msg("%s", g_stackTrace[i]);
+		//        for (int i = 2; i < g_stackTraceCount; ++i)
+		//        {
+		//            if (shared_str_initialized)
+		//                Msg("%s", g_stackTrace[i]);
 
-#ifdef USE_OWN_ERROR_MESSAGE_WINDOW
-            buffer += xr_sprintf(buffer, assertion_size - u32(buffer - buffer_base), "%s%s", g_stackTrace[i], endline);
-#endif //-USE_OWN_ERROR_MESSAGE_WINDOW
-        }
+		//#ifdef USE_OWN_ERROR_MESSAGE_WINDOW
+		//            buffer += xr_sprintf(buffer, assertion_size - u32(buffer - buffer_base), "%s%s", g_stackTrace[i], endline);
+		//#endif //-USE_OWN_ERROR_MESSAGE_WINDOW
+		//        }
 
         if (shared_str_initialized)
             FlushLog();
@@ -261,12 +260,11 @@ void xrDebug::backend(const char* expression, const char* description, const cha
     MessageBox (NULL,assertion_info,"X-Ray error",MB_OK|MB_ICONERROR|MB_SYSTEMMODAL);
 #else
 # ifdef USE_OWN_ERROR_MESSAGE_WINDOW
-	HWND wnd = GetActiveWindow();
-	ShowWindow(wnd, SW_MINIMIZE);
-	while (ShowCursor(TRUE) < 0);
+    ShowCursor(true);
+    ShowWindow(GetActiveWindow(), SW_FORCEMINIMIZE);
     int result =
         MessageBox(
-		wnd,
+        GetTopWindow(NULL),
         assertion_info,
         "Fatal Error",
         /*MB_CANCELTRYCONTINUE*/MB_OK | MB_ICONERROR | /*MB_SYSTEMMODAL |*/ MB_DEFBUTTON1 | MB_SETFOREGROUND
@@ -301,7 +299,6 @@ void xrDebug::backend(const char* expression, const char* description, const cha
     default:
         DEBUG_INVOKE;
     }
-	ShowCursor(FALSE);
 # else // USE_OWN_ERROR_MESSAGE_WINDOW
 # ifdef USE_BUG_TRAP
     BT_SetUserMessage (assertion_info);
@@ -325,7 +322,7 @@ LPCSTR xrDebug::error2string(long code)
 #ifdef _M_AMD64
 #else
     WCHAR err_result[1024];
-    DXGetErrorString(code);
+    DXGetErrorDescription(code,err_result,sizeof(err_result));
     wcstombs(result, err_result, sizeof(err_result));
 #endif
     if (0 == result)
@@ -555,7 +552,7 @@ void SetupExceptionHandler(const bool& dedicated)
 }
 #endif //-USE_BUG_TRAP
 
-extern void BuildStackTrace(struct _EXCEPTION_POINTERS* pExceptionInfo);
+//extern void BuildStackTrace(struct _EXCEPTION_POINTERS* pExceptionInfo);
 typedef LONG WINAPI UnhandledExceptionFilterType(struct _EXCEPTION_POINTERS* pExceptionInfo);
 typedef LONG(__stdcall* PFNCHFILTFN) (EXCEPTION_POINTERS* pExPtrs);
 extern "C" BOOL __stdcall SetCrashHandlerFilter(PFNCHFILTFN pFn);
@@ -711,13 +708,11 @@ void format_message(LPSTR buffer, const u32& buffer_size)
 //AVO: simplify function
 LONG WINAPI UnhandledFilter(_EXCEPTION_POINTERS* pExceptionInfo)
 {
-	Msg("\n%s", GetFaultReason(pExceptionInfo));
-
     string256 error_message;
     format_message(error_message, sizeof(error_message));
 
     CONTEXT save = *pExceptionInfo->ContextRecord;
-    BuildStackTrace(pExceptionInfo);
+	//    BuildStackTrace(pExceptionInfo);
     *pExceptionInfo->ContextRecord = save;
 
     if (shared_str_initialized)
@@ -728,17 +723,17 @@ LONG WINAPI UnhandledFilter(_EXCEPTION_POINTERS* pExceptionInfo)
         os_clipboard::copy_to_clipboard("stack trace:\r\n\r\n");
     }
 
-    string4096 buffer;
-    for (int i = 0; i < g_stackTraceCount; ++i)
-    {
-        if (shared_str_initialized)
-            Msg("%s", g_stackTrace[i]);
-        xr_sprintf(buffer, sizeof(buffer), "%s\r\n", g_stackTrace[i]);
-#ifdef DEBUG
-        if (!IsDebuggerPresent())
-            os_clipboard::update_clipboard(buffer);
-#endif //-DEBUG
-    }
+	//    string4096 buffer;
+	//    for (int i = 0; i < g_stackTraceCount; ++i)
+	//    {
+	//        if (shared_str_initialized)
+	//            Msg("%s", g_stackTrace[i]);
+	//        xr_sprintf(buffer, sizeof(buffer), "%s\r\n", g_stackTrace[i]);
+	//#ifdef DEBUG
+	//        if (!IsDebuggerPresent())
+	//            os_clipboard::update_clipboard(buffer);
+	//#endif //-DEBUG
+	//    }
 
     if (*error_message)
     {
@@ -752,7 +747,14 @@ LONG WINAPI UnhandledFilter(_EXCEPTION_POINTERS* pExceptionInfo)
 #endif //-DEBUG
     }
 
+	if (pExceptionInfo->ExceptionRecord)
+	{
+		Msg("at address 0x%p", pExceptionInfo->ExceptionRecord->ExceptionAddress);
+	}
     FlushLog();
+# ifdef USE_OWN_MINI_DUMP
+	save_mini_dump(pExceptionInfo);
+# endif // USE_OWN_MINI_DUMP
 
     ShowCursor(true);
     ShowWindow(GetActiveWindow(), SW_FORCEMINIMIZE);
@@ -762,7 +764,7 @@ LONG WINAPI UnhandledFilter(_EXCEPTION_POINTERS* pExceptionInfo)
         "Fatal Error",
         MB_OK | MB_ICONERROR | MB_SYSTEMMODAL
         );
-    TerminateProcess(GetCurrentProcess(), 1);
+	//    TerminateProcess(GetCurrentProcess(), 1);
 
     return (EXCEPTION_CONTINUE_SEARCH);
 }

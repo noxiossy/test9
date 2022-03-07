@@ -1,4 +1,5 @@
 ﻿#include "stdafx_.h"
+#if 0
 #include "BugSlayerUtil.h"
 #include <stdio.h>
 
@@ -119,3 +120,5 @@ void OutputDebugStackTrace	(const char *header)
 		OutputDebugString	("\r\n");
 	}
 }
+
+#endif
