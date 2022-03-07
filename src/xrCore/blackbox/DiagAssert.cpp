@@ -4,7 +4,6 @@ Copyright (c) 1997-2000 John Robbins -- All rights reserved.
 ----------------------------------------------------------------------*/
 
 #include "stdafx_.h"
-#if 0
 #include "BugslayerUtil.h"
 #include "DiagAssert.h"
 
@@ -724,5 +723,3 @@ void DoStackTrace ( LPTSTR szString  ,
         }
     }
 }
-
-#endif

@@ -13,7 +13,6 @@ CONDITIONAL COMPILATION :
 ----------------------------------------------------------------------*/
 
 #include "stdafx_.h"
-#if 0
 #include "BugslayerUtil.h"
 #include "CrashHandler.h"
 
@@ -1197,4 +1196,3 @@ void CleanupSymEng ( void )
     }
 }
 
-#endif
