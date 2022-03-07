@@ -11,10 +11,12 @@ extern xrSkin2W			xrSkin2W_x86;
 extern xrSkin3W			xrSkin3W_x86;
 extern xrSkin4W			xrSkin4W_x86;
 
+#ifndef _M_X64
 extern xrSkin1W			xrSkin1W_SSE;
 extern xrSkin2W			xrSkin2W_SSE;
 extern xrSkin3W			xrSkin3W_SSE;
 extern xrSkin4W			xrSkin4W_SSE;
+#endif
 
 extern xrSkin4W			xrSkin4W_thread;
 
@@ -27,7 +29,7 @@ extern xrPLC_calc3		PLC_calc3_SSE;
 extern "C" {
 	__declspec(dllexport) void	__cdecl	xrBind_PSGP	( xrDispatchTable* T , _processor_info* ID )
 	{
-#ifndef _M_X64
+#ifdef _M_X64
 		// generic
 		T->skin1W	= xrSkin1W_x86;
 		T->skin2W	= xrSkin2W_x86;
@@ -35,7 +37,7 @@ extern "C" {
 		T->skin4W	= xrSkin4W_x86;
 		skin4W_func = xrSkin4W_x86;
 		T->PLC_calc3 = PLC_calc3_x86;
-	
+#else
 		// SSE
 /*		if (CPU::ID.hasSSE()) {
 			T->skin1W	= xrSkin1W_SSE;
