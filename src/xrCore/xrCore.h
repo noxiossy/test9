@@ -13,6 +13,7 @@
 # define BENCH_SEC_SCRAMBLEMEMBER2
 
 #pragma warning(disable:4996)
+#pragma warning(disable:4530)
 
 #if (defined(_DEBUG) || defined(MIXED) || defined(DEBUG)) && !defined(FORCE_NO_EXCEPTIONS)
 // "debug" or "mixed"
@@ -160,7 +161,7 @@
 #endif // frequently in release code due to large amount of VERIFY
 
 
-#ifdef _M_AMD64
+#ifdef _M_X64
 #pragma warning (disable : 4512 )
 #endif
 

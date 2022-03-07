@@ -16,7 +16,7 @@ XRCORE_API Fmatrix Fidentity;
 XRCORE_API Dmatrix Didentity;
 XRCORE_API CRandom Random;
 
-#ifdef _M_AMD64
+//#ifdef _M_AMD64
 u16 getFPUsw() { return 0; }
 
 namespace FPU
@@ -145,7 +145,7 @@ void initialize()
     ::Random.seed(u32(CPU::GetCLK() % (1i64 << 32i64)));
 }
 };
-#endif
+//#endif
 
 namespace CPU
 {
@@ -260,6 +260,7 @@ void _initialize_cpu()
 	if (CPU::ID.has3DNOW()) xr_strcat(features, ", 3DNow!");
 	if (CPU::ID.hasSSE()) xr_strcat(features, ", SSE");
 	if (CPU::ID.hasSSE2()) xr_strcat(features, ", SSE2");
+	R_ASSERT(CPU::ID.hasSSE2());
 	if (CPU::ID.hasSSE3()) xr_strcat(features, ", SSE3");
 	if (CPU::ID.hasMWAIT()) xr_strcat(features, ", MONITOR/MWAIT");
 	if (CPU::ID.hasSSSE3()) xr_strcat(features, ", SSSE3");
