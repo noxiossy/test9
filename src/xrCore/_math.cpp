@@ -66,7 +66,7 @@ XRCORE_API void m64r(void)
 
 void initialize() {}
 };
-#else
+//#else
 u16 getFPUsw()
 {
     u16 SW;
