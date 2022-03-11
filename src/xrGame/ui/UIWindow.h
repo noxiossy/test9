@@ -45,22 +45,14 @@ public:
 							void					deallocate		(pointer p, size_type n) const			
 							{	
 								VERIFY(1==n);
-#ifdef _WIN64
-								_24b* p_ = (_24b*)p;
-#else
-								_12b* p_ = (_12b*)p;
-#endif			
+								_12b* p_ = (_12b*)p;			
 
 								ui_allocator.destroy	(p_);				
 							}
 							void					deallocate		(void* p, size_type n) const		
 							{	
 								VERIFY(1==n);
-#ifdef _WIN64
-								_24b* p_ = (_24b*)p;
-#else
 								_12b* p_ = (_12b*)p;
-#endif		
 								ui_allocator.destroy	(p_);				
 							}
 							void					construct		(pointer p, const T& _Val)				{	std::_Construct(p, _Val);	}
