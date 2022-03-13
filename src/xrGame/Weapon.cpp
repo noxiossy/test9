@@ -1747,7 +1747,7 @@ void CWeapon::UpdateAddonsVisibility()
 	///////////////////////////////////////////////////////////////////
 
 	pWeaponVisual->CalculateBones_Invalidate();
-	pWeaponVisual->CalculateBones(TRUE);
+	pWeaponVisual->CalculateBones();
 }
 
 void CWeapon::InitAddons()
