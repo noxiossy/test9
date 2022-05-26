@@ -41,7 +41,6 @@ public:
 
 		u32		m_target_node;
 		bool	start_threaten;
-		bool	shoc_snork_bool;
 
 	DECLARE_SCRIPT_REGISTER_FUNCTION
 };

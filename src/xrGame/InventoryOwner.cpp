@@ -324,7 +324,7 @@ void CInventoryOwner::OnItemTake(CInventoryItem *inventory_item)
         }
         if ( m_tmp_next_item_slot != NO_ACTIVE_SLOT ) 
 		{
-			inventory().Slot( inventory_item, true );
+			inventory().Slot(slot_id, inventory_item, true );
 			m_tmp_next_item_slot = NO_ACTIVE_SLOT;
 		}
     }

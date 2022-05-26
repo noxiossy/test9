@@ -43,17 +43,6 @@ void CSnork::Load(LPCSTR section)
 	anim().AddReplacedAnim(&m_bDamaged, eAnimStandIdle,	eAnimStandDamaged);
 	anim().AddReplacedAnim(&m_bDamaged, eAnimRun,		eAnimRunDamaged);
 	anim().AddReplacedAnim(&m_bDamaged, eAnimWalkFwd,	eAnimWalkDamaged);
-	
-	if(!pSettings->line_exist(section,"shoc_snork"))
-		shoc_snork_bool = false;
-	else
-		shoc_snork_bool = true;
-
-	if(shoc_snork_bool = false)
-	{
-		anim().AddReplacedAnim(&m_bRunTurnLeft,		eAnimRun,		eAnimRunTurnLeft);
-		anim().AddReplacedAnim(&m_bRunTurnRight,	eAnimRun,		eAnimRunTurnRight);
-	}
 
 	SVelocityParam &velocity_none		= move().get_velocity(MonsterMovement::eVelocityParameterIdle);	
 	SVelocityParam &velocity_turn		= move().get_velocity(MonsterMovement::eVelocityParameterStand);
@@ -63,45 +52,23 @@ void CSnork::Load(LPCSTR section)
 	SVelocityParam &velocity_run_dmg	= move().get_velocity(MonsterMovement::eVelocityParameterRunDamaged);
 	SVelocityParam &velocity_steal		= move().get_velocity(MonsterMovement::eVelocityParameterSteal);
 	//SVelocityParam &velocity_drag		= move().get_velocity(MonsterMovement::eVelocityParameterDrag);
-	
-	if(shoc_snork_bool = false)
-	{
-		anim().AddAnim(eAnimStandIdle,		"stand_idle_",			-1, &velocity_none,		PS_STAND, "stand_fx_f", "stand_fx_b", "stand_fx_l", "stand_fx_r");
-		anim().AddAnim(eAnimStandDamaged,	"stand_idle_damaged_",	-1, &velocity_none,		PS_STAND, "stand_fx_f", "stand_fx_b", "stand_fx_l", "stand_fx_r");
-		anim().AddAnim(eAnimWalkDamaged,	"stand_walk_damaged_",	-1,	&velocity_walk_dmg,	PS_STAND, "stand_fx_f", "stand_fx_b", "stand_fx_l", "stand_fx_r");
-		anim().AddAnim(eAnimRunDamaged,		"stand_run_damaged_",	-1,	&velocity_run_dmg,	PS_STAND, "stand_fx_f", "stand_fx_b", "stand_fx_l", "stand_fx_r");
-		anim().AddAnim(eAnimStandTurnLeft,	"stand_turn_ls_",		-1, &velocity_turn,		PS_STAND, "stand_fx_f", "stand_fx_b", "stand_fx_l", "stand_fx_r");
-		anim().AddAnim(eAnimStandTurnRight,	"stand_turn_rs_",		-1, &velocity_turn,		PS_STAND, "stand_fx_f", "stand_fx_b", "stand_fx_l", "stand_fx_r");
-		anim().AddAnim(eAnimWalkFwd,		"stand_walk_fwd_",		-1,	&velocity_walk,		PS_STAND, "stand_fx_f", "stand_fx_b", "stand_fx_l", "stand_fx_r");
-		anim().AddAnim(eAnimRun,			"stand_run_",			-1,	&velocity_run,		PS_STAND, "stand_fx_f", "stand_fx_b", "stand_fx_l", "stand_fx_r");
-		anim().AddAnim(eAnimAttack,			"stand_attack_",		-1, &velocity_turn,		PS_STAND, "stand_fx_f", "stand_fx_b", "stand_fx_l", "stand_fx_r");
-		anim().AddAnim(eAnimDie,			"stand_die_",			0,  &velocity_none,		PS_STAND, "stand_fx_f", "stand_fx_b", "stand_fx_l", "stand_fx_r");
-		anim().AddAnim(eAnimLookAround,		"stand_look_around_",	-1, &velocity_none,		PS_STAND, "stand_fx_f", "stand_fx_b", "stand_fx_l", "stand_fx_r");
-		anim().AddAnim(eAnimSteal,			"stand_steal_",			-1, &velocity_steal,	PS_STAND, "stand_fx_f", "stand_fx_b", "stand_fx_l", "stand_fx_r");
-		anim().AddAnim(eAnimEat,			"stand_eat_",			-1, &velocity_none,		PS_STAND, "stand_fx_f", "stand_fx_b", "stand_fx_l", "stand_fx_r");
-		anim().AddAnim(eAnimCheckCorpse,	"stand_check_corpse_",	-1,	&velocity_none,		PS_STAND, "stand_fx_f", "stand_fx_b", "stand_fx_l", "stand_fx_r");
 
-		anim().AddAnim(eAnimRunTurnLeft,	"stand_run_look_left_",	 -1, &velocity_run,	PS_STAND, "stand_fx_f", "stand_fx_b", "stand_fx_l", "stand_fx_r");
-		anim().AddAnim(eAnimRunTurnRight,	"stand_run_look_right_", -1, &velocity_run,	PS_STAND, "stand_fx_f", "stand_fx_b", "stand_fx_l", "stand_fx_r");
-	}
-	else
-	{
-		anim().AddAnim(eAnimStandIdle,		"stand_idle_",			-1, &velocity_none,		PS_STAND);
-		anim().AddAnim(eAnimStandDamaged,	"stand_idle_damaged_",	-1, &velocity_none,		PS_STAND);
-		anim().AddAnim(eAnimWalkDamaged,	"stand_walk_damaged_",	-1,	&velocity_walk_dmg,	PS_STAND);
-		anim().AddAnim(eAnimRunDamaged,		"stand_run_damaged_",	-1,	&velocity_run_dmg,	PS_STAND);
-		anim().AddAnim(eAnimStandTurnLeft,	"stand_turn_ls_",		-1, &velocity_turn,		PS_STAND);
-		anim().AddAnim(eAnimStandTurnRight,	"stand_turn_rs_",		-1, &velocity_turn,		PS_STAND);
+	anim().AddAnim(eAnimStandIdle,		"stand_idle_",			-1, &velocity_none,		PS_STAND);
+	anim().AddAnim(eAnimStandDamaged,	"stand_idle_damaged_",	-1, &velocity_none,		PS_STAND);
+	anim().AddAnim(eAnimWalkDamaged,	"stand_walk_damaged_",	-1,	&velocity_walk_dmg,	PS_STAND);
+	anim().AddAnim(eAnimRunDamaged,		"stand_run_damaged_",	-1,	&velocity_run_dmg,	PS_STAND);
+	anim().AddAnim(eAnimStandTurnLeft,	"stand_turn_ls_",		-1, &velocity_turn,		PS_STAND);
+	anim().AddAnim(eAnimStandTurnRight,	"stand_turn_rs_",		-1, &velocity_turn,		PS_STAND);
 		anim().AddAnim(eAnimWalkFwd,		"stand_walk_fwd_",		-1,	&velocity_walk,		PS_STAND);
 		anim().AddAnim(eAnimRun,			"stand_run_",			-1,	&velocity_run,		PS_STAND);
-		anim().AddAnim(eAnimAttack,			"stand_attack_",		-1, &velocity_turn,		PS_STAND);
-		anim().AddAnim(eAnimDie,			"stand_die_",			0,  &velocity_none,		PS_STAND);
-		anim().AddAnim(eAnimLookAround,		"stand_look_around_",	-1, &velocity_none,		PS_STAND);
-		anim().AddAnim(eAnimSteal,			"stand_steal_",			-1, &velocity_steal,	PS_STAND);
-		anim().AddAnim(eAnimEat,			"stand_eat_",			-1, &velocity_none,		PS_STAND);
-		anim().AddAnim(eAnimCheckCorpse,	"stand_check_corpse_",	-1,	&velocity_none,		PS_STAND);
-	}
-	
+	anim().AddAnim(eAnimAttack,			"stand_attack_",		-1, &velocity_turn,		PS_STAND);
+	anim().AddAnim(eAnimDie,			"stand_die_",			0,  &velocity_none,		PS_STAND);
+	anim().AddAnim(eAnimLookAround,		"stand_look_around_",	-1, &velocity_none,		PS_STAND);
+	anim().AddAnim(eAnimSteal,			"stand_steal_",			-1, &velocity_steal,	PS_STAND);
+	anim().AddAnim(eAnimEat,			"stand_eat_",			-1, &velocity_none,		PS_STAND);
+	anim().AddAnim(eAnimCheckCorpse,	"stand_check_corpse_",	-1,	&velocity_none,		PS_STAND);
+
+
 	anim().LinkAction(ACT_STAND_IDLE,	eAnimStandIdle);
 	anim().LinkAction(ACT_SIT_IDLE,		eAnimStandIdle);
 	anim().LinkAction(ACT_LIE_IDLE,		eAnimStandIdle);
@@ -296,16 +263,12 @@ bool CSnork::check_start_conditions(ControlCom::EControlType type)
 
 	if (type == ControlCom::eControlThreaten) 
 	{	
-		if(shoc_snork_bool = false)
-		{
-			return false;
-		}
-		else
-		{
-	 		if (!start_threaten) return false;
-	 		start_threaten = false;
-	 		if (Random.randI(100) < 50) return false;
-		}
+		if (!start_threaten) return false;
+		
+		start_threaten = false;
+
+		if (Random.randI(100) < 50) return false;
+			
 	}
 	
 	return true;

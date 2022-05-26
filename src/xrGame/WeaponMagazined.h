@@ -215,6 +215,9 @@ protected:
         u16 parent_id,
         u16 weapon_id,
         bool send_hit);
+		
+	bool			ScopeRespawn		( PIItem );
+
 private:
 	// mmccxvii: FWR code
 	//*
