@@ -207,11 +207,11 @@ public:
     //äëÿ îòîáðîàæåíèÿ èêîíîê àïãðåéäîâ â èíòåðôåéñå
     int	GetScopeX()
     {
-        return pSettings->r_s32(m_scopes[m_cur_scope], "scope_x");
+        return m_iScopeX;
     }
     int	GetScopeY()
     {
-        return pSettings->r_s32(m_scopes[m_cur_scope], "scope_y");
+        return m_iScopeY;
     }
     int	GetSilencerX()
     {
@@ -236,7 +236,7 @@ public:
     }
     const shared_str GetScopeName() const
     {
-        return pSettings->r_string(m_scopes[m_cur_scope], "scope_name");
+        return m_sScopeName;
     }
     const shared_str& GetSilencerName() const
     {
@@ -257,6 +257,12 @@ public:
         m_flagsAddOnState = st;
     }//dont use!!! for buy menu only!!!
 
+    //названия секций подключаемых аддонов
+    shared_str		m_sScopeName;
+    std::vector<shared_str> m_allScopeNames;
+    shared_str		m_sSilencerName;
+    shared_str		m_sGrenadeLauncherName;
+
 	std::vector<shared_str> m_sWpn_scope_bones;
 	shared_str m_sWpn_silencer_bone;
 	shared_str m_sWpn_launcher_bone;
@@ -275,11 +281,6 @@ protected:
     ALife::EWeaponAddonStatus	m_eScopeStatus;
     ALife::EWeaponAddonStatus	m_eSilencerStatus;
     ALife::EWeaponAddonStatus	m_eGrenadeLauncherStatus;
-
-    //названия секций подключаемых аддонов
-    shared_str		m_sScopeName;
-    shared_str		m_sSilencerName;
-    shared_str		m_sGrenadeLauncherName;
 
     //смещение иконов апгрейдов в инвентаре
     int	m_iScopeX, m_iScopeY;
@@ -652,10 +653,6 @@ public:
 
         u8						cur_scope;
         */
-
-    DEFINE_VECTOR(shared_str, SCOPES_VECTOR, SCOPES_VECTOR_IT);
-    SCOPES_VECTOR			m_scopes;
-    u8						m_cur_scope;
 
     CWeaponAmmo*			m_pCurrentAmmo;
     u8						m_ammoType;

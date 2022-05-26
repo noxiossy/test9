@@ -81,7 +81,6 @@ CWeapon::CWeapon()
     m_set_next_ammoType_on_reload = undefined_ammo_type;
     m_crosshair_inertion = 0.f;
     m_activation_speed_is_overriden = false;
-	m_cur_scope				= nullptr;
     m_bRememberActorNVisnStatus = false;
     m_nearwall_last_hud_fov = psHUD_FOV_def;
 }
@@ -89,7 +88,6 @@ CWeapon::CWeapon()
 CWeapon::~CWeapon()
 {
     xr_delete(m_UIScope);
-    delete_data(m_scopes);
 }
 
 void CWeapon::Hit(SHit* pHDS)
@@ -422,37 +420,9 @@ void CWeapon::Load(LPCSTR section)
 				}
 			}
 		}
-		elseif (pSettings->line_exist(section, "scopes_sect"))
-        {
-            LPCSTR str = pSettings->r_string(section, "scopes_sect");
-            for (int i = 0, count = _GetItemCount(str); i < count; ++i)
-            {
-                string128						scope_section;
-                _GetItem(str, i, scope_section);
-                m_scopes.push_back(scope_section);
-            }
-        }
-        else
-        {
-            m_scopes.push_back(section);
-        }
-    }
-    else if (m_eScopeStatus == ALife::eAddonPermanent)
-    {
-        shared_str scope_tex_name = pSettings->r_string(cNameSect(), "scope_texture");
-        m_zoom_params.m_fScopeZoomFactor = pSettings->r_float(cNameSect(), "scope_zoom_factor");
-        {
-            m_UIScope = xr_new<CUIWindow>();
-            if (!pWpnScopeXml)
-            {
-                pWpnScopeXml = xr_new<CUIXml>();
-                pWpnScopeXml->Load(CONFIG_PATH, UI_PATH, "scopes.xml");
-            }
-            CUIXmlInit::InitWindow(*pWpnScopeXml, scope_tex_name.c_str(), 0, m_UIScope);
-        }
-    }
+	}
 
-    if (m_eSilencerStatus == ALife::eAddonAttachable)
+	if(m_eSilencerStatus == ALife::eAddonAttachable)
     {
         m_sSilencerName = pSettings->r_string(section, "silencer_name");
         m_iSilencerX = pSettings->r_s32(section, "silencer_x");
@@ -776,7 +746,6 @@ void CWeapon::save(NET_Packet &output_packet)
 {
     inherited::save(output_packet);
     save_data(iAmmoElapsed, output_packet);
-    save_data(m_cur_scope, output_packet);
     save_data(m_flagsAddOnState, output_packet);
     save_data(m_ammoType, output_packet);
     save_data(m_zoom_params.m_bIsZoomModeNow, output_packet);
@@ -787,7 +756,6 @@ void CWeapon::load(IReader &input_packet)
 {
     inherited::load(input_packet);
     load_data(iAmmoElapsed, input_packet);
-    load_data(m_cur_scope, input_packet);
     load_data(m_flagsAddOnState, input_packet);
     UpdateAddonsVisibility();
     load_data(m_ammoType, input_packet);
@@ -1532,6 +1500,12 @@ float CWeapon::CurrentZoomFactor()
     return IsScopeAttached() ? m_zoom_params.m_fScopeZoomFactor : m_zoom_params.m_fIronSightZoomFactor;
 };
 
+bool CWeapon::IsGrenadeMode() const
+{
+	const auto wpn_w_gl = smart_cast<const CWeaponMagazinedWGrenade*>(this);
+	return wpn_w_gl && wpn_w_gl->m_bGrenadeMode;
+}
+
 float CWeapon::GetHudFov()
 {
     if (ParentIsActor() && Level().CurrentViewEntity() == H_Parent())
@@ -1684,13 +1658,11 @@ void CWeapon::reload(LPCSTR section)
     else
         m_can_be_strapped = false;
 
-    if (m_eScopeStatus == ALife::eAddonAttachable)
-    {
-        m_addon_holder_range_modifier = READ_IF_EXISTS(pSettings, r_float, GetScopeName(), "holder_range_modifier", m_holder_range_modifier);
-        m_addon_holder_fov_modifier = READ_IF_EXISTS(pSettings, r_float, GetScopeName(), "holder_fov_modifier", m_holder_fov_modifier);
-    }
-    else
-    {
+	if (m_eScopeStatus == ALife::eAddonAttachable) {
+		m_addon_holder_range_modifier	= READ_IF_EXISTS(pSettings,r_float,m_sScopeName,"holder_range_modifier",m_holder_range_modifier);
+		m_addon_holder_fov_modifier		= READ_IF_EXISTS(pSettings,r_float,m_sScopeName,"holder_fov_modifier",m_holder_fov_modifier);
+	}
+	else {
         m_addon_holder_range_modifier = m_holder_range_modifier;
         m_addon_holder_fov_modifier = m_holder_fov_modifier;
     }
@@ -2179,7 +2151,7 @@ float CWeapon::Weight() const
     {
         res += pSettings->r_float(GetGrenadeLauncherName(), "inv_weight");
     }
-    if (IsScopeAttached() && m_scopes.size())
+    if (IsScopeAttached() && GetScopeName().size())
     {
         res += pSettings->r_float(GetScopeName(), "inv_weight");
     }
@@ -2332,7 +2304,7 @@ u32 CWeapon::Cost() const
     {
         res += pSettings->r_u32(GetGrenadeLauncherName(), "cost");
     }
-    if (IsScopeAttached() && m_scopes.size())
+    if (IsScopeAttached() && GetScopeName().size())
     {
         res += pSettings->r_u32(GetScopeName(), "cost");
     }
