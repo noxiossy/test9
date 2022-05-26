@@ -119,6 +119,7 @@ protected:
 	u16					m_tmp_active_slot_num;
 	
 	bool				m_play_show_hide_reload_sounds;
+	u32					m_tmp_next_item_slot;
 	//////////////////////////////////////////////////////////////////////////
 	// сюжетная информация
 public:
@@ -232,6 +233,8 @@ public:
 	virtual	float				missile_throw_force		(); 
 	virtual	bool				use_throw_randomness	();
 	virtual bool				NeedOsoznanieMode		() {return m_need_osoznanie_mode!=FALSE;}
+
+	void						SetNextItemSlot			( u32 );
 
 			void				deadbody_can_take		(bool status);
 	IC		bool				deadbody_can_take_status() const { return m_deadbody_can_take; }

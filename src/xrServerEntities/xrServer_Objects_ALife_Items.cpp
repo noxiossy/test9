@@ -814,10 +814,15 @@ void CSE_ALifeItemWeaponMagazinedWGL::UPDATE_Write	(NET_Packet& P)
 void CSE_ALifeItemWeaponMagazinedWGL::STATE_Read		(NET_Packet& P, u16 size)
 {
 	inherited::STATE_Read(P, size);
+	if ( !P.r_eof() ) {
+          u8 _data = P.r_u8();
+          m_bGrenadeMode = !!( _data & 0x1 );
+        }
 }
 void CSE_ALifeItemWeaponMagazinedWGL::STATE_Write		(NET_Packet& P)
 {
 	inherited::STATE_Write(P);
+	P.w_u8( m_bGrenadeMode ? 1 : 0 );
 }
 
 #ifndef XRGAME_EXPORTS

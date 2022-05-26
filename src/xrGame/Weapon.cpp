@@ -2121,9 +2121,6 @@ bool CWeapon::unlimited_ammo()
 	}
 	else
 		return false;
-
-    return ((GameID() == eGameIDDeathmatch) &&
-        m_DefaultCartridge.m_flags.test(CCartridge::cfCanBeUnlimited));
 };
 
 float CWeapon::GetMagazineWeight(const decltype(CWeapon::m_magazine)& mag) const

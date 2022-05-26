@@ -14,6 +14,7 @@
 #include "script_game_object.h"
 #include "xrserver_objects_alife.h"
 #include "xrServer_Objects_ALife_Items.h"
+#include "game_cl_base.h"
 #include "object_factory.h"
 #include "../Include/xrRender/Kinematics.h"
 #include "ai_object_location_impl.h"
@@ -27,6 +28,8 @@
 #include "ai_obstacle.h"
 #include "magic_box3.h"
 #include "animation_movement_controller.h"
+#include "alife_simulator.h"
+#include "alife_object_registry.h"
 #include "../xrengine/xr_collide_form.h"
 extern MagicBox3 MagicMinBox (int iQuantity, const Fvector* akPoint);
 
@@ -300,16 +303,8 @@ BOOL CGameObject::net_Spawn		(CSE_Abstract*	DC)
 	VERIFY							(!fis_zero(DET(renderable.xform)));
 	CSE_ALifeObject					*O = smart_cast<CSE_ALifeObject*>(E);
 	if (O && xr_strlen(O->m_ini_string)) {
-#pragma warning(push)
-#pragma warning(disable:4238)
-		m_ini_file					= xr_new<CInifile>(
-			&IReader				(
-				(void*)(*(O->m_ini_string)),
-				O->m_ini_string.size()
-			),
-			FS.get_path("$game_config$")->m_Path
-		);
-#pragma warning(pop)
+		IReader r((void*)(*(O->m_ini_string)), O->m_ini_string.size());
+		m_ini_file = xr_new<CInifile>(&r, FS.get_path("$game_config$")->m_Path);
 	}
 
 	m_story_id						= ALife::_STORY_ID(-1);
@@ -375,6 +370,15 @@ BOOL CGameObject::net_Spawn		(CSE_Abstract*	DC)
 
 			if (l_tpALifeObject && ai().game_graph().valid_vertex_id(l_tpALifeObject->m_tGraphID))
 				ai_location().game_vertex		(l_tpALifeObject->m_tGraphID);
+
+			if ( !_valid( Position() ) ) {
+			  Fvector vertex_pos = ai().level_graph().vertex_position( ai_location().level_vertex_id() );
+			  Msg( "! [%s]: %s has invalid Position[%f,%f,%f] level_vertex_id[%u][%f,%f,%f]", __FUNCTION__, cName().c_str(), Position().x, Position().y, Position().z, ai_location().level_vertex_id(), vertex_pos.x, vertex_pos.y, vertex_pos.z  );
+			  Position().set( vertex_pos );
+			  auto se_obj = alife_object();
+			  if ( se_obj )
+			    se_obj->o_Position.set( Position() );
+			}
 
 			validate_ai_locations				(false);
 
@@ -1033,6 +1037,51 @@ void CGameObject::UpdateCL			()
 void CGameObject::on_matrix_change	(const Fmatrix &previous)
 {
 	obstacle().on_move				();
+}
+
+CSE_ALifeDynamicObject* CGameObject::alife_object() const
+{
+	const CALifeSimulator *sim = ai().get_alife();
+	if (sim)
+		return sim->objects().object(ID(), true);
+
+	return NULL;
+}
+
+void CGameObject::ChangePosition(const Fvector &pos)
+{
+	NET_Packet						PP;
+	CGameObject::u_EventGen			(PP, GE_CHANGE_POS, ID() );
+	PP.w_vec3						(pos);
+	CGameObject::u_EventSend		(PP);
+	// alpet: явное перемещение визуалов объектов
+	Fmatrix m = XFORM();
+	m.translate_over(pos);
+	UpdateXFORM(m);		
+
+	// alpet: сохранение позиции в серверный экземпляр
+	CSE_ALifeDynamicObject* se_obj = alife_object();
+	if (se_obj)
+	{
+		se_obj->position() = pos;
+		se_obj->synchronize_location();
+	}
+
+}
+
+void CGameObject::UpdateXFORM(const Fmatrix &upd)
+{
+	XFORM() = upd;
+	IRenderVisual* pV = Visual();
+	IKinematics *pK = smart_cast<IKinematics*>(pV);
+	if (pK)
+	{
+		pV->getVisData().sphere.P = upd.c;
+		pK->CalculateBones_Invalidate();	 // позволит объекту быстрее объявиться в новой точке			
+	}
+
+	// OnChangePosition processing
+	spatial_move();	
 }
 
 #ifdef DEBUG
