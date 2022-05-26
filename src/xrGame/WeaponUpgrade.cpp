@@ -212,30 +212,13 @@ bool CWeapon::install_upgrade_addon( LPCSTR section, bool test )
 			result |= process_if_exists( section, "holder_range_modifier", &CInifile::r_float, m_addon_holder_range_modifier, test );
 			result |= process_if_exists( section, "holder_fov_modifier",   &CInifile::r_float, m_addon_holder_fov_modifier,   test );
 
-			if ( m_eScopeStatus == ALife::eAddonAttachable )
-			{
-				if(pSettings->line_exist(section, "scopes_sect"))		
-				{
-					LPCSTR str = pSettings->r_string(section, "scopes_sect");
-					for(int i = 0, count = _GetItemCount(str); i < count; ++i )	
-					{
-						string128						scope_section;
-						_GetItem						(str, i, scope_section);
-						m_scopes.push_back				(scope_section);
-					}
-				}
-				else
-				{
-					m_scopes.push_back(section);
-				}
-			}
-			else
-			{
-				m_scopes.push_back(section);
-				if(m_eScopeStatus==ALife::eAddonPermanent)
-					InitAddons();
-			}
+			m_sScopeName	= pSettings->r_string( section, "scope_name" );
+			m_iScopeX		= pSettings->r_s32( section, "scope_x" );
+			m_iScopeY		= pSettings->r_s32( section, "scope_y" );
+			if(m_eScopeStatus==ALife::eAddonPermanent)
+				InitAddons();
 		}
+
 	}
 	result |= process_if_exists_set( section, "scope_dynamic_zoom", &CInifile::r_bool, m_zoom_params.m_bUseDynamicZoom, test );
 	result |= process_if_exists_set( section, "scope_nightvision", &CInifile::r_string_wb, m_zoom_params.m_sUseZoomPostprocess, test );
