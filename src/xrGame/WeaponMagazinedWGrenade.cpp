@@ -533,12 +533,16 @@ bool CWeaponMagazinedWGrenade::Detach(LPCSTR item_section_name, bool b_spawn_ite
         0 != (m_flagsAddOnState&CSE_ALifeItemWeapon::eWeaponAddonGrenadeLauncher) &&
         !xr_strcmp(*m_sGrenadeLauncherName, item_section_name))
     {
-        m_flagsAddOnState &= ~CSE_ALifeItemWeapon::eWeaponAddonGrenadeLauncher;
-        if (m_bGrenadeMode)
-        {
-            UnloadMagazine();
-            PerformSwitchGL();
-        }
+		// https://github.com/revolucas/CoC-Xray/pull/5/commits/9ca73da34a58ceb48713b1c67608198c6af26db2
+		// Now we need to unload GL's magazine
+		if (!m_bGrenadeMode)
+		{
+			PerformSwitchGL();
+		}
+		UnloadMagazine();
+		PerformSwitchGL();
+
+		m_flagsAddOnState &= ~CSE_ALifeItemWeapon::eWeaponAddonGrenadeLauncher;
 
         UpdateAddonsVisibility();
 
@@ -834,21 +838,8 @@ bool CWeaponMagazinedWGrenade::IsNecessaryItem(const shared_str& item_sect)
         );
 }
 
-u8 CWeaponMagazinedWGrenade::GetCurrentHudOffsetIdx()
-{
-    bool b_aiming = ((IsZoomed() && m_zoom_params.m_fZoomRotationFactor <= 1.f) ||
-        (!IsZoomed() && m_zoom_params.m_fZoomRotationFactor > 0.f));
 
-    if (!b_aiming)
-        return		0;
-    else
-        if (m_bGrenadeMode)
-            return		2;
-        else
-            return		1;
-}
-
-bool CWeaponMagazinedWGrenade::install_upgrade_ammo_class(LPCSTR section, bool test)
+bool CWeaponMagazinedWGrenade::install_upgrade_ammo_class	( LPCSTR section, bool test )
 {
     LPCSTR str;
 

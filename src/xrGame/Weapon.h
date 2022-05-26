@@ -11,6 +11,7 @@
 #include "firedeps.h"
 #include "game_cl_single.h"
 #include "first_bullet_controller.h"
+#include "actor.h"
 
 #include "CameraRecoil.h"
 
@@ -173,9 +174,11 @@ public:
     bool IsScopeAttached() const;
     bool IsSilencerAttached() const;
 
-    virtual bool GrenadeLauncherAttachable();
-    virtual bool ScopeAttachable();
-    virtual bool SilencerAttachable();
+	bool			IsGrenadeMode() const;
+
+	virtual bool GrenadeLauncherAttachable() const;
+	virtual bool ScopeAttachable() const;
+	virtual bool SilencerAttachable() const;
 
     ALife::EWeaponAddonStatus	get_GrenadeLauncherStatus() const
     {
@@ -240,8 +243,6 @@ public:
         return m_sSilencerName;
     }
 
-	bool SetBoneVisible(IKinematics* m_model, const shared_str& bone_name, BOOL bVisibility, BOOL bSilent);
-
     IC void	ForceUpdateAmmo()
     {
         m_BriefInfo_CalcFrame = 0;
@@ -257,7 +258,11 @@ public:
     }//dont use!!! for buy menu only!!!
 
 	std::vector<shared_str> m_sWpn_scope_bones;
+	shared_str m_sWpn_silencer_bone;
+	shared_str m_sWpn_launcher_bone;
 	std::vector<shared_str> m_sHud_wpn_scope_bones;
+	shared_str m_sHud_wpn_silencer_bone;
+	shared_str m_sHud_wpn_launcher_bone;
 private:
 	std::vector<shared_str> hidden_bones;
 	std::vector<shared_str> hud_hidden_bones;
@@ -328,7 +333,11 @@ public:
 
     bool			ZoomHideCrosshair()
     {
-        return m_zoom_params.m_bHideCrosshairInZoom || ZoomTexture();
+		auto* pA = smart_cast<CActor*>(H_Parent());
+		if (pA && pA->active_cam() == eacLookAt)
+			return false;
+
+		return (m_zoom_params.m_bHideCrosshairInZoom || ZoomTexture());
     }
 
     IC float				GetZoomFactor() const
@@ -414,9 +423,12 @@ protected:
     virtual void			UpdatePosition(const Fmatrix& transform);	//.
     virtual void			UpdateXForm();
 
-	float m_fLR_MovingFactor; // !!!!
-	u8 GetCurrentHudOffsetIdx() const;
-	
+private:
+	float m_fLR_MovingFactor{}, m_fLookout_MovingFactor{};
+	Fvector m_strafe_offset[3][2]{}, m_lookout_offset[3][2]{};
+
+protected:
+	virtual	u8				GetCurrentHudOffsetIdx	() override;
     virtual void			UpdateHudAdditonal(Fmatrix&);
     IC		void			UpdateFireDependencies()
     {

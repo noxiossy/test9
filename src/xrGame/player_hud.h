@@ -35,12 +35,26 @@ struct hud_item_measures
 	enum{e_fire_point=(1<<0), e_fire_point2=(1<<1), e_shell_point=(1<<2), e_16x9_mode_now=(1<<3)};
 	Flags8							m_prop_flags;
 
-	Fvector							m_item_attach[2];//pos,rot
+	Fvector m_item_attach[2]{}; // pos,rot
 
-	Fvector							m_hands_offset[2][3];//pos,rot/ normal,aim,GL
 
-	Fvector 						m_strafe_offset[3][2]; // pos,rot,data1/ normal,aim-GL 
-	
+	enum m_hands_offset_coords : u8 {
+		m_hands_offset_pos,
+		m_hands_offset_rot,
+		m_hands_offset_size
+	};
+	enum m_hands_offset_type : u8 {
+		m_hands_offset_type_normal, // Не прицеливаемся
+		m_hands_offset_type_aim, // Смотрим в механический прицел
+		m_hands_offset_type_gl, // Смотрим в механический прицел в режиме ПГ
+		m_hands_offset_type_aim_scope, // Смотрим в присоединяемый нетекстурный прицел (будь то 3д прицел или колиматор) если включен "use_scope_zoom"
+		m_hands_offset_type_gl_scope, // Смотрим в присоединяемый нетекстурный прицел (будь то 3д прицел или колиматор) в режиме ПГ если включен "use_scope_grenade_zoom" - мне вот щас не понятно зачем это надо, но это как-то используют.
+		m_hands_offset_type_aim_gl_normal, // Смотрим в механический прицел если гранатомет присоединен
+		m_hands_offset_type_gl_normal_scope, // Смотрим в присоединяемый нетекстурный прицел (будь то 3д прицел или колиматор) если включен "use_scope_zoom" и гранатомет присоединен
+		m_hands_offset_type_size
+	};
+	Fvector m_hands_offset[m_hands_offset_size][m_hands_offset_type_size]{};
+
 	u16								m_fire_bone;
 	Fvector							m_fire_point_offset;
 	u16								m_fire_bone2;
@@ -48,7 +62,7 @@ struct hud_item_measures
 	u16								m_shell_bone;
 	Fvector							m_shell_point_offset;
 
-	Fvector							m_hands_attach[2];//pos,rot
+	Fvector m_hands_attach[2]{}; // pos,rot
 
 	void load						(const shared_str& sect_name, IKinematics* K);
 };
@@ -80,6 +94,8 @@ struct attachable_hud_item
 	bool need_renderable			();
 	void set_bone_visible			(const shared_str& bone_name, BOOL bVisibility, BOOL bSilent=FALSE);
 	void set_bone_visible			(const std::vector<shared_str>& bone_names, BOOL bVisibility, BOOL bSilent = FALSE);
+	BOOL get_bone_visible			(const shared_str& bone_name);
+	bool has_bone					(const shared_str& bone_name);
 	void debug_draw_firedeps		();
 
 	//hands bind position

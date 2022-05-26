@@ -282,18 +282,16 @@ void hud_item_measures::load(const shared_str& sect_name, IKinematics* K)
 	}else
 		m_shell_point_offset.set(0,0,0);
 
-	m_hands_offset[0][0].set	(0,0,0);
-	m_hands_offset[1][0].set	(0,0,0);
 
 	strconcat					(sizeof(val_name),val_name,"aim_hud_offset_pos",_prefix);
-	m_hands_offset[0][1]		= pSettings->r_fvector3(sect_name, val_name);
+	m_hands_offset[m_hands_offset_pos][m_hands_offset_type_aim] = READ_IF_EXISTS(pSettings, r_fvector3, sect_name, val_name, Fvector{});
 	strconcat					(sizeof(val_name),val_name,"aim_hud_offset_rot",_prefix);
-	m_hands_offset[1][1]		= pSettings->r_fvector3(sect_name, val_name);
+	m_hands_offset[m_hands_offset_rot][m_hands_offset_type_aim] = READ_IF_EXISTS(pSettings, r_fvector3, sect_name, val_name, Fvector{});
 
 	strconcat					(sizeof(val_name),val_name,"gl_hud_offset_pos",_prefix);
-	m_hands_offset[0][2]		= pSettings->r_fvector3(sect_name, val_name);
+	m_hands_offset[m_hands_offset_pos][m_hands_offset_type_gl] = READ_IF_EXISTS(pSettings, r_fvector3, sect_name, val_name, Fvector{});
 	strconcat					(sizeof(val_name),val_name,"gl_hud_offset_rot",_prefix);
-	m_hands_offset[1][2]		= pSettings->r_fvector3(sect_name, val_name);
+	m_hands_offset[m_hands_offset_rot][m_hands_offset_type_gl] = READ_IF_EXISTS(pSettings, r_fvector3, sect_name, val_name, Fvector{});
 
 
 	R_ASSERT2(pSettings->line_exist(sect_name,"fire_point")==pSettings->line_exist(sect_name,"fire_bone"),		sect_name.c_str());
@@ -301,29 +299,13 @@ void hud_item_measures::load(const shared_str& sect_name, IKinematics* K)
 	R_ASSERT2(pSettings->line_exist(sect_name,"shell_point")==pSettings->line_exist(sect_name,"shell_bone"),	sect_name.c_str());
 
 	m_prop_flags.set(e_16x9_mode_now,is_16x9);
-
-	m_strafe_offset[0][0] = Fvector().set(0.015f, 0.0f, 0.0f);
-	m_strafe_offset[1][0] = Fvector().set(0.0f, 0.0f, 5.5f);
-
-	m_strafe_offset[0][1] = Fvector().set(0.02f, 0.0f, 0.0f);
-	m_strafe_offset[1][1] = Fvector().set(0.0f, 0.0f, 1.5f);
-
-	bool  bStrafeEnabled        = true;
-	bool  bStrafeEnabled_aim    = false;
-	float fFullStrafeTime       = 0.25f;
-	float fFullStrafeTime_aim   = 0.15f;
-
-	//--> (Data 1)
-	m_strafe_offset[2][0].set(bStrafeEnabled, fFullStrafeTime, 0.0f);         // normal
-	m_strafe_offset[2][1].set(bStrafeEnabled_aim, fFullStrafeTime_aim, 0.0f); // aim-GL
-
 }
 
 attachable_hud_item::~attachable_hud_item()
 {
 	IRenderVisual* v			= m_model->dcast_RenderVisual();
 	::Render->model_Delete		(v);
-	m_model						= NULL;
+	m_model						= nullptr;
 }
 
 void attachable_hud_item::load(const shared_str& sect_name)
