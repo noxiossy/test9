@@ -183,7 +183,6 @@ void xrDebug::do_exit(const std::string& message)
     TerminateProcess(GetCurrentProcess(), 1);
 }
 
-char assertion_info[16384];
 
 #ifdef NO_BUG_TRAP
 //AVO: simplified function
@@ -196,6 +195,8 @@ void xrDebug::backend(const char* expression, const char* description, const cha
         ;
 
     CS.Enter();
+
+    string4096 assertion_info;
 
     gather_info(expression, description, argument0, argument1, file, line, function, assertion_info, sizeof(assertion_info));
 
@@ -234,6 +235,8 @@ void xrDebug::backend(const char* expression, const char* description, const cha
     CS.Enter();
 
     error_after_dialog = true;
+
+    string4096 assertion_info;
 
     gather_info(expression, description, argument0, argument1, file, line, function, assertion_info, sizeof(assertion_info));
 
@@ -314,12 +317,14 @@ void xrDebug::backend(const char* expression, const char* description, const cha
 
 LPCSTR xrDebug::error2string(long code)
 {
-	LPCSTR				result	= 0;
+    char* result = 0;
     static string1024 desc_storage;
 
 #ifdef _M_AMD64
 #else
-	result				= DXGetErrorString(code);
+    WCHAR err_result[1024];
+    DXGetErrorString(code);
+    wcstombs(result, err_result, sizeof(err_result));
 #endif
     if (0 == result)
     {
@@ -704,6 +709,8 @@ void format_message(LPSTR buffer, const u32& buffer_size)
 //AVO: simplify function
 LONG WINAPI UnhandledFilter(_EXCEPTION_POINTERS* pExceptionInfo)
 {
+	Msg("\n%s", GetFaultReason(pExceptionInfo));
+
     string256 error_message;
     format_message(error_message, sizeof(error_message));
 
@@ -743,10 +750,6 @@ LONG WINAPI UnhandledFilter(_EXCEPTION_POINTERS* pExceptionInfo)
 #endif //-DEBUG
     }
 
-	if (pExceptionInfo->ExceptionRecord)
-	{
-		Msg("at address 0x%p", pExceptionInfo->ExceptionRecord->ExceptionAddress);
-	}
     FlushLog();
 # ifdef USE_OWN_MINI_DUMP
 	save_mini_dump(pExceptionInfo);
@@ -760,7 +763,7 @@ LONG WINAPI UnhandledFilter(_EXCEPTION_POINTERS* pExceptionInfo)
         "Fatal Error",
         MB_OK | MB_ICONERROR | MB_SYSTEMMODAL
         );
-	//    TerminateProcess(GetCurrentProcess(), 1);
+    TerminateProcess(GetCurrentProcess(), 1);
 
     return (EXCEPTION_CONTINUE_SEARCH);
 }
@@ -778,7 +781,7 @@ LONG WINAPI UnhandledFilter(_EXCEPTION_POINTERS* pExceptionInfo)
         *pExceptionInfo->ContextRecord = save;
 
         if (shared_str_initialized)
-            Msg("stack trace:");
+            Msg("stack trace:\n");
 
         if (!IsDebuggerPresent())
         {
