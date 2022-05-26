@@ -165,16 +165,16 @@ bool CWeaponAutomaticShotgun::HaveCartridgeInInventory(u8 cnt)
 	if (unlimited_ammo())	return true;
 	if(!m_pInventory)		return false;
 
-	u32 ac = GetAmmoCount(m_ammoType.type1);
+	u32 ac = GetAmmoCount(m_ammoType);
 	if(ac<cnt)
 	{
 		for(u8 i = 0; i < u8(m_ammoTypes.size()); ++i) 
 		{
-			if(m_ammoType.type1==i) continue;
+			if(m_ammoType==i) continue;
 			ac	+= GetAmmoCount(i);
 			if(ac >= cnt)
 			{
-				m_ammoType.type1 = i;
+				m_ammoType = i;
 				break; 
 			}
 		}
@@ -189,19 +189,19 @@ u8 CWeaponAutomaticShotgun::AddCartridge		(u8 cnt)
 
 	if ( m_set_next_ammoType_on_reload != undefined_ammo_type )
 	{
-		m_ammoType.type1						= m_set_next_ammoType_on_reload;
+		m_ammoType						= m_set_next_ammoType_on_reload;
 		m_set_next_ammoType_on_reload	= undefined_ammo_type;
 	}
 
 	if( !HaveCartridgeInInventory(1) )
 		return 0;
 
-	m_pCurrentAmmo = smart_cast<CWeaponAmmo*>(m_pInventory->GetAny( m_ammoTypes[m_ammoType.type1].c_str() ));
-	VERIFY((u32)m_ammoElapsed.type1 == m_magazine.size());
+	m_pCurrentAmmo = smart_cast<CWeaponAmmo*>(m_pInventory->GetAny( m_ammoTypes[m_ammoType].c_str() ));
+	VERIFY((u32)iAmmoElapsed == m_magazine.size());
 
 
-	if (m_DefaultCartridge.m_LocalAmmoType != m_ammoType.type1)
-		m_DefaultCartridge.Load(m_ammoTypes[m_ammoType.type1].c_str(), m_ammoType.type1);
+	if (m_DefaultCartridge.m_LocalAmmoType != m_ammoType)
+		m_DefaultCartridge.Load(m_ammoTypes[m_ammoType].c_str(), m_ammoType);
 	CCartridge l_cartridge = m_DefaultCartridge;
 	while(cnt)
 	{
@@ -210,15 +210,15 @@ u8 CWeaponAutomaticShotgun::AddCartridge		(u8 cnt)
 			if (!m_pCurrentAmmo->Get(l_cartridge)) break;
 		}
 		--cnt;
-		++m_ammoElapsed.type1;
-		l_cartridge.m_LocalAmmoType = m_ammoType.type1;
+		++iAmmoElapsed;
+		l_cartridge.m_LocalAmmoType = m_ammoType;
 		m_magazine.push_back(l_cartridge);
 //		m_fCurrentCartirdgeDisp = l_cartridge.m_kDisp;
 	}
 
-	VERIFY((u32)m_ammoElapsed.type1 == m_magazine.size());
+	VERIFY((u32)iAmmoElapsed == m_magazine.size());
 
-	//выкинуть коробку патронов, если она пустая
+	//âûêèíóòü êîðîáêó ïàòðîíîâ, åñëè îíà ïóñòàÿ
 	if(m_pCurrentAmmo && !m_pCurrentAmmo->m_boxCurr && OnServer()) 
 		m_pCurrentAmmo->SetDropManual(TRUE);
 

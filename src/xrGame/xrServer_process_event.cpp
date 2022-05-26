@@ -225,21 +225,6 @@ void xrServer::Process_event	(NET_Packet& P, ClientID sender)
 		{
 			SendBroadcast	(BroadcastCID, P, net_flags(TRUE, TRUE));
 		}break;
-	case GE_WEAPON_SYNCRONIZE:
-		{
-			CSE_ALifeItemWeapon* pW = smart_cast<CSE_ALifeItemWeapon*>(receiver);
-			if (pW)
-			{
-				pW->a_current_addon.data = P.r_u16();
-				pW->ammo_type.data = P.r_u8();
-				pW->a_elapsed.data = P.r_u16();
-				CSE_ALifeItemWeaponMagazinedWGL* pWGL = smart_cast<CSE_ALifeItemWeaponMagazinedWGL*>(pW);
-				if (pWGL)
-					pWGL->m_bGrenadeMode = !!P.r_u8();
-				else
-					P.r_u8();
-			}
-		}break;
 	case GE_CHANGE_POS:
 		{			
 			SendTo		(SV_Client->ID, P, net_flags(TRUE, TRUE));

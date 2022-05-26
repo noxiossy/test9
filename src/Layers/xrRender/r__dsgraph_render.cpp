@@ -458,7 +458,6 @@ void R_dsgraph_structure::r_dsgraph_render_graph	(u32	_priority, bool _clear)
 // HUD render
 void R_dsgraph_structure::r_dsgraph_render_hud	()
 {
-	extern ENGINE_API float		psHUD_FOV;
 	
 	//PIX_EVENT(r_dsgraph_render_hud);
 

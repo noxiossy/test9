@@ -27,7 +27,7 @@ void CWeaponRPG7::Load	(LPCSTR section)
 
 bool CWeaponRPG7::AllowBore()
 {
-	return inherited::AllowBore() && 0 != m_ammoElapsed.type1;
+	return inherited::AllowBore() && 0!=iAmmoElapsed;
 }
 
 void CWeaponRPG7::FireTrace(const Fvector& P, const Fvector& D)
@@ -45,8 +45,8 @@ void CWeaponRPG7::on_a_hud_attach()
 void CWeaponRPG7::UpdateMissileVisibility()
 {
 	bool vis_hud,vis_weap;
-	vis_hud = (!!m_ammoElapsed.type1 || GetState() == eReload);
-	vis_weap = !!m_ammoElapsed.type1;
+	vis_hud		= (!!iAmmoElapsed || GetState()==eReload);
+	vis_weap	= !!iAmmoElapsed;
 
 	if(GetHUDmode())
 	{
@@ -63,7 +63,7 @@ BOOL CWeaponRPG7::net_Spawn(CSE_Abstract* DC)
 	BOOL l_res = inherited::net_Spawn(DC);
 
 	UpdateMissileVisibility();
-	if (m_ammoElapsed.type1 && !getCurrentRocket())
+	if(iAmmoElapsed && !getCurrentRocket())
 		CRocketLauncher::SpawnRocket(m_sRocketSection, this);
 
 	return l_res;
@@ -85,7 +85,7 @@ void CWeaponRPG7::ReloadMagazine()
 {
 	inherited::ReloadMagazine();
 
-	if (m_ammoElapsed.type1 && !getRocketCount())
+	if(iAmmoElapsed && !getRocketCount()) 
 		CRocketLauncher::SpawnRocket(m_sRocketSection.c_str(), this);
 }
 

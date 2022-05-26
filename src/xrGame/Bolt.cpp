@@ -32,7 +32,7 @@ void CBolt::Throw()
 
 bool CBolt::Useful() const
 {
-	return true;
+	return false;
 }
 
 bool CBolt::Action(u16 cmd, u32 flags) 

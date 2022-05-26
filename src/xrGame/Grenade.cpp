@@ -286,7 +286,7 @@ void CGrenade::UpdateCL()
 bool CGrenade::Action(u16 cmd, u32 flags) 
 {
 	if(inherited::Action(cmd, flags)) return true;
-/*
+
 	switch(cmd) 
 	{
 	//переключение типа гранаты
@@ -314,7 +314,7 @@ bool CGrenade::Action(u16 cmd, u32 flags)
 			}
 			return true;
 		};
-	}*/
+	}
 	return false;
 }
 

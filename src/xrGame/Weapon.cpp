@@ -32,7 +32,7 @@
 #define ROTATION_TIME			0.25f
 
 BOOL	b_toggle_weapon_aim = FALSE;
-extern CUIXml* pWpnScopeXml = NULL;
+extern CUIXml*	pWpnScopeXml;
 
 CWeapon::CWeapon()
 {
@@ -48,11 +48,10 @@ CWeapon::CWeapon()
     m_iAmmoCurrentTotal = 0;
     m_BriefInfo_CalcFrame = 0;
 
-	m_ammoElapsed.data = 0;
-    iMagazineSize = 0;
-	iMagazineSize2 = 0;
-    m_ammoType.data = 0;
-	m_bGrenadeMode = false;
+	iAmmoElapsed			= -1;
+	iMagazineSize			= -1;
+	m_ammoType				= 0;
+
 	
     eHandDependence = hdNone;
 
@@ -80,102 +79,9 @@ CWeapon::CWeapon()
     m_set_next_ammoType_on_reload = undefined_ammo_type;
     m_crosshair_inertion = 0.f;
     m_activation_speed_is_overriden = false;
-	m_cur_addon.data = 0;
+	m_cur_scope				= NULL;
     m_bRememberActorNVisnStatus = false;
-	bUseAltScope = false;
-	bScopeIsHasTexture = false;
     m_nearwall_last_hud_fov = psHUD_FOV_def;
-}
-
-const shared_str CWeapon::GetScopeName() const
-{
-	if (bUseAltScope)
-	{
-		return m_scopes[m_cur_addon.scope];
-	}
-	else
-	{
-		return pSettings->r_string(m_scopes[m_cur_addon.scope], "scope_name");
-	}
-}
-
-void CWeapon::UpdateAltScope()
-{
-	if (m_eScopeStatus != ALife::eAddonAttachable || !bUseAltScope)
-		return;
-
-	shared_str sectionNeedLoad;
-
-	sectionNeedLoad = IsScopeAttached() ? GetNameWithAttachment() : m_section_id;
-
-	if (!pSettings->section_exist(sectionNeedLoad))
-		return;
-
-	shared_str vis = pSettings->r_string(sectionNeedLoad, "visual");
-
-	if (vis != cNameVisual())
-	{
-		cNameVisual_set(vis);
-	}
-
-	shared_str new_hud = pSettings->r_string(sectionNeedLoad, "hud");
-	if (new_hud != hud_sect)
-	{
-		hud_sect = new_hud;
-	}
-}
-
-shared_str CWeapon::GetNameWithAttachment()
-{
-	string64 str;
-	if (pSettings->line_exist(m_section_id.c_str(), "parent_section"))
-	{
-		shared_str parent = pSettings->r_string(m_section_id.c_str(), "parent_section");
-		xr_sprintf(str, "%s_%s", parent.c_str(), GetScopeName().c_str());
-	}
-	else
-	{
-		xr_sprintf(str, "%s_%s", m_section_id.c_str(), GetScopeName().c_str());
-	}
-	return (shared_str)str;
-}
-
-int CWeapon::GetScopeX()
-{
-	if (bUseAltScope)
-	{
-		if (m_eScopeStatus != ALife::eAddonPermanent && IsScopeAttached())
-		{
-			return pSettings->r_s32(GetNameWithAttachment(), "scope_x");
-		}
-		else
-		{
-			return 0;
-		}
-	}
-	else
-	{
-		return pSettings->r_s32(m_scopes[m_cur_addon.scope], "scope_x");
-	}
-}
-
-int CWeapon::GetScopeY()
-{
-	if (bUseAltScope)
-	{
-		if (m_eScopeStatus != ALife::eAddonPermanent && IsScopeAttached())
-		{
-			return pSettings->r_s32(GetNameWithAttachment(), "scope_y");
-		}
-		else
-		{
-			return 0;
-		}
-	}
-	else
-	{
-		return pSettings->r_s32(m_scopes[m_cur_addon.scope], "scope_y");
-	}
 }
 
 CWeapon::~CWeapon()
@@ -337,9 +243,8 @@ void CWeapon::Load(LPCSTR section)
         }
     }
 
-    m_ammoElapsed.type1 = pSettings->r_s32(section, "ammo_elapsed");
+    iAmmoElapsed = pSettings->r_s32(section, "ammo_elapsed");
     iMagazineSize = pSettings->r_s32(section, "ammo_mag_size");
-	iMagazineSize2 = 1;
 
     ////////////////////////////////////////////////////
     // дисперсия стрельбы
@@ -494,46 +399,51 @@ void CWeapon::Load(LPCSTR section)
     m_zoom_params.m_bZoomEnabled = !!pSettings->r_bool(section, "zoom_enabled");
     m_zoom_params.m_fZoomRotateTime = pSettings->r_float(section, "zoom_rotate_time");
 
-
-	bUseAltScope = !!bLoadAltScopesParams(section);
-
-	if (!bUseAltScope)
-		LoadOriginalScopesParams(section);
+    if (m_eScopeStatus == ALife::eAddonAttachable)
+    {
+        if (pSettings->line_exist(section, "scopes_sect"))
+        {
+            LPCSTR str = pSettings->r_string(section, "scopes_sect");
+            for (int i = 0, count = _GetItemCount(str); i < count; ++i)
+            {
+                string128						scope_section;
+                _GetItem(str, i, scope_section);
+                m_scopes.push_back(scope_section);
+            }
+        }
+        else
+        {
+            m_scopes.push_back(section);
+        }
+    }
+    else if (m_eScopeStatus == ALife::eAddonPermanent)
+    {
+        shared_str scope_tex_name = pSettings->r_string(cNameSect(), "scope_texture");
+        m_zoom_params.m_fScopeZoomFactor = pSettings->r_float(cNameSect(), "scope_zoom_factor");
+        if (!g_dedicated_server)
+        {
+            m_UIScope = xr_new<CUIWindow>();
+            if (!pWpnScopeXml)
+            {
+                pWpnScopeXml = xr_new<CUIXml>();
+                pWpnScopeXml->Load(CONFIG_PATH, UI_PATH, "scopes.xml");
+            }
+            CUIXmlInit::InitWindow(*pWpnScopeXml, scope_tex_name.c_str(), 0, m_UIScope);
+        }
+    }
 
     if (m_eSilencerStatus == ALife::eAddonAttachable)
     {
-		if (pSettings->line_exist(section, "silencer_sect"))
-		{
-			LPCSTR str = pSettings->r_string(section, "silencer_sect");
-			for (int i = 0, count = _GetItemCount(str); i < count; ++i)
-			{
-				string128						scope_section;
-				_GetItem(str, i, scope_section);
-				m_silencers.push_back(scope_section);
-			}
-		}
-		else
-		{
-			m_silencers.push_back(section);
-		}
+        m_sSilencerName = pSettings->r_string(section, "silencer_name");
+        m_iSilencerX = pSettings->r_s32(section, "silencer_x");
+        m_iSilencerY = pSettings->r_s32(section, "silencer_y");
     }
 
     if (m_eGrenadeLauncherStatus == ALife::eAddonAttachable)
     {
-		if (pSettings->line_exist(section, "grenade_launcher_sect"))
-		{
-			LPCSTR str = pSettings->r_string(section, "grenade_launcher_sect");
-			for (int i = 0, count = _GetItemCount(str); i < count; ++i)
-			{
-				string128						scope_section;
-				_GetItem(str, i, scope_section);
-				m_launchers.push_back(scope_section);
-			}
-		}
-		else
-		{
-			m_launchers.push_back(section);
-		}
+        m_sGrenadeLauncherName = pSettings->r_string(section, "grenade_launcher_name");
+        m_iGrenadeLauncherX = pSettings->r_s32(section, "grenade_launcher_x");
+        m_iGrenadeLauncherY = pSettings->r_s32(section, "grenade_launcher_y");
     }
 
 	// Кости мировой модели оружия
@@ -608,7 +518,6 @@ void CWeapon::Load(LPCSTR section)
 	else
 		hud_hidden_bones = hidden_bones;
 
-	UpdateAltScope();
     InitAddons();
 
     if (pSettings->line_exist(section, "weapon_remove_time"))
@@ -687,120 +596,6 @@ void CWeapon::LoadFireParams(LPCSTR section)
     CShootingObject::LoadFireParams(section);
 };
 
-
-bool CWeapon::bReloadSectionScope(LPCSTR section)
-{
-	if (!pSettings->line_exist(section, "scopes"))
-		return false;
-
-	if (pSettings->r_string(section, "scopes") == NULL)
-		return false;
-
-	if (xr_strcmp(pSettings->r_string(section, "scopes"), "none") == 0)
-		return false;
-
-	return true;
-}
-
-bool CWeapon::bLoadAltScopesParams(LPCSTR section)
-{
-	if (!pSettings->line_exist(section, "scopes"))
-		return false;
-
-	if (pSettings->r_string(section, "scopes") == NULL)
-		return false;
-
-	if (xr_strcmp(pSettings->r_string(section, "scopes"), "none") == 0)
-		return false;
-
-	if (m_eScopeStatus == ALife::eAddonAttachable)
-	{
-		LPCSTR str = pSettings->r_string(section, "scopes");
-		for (int i = 0, count = _GetItemCount(str); i < count; ++i)
-		{
-			string128 scope_section;
-			_GetItem(str, i, scope_section);
-			m_scopes.push_back(scope_section);
-		}
-	}
-	else if (m_eScopeStatus == ALife::eAddonPermanent)
-	{
-		LoadCurrentScopeParams(section);
-	}
-
-	return true;
-}
-
-void CWeapon::LoadOriginalScopesParams(LPCSTR section)
-{
-    if (m_eScopeStatus == ALife::eAddonAttachable)
-    {
-        if (pSettings->line_exist(section, "scopes_sect"))
-        {
-            LPCSTR str = pSettings->r_string(section, "scopes_sect");
-            for (int i = 0, count = _GetItemCount(str); i < count; ++i)
-            {
-                string128						scope_section;
-                _GetItem(str, i, scope_section);
-                m_scopes.push_back(scope_section);
-            }
-        }
-        else
-        {
-            m_scopes.push_back(section);
-        }
-    }
-    else if (m_eScopeStatus == ALife::eAddonPermanent)
-    {
-		LoadCurrentScopeParams(section);
-    }
-}
-
-
-void createWpnScopeXML()
-{
-	if (!pWpnScopeXml)
-	{
-		pWpnScopeXml = xr_new<CUIXml>();
-		pWpnScopeXml->Load(CONFIG_PATH, UI_PATH, "scopes.xml");
-	}
-}
-
-void CWeapon::LoadCurrentScopeParams(LPCSTR section)
-{
-	shared_str scope_tex_name = "none";
-	bScopeIsHasTexture = false;
-	if (pSettings->line_exist(section, "scope_texture"))
-	{
-		scope_tex_name = pSettings->r_string(section, "scope_texture");
-		if (xr_strcmp(scope_tex_name, "none") != 0)
-			bScopeIsHasTexture = true;
-	}
-
-	m_zoom_params.m_fScopeZoomFactor = pSettings->r_float(section, "scope_zoom_factor");
-
-	if (bScopeIsHasTexture)
-	{
-		m_zoom_params.m_sUseZoomPostprocess = READ_IF_EXISTS(pSettings, r_string, section, "scope_nightvision", 0);
-		m_zoom_params.m_bUseDynamicZoom = READ_IF_EXISTS(pSettings, r_bool, section, "scope_dynamic_zoom", FALSE);
-		m_zoom_params.m_sUseBinocularVision = READ_IF_EXISTS(pSettings, r_string, section, "scope_alive_detector", 0);
-	}
-
-	m_fRTZoomFactor = m_zoom_params.m_fScopeZoomFactor;
-
-	if (m_UIScope)
-	{
-		xr_delete(m_UIScope);
-	}
-
-	if (bScopeIsHasTexture)
-	{
-		m_UIScope = xr_new<CUIWindow>();
-		createWpnScopeXML();
-		CUIXmlInit::InitWindow(*pWpnScopeXml, scope_tex_name.c_str(), 0, m_UIScope);
-	}
-}
-
 BOOL CWeapon::net_Spawn(CSE_Abstract* DC)
 {
     m_fRTZoomFactor = m_zoom_params.m_fScopeZoomFactor;
@@ -808,51 +603,27 @@ BOOL CWeapon::net_Spawn(CSE_Abstract* DC)
     CSE_Abstract					*e = (CSE_Abstract*) (DC);
     CSE_ALifeItemWeapon			    *E = smart_cast<CSE_ALifeItemWeapon*>(e);
 
-	m_cur_addon.data = E->a_current_addon.data;
-	if (m_cur_addon.scope >= (u16)m_scopes.size())
-		m_cur_addon.scope = 0;
-	if (m_cur_addon.silencer >= (u16)m_silencers.size())
-		m_cur_addon.silencer = 0;
-	if (m_cur_addon.launcher >= (u16)m_launchers.size())
-		m_cur_addon.launcher = 0;
-
-
-	if (m_bGrenadeMode) //normal ammo will be in *2
-	{
-		m_ammoElapsed.type1 = E->a_elapsed.type2;
-		m_ammoType.type1 = E->ammo_type.type2;
-		m_ammoElapsed.type2 = E->a_elapsed.type1;
-		m_ammoType.type2 = E->ammo_type.type1;
-	}
-	else {
-		m_ammoElapsed.type1 = E->a_elapsed.type1;
-		m_ammoType.type1 = E->ammo_type.type1;
-		m_ammoElapsed.type2 = E->a_elapsed.type2;
-		m_ammoType.type2 = E->ammo_type.type2;
-	}
-
+    //iAmmoCurrent					= E->a_current;
+    iAmmoElapsed = E->a_elapsed;
     m_flagsAddOnState = E->m_addon_flags.get();
+    m_ammoType = E->ammo_type;
     SetState(E->wpn_state);
     SetNextState(E->wpn_state);
 
-	if (m_ammoType.type1 >= (u8)m_ammoTypes.size())
-		m_ammoType.type1 = 0;
-
-	m_DefaultCartridge.Load(m_ammoTypes[m_ammoType.type1].c_str(), m_ammoType.type1);
-    if (m_ammoElapsed.type1)
+    m_DefaultCartridge.Load(m_ammoTypes[m_ammoType].c_str(), m_ammoType);
+    if (iAmmoElapsed)
     {
         m_fCurrentCartirdgeDisp = m_DefaultCartridge.param_s.kDisp;
-        for (int i = 0; i < m_ammoElapsed.type1; ++i)
+        for (int i = 0; i < iAmmoElapsed; ++i)
             m_magazine.push_back(m_DefaultCartridge);
     }
 
-	UpdateAltScope();
     UpdateAddonsVisibility();
     InitAddons();
 
     m_dwWeaponIndependencyTime = 0;
 
-    VERIFY((u32) m_ammoElapsed.type1 == m_magazine.size());
+    VERIFY((u32) iAmmoElapsed == m_magazine.size());
     m_bAmmoWasSpawned = false;
 
     return bResult;
@@ -885,14 +656,11 @@ void CWeapon::net_Export(NET_Packet& P)
 
     u8 need_upd = IsUpdating() ? 1 : 0;
     P.w_u8(need_upd);
-    P.w_u16(m_ammoElapsed.data);
+    P.w_u16(u16(iAmmoElapsed));
     P.w_u8(m_flagsAddOnState);
-    P.w_u8(m_ammoType.data);
+    P.w_u8(m_ammoType);
     P.w_u8((u8) GetState());
     P.w_u8((u8) IsZoomed());
-
-	if (g_actor && this->parent_id() == g_actor->ID())
-		SyncronizeWeaponToServer();
 }
 
 void CWeapon::net_Import(NET_Packet& P)
@@ -906,7 +674,8 @@ void CWeapon::net_Import(NET_Packet& P)
     u8 flags = 0;
     P.r_u8(flags);
 
-    P.r_u16(m_ammoElapsed.data);
+    u16 ammo_elapsed = 0;
+    P.r_u16(ammo_elapsed);
 
     u8						NewAddonState;
     P.r_u8(NewAddonState);
@@ -914,17 +683,12 @@ void CWeapon::net_Import(NET_Packet& P)
     m_flagsAddOnState = NewAddonState;
     UpdateAddonsVisibility();
 
-    u8 wstate;
-    P.r_u8(m_ammoType.data);
+    u8 ammoType, wstate;
+    P.r_u8(ammoType);
     P.r_u8(wstate);
 
     u8 Zoom;
     P.r_u8((u8) Zoom);
-
-	u8 scope;
-	P.r_u8(scope);
-
-	m_cur_addon.scope = scope;
 
     if (H_Parent() && H_Parent()->Remote())
     {
@@ -947,25 +711,26 @@ void CWeapon::net_Import(NET_Packet& P)
     }break;
     default:
     {
-        if (m_ammoType.type1 >= m_ammoTypes.size())
+        if (ammoType >= m_ammoTypes.size())
             Msg("!! Weapon [%d], State - [%d]", ID(), wstate);
         else
         {
-            SetAmmoElapsed((m_ammoElapsed.type1));
+            m_ammoType = ammoType;
+            SetAmmoElapsed((ammo_elapsed));
         }
     }break;
     }
 
-    VERIFY((u32) m_ammoElapsed.type1 == m_magazine.size());
+    VERIFY((u32) iAmmoElapsed == m_magazine.size());
 }
 
 void CWeapon::save(NET_Packet &output_packet)
 {
     inherited::save(output_packet);
-	save_data(m_ammoElapsed.data, output_packet);
-    save_data((u8)0, output_packet);
+    save_data(iAmmoElapsed, output_packet);
+    save_data(m_cur_scope, output_packet);
     save_data(m_flagsAddOnState, output_packet);
-    save_data(m_ammoType.data, output_packet);
+    save_data(m_ammoType, output_packet);
     save_data(m_zoom_params.m_bIsZoomModeNow, output_packet);
     save_data(m_bRememberActorNVisnStatus, output_packet);
 }
@@ -973,12 +738,11 @@ void CWeapon::save(NET_Packet &output_packet)
 void CWeapon::load(IReader &input_packet)
 {
     inherited::load(input_packet);
-	load_data(m_ammoElapsed.data, input_packet);
-	u8 dummyu8;
-    load_data(dummyu8, input_packet);
+    load_data(iAmmoElapsed, input_packet);
+    load_data(m_cur_scope, input_packet);
     load_data(m_flagsAddOnState, input_packet);
     UpdateAddonsVisibility();
-    load_data(m_ammoType.data, input_packet);
+    load_data(m_ammoType, input_packet);
     load_data(m_zoom_params.m_bIsZoomModeNow, input_packet);
 
     if (m_zoom_params.m_bIsZoomModeNow)
@@ -1111,8 +875,8 @@ void CWeapon::SendHiddenItem()
         CHudItem::object().u_EventGen(P, GE_WPN_STATE_CHANGE, CHudItem::object().ID());
         P.w_u8(u8(eHiding));
         P.w_u8(u8(m_sub_state));
-        P.w_u8(m_ammoType.data);
-        P.w_u8(u8(m_ammoElapsed.type1 & 0xff));
+        P.w_u8(m_ammoType);
+        P.w_u8(u8(iAmmoElapsed & 0xff));
         P.w_u8(m_set_next_ammoType_on_reload);
         CHudItem::object().u_EventSend(P, net_flags(TRUE, TRUE, FALSE, TRUE));
         SetPending(TRUE);
@@ -1348,16 +1112,16 @@ bool CWeapon::SwitchAmmoType(u32 flags)
 	}
 	//*
 
-    u8 l_newType = m_ammoType.type1;
+    u8 l_newType = m_ammoType;
     bool b1, b2;
     do
     {
         l_newType = u8((u32(l_newType + 1)) % m_ammoTypes.size());
-		b1 = (l_newType != m_ammoType.type1);
+        b1 = (l_newType != m_ammoType);
         b2 = unlimited_ammo() ? false : (!m_pInventory->GetAny(m_ammoTypes[l_newType].c_str()));
     } while (b1 && b2);
 
-	if (l_newType != m_ammoType.type1)
+    if (l_newType != m_ammoType)
     {
         m_set_next_ammoType_on_reload = l_newType;
         if (OnServer())
@@ -1424,7 +1188,7 @@ void CWeapon::SpawnAmmo(u32 boxCurr, LPCSTR ammoSect, u32 ParentID)
 
 int CWeapon::GetSuitableAmmoTotal(bool use_item_to_spawn) const
 {
-    int ae_count = m_ammoElapsed.type1;
+    int ae_count = iAmmoElapsed;
     if (!m_pInventory)
     {
         return ae_count;
@@ -1874,8 +1638,8 @@ void CWeapon::SwitchState(u32 S)
         CHudItem::object().u_EventGen(P, GE_WPN_STATE_CHANGE, CHudItem::object().ID());
         P.w_u8(u8(S));
         P.w_u8(u8(m_sub_state));
-		P.w_u8(m_ammoType.data);
-        P.w_u8(u8(m_ammoElapsed.type1 & 0xff));
+        P.w_u8(m_ammoType);
+        P.w_u8(u8(iAmmoElapsed & 0xff));
         P.w_u8(m_set_next_ammoType_on_reload);
         CHudItem::object().u_EventSend(P, net_flags(TRUE, TRUE, FALSE, TRUE));
     }
@@ -1883,7 +1647,7 @@ void CWeapon::SwitchState(u32 S)
 
 void CWeapon::OnMagazineEmpty()
 {
-    VERIFY((u32) m_ammoElapsed.type1 == m_magazine.size());
+    VERIFY((u32) iAmmoElapsed == m_magazine.size());
 }
 
 void CWeapon::reinit()
@@ -1909,8 +1673,6 @@ void CWeapon::reload(LPCSTR section)
         m_strap_bone1 = pSettings->r_string(section, "strap_bone1");
     else
         m_can_be_strapped = false;
-
-	bUseAltScope = !!bReloadSectionScope(section);
 
     if (m_eScopeStatus == ALife::eAddonAttachable)
     {
@@ -2200,16 +1962,16 @@ void CWeapon::UpdateHudAdditonal(Fmatrix& trans)
 
 void CWeapon::SetAmmoElapsed(int ammo_count)
 {
-    m_ammoElapsed.type1 = ammo_count;
+    iAmmoElapsed = ammo_count;
 
-	u32 uAmmo = u32(m_ammoElapsed.type1);
+    u32 uAmmo = u32(iAmmoElapsed);
 
     if (uAmmo != m_magazine.size())
     {
         if (uAmmo > m_magazine.size())
         {
             CCartridge			l_cartridge;
-	l_cartridge.Load(m_ammoTypes[m_ammoType.type1].c_str(), m_ammoType.type1);
+            l_cartridge.Load(m_ammoTypes[m_ammoType].c_str(), m_ammoType);
             while (uAmmo > m_magazine.size())
                 m_magazine.push_back(l_cartridge);
         }
@@ -2299,7 +2061,7 @@ float CWeapon::GetMagazineWeight(const decltype(CWeapon::m_magazine)& mag) const
 float CWeapon::Weight() const
 {
     float res = CInventoryItemObject::Weight();
-    if (IsGrenadeLauncherAttached() && m_launchers.size())
+    if (IsGrenadeLauncherAttached() && GetGrenadeLauncherName().size())
     {
         res += pSettings->r_float(GetGrenadeLauncherName(), "inv_weight");
     }
@@ -2307,7 +2069,7 @@ float CWeapon::Weight() const
     {
         res += pSettings->r_float(GetScopeName(), "inv_weight");
     }
-    if (IsSilencerAttached() && m_silencers.size())
+    if (IsSilencerAttached() && GetSilencerName().size())
     {
         res += pSettings->r_float(GetSilencerName(), "inv_weight");
     }
@@ -2385,7 +2147,7 @@ void CWeapon::OnStateSwitch(u32 S, u32 oldState)
 
     if (GetState() == eReload)
     {
-        if (m_ammoElapsed.type1 == 0)
+        if (iAmmoElapsed == 0) //Swartz: re-written to use reload empty DOF
         {
             if (H_Parent() == Level().CurrentEntity() && !fsimilar(m_zoom_params.m_ReloadEmptyDof.w, -1.0f))
             {
@@ -2466,7 +2228,7 @@ void CWeapon::ZoomDec()
 u32 CWeapon::Cost() const
 {
     u32 res = CInventoryItem::Cost();
-    if (IsGrenadeLauncherAttached() && m_launchers.size())
+    if (IsGrenadeLauncherAttached() && GetGrenadeLauncherName().size())
     {
         res += pSettings->r_u32(GetGrenadeLauncherName(), "cost");
     }
@@ -2474,29 +2236,17 @@ u32 CWeapon::Cost() const
     {
         res += pSettings->r_u32(GetScopeName(), "cost");
     }
-    if (IsSilencerAttached() && m_silencers.size())
+    if (IsSilencerAttached() && GetSilencerName().size())
     {
         res += pSettings->r_u32(GetSilencerName(), "cost");
     }
 
-	if (m_ammoElapsed.type1)
+    if (iAmmoElapsed)
     {
-        float w = pSettings->r_float(m_ammoTypes[m_ammoType.type1].c_str(), "cost");
-		float bs = pSettings->r_float(m_ammoTypes[m_ammoType.type1].c_str(), "box_size");
+        float w = pSettings->r_float(m_ammoTypes[m_ammoType].c_str(), "cost");
+        float bs = pSettings->r_float(m_ammoTypes[m_ammoType].c_str(), "box_size");
 
-		res += iFloor(w*(m_ammoElapsed.type1 / bs));
+        res += iFloor(w*(iAmmoElapsed / bs));
     }
     return res;
-}
-
-void CWeapon::SyncronizeWeaponToServer()
-{
-	CGameObject *obj = smart_cast<CGameObject*>(this);
-	NET_Packet packet;
-	obj->u_EventGen(packet, GE_WEAPON_SYNCRONIZE, obj->ID());
-	packet.w_u16(m_cur_addon.data);
-	packet.w_u8(m_ammoType.data);
-	packet.w_u16(m_ammoElapsed.data);
-	packet.w_u8(m_bGrenadeMode?1:0);
-	obj->u_EventSend(packet, net_flags(TRUE, TRUE, FALSE, TRUE));
 }
