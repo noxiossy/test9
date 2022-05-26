@@ -367,7 +367,6 @@ public:
         return (m_zoom_params.m_fZoomRotationFactor < 1.f);
     }
 
-    virtual	u8				GetCurrentHudOffsetIdx();
 
     virtual float				Weight() const;
     virtual	u32					Cost() const;
