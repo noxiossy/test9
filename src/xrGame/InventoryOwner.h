@@ -119,7 +119,7 @@ protected:
 	u16					m_tmp_active_slot_num;
 	
 	bool				m_play_show_hide_reload_sounds;
-	u32					m_tmp_next_item_slot;
+	u16					m_tmp_next_item_slot;
 	//////////////////////////////////////////////////////////////////////////
 	// сюжетная информация
 public:
