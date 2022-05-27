@@ -1,6 +1,7 @@
 ﻿#include "pch_script.h"
 
 #include "WeaponMagazined.h"
+#include "entity.h"
 #include "actor.h"
 #include "ParticlesObject.h"
 #include "scope.h"
@@ -15,6 +16,7 @@
 #include "UIGameCustom.h"
 #include "object_broker.h"
 #include "string_table.h"
+#include "ai_object_location.h"
 #include "ui/UIXmlInit.h"
 #include "ui/UIStatic.h"
 #include "game_object_space.h"
@@ -1822,7 +1824,7 @@ bool CWeaponMagazined::ScopeRespawn( PIItem pIItem ) {
       auto ii = smart_cast<CInventoryItem*>( this );
 	  if (io) {
 		  if (io->inventory().InSlot(ii))
-			  io->SetNextItemSlot(ii->GetSlot());
+			  io->SetNextItemSlot(ii->CurrSlot());
 		  else
 			  io->SetNextItemSlot(0);
 	  }
