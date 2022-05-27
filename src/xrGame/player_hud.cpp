@@ -141,6 +141,18 @@ void attachable_hud_item::set_bone_visible(const std::vector<shared_str>& bone_n
 		set_bone_visible(bone_name, bVisibility, bSilent);
 }
 
+BOOL attachable_hud_item::get_bone_visible(const shared_str& bone_name)
+{
+	u16 bone_id = m_model->LL_BoneID(bone_name);
+	return m_model->LL_GetBoneVisible(bone_id);
+}
+
+bool attachable_hud_item::has_bone(const shared_str& bone_name)
+{
+	u16 bone_id = m_model->LL_BoneID(bone_name);
+	return (bone_id != BI_NONE);
+}
+
 void attachable_hud_item::update(bool bForce)
 {
 	if(!bForce && m_upd_firedeps_frame==Device.dwFrame)	return;
