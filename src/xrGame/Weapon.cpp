@@ -420,6 +420,20 @@ void CWeapon::Load(LPCSTR section)
 			}
 		}
 	}
+	else if( m_eScopeStatus == ALife::eAddonPermanent )
+	{
+		shared_str scope_tex_name			= pSettings->r_string(cNameSect(), "scope_texture");
+		m_zoom_params.m_fScopeZoomFactor	= pSettings->r_float( cNameSect(), "scope_zoom_factor");
+		{
+			m_UIScope				= xr_new<CUIWindow>();
+			if(!pWpnScopeXml)
+			{
+				pWpnScopeXml			= xr_new<CUIXml>();
+				pWpnScopeXml->Load		(CONFIG_PATH, UI_PATH, "scopes.xml");
+			}
+			CUIXmlInit::InitWindow	(*pWpnScopeXml, scope_tex_name.c_str(), 0, m_UIScope);
+		}
+	}
 
 	if(m_eSilencerStatus == ALife::eAddonAttachable)
     {
