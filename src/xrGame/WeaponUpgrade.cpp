@@ -215,8 +215,6 @@ bool CWeapon::install_upgrade_addon( LPCSTR section, bool test )
 			m_sScopeName	= pSettings->r_string( section, "scope_name" );
 			m_iScopeX		= pSettings->r_s32( section, "scope_x" );
 			m_iScopeY		= pSettings->r_s32( section, "scope_y" );
-			if(m_eScopeStatus==ALife::eAddonPermanent)
-				InitAddons();
 		}
 
 	}
@@ -236,8 +234,6 @@ bool CWeapon::install_upgrade_addon( LPCSTR section, bool test )
 			m_sSilencerName	= pSettings->r_string( section, "silencer_name" );
 			m_iSilencerX	= pSettings->r_s32( section, "silencer_x" );
 			m_iSilencerY	= pSettings->r_s32( section, "silencer_y" );
-			if(m_eSilencerStatus==ALife::eAddonPermanent)
-				InitAddons();
 		}
 	}
 	result |= result2;
@@ -252,10 +248,10 @@ bool CWeapon::install_upgrade_addon( LPCSTR section, bool test )
 			m_sGrenadeLauncherName	= pSettings->r_string( section, "grenade_launcher_name" );
 			m_iGrenadeLauncherX		= pSettings->r_s32( section, "grenade_launcher_x" );
 			m_iGrenadeLauncherY		= pSettings->r_s32( section, "grenade_launcher_y" );
-			if(m_eGrenadeLauncherStatus==ALife::eAddonPermanent)
-				InitAddons();
 		}
 	}
 	result |= result2;
+	InitAddons();
+
 	return result;
 }

@@ -45,6 +45,8 @@ CWeaponMagazined::CWeaponMagazined(ESoundTypes eSoundType) : CWeapon()
     m_eSoundReload = ESoundTypes(SOUND_TYPE_WEAPON_RECHARGING | eSoundType);
 #ifdef NEW_SOUNDS
     m_eSoundReloadEmpty = ESoundTypes(SOUND_TYPE_WEAPON_RECHARGING | eSoundType);
+	m_eSoundReloadMisfire		= ESoundTypes(SOUND_TYPE_WEAPON_RECHARGING | eSoundType);
+	m_eSoundFireModes			= ESoundTypes(SOUND_TYPE_WEAPON_EMPTY_CLICKING | eSoundType);
 #endif
     m_sounds_enabled = true;
 
@@ -115,7 +117,7 @@ void CWeaponMagazined::Load(LPCSTR section)
 
 #ifdef NEW_SOUNDS //AVO: custom sounds go here
 	if (WeaponSoundExist(section, "snd_fire_modes"))
-		m_sounds.LoadSound(section, "snd_fire_modes", "sndFireModes", false, m_eSoundEmptyClick);
+		m_sounds.LoadSound(section, "snd_fire_modes", "sndFireModes", false, m_eSoundFireModes);
     if (WeaponSoundExist(section, "snd_reload_empty"))
         m_sounds.LoadSound(section, "snd_reload_empty", "sndReloadEmpty", true, m_eSoundReloadEmpty);
     if (WeaponSoundExist(section, "snd_reload_misfire"))
@@ -173,6 +175,10 @@ void CWeaponMagazined::Load(LPCSTR section)
     LoadSilencerKoeffs();
 }
 
+bool CWeaponMagazined::UseScopeTexture()
+{
+	return bScopeIsHasTexture;
+}
 
 void CWeaponMagazined::FireStart()
 {
@@ -1206,20 +1212,28 @@ void CWeaponMagazined::InitAddons()
     m_zoom_params.m_fIronSightZoomFactor = READ_IF_EXISTS(pSettings, r_float, cNameSect(), "ironsight_zoom_factor", 50.0f);
     if (IsScopeAttached())
     {
-        shared_str scope_tex_name;
 		if ( m_eScopeStatus == ALife::eAddonAttachable )
         {
             //m_scopes[cur_scope]->m_sScopeName = pSettings->r_string(cNameSect(), "scope_name");
             //m_scopes[cur_scope]->m_iScopeX	 = pSettings->r_s32(cNameSect(),"scope_x");
             //m_scopes[cur_scope]->m_iScopeY	 = pSettings->r_s32(cNameSect(),"scope_y");
+			shared_str scope_tex_name = "none";
+			bScopeIsHasTexture = false;
 
 			VERIFY( *m_sScopeName );
-			scope_tex_name						= pSettings->r_string(*m_sScopeName, "scope_texture");
+			if (pSettings->line_exist(*m_sScopeName, "scope_texture"))
+			{
+				scope_tex_name						= pSettings->r_string(*m_sScopeName, "scope_texture");
+				if (xr_strcmp(scope_tex_name, "none") != 0)
+					bScopeIsHasTexture = true;
+			}
 			m_zoom_params.m_fScopeZoomFactor	= pSettings->r_float( *m_sScopeName, "scope_zoom_factor");
-
-            m_zoom_params.m_sUseZoomPostprocess = READ_IF_EXISTS(pSettings, r_string, GetScopeName(), "scope_nightvision", 0);
-            m_zoom_params.m_bUseDynamicZoom = READ_IF_EXISTS(pSettings, r_bool, GetScopeName(), "scope_dynamic_zoom", FALSE);
-            m_zoom_params.m_sUseBinocularVision = READ_IF_EXISTS(pSettings, r_string, GetScopeName(), "scope_alive_detector", 0);
+			if (bScopeIsHasTexture)
+			{
+	            m_zoom_params.m_sUseZoomPostprocess = READ_IF_EXISTS(pSettings, r_string, GetScopeName(), "scope_nightvision", 0);
+	            m_zoom_params.m_bUseDynamicZoom = READ_IF_EXISTS(pSettings, r_bool, GetScopeName(), "scope_dynamic_zoom", FALSE);
+	            m_zoom_params.m_sUseBinocularVision = READ_IF_EXISTS(pSettings, r_string, GetScopeName(), "scope_alive_detector", 0);
+			}
 		/*}
 		else if( m_eScopeStatus == ALife::eAddonPermanent )
 		{
@@ -1231,7 +1245,8 @@ void CWeaponMagazined::InitAddons()
 			{
 				xr_delete( m_UIScope );
 			}
-
+			
+			if (bScopeIsHasTexture)
 			{
 				m_UIScope				= xr_new<CUIWindow>();
 				createWpnScopeXML		();

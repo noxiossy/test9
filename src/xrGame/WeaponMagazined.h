@@ -28,6 +28,7 @@ protected:
     ESoundTypes		m_eSoundEmptyClick;
     ESoundTypes		m_eSoundReload;
 #ifdef NEW_SOUNDS //AVO: new sounds go here
+	ESoundTypes		m_eSoundFireModes;
     ESoundTypes		m_eSoundReloadEmpty;
     ESoundTypes		m_eSoundReloadMisfire;
 #endif //-NEW_SOUNDS
@@ -83,6 +84,7 @@ public:
         return this;
     }
 
+	virtual bool    UseScopeTexture ();
     virtual void	SetDefaults();
     virtual void	FireStart();
     virtual void	FireEnd();

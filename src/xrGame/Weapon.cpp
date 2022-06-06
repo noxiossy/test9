@@ -34,6 +34,7 @@
 #define ROTATION_TIME			0.25f
 
 BOOL	b_toggle_weapon_aim = FALSE;
+extern CUIXml*	pWpnScopeXml;
 
 CWeapon::CWeapon()
 {
@@ -81,6 +82,7 @@ CWeapon::CWeapon()
     m_crosshair_inertion = 0.f;
     m_activation_speed_is_overriden = false;
     m_bRememberActorNVisnStatus = false;
+	bScopeIsHasTexture = false;
     m_nearwall_last_hud_fov = psHUD_FOV_def;
 }
 
@@ -117,19 +119,23 @@ void CWeapon::UpdateXForm()
     if (parent->attached(this))
         return;
 
+	R_ASSERT		(E);
     IKinematics*			V = smart_cast<IKinematics*>	(E->Visual());
     VERIFY(V);
 
     // Get matrices
-    int						boneL = -1, boneR = -1, boneR2 = -1;
+	int boneL{ BI_NONE }, boneR{ BI_NONE }, boneR2{ BI_NONE };
 
     // this ugly case is possible in case of a CustomMonster, not a Stalker, nor an Actor
     E->g_WeaponBones(boneL, boneR, boneR2);
 
-    if (boneR == -1)		return;
 
     if ((HandDependence() == hd1Hand) || (GetState() == eReload) || (!E->g_Alive()))
         boneL = boneR2;
+
+	//KRodin: видимо такое случается иногда у некоторых визуалов нпс. Например если создать нпс с визуалом монстра наверно.
+	if (boneL == BI_NONE || boneR == BI_NONE)
+		return;
 
 	// РѕС‚ mortan:
 	// https://www.gameru.net/forum/index.php?s=&showtopic=23443&view=findpost&p=1677678
@@ -422,6 +428,7 @@ void CWeapon::Load(LPCSTR section)
 	}
 	else if( m_eScopeStatus == ALife::eAddonPermanent )
 	{
+		bScopeIsHasTexture = true;
 		shared_str scope_tex_name			= pSettings->r_string(cNameSect(), "scope_texture");
 		m_zoom_params.m_fScopeZoomFactor	= pSettings->r_float( cNameSect(), "scope_zoom_factor");
 		{
@@ -590,14 +597,14 @@ void CWeapon::Load(LPCSTR section)
 	////////////////////////////////////////////
 
 	////////////////////////////////////////////
-	m_lookout_offset[0][0] = READ_IF_EXISTS(pSettings, r_fvector3, section, "lookout_hud_offset_pos", (Fvector{ 0.045f, 0.f, 0.f }));
-	m_lookout_offset[1][0] = READ_IF_EXISTS(pSettings, r_fvector3, section, "lookout_hud_offset_rot", (Fvector{ 0.f, 0.f, 10.f }));
+	m_lookout_offset[0][0] = READ_IF_EXISTS(pSettings, r_fvector3, section, "lookout_hud_offset_pos", (Fvector{ 0.015f, 0.f, 0.f }));
+	m_lookout_offset[1][0] = READ_IF_EXISTS(pSettings, r_fvector3, section, "lookout_hud_offset_rot", (Fvector{ 0.f, 0.f, 5.f }));
 
 	m_lookout_offset[0][1] = READ_IF_EXISTS(pSettings, r_fvector3, section, "lookout_aim_hud_offset_pos", (Fvector{ 0.f, 0.f, 0.f }));
-	m_lookout_offset[1][1] = READ_IF_EXISTS(pSettings, r_fvector3, section, "lookout_aim_hud_offset_rot", (Fvector{ 0.f, 0.f, 15.f }));
+	m_lookout_offset[1][1] = READ_IF_EXISTS(pSettings, r_fvector3, section, "lookout_aim_hud_offset_rot", (Fvector{ 0.f, 0.f, 5.f }));
 
-	m_lookout_offset[2][0].set(READ_IF_EXISTS(pSettings, r_bool, section, "lookout_enabled", true), READ_IF_EXISTS(pSettings, r_float, section, "lookout_transition_time", 0.25f), 0.f); // normal
-	m_lookout_offset[2][1].set(READ_IF_EXISTS(pSettings, r_bool, section, "lookout_aim_enabled", true), READ_IF_EXISTS(pSettings, r_float, section, "lookout_aim_transition_time", 0.15f), 0.f); // aim-GL
+	m_lookout_offset[2][0].set(READ_IF_EXISTS(pSettings, r_bool, section, "lookout_enabled", true), READ_IF_EXISTS(pSettings, r_float, section, "lookout_transition_time", 0.12f), 0.f); // normal
+	m_lookout_offset[2][1].set(READ_IF_EXISTS(pSettings, r_bool, section, "lookout_aim_enabled", true), READ_IF_EXISTS(pSettings, r_float, section, "lookout_aim_transition_time", 0.07f), 0.f); // aim-GL
 	////////////////////////////////////////////
 
 }
