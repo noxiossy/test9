@@ -177,6 +177,8 @@ void CRenderDevice::on_idle()
 
 	const auto FrameStartTime = std::chrono::high_resolution_clock::now();
 
+
+	if (psDeviceFlags.test(rsStatistic))	g_bEnableStatGather	= TRUE;
     else g_bEnableStatGather = FALSE;
     if (g_loading_events.size())
     {

@@ -14,17 +14,14 @@
 
 //#define LUABIND_NO_EXCEPTIONS
 
-//AVO: lua re-org
-#include "lua.hpp"
-/*extern "C" {
-    //#define BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
+extern "C" {
+	//#define BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
 
-#include <lua/lua.h>
-#include <lua/lualib.h>
-#include <lua/lauxlib.h>
-    // #include <lua/luajit.h>
-}*/
-//-AVO
+	#include <lua.h>
+	#include <lualib.h>
+	#include <lauxlib.h>
+//	#include <lua/luajit.h>
+}
 
 // Lua-bind
 #include <luabind/luabind.hpp>

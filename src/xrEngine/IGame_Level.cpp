@@ -136,9 +136,9 @@ bool IGame_Level::Load(u32 dwNum)
         return true;
 }
 
-#ifndef _EDITOR
-#include "../xrCPU_Pipe/ttapi.h"
-#endif
+//#ifndef _EDITOR
+//#include "../xrCPU_Pipe/ttapi.h"
+//#endif
 
 void IGame_Level::OnRender()
 {
