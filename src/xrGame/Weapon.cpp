@@ -1862,16 +1862,11 @@ u8 CWeapon::GetCurrentHudOffsetIdx()
 	return hud_item_measures::m_hands_offset_type_normal;
 }
 
-float _lerp(const float& _val_a, const float& _val_b, const float& _factor)
-{
-	return (_val_a * (1.0 - _factor)) + (_val_b * _factor);
-}
+
 
 // Обновление координат текущего худа
 void CWeapon::UpdateHudAdditonal		(Fmatrix& trans)
 {
-	CActor* pActor = smart_cast<CActor*>(H_Parent());
-
 	Fvector summary_offset{}, summary_rotate{};
 
 	attachable_hud_item* hi = HudItemData();
@@ -1883,18 +1878,17 @@ void CWeapon::UpdateHudAdditonal		(Fmatrix& trans)
 	//============ Поворот ствола во время аима ===========//
 	if(b_aiming)
 	{
+		if(IsZoomed())
+			m_zoom_params.m_fZoomRotationFactor += Device.fTimeDelta/m_zoom_params.m_fZoomRotateTime;
+		else
+			m_zoom_params.m_fZoomRotationFactor -= Device.fTimeDelta/m_zoom_params.m_fZoomRotateTime;
 
+		clamp(m_zoom_params.m_fZoomRotationFactor, 0.f, 1.f);
 
 		zr_offs.mul(m_zoom_params.m_fZoomRotationFactor);
 		zr_rot.mul(m_zoom_params.m_fZoomRotationFactor);
 
 		summary_offset.add(zr_offs);
-
-		float src = 10 * Device.fTimeDelta * 0.65;
-		float target = pActor->IsZoomAimingMode() ? 1.3f : -0.3f;
-		clamp(src, 0.f, 1.f);
-		m_zoom_params.m_fZoomRotationFactor = _lerp(m_zoom_params.m_fZoomRotationFactor, target, src);
-		clamp(m_zoom_params.m_fZoomRotationFactor, 0.f, 1.0f);
 	}
 	//====================================================//
 
