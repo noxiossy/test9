@@ -443,7 +443,7 @@ void game_sv_CaptureTheArtefact::OnPlayerDisconnect(ClientID id_who, LPSTR Name,
 	
 	TeamsMap::iterator te = teams.end();
 	TeamsMap::iterator artefactOwnerTeam = std::find_if(teams.begin(), te, 
-        [&](const TeamPair& tp) { return SearchOwnerIdFunctor()(tp, GameID); });
+		std::bind(SearchOwnerIdFunctor(), _1, GameID));
 	if (artefactOwnerTeam != te)
 	{
 		DropArtefact(artefactOwnerTeam->second.artefactOwner, artefactOwnerTeam->second.artefact);
@@ -1565,7 +1565,7 @@ void game_sv_CaptureTheArtefact::ProcessPlayerDeath(game_PlayerState *playerStat
 	}
 	TeamsMap::iterator te = teams.end();
 	TeamsMap::iterator childArtefactTeam = std::find_if(teams.begin(), te, 
-        [&](const TeamPair& tp) { return SearchOwnerIdFunctor()(tp, playerState->GameID); });
+		std::bind(SearchOwnerIdFunctor(), _1, playerState->GameID));
 	if (childArtefactTeam != te)
 	{
 		DropArtefact(childArtefactTeam->second.artefactOwner, childArtefactTeam->second.artefact);
@@ -1628,7 +1628,7 @@ BOOL game_sv_CaptureTheArtefact::OnTouch(u16 eid_who, u16 eid_target, BOOL bForc
 	/*VERIFY(e_what	); // <- not used because IMHO next code work faster...*/
 	TeamsMap::iterator te = teams.end();
 	TeamsMap::iterator artefactOfTeam = std::find_if(teams.begin(), te, 
-		[&](const TeamPair& tp) { return SearchArtefactIdFunctor()(tp, eid_target); });
+		std::bind(SearchArtefactIdFunctor(), _1, eid_target));
 	if (artefactOfTeam != te)
 	{
 		CSE_ALifeItemArtefact *tempArtefact = artefactOfTeam->second.artefact;
@@ -1674,7 +1674,7 @@ BOOL game_sv_CaptureTheArtefact::OnTouch(u16 eid_who, u16 eid_target, BOOL bForc
 					return FALSE;
 				}
 				if (std::find_if(teams.begin(), te,
-                    [&](const TeamPair& tp) { return SearchOwnerIdFunctor()(tp, e_who->ID); }) != te)
+					std::bind(SearchOwnerIdFunctor(), _1, e_who->ID)) != te)
 				{
 					return FALSE;
 				}
@@ -1685,7 +1685,7 @@ BOOL game_sv_CaptureTheArtefact::OnTouch(u16 eid_who, u16 eid_target, BOOL bForc
 		} else
 		{
 			if (std::find_if(teams.begin(), te,
-                [&](const TeamPair& tp) { return SearchOwnerIdFunctor()(tp, e_who->ID); }) != te)
+				std::bind(SearchOwnerIdFunctor(), _1, e_who->ID)) != te)
 			{
 				return FALSE;
 			}
@@ -1768,7 +1768,7 @@ void game_sv_CaptureTheArtefact::OnDetach(u16 eid_who, u16 eid_target)
 {
 	TeamsMap::iterator te = teams.end();
 	TeamsMap::iterator artefactOfTeam = std::find_if(teams.begin(), te, 
-        [&](const TeamPair& tp) { return SearchArtefactIdFunctor()(tp, eid_target); });
+		std::bind(SearchArtefactIdFunctor(), _1, eid_target));
 	
 	CSE_ActorMP *e_who = smart_cast<CSE_ActorMP*>(m_server->ID_to_entity(eid_who));
 	CSE_Abstract *e_item = m_server->ID_to_entity(eid_target);
@@ -1805,7 +1805,7 @@ BOOL game_sv_CaptureTheArtefact::OnActivate(u16 eid_who, u16 eid_target)
 {
 	TeamsMap::iterator te = teams.end();
 	TeamsMap::iterator artefactOfTeam = std::find_if(teams.begin(), te, 
-        [&](const TeamPair& tp) { return SearchArtefactIdFunctor()(tp, eid_target); });
+		std::bind(SearchArtefactIdFunctor(), _1, eid_target));
 	
 	CSE_ActorMP *e_who = smart_cast<CSE_ActorMP*>(m_server->ID_to_entity(eid_who));
 	CSE_Abstract *e_item = m_server->ID_to_entity(eid_target);

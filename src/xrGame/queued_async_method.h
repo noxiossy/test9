@@ -1,4 +1,5 @@
-﻿#ifndef QUEUED_ASYNC_METHOD_FACADE_H_INCLUDED
+﻿#pragma once
+#ifndef QUEUED_ASYNC_METHOD_FACADE_H_INCLUDED
 #define QUEUED_ASYNC_METHOD_FACADE_H_INCLUDED
 
 template<typename Class,
@@ -226,7 +227,7 @@ struct parameters_tuple4
 		return *this;
 	}
 
-	bool				operator == (parameters_tuple3 const & right) const
+	bool				operator == (parameters_tuple4 const & right) const
 	{
 		return	(m_t1 == right.m_t1) &&
 				(m_t2 == right.m_t2) &&

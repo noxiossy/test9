@@ -1877,17 +1877,18 @@ void CWeapon::UpdateHudAdditonal		(Fmatrix& trans)
 	//============ Поворот ствола во время аима ===========//
 	if(b_aiming)
 	{
-		if(IsZoomed())
-			m_zoom_params.m_fZoomRotationFactor += Device.fTimeDelta/m_zoom_params.m_fZoomRotateTime;
-		else
-			m_zoom_params.m_fZoomRotationFactor -= Device.fTimeDelta/m_zoom_params.m_fZoomRotateTime;
 
-		clamp(m_zoom_params.m_fZoomRotationFactor, 0.f, 1.f);
 
 		zr_offs.mul(m_zoom_params.m_fZoomRotationFactor);
 		zr_rot.mul(m_zoom_params.m_fZoomRotationFactor);
 
 		summary_offset.add(zr_offs);
+
+		float src = 10 * Device.fTimeDelta * 0.65;
+		float target = pActor->IsZoomAimingMode() ? 1.3f : -0.3f;
+		clamp(src, 0.f, 1.f);
+		m_zoom_params.m_fZoomRotationFactor = _lerp(m_zoom_params.m_fZoomRotationFactor, target, src);
+		clamp(m_zoom_params.m_fZoomRotationFactor, 0.f, 1.0f);
 	}
 	//====================================================//
 

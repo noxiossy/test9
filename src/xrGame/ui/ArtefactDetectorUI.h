@@ -1,5 +1,6 @@
 ﻿#pragma once
 #include "UIFrameLineWnd.h"
+#include "../../xrEngine/xrSkinXW.hpp"
 
 class CUIStatic;
 class CUIFrameLineWnd;
