@@ -26,6 +26,7 @@
 #pragma warning(disable:4995)
 #include <malloc.h>
 #pragma warning(pop)
+using namespace std::placeholders;
 
 u32 g_sv_traffic_optimization_level = eto_none;
 
@@ -142,7 +143,7 @@ void		xrServer::client_Destroy	(IClient* C)
 	// xrClientData*	D = (xrClientData*)C;
 	// CSE_Abstract* E = D->owner;
 	IClient* alife_client = net_players.FindAndEraseClient(
-		std::bind1st(std::equal_to<IClient*>(), C)
+		std::bind(std::equal_to<IClient*>(), C, _1)
 	);
 	//VERIFY(alife_client);
 	if (alife_client)

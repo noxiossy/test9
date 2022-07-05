@@ -18,6 +18,7 @@
 //#define DELAYED_ROUND_TIME	7000
 #include "ui\UIBuyWndShared.h"
 #include "../xrEngine/xr_ioconsole.h"
+using namespace std::placeholders;
 
 #define UNBUYABLESLOT		20
 

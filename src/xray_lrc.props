@@ -33,6 +33,7 @@
       <PreprocessorDefinitions>_VC80_UPGRADE=0x0710;_SILENCE_STDEXT_HASH_DEPRECATION_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <DebugInformationFormat>None</DebugInformationFormat>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <ImportLibrary>$(SolutionDir)intermediate\$(Platform)-$(Configuration)\$(TargetName).lib</ImportLibrary>

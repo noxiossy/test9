@@ -59,6 +59,7 @@ void test_key	(int dik);
 #include "../Include/xrRender/Kinematics.h"
 
 
+using namespace std::placeholders;
 using namespace InventoryUtilities;
 //BOOL		g_old_style_ui_hud			= FALSE;
 const u32	g_clWhite					= 0xffffffff;
