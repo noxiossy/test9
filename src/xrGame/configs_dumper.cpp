@@ -69,48 +69,7 @@ struct ExistDumpPredicate
 typedef	buffer_vector<IAnticheatDumpable const *>	active_objects_t;
 static active_objects_t::size_type get_active_objects(active_objects_t & dest)
 {
-	CActorMP const* tmp_actor			= smart_cast<CActorMP const*>(
-		Level().CurrentControlEntity());
-
-	if (!tmp_actor)
 		return 0;
-
-	dest.push_back						(tmp_actor);
-
-	for (u16 i = KNIFE_SLOT; i <= GRENADE_SLOT; ++i)
-	{
-		VERIFY(dest.capacity() != dest.size());
-		if (dest.capacity() == dest.size())
-			return dest.size();
-
-		CInventoryItem const * tmp_inv_item	= tmp_actor->inventory().ItemFromSlot(i);
-		if (!tmp_inv_item)
-			continue;
-
-		CWeapon const * tmp_weapon			= smart_cast<CWeapon const*>(tmp_inv_item);
-		if (tmp_weapon)
-		{
-			dest.push_back(tmp_weapon);
-			if (tmp_weapon->m_magazine.size())
-			{
-				VERIFY(dest.capacity() != dest.size());
-				if (dest.capacity() == dest.size())
-					return dest.size();
-				
-				IAnticheatDumpable const * tmp_cartridge = &tmp_weapon->m_magazine[0];
-				if (!tmp_cartridge)
-					continue;
-				
-				ExistDumpPredicate	tmp_predicate;
-				tmp_predicate.section_name = tmp_cartridge->GetAnticheatSectionName();
-				if (std::find_if(dest.begin(), dest.end(), tmp_predicate) == dest.end())
-				{
-					dest.push_back(tmp_cartridge);
-				};
-			}
-		}
-	}
-	return dest.size();
 }
 
 static active_objects_t::size_type const max_active_objects = 16;
@@ -201,41 +160,6 @@ void configs_dumper::sign_configs		()
 
 void configs_dumper::dump_config(complete_callback_t complete_cb)
 {
-	if (is_active())
-	{
-#ifdef DEBUG
-		Msg("! ERROR: CL: dump making already in progress...");
-#endif
-		return;
-	}
-
-	PDWORD_PTR	process_affinity_mask;
-	PDWORD_PTR	tmp_dword;
-	GetProcessAffinityMask(
-		GetCurrentProcess(),
-		process_affinity_mask,
-		tmp_dword);
-	bool single_core = (btwCount1(static_cast<u32>(*process_affinity_mask)) == 1);
-	if (single_core)
-	{
-		m_yield_cb.bind(this, &configs_dumper::yield_cb);
-	} else
-	{
-		m_yield_cb.clear();
-	}
-	
-	m_complete_cb		= complete_cb;
-	m_state				= ds_active;
-	if (m_make_start_event)
-	{
-		SetEvent(m_make_start_event);
-		Engine.Sheduler.Register	(this, TRUE);
-		return;
-	}
-	m_make_start_event			= CreateEvent(NULL, FALSE, TRUE, NULL);
-	m_make_done_event			= CreateEvent(NULL, FALSE, FALSE, NULL);
-	thread_spawn				(&configs_dumper::dumper_thread, "configs_dumper", 0, this);
-	Engine.Sheduler.Register	(this, TRUE);
 }
 
 void configs_dumper::compress_configs	()
@@ -261,19 +185,7 @@ void configs_dumper::dumper_thread(void* my_ptr)
 	DWORD wait_result = WaitForSingleObject(this_ptr->m_make_start_event, INFINITE);
 	while ((wait_result != WAIT_ABANDONED) || (wait_result != WAIT_FAILED))
 	{
-		if (!this_ptr->is_active())
-			break;				// error
-		this_ptr->timer_begin("writing configs");
-		this_ptr->write_configs();
-		this_ptr->timer_end();
-		this_ptr->timer_begin("signing configs");
-		this_ptr->sign_configs();
-		this_ptr->timer_end();
-		this_ptr->timer_begin("compressing data");
-		this_ptr->compress_configs();
-		this_ptr->timer_end();
-		SetEvent(this_ptr->m_make_done_event);
-		wait_result = WaitForSingleObject(this_ptr->m_make_start_event, INFINITE);
+		break;				// error
 	}
 	SetEvent(this_ptr->m_make_done_event);
 }
@@ -294,14 +206,6 @@ void __stdcall configs_dumper::switch_thread()
 
 void configs_dumper::realloc_compress_buffer(u32 need_size)
 {
-	if (m_buffer_for_compress && (need_size <= m_buffer_for_compress_capacity))
-		return;
-#ifdef DEBUG	
-	Msg("* reallocing compression buffer.");
-#endif
-	m_buffer_for_compress_capacity = need_size * 2;
-	void* new_buffer = xr_realloc(m_buffer_for_compress, m_buffer_for_compress_capacity);
-	m_buffer_for_compress = static_cast<u8*>(new_buffer);
 }
 
 #ifdef DEBUG

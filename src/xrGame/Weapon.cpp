@@ -1862,10 +1862,16 @@ u8 CWeapon::GetCurrentHudOffsetIdx()
 	return hud_item_measures::m_hands_offset_type_normal;
 }
 
+float _lerp(const float& _val_a, const float& _val_b, const float& _factor)
+{
+	return (_val_a * (1.0 - _factor)) + (_val_b * _factor);
+}
 
 // Обновление координат текущего худа
 void CWeapon::UpdateHudAdditonal		(Fmatrix& trans)
 {
+	CActor* pActor = smart_cast<CActor*>(H_Parent());
+
 	Fvector summary_offset{}, summary_rotate{};
 
 	attachable_hud_item* hi = HudItemData();
