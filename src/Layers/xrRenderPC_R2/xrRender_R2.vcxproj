@@ -597,10 +597,10 @@
     <Text Include="todo.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\3rd party\luabind\luabind.vcxproj">
+    <ProjectReference Include="$(SolutionDir)3rd party\luabind\luabind.vcxproj">
       <Project>{cc52e0b3-cc35-4934-9302-035b748f3f2c}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\3rd party\luajit-2\src\luajit.vcxproj">
+    <ProjectReference Include="$(SolutionDir)3rd party\luajit-2\src\luajit.vcxproj">
       <Project>{632AEEB6-DC06-4E15-9551-B2B09A4B73C5}</Project>
     </ProjectReference>
     <ProjectReference Include="$(SolutionDir)xrEngine\xrEngine.vcxproj">

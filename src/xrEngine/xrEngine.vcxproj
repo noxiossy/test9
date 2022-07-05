@@ -635,7 +635,7 @@
     <Text Include="TODO.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\3rd party\luabind\luabind.vcxproj">
+    <ProjectReference Include="..\3rd party\luabind\luabind.vcxproj">
       <Project>{cc52e0b3-cc35-4934-9302-035b748f3f2c}</Project>
     </ProjectReference>
     <ProjectReference Include="$(SolutionDir)3rd party\openal\OpenAL-Windows\Router\Router.vcxproj">
