@@ -8,6 +8,6 @@
 
 #pragma once
 
-#include <imdexlib/fast_dynamic_cast.hpp>
+#include "../3rd party/imdexlib/imdexlib/fast_dynamic_cast.hpp"
 
 #define smart_cast imdex::fast_dynamic_cast
