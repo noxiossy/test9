@@ -1,6 +1,6 @@
 ﻿#include "stdafx.h"
 
-
+#include <VersionHelpers.h>
 #include <process.h>
 
 // mmsystem.h
@@ -238,7 +238,7 @@ void Detect()
 }
 };
 
-bool g_initialize_cpu_called = false;
+//bool g_initialize_cpu_called = false;
 
 //------------------------------------------------------------------------------------
 void _initialize_cpu()
@@ -277,167 +277,59 @@ void _initialize_cpu()
     Didentity.identity(); // Identity matrix
     pvInitializeStatics(); // Lookup table for compressed normals
     FPU::initialize();
-    _initialize_cpu_thread();
+ //   _initialize_cpu_thread();
 
-    g_initialize_cpu_called = true;
+ //   g_initialize_cpu_called = true;
 }
 
-#ifdef M_BORLAND
-void _initialize_cpu_thread()
-{
-}
-#else
-// per-thread initialization
-#include <xmmintrin.h>
-#define _MM_DENORMALS_ZERO_MASK 0x0040
-#define _MM_DENORMALS_ZERO_ON 0x0040
-#define _MM_FLUSH_ZERO_MASK 0x8000
-#define _MM_FLUSH_ZERO_ON 0x8000
-#define _MM_SET_FLUSH_ZERO_MODE(mode) _mm_setcsr((_mm_getcsr() & ~_MM_FLUSH_ZERO_MASK) | (mode))
-#define _MM_SET_DENORMALS_ZERO_MODE(mode) _mm_setcsr((_mm_getcsr() & ~_MM_DENORMALS_ZERO_MASK) | (mode))
-static BOOL _denormals_are_zero_supported = TRUE;
-extern void __cdecl _terminate();
-void debug_on_thread_spawn();
-
-void _initialize_cpu_thread()
-{
-    debug_on_thread_spawn();
-#ifndef XRCORE_STATIC
-    // fpu & sse
-    FPU::m24r();
-#endif // XRCORE_STATIC
-    if (CPU::ID.hasSSE())
-    {
-        //_mm_setcsr ( _mm_getcsr() | (_MM_FLUSH_ZERO_ON+_MM_DENORMALS_ZERO_ON) );
-        _MM_SET_FLUSH_ZERO_MODE(_MM_FLUSH_ZERO_ON);
-        if (_denormals_are_zero_supported)
-        {
-            __try
-            {
-                _MM_SET_DENORMALS_ZERO_MODE(_MM_DENORMALS_ZERO_ON);
-            }
-            __except (EXCEPTION_EXECUTE_HANDLER)
-            {
-                _denormals_are_zero_supported = FALSE;
-            }
-        }
-    }
-}
-#endif
 // threading API
 #pragma pack(push,8)
-struct THREAD_NAME
-{
+typedef struct tagTHREADNAME_INFO {
     DWORD dwType;
     LPCSTR szName;
     DWORD dwThreadID;
     DWORD dwFlags;
-};
-void thread_name(const char* name)
-{
-    THREAD_NAME tn;
-    tn.dwType = 0x1000;
-    tn.szName = name;
-    tn.dwThreadID = DWORD(-1);
-    tn.dwFlags = 0;
-    __try
-    {
-		RaiseException(0x406D1388,0,sizeof(tn)/sizeof(DWORD),(PDWORD_PTR)&tn);
-    }
-    __except (EXCEPTION_CONTINUE_EXECUTION)
-    {
-    }
-}
+} THREADNAME_INFO;
 #pragma pack(pop)
 
-struct THREAD_STARTUP
-{
-    thread_t* entry;
-    char* name;
-    void* args;
-};
-void __cdecl thread_entry(void* _params)
-{
-    // initialize
-    THREAD_STARTUP* startup = (THREAD_STARTUP*)_params;
-    thread_name(startup->name);
-    thread_t* entry = startup->entry;
-    void* arglist = startup->args;
-    xr_delete(startup);
-    _initialize_cpu_thread();
+static void set_thread_name(HANDLE ThreadHandle, const char* threadName) {
+	if (IsWindows10OrGreater())
+	{
+		static HMODULE KernelLib = GetModuleHandle("kernel32.dll");
+		using FuncSetThreadDescription = HRESULT(WINAPI*)(HANDLE, PCWSTR);
+		static auto pSetThreadDescription = (FuncSetThreadDescription)GetProcAddress(KernelLib, "SetThreadDescription");
 
-    // call
-    entry(arglist);
+		if (pSetThreadDescription)
+		{
+			wchar_t buf[64]{};
+			mbstowcs(buf, threadName, std::size(buf));
+
+			pSetThreadDescription(ThreadHandle, buf);
+
+			return;
+		}
+		else if (!IsDebuggerPresent()) return;
+	}
+	else if (!IsDebuggerPresent()) return;
+
+	THREADNAME_INFO info;
+	info.dwType = 0x1000;
+	info.szName = threadName;
+	info.dwThreadID = GetThreadId(ThreadHandle);
+	info.dwFlags = 0;
+
+	__try {
+		constexpr DWORD MS_VC_EXCEPTION = 0x406D1388;
+		RaiseException(MS_VC_EXCEPTION, 0, sizeof(info) / sizeof(ULONG_PTR), (ULONG_PTR*)&info);
+	}
+	__except (EXCEPTION_EXECUTE_HANDLER) {
+	}
 }
 
-void thread_spawn(thread_t* entry, const char* name, unsigned stack, void* arglist)
-{
-    Debug._initialize(false);
-
-    THREAD_STARTUP* startup = xr_new<THREAD_STARTUP>();
-    startup->entry = entry;
-    startup->name = (char*)name;
-    startup->args = arglist;
-    _beginthread(thread_entry, stack, startup);
+void set_current_thread_name(const char* threadName) {
+	set_thread_name(GetCurrentThread(), threadName);
 }
 
-void spline1(float t, Fvector* p, Fvector* ret)
-{
-    float t2 = t * t;
-    float t3 = t2 * t;
-    float m[4];
-
-    ret->x = 0.0f;
-    ret->y = 0.0f;
-    ret->z = 0.0f;
-    m[0] = (0.5f * ((-1.0f * t3) + (2.0f * t2) + (-1.0f * t)));
-    m[1] = (0.5f * ((3.0f * t3) + (-5.0f * t2) + (0.0f * t) + 2.0f));
-    m[2] = (0.5f * ((-3.0f * t3) + (4.0f * t2) + (1.0f * t)));
-    m[3] = (0.5f * ((1.0f * t3) + (-1.0f * t2) + (0.0f * t)));
-
-    for (int i = 0; i < 4; i++)
-    {
-        ret->x += p[i].x * m[i];
-        ret->y += p[i].y * m[i];
-        ret->z += p[i].z * m[i];
-    }
-}
-
-void spline2(float t, Fvector* p, Fvector* ret)
-{
-    float s = 1.0f - t;
-    float t2 = t * t;
-    float t3 = t2 * t;
-    float m[4];
-
-    m[0] = s*s*s;
-    m[1] = 3.0f*t3 - 6.0f*t2 + 4.0f;
-    m[2] = -3.0f*t3 + 3.0f*t2 + 3.0f*t + 1;
-    m[3] = t3;
-
-    ret->x = (p[0].x*m[0] + p[1].x*m[1] + p[2].x*m[2] + p[3].x*m[3]) / 6.0f;
-    ret->y = (p[0].y*m[0] + p[1].y*m[1] + p[2].y*m[2] + p[3].y*m[3]) / 6.0f;
-    ret->z = (p[0].z*m[0] + p[1].z*m[1] + p[2].z*m[2] + p[3].z*m[3]) / 6.0f;
-}
-
-#define beta1 1.0f
-#define beta2 0.8f
-
-void spline3(float t, Fvector* p, Fvector* ret)
-{
-    float s = 1.0f - t;
-    float t2 = t * t;
-    float t3 = t2 * t;
-    float b12 = beta1*beta2;
-    float b13 = b12*beta1;
-    float delta = 2.0f - b13 + 4.0f*b12 + 4.0f*beta1 + beta2 + 2.0f;
-    float d = 1.0f / delta;
-    float b0 = 2.0f*b13*d*s*s*s;
-    float b3 = 2.0f*t3*d;
-    float b1 = d*(2 * b13*t*(t2 - 3 * t + 3) + 2 * b12*(t3 - 3 * t2 + 2) + 2 * beta1*(t3 - 3 * t + 2) + beta2*(2 * t3 - 3 * t2 + 1));
-    float b2 = d*(2 * b12*t2*(-t + 3) + 2 * beta1*t*(-t2 + 3) + beta2*t2*(-2 * t + 3) + 2 * (-t3 + 1));
-
-    ret->x = p[0].x*b0 + p[1].x*b1 + p[2].x*b2 + p[3].x*b3;
-    ret->y = p[0].y*b0 + p[1].y*b1 + p[2].y*b2 + p[3].y*b3;
-    ret->z = p[0].z*b0 + p[1].z*b1 + p[2].z*b2 + p[3].z*b3;
+void set_thread_name(const char* threadName, std::thread& thread) {
+	set_thread_name(static_cast<HANDLE>(thread.native_handle()), threadName);
 }

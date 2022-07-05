@@ -131,4 +131,19 @@ IC void xr_strlwr(shared_str& src) { if (*src) { LPSTR lp = xr_strdup(*src); xr_
 
 #pragma pack(pop)
 
+#include <unordered_map>
+struct string_hash {
+
+	using transparent_key_equal = std::equal_to<>; //Будет использоваться в C++20	
+	using hash_type = std::hash<std::string_view>;
+	[[nodiscard]] decltype(auto) operator()(std::string_view txt)   const noexcept { return hash_type{}(txt); }
+	[[nodiscard]] decltype(auto) operator()(const std::string& txt) const noexcept { return hash_type{}(txt); }
+	[[nodiscard]] decltype(auto) operator()(const char* txt)        const noexcept { return hash_type{}(txt); }
+	[[nodiscard]] decltype(auto) operator()(const shared_str& txt)  const noexcept { return hash_type{}(txt.c_str() ? txt.c_str() : ""); }
+
+};
+
+template<typename Key, typename Value>
+using string_unordered_map = std::unordered_map<Key, Value, string_hash, string_hash::transparent_key_equal>; //TODO: Убрать четвёртый аргумент шаблона в С++20!
+
 #endif

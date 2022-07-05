@@ -1,13 +1,8 @@
-﻿#ifndef xr_device
-#define xr_device
-#pragma once
+﻿#pragma once
 
-// Note:
-// ZNear - always 0.0f
-// ZFar - always 1.0f
-
-//class ENGINE_API CResourceManager;
-//class ENGINE_API CGammaControl;
+#include "../xrCore/Event.hpp"
+#include <atomic>
+#include <thread>
 
 #include "pure.h"
 //#include "hw.h"
@@ -214,10 +209,6 @@ public:
         m_editor_finalize(0),
         m_editor(0),
         m_engine(0)
-#endif // #ifdef INGAME_EDITOR
-#ifdef PROFILE_CRITICAL_SECTIONS
-        ,mt_csEnter(MUTEX_PROFILE_ID(CRenderDevice::mt_csEnter))
-        ,mt_csLeave(MUTEX_PROFILE_ID(CRenderDevice::mt_csLeave))
 #endif // #ifdef PROFILE_CRITICAL_SECTIONS
     {
         m_hWnd = NULL;
@@ -261,20 +252,19 @@ public:
     void Initialize(void);
     void ShutDown(void);
 
-public:
     void time_factor(const float& time_factor); //--#SM+#--
 	
-    IC const float& time_factor() const
-    {
+	inline const float time_factor() const {
         VERIFY(Timer.time_factor() == TimerGlobal.time_factor());
         return (Timer.time_factor());
     }
 
-    // Multi-threading
-    xrCriticalSection mt_csEnter;
-    xrCriticalSection mt_csLeave;
-    volatile BOOL mt_bMustExit;
+private:
+	// Multi-threading
+	Event syncProcessFrame, syncFrameDone, syncThreadExit; // Secondary thread events
+	std::atomic_bool mt_bMustExit;
 
+public:
     ICF void remove_from_seq_parallel(const fastdelegate::FastDelegate0<>& delegate)
     {
         xr_vector<fastdelegate::FastDelegate0<> >::iterator I = std::find(
@@ -343,4 +333,3 @@ public:
 };
 extern ENGINE_API CLoadScreenRenderer load_screen_renderer;
 
-#endif

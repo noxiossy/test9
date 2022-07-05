@@ -3,6 +3,7 @@
 
 #include "DisablingParams.h"
 #include "ode_include.h"
+#include "../xrEngine/xrSkinXW.hpp"
 
 extern const dReal	default_l_limit									;
 extern const dReal	default_w_limit									;

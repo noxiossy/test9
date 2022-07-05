@@ -14,7 +14,6 @@
 #include <intrin.h>
 #include "../build_config_defines.h"
 
-extern bool shared_str_initialized;
 
 #ifdef __BORLANDC__
 # include "d3d9.h"
@@ -34,12 +33,6 @@ static BOOL bException = FALSE;
 
 #ifndef USE_BUG_TRAP
 # include <exception>
-#endif
-
-#ifndef _M_AMD64
-# ifndef __BORLANDC__
-# pragma comment(lib,"dxerr.lib")
-# endif
 #endif
 
 #include <dbghelp.h> // MiniDump flags
@@ -67,6 +60,7 @@ static bool error_after_dialog = false;
 extern void BuildStackTrace();
 extern char g_stackTrace[100][4096];
 extern int	g_stackTraceCount;
+extern bool shared_str_initialized;
 
 void LogStackTrace(LPCSTR header)
 {

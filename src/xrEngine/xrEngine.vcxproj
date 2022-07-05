@@ -359,6 +359,7 @@
     <ClInclude Include="defines.h" />
     <ClInclude Include="device.h" />
     <ClInclude Include="doug_lea_memory_allocator.h" />
+    <ClInclude Include="xrSkinXW.hpp" />
     <ClInclude Include="editor_environment_ambients_ambient.hpp" />
     <ClInclude Include="editor_environment_ambients_effect_id.hpp" />
     <ClInclude Include="editor_environment_ambients_manager.hpp" />
@@ -500,6 +501,7 @@
       <DisableSpecificWarnings Condition="'$(Configuration)|$(Platform)'=='Debug_NEW|Win32'">4127; 4267;%(DisableSpecificWarnings)</DisableSpecificWarnings>
       <DisableSpecificWarnings Condition="'$(Configuration)|$(Platform)'=='Release|x64'">4127; 4267;%(DisableSpecificWarnings)</DisableSpecificWarnings>
     </ClCompile>
+    <ClCompile Include="xrSkinXW.cpp" />
     <ClCompile Include="editor_environment_ambients_ambient.cpp" />
     <ClCompile Include="editor_environment_ambients_effect_id.cpp" />
     <ClCompile Include="editor_environment_ambients_manager.cpp" />

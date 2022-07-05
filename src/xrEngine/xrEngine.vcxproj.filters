@@ -375,6 +375,9 @@
     <ClInclude Include="bone.h">
       <Filter>Game API\Animator</Filter>
     </ClInclude>
+    <ClInclude Include="xrSkinXW.hpp">
+      <Filter>Game API\Animator</Filter>
+    </ClInclude>
     <ClInclude Include="envelope.h">
       <Filter>Game API\Animator</Filter>
     </ClInclude>
@@ -714,6 +717,9 @@
       <Filter>Game API\Collision</Filter>
     </ClCompile>
     <ClCompile Include="bone.cpp">
+      <Filter>Game API\Animator</Filter>
+    </ClCompile>
+    <ClCompile Include="xrSkinXW.cpp">
       <Filter>Game API\Animator</Filter>
     </ClCompile>
     <ClCompile Include="Envelope.cpp">

@@ -1,6 +1,4 @@
-﻿#ifndef xrMemoryH
-#define xrMemoryH
-#pragma once
+﻿#pragma once
 
 #include "memory_monitor.h"
 
@@ -144,4 +142,4 @@ extern BOOL mem_initialized;
 XRCORE_API void vminfo(size_t* _free, size_t* reserved, size_t* committed);
 XRCORE_API void log_vminfo();
 
-#endif // xrMemoryH
+

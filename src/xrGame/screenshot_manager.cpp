@@ -153,14 +153,6 @@ void screenshot_manager::make_jpeg_file()
 
 void screenshot_manager::sign_jpeg_file()
 {
-	screenshots::writer	tmp_writer		(m_jpeg_buffer, m_jpeg_buffer_size, m_jpeg_buffer_capacity);
-	game_cl_mp*	tmp_cl_game				= smart_cast<game_cl_mp*>(&Game());
-	tmp_writer.set_player_name			(tmp_cl_game->local_player->getName());
-	shared_str tmp_cdkey_digest			= Level().get_cdkey_digest();
-	if (tmp_cdkey_digest.size() == 0)
-		tmp_cdkey_digest = "null";
-	tmp_writer.set_player_cdkey_digest	(tmp_cdkey_digest);
-	m_jpeg_buffer_size					= tmp_writer.write_info();
 }
 
 
@@ -227,25 +219,6 @@ void screenshot_manager::shedule_Update(u32 dt)
 
 void screenshot_manager::make_screenshot(complete_callback_t cb)
 {
-	if (is_making_screenshot())
-	{
-#ifdef DEBUG
-		Msg("! ERROR: CL: screenshot making in progress...");
-#endif
-		return;
-	}
-	if (m_result_writer.size())
-		m_result_writer.clear();
-	
-	m_complete_callback = cb;
-	if (!is_drawing_downloads())
-	{
-		Engine.Sheduler.Register(this, TRUE);
-	}
-	m_state |= making_screenshot;
-	m_defered_ssframe_counter = defer_framescount;
-
-	Render->ScreenshotAsyncBegin();
 }
 
 void screenshot_manager::set_draw_downloads(bool draw)
@@ -276,7 +249,7 @@ void screenshot_manager::process_screenshot(bool singlecore)
 	}
 	m_make_start_event	= CreateEvent(NULL, FALSE, TRUE, NULL);
 	m_make_done_event	= CreateEvent(NULL, FALSE, FALSE, NULL);
-	thread_spawn	(&screenshot_manager::screenshot_maker_thread, "screenshot_maker", 0, this);
+//	thread_spawn	(&screenshot_manager::screenshot_maker_thread, "screenshot_maker", 0, this);
 }
 void	__stdcall	screenshot_manager::jpeg_compress_cb(long progress)
 {
@@ -296,36 +269,13 @@ void screenshot_manager::screenshot_maker_thread(void* arg_ptr)
 	DWORD wait_result = WaitForSingleObject(this_ptr->m_make_start_event, INFINITE);
 	while ((wait_result != WAIT_ABANDONED) || (wait_result != WAIT_FAILED))
 	{
-		if (!this_ptr->is_active())
-			break;
-		this_ptr->timer_begin("preparing image");
-		this_ptr->prepare_image	();
-		this_ptr->timer_end();
-		this_ptr->timer_begin("making jpeg");
-		this_ptr->make_jpeg_file();
-		this_ptr->timer_end();
-		this_ptr->timer_begin("signing jpeg data");
-		this_ptr->sign_jpeg_file();
-		this_ptr->timer_end();
-		this_ptr->timer_begin("compressing_image");
-		this_ptr->compress_image();
-		this_ptr->timer_end();
-		SetEvent(this_ptr->m_make_done_event);
-		wait_result = WaitForSingleObject(this_ptr->m_make_start_event, INFINITE);
+		break;
 	}
 	SetEvent(this_ptr->m_make_done_event);
 }
 
 void screenshot_manager::realloc_compress_buffer(u32 need_size)
 {
-	if (m_buffer_for_compress && (need_size <= m_buffer_for_compress_capacity))
-		return;
-#ifdef DEBUG	
-	Msg("* reallocing compression buffer.");
-#endif
-	m_buffer_for_compress_capacity = need_size * 2;
-	void* new_buffer = xr_realloc(m_buffer_for_compress, m_buffer_for_compress_capacity);
-	m_buffer_for_compress = static_cast<u8*>(new_buffer);
 }
 
 void screenshot_manager::compress_image()

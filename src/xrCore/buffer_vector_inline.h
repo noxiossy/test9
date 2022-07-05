@@ -36,6 +36,7 @@ m_end((T*)buffer),
 m_max_end((T*)buffer + max_count)
 {
     assign(other.begin(), other.end());
+	return *this;
 }
 
 TEMPLATE_SPECIALIZATION

@@ -11,6 +11,7 @@
 
 #include "../include/xrrender/animation_motion.h"
 #include <boost/noncopyable.hpp>
+#include "../xrEngine/xrSkinXW.hpp"
 
 class CGameObject;
 class IKinematics;
