@@ -5,6 +5,8 @@
 extern ECORE_API	BOOL 		ps_clear_models_on_unload;
 extern ECORE_API    BOOL		ps_use_precompiled_shaders;
 //-Alundaio
+extern ECORE_API u32 ps_r_pp_aa_mode;
+extern ECORE_API	xr_token	pp_aa_mode_token[];
 
 extern ECORE_API	u32			ps_r_sun_shafts;	//=	0;
 extern ECORE_API	xr_token	qsun_shafts_token[];
@@ -214,6 +216,13 @@ enum
 RFLAG_ACTOR_SHADOW = (1<<0),
 };
 //-Swartz
+
+// Postprocess anti-aliasing types
+enum
+{
+	NO_AA,
+	SMAA,
+};
 
 extern void						xrRender_initconsole	();
 extern BOOL						xrRender_test_hw		();

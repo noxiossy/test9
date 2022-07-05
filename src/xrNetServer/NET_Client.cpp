@@ -1129,7 +1129,10 @@ void	IPureClient::net_Syncronize	()
 {
 	net_Syncronised		= FALSE;
 	net_DeltaArray.clear();
-	thread_spawn		(sync_thread,"network-time-sync",0,this);
+	
+	std::thread SyNc_thread(sync_thread, this);
+	set_thread_name("network-time-sync", SyNc_thread);
+	Msg("--NW Sync thread started!");
 }
 
 void	IPureClient::ClearStatistic()

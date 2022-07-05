@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2003 Daniel Wallin and Arvid Norberg
+// Copyright (c) 2003 Daniel Wallin and Arvid Norberg
 
 // Permission is hereby granted, free of charge, to any person obtaining a
 // copy of this software and associated documentation files (the "Software"),
@@ -19,8 +19,6 @@
 // ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE
 // OR OTHER DEALINGS IN THE SOFTWARE.
-
-#include "pch.h"
 
 #include <luabind/detail/pcall.hpp>
 #include <luabind/error.hpp>

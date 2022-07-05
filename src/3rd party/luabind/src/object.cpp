@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2003 Daniel Wallin and Arvid Norberg
+// Copyright (c) 2003 Daniel Wallin and Arvid Norberg
 
 // Permission is hereby granted, free of charge, to any person obtaining a
 // copy of this software and associated documentation files (the "Software"),
@@ -19,8 +19,6 @@
 // ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE
 // OR OTHER DEALINGS IN THE SOFTWARE.
-
-#include "pch.h"
 
 #include <luabind/lua_include.hpp>
 
@@ -85,8 +83,6 @@ LUABIND_PROXY_ASSIGNMENT_OPERATOR(proxy_array_object)
 
 		// *************************************
 		// PROXY ARRAY OBJECT
-
-
 
 #define LUABIND_ARRAY_PROXY_ASSIGNMENT_OPERATOR(rhs)\
 		proxy_array_object& proxy_array_object::operator=(const rhs& p) \

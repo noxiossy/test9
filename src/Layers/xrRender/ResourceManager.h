@@ -8,7 +8,6 @@
 #include	"tss_def.h"
 #include	"TextureDescrManager.h"
 // refs
-struct		lua_State;
 
 class dx10ConstantBuffer;
 
@@ -84,7 +83,6 @@ public:
 	CTextureDescrMngr									m_textures_description;
 //.	CInifile*											m_textures_description;
 	xr_vector<std::pair<shared_str,R_constant_setup*> >	v_constant_setup;
-	lua_State*											LSVM;
 	BOOL												bDeferredLoad;
 private:
 	void							LS_Load				();

@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2003 Daniel Wallin and Arvid Norberg
+// Copyright (c) 2003 Daniel Wallin and Arvid Norberg
 
 // Permission is hereby granted, free of charge, to any person obtaining a
 // copy of this software and associated documentation files (the "Software"),
@@ -20,11 +20,11 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE
 // OR OTHER DEALINGS IN THE SOFTWARE.
 
-#include "pch.h"
-
 #include <luabind/lua_include.hpp>
 
 #include <luabind/luabind.hpp>
+
+#include <limits>
 
 using namespace luabind::detail;
 
@@ -80,4 +80,3 @@ void luabind::detail::find_exact_match(
         reinterpret_cast<const char*&>(start) += orep_size;
     }
 }
-
