@@ -1634,8 +1634,8 @@ extern void	noise3Init();
 #ifndef _EDITOR
 
 #include <xmmintrin.h>
-#include "../xrCPU_Pipe/ttapi.h"
-#pragma comment(lib,"xrCPU_Pipe.lib")
+//#include "../xrCPU_Pipe/ttapi.h"
+//#pragma comment(lib,"xrCPU_Pipe.lib")
 
 __forceinline __m128 _mm_load_fvector( const Fvector& v )
 {
