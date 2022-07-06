@@ -39,13 +39,12 @@ static BOOL bException = FALSE;
 
 #ifdef USE_BUG_TRAP
 #	include <BugTrap/BugTrap.h>				// for BugTrap functionality
-    #ifdef __BORLANDC__
-# pragma comment(lib,"BugTrapB.lib") // Link to ANSI DLL
-#endif
+#	pragma comment(lib, "BugTrap.lib")		// Link to ANSI DLL
 #endif // USE_BUG_TRAP
 
 #include <new.h> // for _set_new_mode
 #include <signal.h> // for signals
+#include <Shellapi.h>
 
 #ifdef NO_BUG_TRAP //DEBUG
 # define USE_OWN_ERROR_MESSAGE_WINDOW
@@ -254,12 +253,13 @@ void xrDebug::backend(const char* expression, const char* description, const cha
 #ifdef XRCORE_STATIC
     MessageBox (NULL,assertion_info,"X-Ray error",MB_OK|MB_ICONERROR|MB_SYSTEMMODAL);
 #else
-# ifdef USE_OWN_ERROR_MESSAGE_WINDOW
-    ShowCursor(true);
-    ShowWindow(GetActiveWindow(), SW_FORCEMINIMIZE);
+	HWND wnd = GetActiveWindow();
+	ShowWindow(wnd, SW_MINIMIZE);
+	while (ShowCursor(TRUE) < 0);
+#ifdef USE_OWN_ERROR_MESSAGE_WINDOW
     int result =
         MessageBox(
-        GetTopWindow(NULL),
+				wnd,
         assertion_info,
         "Fatal Error",
         /*MB_CANCELTRYCONTINUE*/MB_OK | MB_ICONERROR | /*MB_SYSTEMMODAL |*/ MB_DEFBUTTON1 | MB_SETFOREGROUND
@@ -300,6 +300,7 @@ void xrDebug::backend(const char* expression, const char* description, const cha
 # endif // USE_BUG_TRAP
     DEBUG_INVOKE;
 # endif // USE_OWN_ERROR_MESSAGE_WINDOW
+	ShowCursor(FALSE);
 #endif
 
     if (get_on_dialog())
@@ -311,14 +312,11 @@ void xrDebug::backend(const char* expression, const char* description, const cha
 
 LPCSTR xrDebug::error2string(long code)
 {
-    char* result = 0;
+	LPCSTR result = 0;
     static string1024 desc_storage;
 
-#ifdef _M_AMD64
-#else
-    WCHAR err_result[1024];
-    DXGetErrorString(code);
-    wcstombs(result, err_result, sizeof(err_result));
+#ifndef _M_AMD64
+	result				= DXGetErrorString(code);
 #endif
     if (0 == result)
     {
@@ -469,11 +467,11 @@ void CALLBACK PreErrorHandler(INT_PTR)
 #ifdef USE_BUG_TRAP
 void SetupExceptionHandler(const bool& dedicated)
 {
-	UINT prevMode = SetErrorMode(SEM_NOGPFAULTERRORBOX);
-	SetErrorMode(prevMode|SEM_NOGPFAULTERRORBOX);
+//	UINT prevMode = SetErrorMode(SEM_NOGPFAULTERRORBOX);
+//	SetErrorMode(prevMode|SEM_NOGPFAULTERRORBOX);
     BT_InstallSehFilter();
 #if 1//ndef USE_OWN_ERROR_MESSAGE_WINDOW
-    if (!dedicated && !strstr(GetCommandLine(), "-silent_error_mode"))
+	if (!strstr(GetCommandLine(),"-silent_error_mode"))
         BT_SetActivityType(BTA_SHOWUI);
     else
         BT_SetActivityType(BTA_SAVEREPORT);
@@ -484,10 +482,10 @@ void SetupExceptionHandler(const bool& dedicated)
     BT_SetDialogMessage(
         BTDM_INTRO2,
         "\
-                                                This is X-Ray Engine v1.6 crash reporting client. \
-                                                                                                                                                                        To help the development process, \
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                please Submit Bug or save report and email it manually (button More...).\
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                \r\nMany thanks in advance and sorry for the inconvenience."
+This is X-Ray Engine v1.6 crash reporting client. \
+To help the development process, \
+please Submit Bug or save report and email it manually (button More...).\
+\r\nMany thanks in advance and sorry for the inconvenience."
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 );
 
     BT_SetPreErrHandler(PreErrorHandler, 0);
@@ -517,7 +515,7 @@ void SetupExceptionHandler(const bool& dedicated)
         0
         );
 #else // #ifndef MASTER_GOLD
-        dedicated ?
+		!dedicated ?
     MiniDumpNoDump :
                    (
                    MiniDumpWithDataSegs |
@@ -547,6 +545,7 @@ void SetupExceptionHandler(const bool& dedicated)
 }
 #endif //-USE_BUG_TRAP
 
+//#if 1
 extern void BuildStackTrace(struct _EXCEPTION_POINTERS* pExceptionInfo);
 typedef LONG WINAPI UnhandledExceptionFilterType(struct _EXCEPTION_POINTERS* pExceptionInfo);
 typedef LONG(__stdcall* PFNCHFILTFN) (EXCEPTION_POINTERS* pExPtrs);
@@ -713,7 +712,7 @@ LONG WINAPI UnhandledFilter(_EXCEPTION_POINTERS* pExceptionInfo)
     *pExceptionInfo->ContextRecord = save;
 
     if (shared_str_initialized)
-        Msg("stack trace:");
+			Msg				("stack trace:\n");
 
     if (!IsDebuggerPresent())
     {
@@ -852,6 +851,7 @@ LONG WINAPI UnhandledFilter(_EXCEPTION_POINTERS* pExceptionInfo)
     return (EXCEPTION_CONTINUE_SEARCH);
 }
 #endif //-NO_BUG_TRAP
+//#endif
 
 //////////////////////////////////////////////////////////////////////
 #ifdef M_BORLAND
