@@ -1,7 +1,7 @@
 version: xray_lrc_{build}
 image: Visual Studio 2019
 configuration: Release
-platform: x64
+platform: Win32
 shallow_clone: true
 environment:
   DXSDK: '%DXSDK_DIR%'
