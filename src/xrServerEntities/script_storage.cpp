@@ -68,7 +68,8 @@ LPCSTR	file_header = 0;
 static void *lua_alloc		(void *ud, void *ptr, size_t osize, size_t nsize) {
     (void)ud;
     (void)osize;
-    if (nsize == 0) {
+	if (!nsize) 
+	{
         xr_free	(ptr);
         return	NULL;
     }
@@ -139,7 +140,7 @@ static LPVOID __cdecl luabind_allocator(
     {
         LPVOID	non_const_pointer = const_cast<LPVOID>(pointer);
         xr_free(non_const_pointer);
-        return	(0);
+		return nullptr;
     }
 
     if (!pointer)
@@ -200,10 +201,6 @@ void CScriptStorage::reinit()
         Msg("! ERROR : Cannot initialize script virtual machine!");
         return;
     }
-
-    luaL_openlibs(lua());
-    if (strstr(Core.Params, "-nojit"))
-        luaJIT_setmode(lua(), 0, LUAJIT_MODE_ENGINE | LUAJIT_MODE_OFF);
 
     if (strstr(Core.Params, "-_g"))
         file_header = file_header_new; //AVO: I get fatal crash at the start if this is used
