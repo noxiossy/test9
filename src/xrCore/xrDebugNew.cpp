@@ -388,7 +388,7 @@ XRCORE_API full_memory_stats_callback_type g_full_memory_stats_callback = 0;
 
 int out_of_memory_handler	(size_t size)
 {
--    if (g_full_memory_stats_callback)
+    if (g_full_memory_stats_callback)
         g_full_memory_stats_callback();
     else
     {
